@@ -1,0 +1,5217 @@
+%!PS-Adobe-3.0
+%%BoundingBox: (atend)
+%%Pages: (atend)
+%%PageOrder: (atend)
+%%DocumentFonts: (atend)
+%%Creator: Frame 4.0
+%%DocumentData: Clean7Bit
+%%EndComments
+%%BeginProlog
+%
+% Frame ps_prolog 4.0, for use with Frame 4.0 products
+% This ps_prolog file is Copyright (c) 1986-1993 Frame Technology
+% Corporation.  All rights reserved.  This ps_prolog file may be
+% freely copied and distributed in conjunction with documents created
+% using FrameMaker, FrameBuilder and FrameViewer as long as this 
+% copyright notice is preserved.
+%
+% Frame products normally print colors as their true color on a color printer
+% or as shades of gray, based on luminance, on a black-and white printer. The
+% following flag, if set to True, forces all non-white colors to print as pure
+% black. This has no effect on bitmap images.
+/FMPrintAllColorsAsBlack             false def
+%
+% Frame products can either set their own line screens or use a printer's 
+% default settings. Three flags below control this separately for no 
+% separations, spot separations and process separations. If a flag
+% is true, then the default printer settings will not be changed. If it is
+% false, Frame products will use their own settings from a table based on
+% the printer's resolution.
+/FMUseDefaultNoSeparationScreen      true  def
+/FMUseDefaultSpotSeparationScreen    true  def
+/FMUseDefaultProcessSeparationScreen false def
+%
+% For any given PostScript printer resolution, Frame products have two sets of 
+% screen angles and frequencies for printing process separations, which are 
+% recomended by Adobe. The following variable chooses the higher frequencies
+% when set to true or the lower frequencies when set to false. This is only
+% effective if the appropriate FMUseDefault...SeparationScreen flag is false.
+/FMUseHighFrequencyScreens true def
+%
+% PostScript Level 2 printers contain an "Accurate Screens" feature which can
+% improve process separation rendering at the expense of compute time. This 
+% flag is ignored by PostScript Level 1 printers.
+/FMUseAcccurateScreens true def
+%
+% The following PostScript procedure defines the spot function that Frame
+% products will use for process separations. You may un-comment-out one of
+% the alternative functions below, or use your own.
+%
+% Dot function
+/FMSpotFunction {abs exch abs 2 copy add 1 gt 
+		{1 sub dup mul exch 1 sub dup mul add 1 sub }
+		{dup mul exch dup mul add 1 exch sub }ifelse } def
+%
+% Line function
+% /FMSpotFunction { pop } def
+%
+% Elipse function
+% /FMSpotFunction { dup 5 mul 8 div mul exch dup mul exch add 
+%		sqrt 1 exch sub } def
+%
+%
+/FMversion (4.0) def 
+/FMLevel1 /languagelevel where {pop languagelevel} {1} ifelse 2 lt def
+/FMPColor
+	FMLevel1 {
+		false
+		/colorimage where {pop pop true} if
+	} {
+		true
+	} ifelse
+def
+/FrameDict 400 dict def 
+systemdict /errordict known not {/errordict 10 dict def
+		errordict /rangecheck {stop} put} if
+% The readline in PS 23.0 doesn't recognize cr's as nl's on AppleTalk
+FrameDict /tmprangecheck errordict /rangecheck get put 
+errordict /rangecheck {FrameDict /bug true put} put 
+FrameDict /bug false put 
+mark 
+% Some PS machines read past the CR, so keep the following 3 lines together!
+currentfile 5 string readline
+00
+0000000000
+cleartomark 
+errordict /rangecheck FrameDict /tmprangecheck get put 
+FrameDict /bug get { 
+	/readline {
+		/gstring exch def
+		/gfile exch def
+		/gindex 0 def
+		{
+			gfile read pop 
+			dup 10 eq {exit} if 
+			dup 13 eq {exit} if 
+			gstring exch gindex exch put 
+			/gindex gindex 1 add def 
+		} loop
+		pop 
+		gstring 0 gindex getinterval true 
+		} bind def
+	} if
+/FMshowpage /showpage load def
+/FMquit /quit load def
+/FMFAILURE { 
+	dup = flush 
+	FMshowpage 
+	/Helvetica findfont 12 scalefont setfont
+	72 200 moveto
+	show FMshowpage 
+	FMquit 
+	} def 
+/FMVERSION {
+	FMversion ne {
+		(Frame product version does not match ps_prolog!) FMFAILURE
+		} if
+	} def 
+/FMBADEPSF { 
+	(PostScript Lang. Ref. Man., 2nd Ed., H.2.4 says EPS must not call X              )
+	dup dup (X) search pop exch pop exch pop length 
+	4 -1 roll 
+	putinterval 
+	FMFAILURE
+	} def
+/FMLOCAL {
+	FrameDict begin
+	0 def 
+	end 
+	} def 
+/concatprocs
+	{
+	/proc2 exch cvlit def/proc1 exch cvlit def/newproc proc1 length proc2 length add array def
+	newproc 0 proc1 putinterval newproc proc1 length proc2 putinterval newproc cvx
+}def
+FrameDict begin 
+/FMnone 0 def
+/FMcyan 1 def
+/FMmagenta 2 def
+/FMyellow 3 def
+/FMblack 4 def
+/FMcustom 5 def
+/FrameNegative false def 
+/FrameSepIs FMnone def 
+/FrameSepBlack 0 def
+/FrameSepYellow 0 def
+/FrameSepMagenta 0 def
+/FrameSepCyan 0 def
+/FrameSepRed 1 def
+/FrameSepGreen 1 def
+/FrameSepBlue 1 def
+/FrameCurGray 1 def
+/FrameCurPat null def
+/FrameCurColors [ 0 0 0 1 0 0 0 ] def 
+/FrameColorEpsilon .001 def	
+/eqepsilon {		
+	sub dup 0 lt {neg} if
+	FrameColorEpsilon le
+} bind def
+/FrameCmpColorsCMYK { 
+	2 copy 0 get exch 0 get eqepsilon {
+		2 copy 1 get exch 1 get eqepsilon {
+			2 copy 2 get exch 2 get eqepsilon {
+				3 get exch 3 get eqepsilon
+			} {pop pop false} ifelse
+		}{pop pop false} ifelse
+	} {pop pop false} ifelse
+} bind def
+/FrameCmpColorsRGB { 
+	2 copy 4 get exch 0 get eqepsilon {
+		2 copy 5 get exch 1 get eqepsilon {
+			6 get exch 2 get eqepsilon
+		}{pop pop false} ifelse
+	} {pop pop false} ifelse
+} bind def
+/RGBtoCMYK { 
+	1 exch sub 
+	3 1 roll 
+	1 exch sub 
+	3 1 roll 
+	1 exch sub 
+	3 1 roll 
+	3 copy 
+	2 copy 
+	le { pop } { exch pop } ifelse 
+	2 copy 
+	le { pop } { exch pop } ifelse 
+	dup dup dup 
+	6 1 roll 
+	4 1 roll 
+	7 1 roll 
+	sub 
+	6 1 roll 
+	sub 
+	5 1 roll 
+	sub 
+	4 1 roll 
+} bind def
+/CMYKtoRGB { 
+	dup dup 4 -1 roll add 						  
+	5 1 roll 3 -1 roll add 						  
+	4 1 roll add 								  
+	1 exch sub dup 0 lt {pop 0} if 3 1 roll 	  
+	1 exch sub dup 0 lt {pop 0} if exch 	      
+	1 exch sub dup 0 lt {pop 0} if exch	  		  
+} bind def
+/FrameSepInit {
+	1.0 RealSetgray
+} bind def
+/FrameSetSepColor { 
+	/FrameSepBlue exch def
+	/FrameSepGreen exch def
+	/FrameSepRed exch def
+	/FrameSepBlack exch def
+	/FrameSepYellow exch def
+	/FrameSepMagenta exch def
+	/FrameSepCyan exch def
+	/FrameSepIs FMcustom def
+	setCurrentScreen	
+} bind def
+/FrameSetCyan {
+	/FrameSepBlue 1.0 def
+	/FrameSepGreen 1.0 def
+	/FrameSepRed 0.0 def
+	/FrameSepBlack 0.0 def
+	/FrameSepYellow 0.0 def
+	/FrameSepMagenta 0.0 def
+	/FrameSepCyan 1.0 def
+	/FrameSepIs FMcyan def
+	setCurrentScreen	
+} bind def
+ 
+/FrameSetMagenta {
+	/FrameSepBlue 1.0 def
+	/FrameSepGreen 0.0 def
+	/FrameSepRed 1.0 def
+	/FrameSepBlack 0.0 def
+	/FrameSepYellow 0.0 def
+	/FrameSepMagenta 1.0 def
+	/FrameSepCyan 0.0 def
+	/FrameSepIs FMmagenta def
+	setCurrentScreen
+} bind def
+ 
+/FrameSetYellow {
+	/FrameSepBlue 0.0 def
+	/FrameSepGreen 1.0 def
+	/FrameSepRed 1.0 def
+	/FrameSepBlack 0.0 def
+	/FrameSepYellow 1.0 def
+	/FrameSepMagenta 0.0 def
+	/FrameSepCyan 0.0 def
+	/FrameSepIs FMyellow def
+	setCurrentScreen
+} bind def
+ 
+/FrameSetBlack {
+	/FrameSepBlue 0.0 def
+	/FrameSepGreen 0.0 def
+	/FrameSepRed 0.0 def
+	/FrameSepBlack 1.0 def
+	/FrameSepYellow 0.0 def
+	/FrameSepMagenta 0.0 def
+	/FrameSepCyan 0.0 def
+	/FrameSepIs FMblack def
+	setCurrentScreen
+} bind def
+ 
+/FrameNoSep { 
+	/FrameSepIs FMnone def
+	setCurrentScreen
+} bind def
+/FrameSetSepColors { 
+	FrameDict begin
+	[ exch 1 add 1 roll ]
+	/FrameSepColors  
+	exch def end
+	} bind def
+/FrameColorInSepListCMYK { 
+	FrameSepColors {  
+       		exch dup 3 -1 roll 
+       		FrameCmpColorsCMYK 
+       		{ pop true exit } if
+    	} forall 
+	dup true ne {pop false} if
+	} bind def
+/FrameColorInSepListRGB { 
+	FrameSepColors {  
+       		exch dup 3 -1 roll 
+       		FrameCmpColorsRGB 
+       		{ pop true exit } if
+    	} forall 
+	dup true ne {pop false} if
+	} bind def
+/RealSetgray /setgray load def
+/RealSetrgbcolor /setrgbcolor load def
+/RealSethsbcolor /sethsbcolor load def
+end 
+/setgray { 
+	FrameDict begin
+	FrameSepIs FMnone eq
+		{ RealSetgray } 
+		{ 
+		FrameSepIs FMblack eq 
+			{ RealSetgray } 
+			{ FrameSepIs FMcustom eq 
+			  FrameSepRed 0 eq and
+			  FrameSepGreen 0 eq and
+			  FrameSepBlue 0 eq and {
+			  	RealSetgray
+			  } {
+				1 RealSetgray pop 
+			  } ifelse
+			} ifelse
+		} ifelse
+	end
+} bind def
+/setrgbcolor { 
+	FrameDict begin
+	FrameSepIs FMnone eq
+	{  RealSetrgbcolor }
+	{
+		3 copy [ 4 1 roll ] 
+		FrameColorInSepListRGB
+		{
+				FrameSepBlue eq exch 
+			 	FrameSepGreen eq and exch 
+			 	FrameSepRed eq and
+			 	{ 0 } { 1 } ifelse
+		}
+		{
+			FMPColor {
+				RealSetrgbcolor
+				currentcmykcolor
+			} {
+				RGBtoCMYK
+			} ifelse
+			FrameSepIs FMblack eq
+			{1.0 exch sub 4 1 roll pop pop pop} {
+			FrameSepIs FMyellow eq
+			{pop 1.0 exch sub 3 1 roll pop pop} {
+			FrameSepIs FMmagenta eq
+			{pop pop 1.0 exch sub exch pop } {
+			FrameSepIs FMcyan eq
+			{pop pop pop 1.0 exch sub } 
+			{pop pop pop pop 1} ifelse } ifelse } ifelse } ifelse 
+		} ifelse
+		RealSetgray
+	} 
+	ifelse
+	end
+} bind def
+/sethsbcolor {
+	FrameDict begin
+	FrameSepIs FMnone eq 
+	{ RealSethsbcolor } 
+	{
+		RealSethsbcolor 
+		currentrgbcolor  
+		setrgbcolor 
+	} 
+	ifelse
+	end
+} bind def
+FrameDict begin
+/setcmykcolor where {
+	pop /RealSetcmykcolor /setcmykcolor load def
+} {
+	/RealSetcmykcolor {
+		4 1 roll
+		3 { 3 index add 0 max 1 min 1 exch sub 3 1 roll} repeat 
+		setrgbcolor pop
+	} bind def
+} ifelse
+userdict /setcmykcolor { 
+		FrameDict begin
+		FrameSepIs FMnone eq
+		{ RealSetcmykcolor } 
+		{
+			4 copy [ 5 1 roll ]
+			FrameColorInSepListCMYK
+			{
+				FrameSepBlack eq exch 
+				FrameSepYellow eq and exch 
+				FrameSepMagenta eq and exch 
+				FrameSepCyan eq and 
+				{ 0 } { 1 } ifelse
+			}
+			{
+				FrameSepIs FMblack eq
+				{1.0 exch sub 4 1 roll pop pop pop} {
+				FrameSepIs FMyellow eq
+				{pop 1.0 exch sub 3 1 roll pop pop} {
+				FrameSepIs FMmagenta eq
+				{pop pop 1.0 exch sub exch pop } {
+				FrameSepIs FMcyan eq
+				{pop pop pop 1.0 exch sub } 
+				{pop pop pop pop 1} ifelse } ifelse } ifelse } ifelse 
+			} ifelse
+			RealSetgray
+		}
+		ifelse
+		end
+	} bind put
+FMLevel1 not { 
+	
+	/patProcDict 5 dict dup begin
+		<0f1e3c78f0e1c387> { 3 setlinewidth -1 -1 moveto 9 9 lineto stroke 
+											4 -4 moveto 12 4 lineto stroke
+											-4 4 moveto 4 12 lineto stroke} bind def
+		<0f87c3e1f0783c1e> { 3 setlinewidth -1 9 moveto 9 -1 lineto stroke 
+											-4 4 moveto 4 -4 lineto stroke
+											4 12 moveto 12 4 lineto stroke} bind def
+		<8142241818244281> { 1 setlinewidth -1 9 moveto 9 -1 lineto stroke
+											-1 -1 moveto 9 9 lineto stroke } bind def
+		<03060c183060c081> { 1 setlinewidth -1 -1 moveto 9 9 lineto stroke 
+											4 -4 moveto 12 4 lineto stroke
+											-4 4 moveto 4 12 lineto stroke} bind def
+		<8040201008040201> { 1 setlinewidth -1 9 moveto 9 -1 lineto stroke 
+											-4 4 moveto 4 -4 lineto stroke
+											4 12 moveto 12 4 lineto stroke} bind def
+	end def
+	/patDict 15 dict dup begin
+		/PatternType 1 def		
+		/PaintType 2 def		
+		/TilingType 3 def		
+		/BBox [ 0 0 8 8 ] def 	
+		/XStep 8 def			
+		/YStep 8 def			
+		/PaintProc {
+			begin
+			patProcDict bstring known {
+				patProcDict bstring get exec
+			} {
+				8 8 true [1 0 0 -1 0 8] bstring imagemask
+			} ifelse
+			end
+		} bind def
+	end def
+} if
+/combineColor {
+    FrameSepIs FMnone eq
+	{
+		graymode FMLevel1 or not {
+			
+			[/Pattern [/DeviceCMYK]] setcolorspace
+			FrameCurColors 0 4 getinterval aload pop FrameCurPat setcolor
+		} {
+			FrameCurColors 3 get 1.0 ge {
+				FrameCurGray RealSetgray
+			} {
+				FMPColor graymode and {
+					0 1 3 { 
+						FrameCurColors exch get
+						1 FrameCurGray sub mul
+					} for
+					RealSetcmykcolor
+				} {
+					4 1 6 {
+						FrameCurColors exch get
+						graymode {
+							1 exch sub 1 FrameCurGray sub mul 1 exch sub
+						} {
+							1.0 lt {FrameCurGray} {1} ifelse
+						} ifelse
+					} for
+					RealSetrgbcolor
+				} ifelse
+			} ifelse
+		} ifelse
+	} { 
+		FrameCurColors 0 4 getinterval aload
+		FrameColorInSepListCMYK {
+			FrameSepBlack eq exch 
+			FrameSepYellow eq and exch 
+			FrameSepMagenta eq and exch 
+			FrameSepCyan eq and
+			FrameSepIs FMcustom eq and
+			{ FrameCurGray } { 1 } ifelse
+		} {
+			FrameSepIs FMblack eq
+			{FrameCurGray 1.0 exch sub mul 1.0 exch sub 4 1 roll pop pop pop} {
+			FrameSepIs FMyellow eq
+			{pop FrameCurGray 1.0 exch sub mul 1.0 exch sub 3 1 roll pop pop} {
+			FrameSepIs FMmagenta eq
+			{pop pop FrameCurGray 1.0 exch sub mul 1.0 exch sub exch pop } {
+			FrameSepIs FMcyan eq
+			{pop pop pop FrameCurGray 1.0 exch sub mul 1.0 exch sub } 
+			{pop pop pop pop 1} ifelse } ifelse } ifelse } ifelse 
+		} ifelse
+		graymode FMLevel1 or not {
+			
+			[/Pattern [/DeviceGray]] setcolorspace
+			FrameCurPat setcolor
+		} { 
+			graymode not FMLevel1 and {
+				
+				dup 1 lt {pop FrameCurGray} if
+			} if
+			RealSetgray
+		} ifelse
+	} ifelse
+} bind def
+/savematrix {
+	orgmatrix currentmatrix pop
+	} bind def
+/restorematrix {
+	orgmatrix setmatrix
+	} bind def
+/dmatrix matrix def
+/dpi    72 0 dmatrix defaultmatrix dtransform
+    dup mul exch   dup mul add   sqrt def
+	
+/freq dpi dup 72 div round dup 0 eq {pop 1} if 8 mul div def
+/sangle 1 0 dmatrix defaultmatrix dtransform exch atan def
+/dpiranges   [  2540    2400    1693     1270    1200     635      600      0      ] def
+/CMLowFreqs  [ 100.402  94.8683 89.2289 100.402  94.8683  66.9349  63.2456 47.4342 ] def
+/YLowFreqs   [  95.25   90.0    84.65    95.25   90.0     70.5556  66.6667 50.0    ] def
+/KLowFreqs   [  89.8026 84.8528 79.8088  89.8026 84.8528  74.8355  70.7107 53.033  ] def
+/CLowAngles  [  71.5651 71.5651 71.5651 71.5651  71.5651  71.5651  71.5651 71.5651 ] def
+/MLowAngles  [  18.4349 18.4349 18.4349 18.4349  18.4349  18.4349  18.4349 18.4349 ] def
+/YLowTDot    [  true    true    false    true    true     false    false   false   ] def
+/CMHighFreqs [ 133.87  126.491 133.843  108.503 102.523  100.402   94.8683 63.2456 ] def
+/YHighFreqs  [ 127.0   120.0   126.975  115.455 109.091   95.25    90.0    60.0    ] def
+/KHighFreqs  [ 119.737 113.137 119.713  128.289 121.218   89.8026  84.8528 63.6395 ] def
+/CHighAngles [  71.5651 71.5651 71.5651  70.0169 70.0169  71.5651  71.5651 71.5651 ] def
+/MHighAngles [  18.4349 18.4349 18.4349  19.9831 19.9831  18.4349  18.4349 18.4349 ] def
+/YHighTDot   [  false   false   true     false   false    true     true    false   ] def
+/PatFreq     [	10.5833 10.0     9.4055  10.5833 10.0	  10.5833  10.0	   9.375   ] def
+/screenIndex {
+	0 1 dpiranges length 1 sub { dup dpiranges exch get 1 sub dpi le {exit} {pop} ifelse } for
+} bind def
+/getCyanScreen {
+	FMUseHighFrequencyScreens { CHighAngles CMHighFreqs} {CLowAngles CMLowFreqs} ifelse
+		screenIndex dup 3 1 roll get 3 1 roll get /FMSpotFunction load
+} bind def
+/getMagentaScreen {
+	FMUseHighFrequencyScreens { MHighAngles CMHighFreqs } {MLowAngles CMLowFreqs} ifelse
+		screenIndex dup 3 1 roll get 3 1 roll get /FMSpotFunction load
+} bind def
+/getYellowScreen {
+	FMUseHighFrequencyScreens { YHighTDot YHighFreqs} { YLowTDot YLowFreqs } ifelse
+		screenIndex dup 3 1 roll get 3 1 roll get { 3 div
+			{2 { 1 add 2 div 3 mul dup floor sub 2 mul 1 sub exch} repeat
+			FMSpotFunction } } {/FMSpotFunction load } ifelse
+			0.0 exch
+} bind def
+/getBlackScreen  {
+	FMUseHighFrequencyScreens { KHighFreqs } { KLowFreqs } ifelse
+		screenIndex get 45.0 /FMSpotFunction load 
+} bind def
+/getSpotScreen {
+	getBlackScreen
+} bind def
+/getCompositeScreen {
+	getBlackScreen
+} bind def
+/FMSetScreen 
+	FMLevel1 { /setscreen load 
+	}{ {
+		8 dict begin
+		/HalftoneType 1 def
+		/SpotFunction exch def
+		/Angle exch def
+		/Frequency exch def
+		/AccurateScreens FMUseAcccurateScreens def
+		currentdict end sethalftone
+	} bind } ifelse
+def
+/setDefaultScreen {
+	FMPColor {
+		orgrxfer cvx orggxfer cvx orgbxfer cvx orgxfer cvx setcolortransfer
+	}
+	{
+		orgxfer cvx settransfer
+	} ifelse
+	orgfreq organgle orgproc cvx setscreen
+} bind def
+/setCurrentScreen {
+	FrameSepIs FMnone eq {
+		FMUseDefaultNoSeparationScreen {
+			setDefaultScreen
+		} {
+			getCompositeScreen FMSetScreen
+		} ifelse
+	} {
+		FrameSepIs FMcustom eq {
+			FMUseDefaultSpotSeparationScreen {
+				setDefaultScreen
+			} {
+				getSpotScreen FMSetScreen
+			} ifelse
+		} {
+			FMUseDefaultProcessSeparationScreen {
+				setDefaultScreen
+			} {
+				FrameSepIs FMcyan eq {
+					getCyanScreen FMSetScreen
+				} {
+					FrameSepIs FMmagenta eq {
+						getMagentaScreen FMSetScreen
+					} {
+						FrameSepIs FMyellow eq {
+							getYellowScreen FMSetScreen
+						} {
+							getBlackScreen FMSetScreen
+						} ifelse
+					} ifelse
+				} ifelse
+			} ifelse
+		} ifelse
+	} ifelse 
+} bind def
+end
+	/gstring FMLOCAL
+	/gfile FMLOCAL
+	/gindex FMLOCAL
+	/orgrxfer FMLOCAL
+	/orggxfer FMLOCAL
+	/orgbxfer FMLOCAL
+	/orgxfer FMLOCAL
+	/orgproc FMLOCAL
+	/orgrproc FMLOCAL
+	/orggproc FMLOCAL
+	/orgbproc FMLOCAL
+	/organgle FMLOCAL
+	/orgrangle FMLOCAL
+	/orggangle FMLOCAL
+	/orgbangle FMLOCAL
+	/orgfreq FMLOCAL
+	/orgrfreq FMLOCAL
+	/orggfreq FMLOCAL
+	/orgbfreq FMLOCAL
+	/yscale FMLOCAL
+	/xscale FMLOCAL
+	/edown FMLOCAL
+	/manualfeed FMLOCAL
+	/paperheight FMLOCAL
+	/paperwidth FMLOCAL
+/FMDOCUMENT { 
+	array /FMfonts exch def 
+	/#copies exch def
+	FrameDict begin
+	0 ne /manualfeed exch def
+	/paperheight exch def
+	/paperwidth exch def
+	0 ne /FrameNegative exch def 
+	0 ne /edown exch def 
+	/yscale exch def
+	/xscale exch def
+	FMLevel1 {
+		manualfeed {setmanualfeed} if
+		/FMdicttop countdictstack 1 add def 
+		/FMoptop count def 
+		setpapername 
+		manualfeed {true} {papersize} ifelse 
+		{manualpapersize} {false} ifelse 
+		{desperatepapersize} {false} ifelse 
+		{ (Can't select requested paper size for Frame print job!) FMFAILURE } if
+		count -1 FMoptop {pop pop} for
+		countdictstack -1 FMdicttop {pop end} for 
+		}
+		{{1 dict dup /PageSize [paperwidth paperheight]put setpagedevice}stopped
+		{ (Can't select requested paper size for Frame print job!) FMFAILURE } if
+		 {1 dict dup /ManualFeed manualfeed put setpagedevice } stopped pop }
+	ifelse 
+	
+	FMPColor {
+		currentcolorscreen
+			cvlit /orgproc exch def
+				  /organgle exch def 
+				  /orgfreq exch def
+			cvlit /orgbproc exch def
+				  /orgbangle exch def 
+				  /orgbfreq exch def
+			cvlit /orggproc exch def
+				  /orggangle exch def 
+				  /orggfreq exch def
+			cvlit /orgrproc exch def
+				  /orgrangle exch def 
+				  /orgrfreq exch def
+			currentcolortransfer 
+			FrameNegative {
+				1 1 4 { 
+					pop { 1 exch sub } concatprocs 4 1 roll
+				} for
+				4 copy
+				setcolortransfer
+			} if
+			cvlit /orgxfer exch def
+			cvlit /orgbxfer exch def
+			cvlit /orggxfer exch def
+			cvlit /orgrxfer exch def
+	} {
+		currentscreen 
+			cvlit /orgproc exch def
+				  /organgle exch def 
+				  /orgfreq exch def
+				  
+		currenttransfer 
+		FrameNegative {
+			{ 1 exch sub } concatprocs
+			dup settransfer
+		} if 
+		cvlit /orgxfer exch def
+	} ifelse
+	end 
+} def 
+/pagesave FMLOCAL
+/orgmatrix FMLOCAL
+/landscape FMLOCAL
+/pwid FMLOCAL
+/FMBEGINPAGE { 
+	FrameDict begin 
+	/pagesave save def
+	3.86 setmiterlimit
+	/landscape exch 0 ne def
+	landscape { 
+		90 rotate 0 exch dup /pwid exch def neg translate pop 
+	}{
+		pop /pwid exch def
+	} ifelse
+	edown { [-1 0 0 1 pwid 0] concat } if
+	0 0 moveto paperwidth 0 lineto paperwidth paperheight lineto 
+	0 paperheight lineto 0 0 lineto 1 setgray fill
+	xscale yscale scale
+	/orgmatrix matrix def
+	gsave 
+} def 
+/FMENDPAGE {
+	grestore 
+	pagesave restore
+	end 
+	showpage
+	} def 
+/FMFONTDEFINE { 
+	FrameDict begin
+	findfont 
+	ReEncode 
+	1 index exch 
+	definefont 
+	FMfonts 3 1 roll 
+	put
+	end 
+	} def 
+/FMFILLS {
+	FrameDict begin dup
+	array /fillvals exch def
+	dict /patCache exch def
+	end 
+	} def 
+/FMFILL {
+	FrameDict begin
+	 fillvals 3 1 roll put
+	end 
+	} def 
+/FMNORMALIZEGRAPHICS { 
+	newpath
+	0.0 0.0 moveto
+	1 setlinewidth
+	0 setlinecap
+	0 0 0 sethsbcolor
+	0 setgray 
+	} bind def
+	/fx FMLOCAL
+	/fy FMLOCAL
+	/fh FMLOCAL
+	/fw FMLOCAL
+	/llx FMLOCAL
+	/lly FMLOCAL
+	/urx FMLOCAL
+	/ury FMLOCAL
+/FMBEGINEPSF { 
+	end 
+	/FMEPSF save def 
+	/showpage {} def 
+% See Adobe's "PostScript Language Reference Manual, 2nd Edition", page 714.
+% "...the following operators MUST NOT be used in an EPS file:" (emphasis ours)
+	/banddevice {(banddevice) FMBADEPSF} def
+	/clear {(clear) FMBADEPSF} def
+	/cleardictstack {(cleardictstack) FMBADEPSF} def 
+	/copypage {(copypage) FMBADEPSF} def
+	/erasepage {(erasepage) FMBADEPSF} def
+	/exitserver {(exitserver) FMBADEPSF} def
+	/framedevice {(framedevice) FMBADEPSF} def
+	/grestoreall {(grestoreall) FMBADEPSF} def
+	/initclip {(initclip) FMBADEPSF} def
+	/initgraphics {(initgraphics) FMBADEPSF} def
+	/initmatrix {(initmatrix) FMBADEPSF} def
+	/quit {(quit) FMBADEPSF} def
+	/renderbands {(renderbands) FMBADEPSF} def
+	/setglobal {(setglobal) FMBADEPSF} def
+	/setpagedevice {(setpagedevice) FMBADEPSF} def
+	/setshared {(setshared) FMBADEPSF} def
+	/startjob {(startjob) FMBADEPSF} def
+	/lettertray {(lettertray) FMBADEPSF} def
+	/letter {(letter) FMBADEPSF} def
+	/lettersmall {(lettersmall) FMBADEPSF} def
+	/11x17tray {(11x17tray) FMBADEPSF} def
+	/11x17 {(11x17) FMBADEPSF} def
+	/ledgertray {(ledgertray) FMBADEPSF} def
+	/ledger {(ledger) FMBADEPSF} def
+	/legaltray {(legaltray) FMBADEPSF} def
+	/legal {(legal) FMBADEPSF} def
+	/statementtray {(statementtray) FMBADEPSF} def
+	/statement {(statement) FMBADEPSF} def
+	/executivetray {(executivetray) FMBADEPSF} def
+	/executive {(executive) FMBADEPSF} def
+	/a3tray {(a3tray) FMBADEPSF} def
+	/a3 {(a3) FMBADEPSF} def
+	/a4tray {(a4tray) FMBADEPSF} def
+	/a4 {(a4) FMBADEPSF} def
+	/a4small {(a4small) FMBADEPSF} def
+	/b4tray {(b4tray) FMBADEPSF} def
+	/b4 {(b4) FMBADEPSF} def
+	/b5tray {(b5tray) FMBADEPSF} def
+	/b5 {(b5) FMBADEPSF} def
+	FMNORMALIZEGRAPHICS 
+	[/fy /fx /fh /fw /ury /urx /lly /llx] {exch def} forall 
+	fx fw 2 div add fy fh 2 div add  translate
+	rotate
+	fw 2 div neg fh 2 div neg translate
+	fw urx llx sub div fh ury lly sub div scale 
+	llx neg lly neg translate 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count def 
+	} bind def
+/FMENDEPSF {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMEPSF restore
+	FrameDict begin 
+	} bind def
+FrameDict begin 
+/setmanualfeed {
+%%BeginFeature *ManualFeed True
+	 statusdict /manualfeed true put
+%%EndFeature
+	} bind def
+/max {2 copy lt {exch} if pop} bind def
+/min {2 copy gt {exch} if pop} bind def
+/inch {72 mul} def
+/pagedimen { 
+	paperheight sub abs 16 lt exch 
+	paperwidth sub abs 16 lt and
+	{/papername exch def} {pop} ifelse
+	} bind def
+	/papersizedict FMLOCAL
+/setpapername { 
+	/papersizedict 14 dict def 
+	papersizedict begin
+	/papername /unknown def 
+		/Letter 8.5 inch 11.0 inch pagedimen
+		/LetterSmall 7.68 inch 10.16 inch pagedimen
+		/Tabloid 11.0 inch 17.0 inch pagedimen
+		/Ledger 17.0 inch 11.0 inch pagedimen
+		/Legal 8.5 inch 14.0 inch pagedimen
+		/Statement 5.5 inch 8.5 inch pagedimen
+		/Executive 7.5 inch 10.0 inch pagedimen
+		/A3 11.69 inch 16.5 inch pagedimen
+		/A4 8.26 inch 11.69 inch pagedimen
+		/A4Small 7.47 inch 10.85 inch pagedimen
+		/B4 10.125 inch 14.33 inch pagedimen
+		/B5 7.16 inch 10.125 inch pagedimen
+	end
+	} bind def
+/papersize {
+	papersizedict begin
+		/Letter {lettertray letter} def
+		/LetterSmall {lettertray lettersmall} def
+		/Tabloid {11x17tray 11x17} def
+		/Ledger {ledgertray ledger} def
+		/Legal {legaltray legal} def
+		/Statement {statementtray statement} def
+		/Executive {executivetray executive} def
+		/A3 {a3tray a3} def
+		/A4 {a4tray a4} def
+		/A4Small {a4tray a4small} def
+		/B4 {b4tray b4} def
+		/B5 {b5tray b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	statusdict begin stopped end 
+	} bind def
+/manualpapersize {
+	papersizedict begin
+		/Letter {letter} def
+		/LetterSmall {lettersmall} def
+		/Tabloid {11x17} def
+		/Ledger {ledger} def
+		/Legal {legal} def
+		/Statement {statement} def
+		/Executive {executive} def
+		/A3 {a3} def
+		/A4 {a4} def
+		/A4Small {a4small} def
+		/B4 {b4} def
+		/B5 {b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	stopped 
+	} bind def
+/desperatepapersize {
+	statusdict /setpageparams known
+		{
+		paperwidth paperheight 0 1 
+		statusdict begin
+		{setpageparams} stopped 
+		end
+		} {true} ifelse 
+	} bind def
+/DiacriticEncoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /exclam /quotedbl
+/numbersign /dollar /percent /ampersand /quotesingle /parenleft
+/parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I /J /K
+/L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+/bracketright /asciicircum /underscore /grave /a /b /c /d /e /f /g /h
+/i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+/braceright /asciitilde /.notdef /Adieresis /Aring /Ccedilla /Eacute
+/Ntilde /Odieresis /Udieresis /aacute /agrave /acircumflex /adieresis
+/atilde /aring /ccedilla /eacute /egrave /ecircumflex /edieresis
+/iacute /igrave /icircumflex /idieresis /ntilde /oacute /ograve
+/ocircumflex /odieresis /otilde /uacute /ugrave /ucircumflex
+/udieresis /dagger /.notdef /cent /sterling /section /bullet
+/paragraph /germandbls /registered /copyright /trademark /acute
+/dieresis /.notdef /AE /Oslash /.notdef /.notdef /.notdef /.notdef
+/yen /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/ordfeminine /ordmasculine /.notdef /ae /oslash /questiondown
+/exclamdown /logicalnot /.notdef /florin /.notdef /.notdef
+/guillemotleft /guillemotright /ellipsis /.notdef /Agrave /Atilde
+/Otilde /OE /oe /endash /emdash /quotedblleft /quotedblright
+/quoteleft /quoteright /.notdef /.notdef /ydieresis /Ydieresis
+/fraction /currency /guilsinglleft /guilsinglright /fi /fl /daggerdbl
+/periodcentered /quotesinglbase /quotedblbase /perthousand
+/Acircumflex /Ecircumflex /Aacute /Edieresis /Egrave /Iacute
+/Icircumflex /Idieresis /Igrave /Oacute /Ocircumflex /.notdef /Ograve
+/Uacute /Ucircumflex /Ugrave /dotlessi /circumflex /tilde /macron
+/breve /dotaccent /ring /cedilla /hungarumlaut /ogonek /caron
+] def
+/ReEncode { 
+	dup 
+	length 
+	dict begin 
+	{
+	1 index /FID ne 
+		{def} 
+		{pop pop} ifelse 
+	} forall 
+	0 eq {/Encoding DiacriticEncoding def} if 
+	currentdict 
+	end 
+	} bind def
+FMPColor 
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPCOLOR} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPCOLORc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUECOLOR } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUECOLORc } def
+	}
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPGRAY} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPGRAYc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUEGRAY } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUEGRAYc } def
+	}
+ifelse
+/K { 
+	FMPrintAllColorsAsBlack {
+		dup 1 eq 2 index 1 eq and 3 index 1 eq and not
+			{7 {pop} repeat 0 0 0 1 0 0 0} if
+	} if 
+	FrameCurColors astore 
+	pop combineColor
+} bind def
+/graymode true def
+	/bwidth FMLOCAL
+	/bpside FMLOCAL
+	/bstring FMLOCAL
+	/onbits FMLOCAL
+	/offbits FMLOCAL
+	/xindex FMLOCAL
+	/yindex FMLOCAL
+	/x FMLOCAL
+	/y FMLOCAL
+/setPatternMode {
+	FMLevel1 {
+		/bwidth  exch def
+		/bpside  exch def
+		/bstring exch def
+		/onbits 0 def  /offbits 0 def
+		freq sangle landscape {90 add} if 
+			{/y exch def
+			 /x exch def
+			 /xindex x 1 add 2 div bpside mul cvi def
+			 /yindex y 1 add 2 div bpside mul cvi def
+			 bstring yindex bwidth mul xindex 8 idiv add get
+			 1 7 xindex 8 mod sub bitshift and 0 ne FrameNegative {not} if
+			 {/onbits  onbits  1 add def 1}
+			 {/offbits offbits 1 add def 0}
+			 ifelse
+			}
+			setscreen
+		offbits offbits onbits add div FrameNegative {1.0 exch sub} if
+		/FrameCurGray exch def
+	} { 
+		pop pop
+		dup patCache exch known {
+			patCache exch get
+		} { 
+			dup
+			patDict /bstring 3 -1 roll put
+			patDict 
+			9 PatFreq screenIndex get div dup matrix scale
+			makepattern
+			dup 
+			patCache 4 -1 roll 3 -1 roll put
+		} ifelse
+		/FrameCurGray 0 def
+		/FrameCurPat exch def
+	} ifelse
+	/graymode false def
+	combineColor
+} bind def
+/setGrayScaleMode {
+	graymode not {
+		/graymode true def
+		FMLevel1 {
+			setCurrentScreen
+		} if
+	} if
+	/FrameCurGray exch def
+	combineColor
+} bind def
+/normalize {
+	transform round exch round exch itransform
+	} bind def
+/dnormalize {
+	dtransform round exch round exch idtransform
+	} bind def
+/lnormalize { 
+	0 dtransform exch cvi 2 idiv 2 mul 1 add exch idtransform pop
+	} bind def
+/H { 
+	lnormalize setlinewidth
+	} bind def
+/Z {
+	setlinecap
+	} bind def
+	
+/PFill {
+	graymode FMLevel1 or not {
+		gsave 1 setgray eofill grestore
+	} if
+} bind def
+/PStroke {
+	graymode FMLevel1 or not {
+		gsave 1 setgray stroke grestore
+	} if
+	stroke
+} bind def
+	/fillvals FMLOCAL
+/X { 
+	fillvals exch get
+	dup type /stringtype eq
+	{8 1 setPatternMode} 
+	{setGrayScaleMode}
+	ifelse
+	} bind def
+/V { 
+	PFill gsave eofill grestore
+	} bind def
+/Vclip {
+	clip
+	} bind def
+/Vstrk {
+	currentlinewidth exch setlinewidth PStroke setlinewidth
+	} bind def
+/N { 
+	PStroke
+	} bind def
+/Nclip {
+	strokepath clip newpath
+	} bind def
+/Nstrk {
+	currentlinewidth exch setlinewidth PStroke setlinewidth
+	} bind def
+/M {newpath moveto} bind def
+/E {lineto} bind def
+/D {curveto} bind def
+/O {closepath} bind def
+	/n FMLOCAL
+/L { 
+ 	/n exch def
+	newpath
+	normalize
+	moveto 
+	2 1 n {pop normalize lineto} for
+	} bind def
+/Y { 
+	L 
+	closepath
+	} bind def
+	/x1 FMLOCAL
+	/x2 FMLOCAL
+	/y1 FMLOCAL
+	/y2 FMLOCAL
+/R { 
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	x1 y1
+	x2 y1
+	x2 y2
+	x1 y2
+	4 Y 
+	} bind def
+	/rad FMLOCAL
+/rarc 
+	{rad 
+	 arcto
+	} bind def
+/RR { 
+	/rad exch def
+	normalize
+	/y2 exch def
+	/x2 exch def
+	normalize
+	/y1 exch def
+	/x1 exch def
+	mark
+	newpath
+	{
+	x1 y1 rad add moveto
+	x1 y2 x2 y2 rarc
+	x2 y2 x2 y1 rarc
+	x2 y1 x1 y1 rarc
+	x1 y1 x1 y2 rarc
+	closepath
+	} stopped {x1 y1 x2 y2 R} if 
+	cleartomark
+	} bind def
+/RRR { 
+	/rad exch def
+	normalize /y4 exch def /x4 exch def
+	normalize /y3 exch def /x3 exch def
+	normalize /y2 exch def /x2 exch def
+	normalize /y1 exch def /x1 exch def
+	newpath
+	normalize moveto 
+	mark
+	{
+	x2 y2 x3 y3 rarc
+	x3 y3 x4 y4 rarc
+	x4 y4 x1 y1 rarc
+	x1 y1 x2 y2 rarc
+	closepath
+	} stopped
+	 {x1 y1 x2 y2 x3 y3 x4 y4 newpath moveto lineto lineto lineto closepath} if
+	cleartomark
+	} bind def
+/C { 
+	grestore
+	gsave
+	R 
+	clip
+	setCurrentScreen
+} bind def
+/CP { 
+	grestore
+	gsave
+	Y 
+	clip
+	setCurrentScreen
+} bind def
+	/FMpointsize FMLOCAL
+/F { 
+	FMfonts exch get
+	FMpointsize scalefont
+	setfont
+	} bind def
+/Q { 
+	/FMpointsize exch def
+	F 
+	} bind def
+/T { 
+	moveto show
+	} bind def
+/RF { 
+	rotate
+	0 ne {-1 1 scale} if
+	} bind def
+/TF { 
+	gsave
+	moveto 
+	RF
+	show
+	grestore
+	} bind def
+/P { 
+	moveto
+	0 32 3 2 roll widthshow
+	} bind def
+/PF { 
+	gsave
+	moveto 
+	RF
+	0 32 3 2 roll widthshow
+	grestore
+	} bind def
+/S { 
+	moveto
+	0 exch ashow
+	} bind def
+/SF { 
+	gsave
+	moveto
+	RF
+	0 exch ashow
+	grestore
+	} bind def
+/B { 
+	moveto
+	0 32 4 2 roll 0 exch awidthshow
+	} bind def
+/BF { 
+	gsave
+	moveto
+	RF
+	0 32 4 2 roll 0 exch awidthshow
+	grestore
+	} bind def
+/G { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath 
+	PFill fill
+	grestore
+	} bind def
+/Gstrk {
+	savematrix
+    newpath
+    2 index 2 div add exch 3 index 2 div sub exch 
+    normalize 2 index 2 div sub exch 3 index 2 div add exch 
+    translate
+    scale 
+    0.0 0.0 1.0 5 3 roll arc 
+    restorematrix
+    currentlinewidth exch setlinewidth PStroke setlinewidth
+    } bind def
+/Gclip { 
+	newpath
+	savematrix
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath 
+	clip newpath
+	restorematrix
+	} bind def
+/GG { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	rotate 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath
+	PFill
+	fill
+	grestore
+	} bind def
+/GGclip { 
+	savematrix
+	newpath
+    normalize translate 0.0 0.0 moveto 
+    rotate 
+    dnormalize scale 
+    0.0 0.0 1.0 5 3 roll arc 
+    closepath
+	clip newpath
+	restorematrix
+	} bind def
+/GGstrk { 
+	savematrix
+    newpath
+    normalize translate 0.0 0.0 moveto 
+    rotate 
+    dnormalize scale 
+    0.0 0.0 1.0 5 3 roll arc 
+    closepath 
+	restorematrix
+    currentlinewidth exch setlinewidth PStroke setlinewidth
+	} bind def
+/A { 
+	gsave
+	savematrix
+	newpath
+	2 index 2 div add exch 3 index 2 div sub exch 
+	normalize 2 index 2 div sub exch 3 index 2 div add exch 
+	translate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	PStroke
+	grestore
+	} bind def
+/Aclip {
+	newpath
+	savematrix
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath 
+	strokepath clip newpath
+	restorematrix
+} bind def
+/Astrk {
+	Gstrk
+} bind def
+/AA { 
+	gsave
+	savematrix
+	newpath
+	
+	3 index 2 div add exch 4 index 2 div sub exch 
+	
+	normalize 3 index 2 div sub exch 4 index 2 div add exch
+	translate 
+	rotate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	PStroke
+	grestore
+	} bind def
+/AAclip {
+	savematrix
+	newpath
+    normalize translate 0.0 0.0 moveto 
+    rotate 
+    dnormalize scale 
+    0.0 0.0 1.0 5 3 roll arc 
+    closepath
+	strokepath clip newpath
+	restorematrix
+} bind def
+/AAstrk {
+	GGstrk
+} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/w FMLOCAL
+	/h FMLOCAL
+	/xx FMLOCAL
+	/yy FMLOCAL
+	/ww FMLOCAL
+	/hh FMLOCAL
+	/FMsaveobject FMLOCAL
+	/FMoptop FMLOCAL
+	/FMdicttop FMLOCAL
+/BEGINPRINTCODE { 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count 7 sub def 
+	/FMsaveobject save def
+	userdict begin 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	3 index neg 3 index neg translate
+	} bind def
+/ENDPRINTCODE {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMsaveobject restore 
+	} bind def
+/gn { 
+	0 
+	{	46 mul 
+		cf read pop 
+		32 sub 
+		dup 46 lt {exit} if 
+		46 sub add 
+		} loop
+	add 
+	} bind def
+	/str FMLOCAL
+/cfs { 
+	/str sl string def 
+	0 1 sl 1 sub {str exch val put} for 
+	str def 
+	} bind def
+/ic [ 
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0
+	{0 hx} {1 hx} {2 hx} {3 hx} {4 hx} {5 hx} {6 hx} {7 hx} {8 hx} {9 hx}
+	{10 hx} {11 hx} {12 hx} {13 hx} {14 hx} {15 hx} {16 hx} {17 hx} {18 hx}
+	{19 hx} {gn hx} {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}
+	{13} {14} {15} {16} {17} {18} {19} {gn} {0 wh} {1 wh} {2 wh} {3 wh}
+	{4 wh} {5 wh} {6 wh} {7 wh} {8 wh} {9 wh} {10 wh} {11 wh} {12 wh}
+	{13 wh} {14 wh} {gn wh} {0 bl} {1 bl} {2 bl} {3 bl} {4 bl} {5 bl} {6 bl}
+	{7 bl} {8 bl} {9 bl} {10 bl} {11 bl} {12 bl} {13 bl} {14 bl} {gn bl}
+	{0 fl} {1 fl} {2 fl} {3 fl} {4 fl} {5 fl} {6 fl} {7 fl} {8 fl} {9 fl}
+	{10 fl} {11 fl} {12 fl} {13 fl} {14 fl} {gn fl}
+	] def
+	/sl FMLOCAL
+	/val FMLOCAL
+	/ws FMLOCAL
+	/im FMLOCAL
+	/bs FMLOCAL
+	/cs FMLOCAL
+	/len FMLOCAL
+	/pos FMLOCAL
+/ms { 
+	/sl exch def 
+	/val 255 def 
+	/ws cfs 
+	/im cfs 
+	/val 0 def 
+	/bs cfs 
+	/cs cfs 
+	} bind def
+400 ms 
+/ip { 
+	is 
+	0 
+	cf cs readline pop 
+	{	ic exch get exec 
+		add 
+		} forall 
+	pop 
+	
+	} bind def
+/rip { 
+	   
+	  
+	  bis ris copy pop 
+      is
+      0
+      cf cs readline pop 
+      {       ic exch get exec 
+              add 
+              } forall 
+	  pop pop 
+	  ris gis copy pop 
+	  dup is exch 
+	  
+      cf cs readline pop 
+      {       ic exch get exec 
+              add 
+              } forall 
+	  pop pop
+	  gis bis copy pop 
+	  dup add is exch 
+	  
+      cf cs readline pop 
+      {       ic exch get exec 
+              add 
+              } forall 
+      pop 
+      
+      } bind def
+/wh { 
+	/len exch def 
+	/pos exch def 
+	ws 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/bl { 
+	/len exch def 
+	/pos exch def 
+	bs 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/s1 1 string def
+/fl { 
+	/len exch def 
+	/pos exch def 
+	/val cf s1 readhexstring pop 0 get def
+	pos 1 pos len add 1 sub {im exch val put} for
+	pos len 
+	} bind def
+/hx { 
+	3 copy getinterval 
+	cf exch readhexstring pop pop 
+	} bind def
+	/h FMLOCAL
+	/w FMLOCAL
+	/d FMLOCAL
+	/lb FMLOCAL
+	/bitmapsave FMLOCAL
+	/is FMLOCAL
+	/cf FMLOCAL
+/wbytes { 
+      dup dup
+      24 eq { pop pop 3 mul }
+      { 8 eq {pop} {1 eq {7 add 8 idiv} {3 add 4 idiv} ifelse} ifelse } ifelse
+	} bind def
+/BEGINBITMAPBWc { 
+	1 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAPGRAYc { 
+	8 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAP2BITc { 
+	2 {} COMMONBITMAPc
+	} bind def
+/COMMONBITMAPc { 
+		 
+	/r exch def
+	/d exch def
+	gsave
+	
+	3 index 2 div add exch	
+	4 index 2 div add exch	
+	translate		
+	rotate			
+	1 index 2 div neg	
+	1 index 2 div neg	
+	translate		
+	scale			
+	/h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	r                    
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} image 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BEGINBITMAPBW { 
+	1 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAPGRAY { 
+	8 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAP2BIT { 
+	2 {} COMMONBITMAP
+	} bind def
+/COMMONBITMAP { 
+	/r exch def
+	/d exch def
+	gsave
+	
+	3 index 2 div add exch	
+	4 index 2 div add exch	
+	translate		
+	rotate			
+	1 index 2 div neg	
+	1 index 2 div neg	
+	translate		
+	scale			
+	/h exch def /w exch def
+	/bitmapsave save def 
+	r                    
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} image
+	bitmapsave restore 
+	grestore
+	} bind def
+/ngrayt 256 array def
+/nredt 256 array def
+/nbluet 256 array def
+/ngreent 256 array def
+	/gryt FMLOCAL
+	/blut FMLOCAL
+	/grnt FMLOCAL
+	/redt FMLOCAL
+	/indx FMLOCAL
+	/cynu FMLOCAL
+	/magu FMLOCAL
+	/yelu FMLOCAL
+	/k FMLOCAL
+	/u FMLOCAL
+FMLevel1 {
+/colorsetup {
+	currentcolortransfer
+	/gryt exch def
+	/blut exch def
+	/grnt exch def
+	/redt exch def
+	0 1 255 {
+		/indx exch def
+		/cynu 1 red indx get 255 div sub def
+		/magu 1 green indx get 255 div sub def
+		/yelu 1 blue indx get 255 div sub def
+		/k cynu magu min yelu min def
+		/u k currentundercolorremoval exec def
+%		/u 0 def
+		nredt indx 1 0 cynu u sub max sub redt exec put
+		ngreent indx 1 0 magu u sub max sub grnt exec put
+		nbluet indx 1 0 yelu u sub max sub blut exec put
+		ngrayt indx 1 k currentblackgeneration exec sub gryt exec put
+	} for
+	{255 mul cvi nredt exch get}
+	{255 mul cvi ngreent exch get}
+	{255 mul cvi nbluet exch get}
+	{255 mul cvi ngrayt exch get}
+	setcolortransfer
+	{pop 0} setundercolorremoval
+	{} setblackgeneration
+	} bind def
+}
+{
+/colorSetup2 {
+	[ /Indexed /DeviceRGB 255 
+		{dup red exch get 255 div 
+		 exch dup green exch get 255 div 
+		 exch blue exch get 255 div}
+	] setcolorspace
+} bind def
+} ifelse
+	/tran FMLOCAL
+/fakecolorsetup {
+	/tran 256 string def
+	0 1 255 {/indx exch def 
+		tran indx
+		red indx get 77 mul
+		green indx get 151 mul
+		blue indx get 28 mul
+		add add 256 idiv put} for
+	currenttransfer
+	{255 mul cvi tran exch get 255.0 div}
+	exch concatprocs settransfer
+} bind def
+/BITMAPCOLOR { 
+	/d 8 def
+	gsave
+	
+	3 index 2 div add exch	
+	4 index 2 div add exch	
+	translate		
+	rotate			
+	1 index 2 div neg	
+	1 index 2 div neg	
+	translate		
+	scale			
+	/h exch def /w exch def
+	/bitmapsave save def
+	FMLevel1 {	
+		colorsetup
+		/is w d wbytes string def
+		/cf currentfile def 
+		w h d [w 0 0 h neg 0 h] 
+		{cf is readhexstring pop} {is} {is} true 3 colorimage 
+	} {
+		colorSetup2
+		/is w d wbytes string def
+		/cf currentfile def 
+		7 dict dup begin
+			/ImageType 1 def
+			/Width w def
+			/Height h def
+			/ImageMatrix [w 0 0 h neg 0 h] def
+			/DataSource {cf is readhexstring pop} bind def
+			/BitsPerComponent d def
+			/Decode [0 255] def
+		end image	
+	} ifelse
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPCOLORc { 
+	/d 8 def
+	gsave
+	
+	3 index 2 div add exch	
+	4 index 2 div add exch	
+	translate		
+	rotate			
+	1 index 2 div neg	
+	1 index 2 div neg	
+	translate		
+	scale			
+	/h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	FMLevel1 {	
+		colorsetup
+		/is im 0 lb getinterval def 
+		ws 0 lb getinterval is copy pop 
+		/cf currentfile def 
+		w h d [w 0 0 h neg 0 h] 
+		{ip} {is} {is} true 3 colorimage
+	} {
+		colorSetup2
+		/is im 0 lb getinterval def 
+		ws 0 lb getinterval is copy pop 
+		/cf currentfile def 
+		7 dict dup begin
+			/ImageType 1 def
+			/Width w def
+			/Height h def
+			/ImageMatrix [w 0 0 h neg 0 h] def
+			/DataSource {ip} bind def
+			/BitsPerComponent d def
+			/Decode [0 255] def
+		end image	
+	} ifelse
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPTRUECOLORc { 
+	/d 24 def
+        gsave
+ 	
+	3 index 2 div add exch	
+	4 index 2 div add exch	
+	translate		
+	rotate			
+	1 index 2 div neg	
+	1 index 2 div neg	
+	translate		
+	scale			
+	/h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+        /bitmapsave save def 
+        
+	/is im 0 lb getinterval def	
+	/ris im 0 w getinterval def	
+	/gis im w w getinterval def	
+	/bis im w 2 mul w getinterval def 
+        
+        ws 0 lb getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {w rip pop ris} {gis} {bis} true 3 colorimage
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUECOLOR { 
+        gsave
+		
+		3 index 2 div add exch	
+		4 index 2 div add exch	
+		translate		
+		rotate			
+		1 index 2 div neg	
+		1 index 2 div neg	
+		translate		
+		scale			
+		/h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop } 
+        { cf gis readhexstring pop } 
+        { cf bis readhexstring pop } 
+        true 3 colorimage 
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUEGRAYc { 
+	/d 24 def
+        gsave
+	
+	3 index 2 div add exch	
+	4 index 2 div add exch	
+	translate		
+	rotate			
+	1 index 2 div neg	
+	1 index 2 div neg	
+	translate		
+	scale			
+	/h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+        /bitmapsave save def 
+        
+	/is im 0 lb getinterval def	
+	/ris im 0 w getinterval def	
+	/gis im w w getinterval def	
+	/bis im w 2 mul w getinterval def 
+        ws 0 lb getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {w rip pop ris gis bis w gray} image
+        bitmapsave restore 
+        grestore
+        } bind def
+/ww FMLOCAL
+/r FMLOCAL
+/g FMLOCAL
+/b FMLOCAL
+/i FMLOCAL
+/gray { 
+        /ww exch def
+        /b exch def
+        /g exch def
+        /r exch def
+        0 1 ww 1 sub { /i exch def r i get .299 mul g i get .587 mul
+			b i get .114 mul add add r i 3 -1 roll floor cvi put } for
+        r
+        } bind def
+/BITMAPTRUEGRAY { 
+        gsave
+		
+		3 index 2 div add exch	
+		4 index 2 div add exch	
+		translate		
+		rotate			
+		1 index 2 div neg	
+		1 index 2 div neg	
+		translate		
+		scale			
+		/h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop 
+          cf gis readhexstring pop 
+          cf bis readhexstring pop w gray}  image
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPGRAY { 
+	8 {fakecolorsetup} COMMONBITMAP
+	} bind def
+/BITMAPGRAYc { 
+	8 {fakecolorsetup} COMMONBITMAPc
+	} bind def
+/ENDBITMAP {
+	} bind def
+end 
+	/ALDsave FMLOCAL
+	/ALDmatrix matrix def ALDmatrix currentmatrix pop
+/StartALD {
+	/ALDsave save def
+	 savematrix
+	 ALDmatrix setmatrix
+	} bind def
+/InALD {
+	 restorematrix
+	} bind def
+/DoneALD {
+	 ALDsave restore
+	} bind def
+/I { setdash } bind def
+/J { [] 0 setdash } bind def
+%%EndProlog
+%%BeginSetup
+(4.0) FMVERSION
+1 1 0 0 612 792 0 1 13 FMDOCUMENT
+0 0 /Times-Italic FMFONTDEFINE
+1 0 /Helvetica-Bold FMFONTDEFINE
+2 0 /Times-Roman FMFONTDEFINE
+3 0 /Courier-Bold FMFONTDEFINE
+4 0 /Helvetica FMFONTDEFINE
+5 0 /Times-Bold FMFONTDEFINE
+6 0 /Helvetica-Oblique FMFONTDEFINE
+32 FMFILLS
+0 0 FMFILL
+1 0.1 FMFILL
+2 0.3 FMFILL
+3 0.5 FMFILL
+4 0.7 FMFILL
+5 0.9 FMFILL
+6 0.97 FMFILL
+7 1 FMFILL
+8 <0f1e3c78f0e1c387> FMFILL
+9 <0f87c3e1f0783c1e> FMFILL
+10 <cccccccccccccccc> FMFILL
+11 <ffff0000ffff0000> FMFILL
+12 <8142241818244281> FMFILL
+13 <03060c183060c081> FMFILL
+14 <8040201008040201> FMFILL
+16 1 FMFILL
+17 0.9 FMFILL
+18 0.7 FMFILL
+19 0.5 FMFILL
+20 0.3 FMFILL
+21 0.1 FMFILL
+22 0.03 FMFILL
+23 0 FMFILL
+24 <f0e1c3870f1e3c78> FMFILL
+25 <f0783c1e0f87c3e1> FMFILL
+26 <3333333333333333> FMFILL
+27 <0000ffff0000ffff> FMFILL
+28 <7ebddbe7e7dbbd7e> FMFILL
+29 <fcf9f3e7cf9f3f7e> FMFILL
+30 <7fbfdfeff7fbfdfe> FMFILL
+%%EndSetup
+%%Page: "1" 1
+%%BeginPaperSize: Letter
+%%EndPaperSize
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+J
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(1/10) 540.64 48.33 T
+1 18 Q
+-0.12 (High-Latency) 129.68 703.31 S
+-0.12 (, Low-Bandwidth W) 240.87 703.31 S
+-0.12 (indowing) 404.59 703.31 S
+-0.12 (in the Jupiter Collaboration System) 156.78 683.31 S
+0 12 Q
+(David A. Nichols, Pavel Curtis,) 230.31 657.31 T
+(Michael Dixon, and John Lamping) 222.32 645.31 T
+2 F
+(Xerox P) 274.53 633.31 T
+(ARC) 313.08 633.31 T
+(3333 Coyote Hill Rd.) 254.47 621.31 T
+(Palo Alto, CA 94304) 255.47 609.31 T
+(+1 415 812 4452) 265.26 597.31 T
+({nichols,pavel,mdixon,lamping}@parc.xerox.com) 184.7 585.31 T
+1 9 Q
+(ABSTRACT) 53.86 539.39 T
+2 10 Q
+0.27 (Jupiter is a multi-user) 53.86 526.72 P
+0.27 (, multimedia virtual world intended to) 141.22 526.72 P
+-0.08 (support long-term remote collaboration. In particular) 53.86 515.72 P
+-0.08 (, it sup-) 264.68 515.72 P
+1.3 (ports shared documents, shared tools, and, optionally) 53.86 504.72 P
+1.3 (, live) 273.5 504.72 P
+1 (audio/video communication. Users who program can, with) 53.86 493.72 P
+0.13 (only moderate ef) 53.86 482.72 P
+0.13 (fort, create new kinds of shared tools using) 121.7 482.72 P
+1.29 (a high-level windowing toolkit; the toolkit provides trans-) 53.86 471.72 P
+2.76 (parent support for fully-shared widgets by default. This) 53.86 460.72 P
+3.7 (paper describes the low-level communications facilities) 53.86 449.72 P
+-0.02 (used by the implementation of the toolkit to enable that sup-) 53.86 438.72 P
+(port.) 53.86 427.72 T
+0.64 (The state of the Jupiter virtual world, including application) 53.86 405.72 P
+0.24 (code written by users, is stored and \050for code\051 executed in a) 53.86 394.72 P
+1.07 (central server shared by all of the users. This architecture,) 53.86 383.72 P
+1.51 (along with our desire to support multiple client platforms) 53.86 372.72 P
+0.85 (and high-latency networks, led us to a design in which the) 53.86 361.72 P
+0.61 (server and clients communicate in terms of high-level wid-) 53.86 350.72 P
+(gets and user events.) 53.86 339.72 T
+0.09 (As in other groupware toolkits, we need a concurrency-con-) 53.86 317.72 P
+0.81 (trol algorithm to maintain common values for all instances) 53.86 306.72 P
+0.18 (of the shared widgets. Our algorithm is derived from a fully) 53.86 295.72 P
+2.98 (distributed, optimistic algorithm developed by Ellis and) 53.86 284.72 P
+1.75 (Gibbs [12]. Jupiter) 53.86 273.72 P
+1.75 (\325) 133.01 273.72 P
+1.75 (s centralized architecture allows us to) 135.79 273.72 P
+-0.1 (substantially simplify their algorithm. This combination of a) 53.86 262.72 P
+1.03 (centralized architecture and optimistic concurrency control) 53.86 251.72 P
+3.67 (gives us both easy serializability of concurrent update) 53.86 240.72 P
+(streams and fast response to user actions.) 53.86 229.72 T
+0.75 (The algorithm relies on operation transformations to \336x up) 53.86 207.72 P
+3.91 (con\337icting messages. The best transformations are not) 53.86 196.72 P
+2.11 (always obvious, though, and several con\337icting concerns) 53.86 185.72 P
+1.09 (are involved in choosing them. W) 53.86 174.72 P
+1.09 (e present our experience) 194.06 174.72 P
+2.36 (with choosing transformations for our widget set, which) 53.86 163.72 P
+1.91 (includes a text editor) 317.48 538.72 P
+1.91 (, a graphical drawing widget, and a) 406.42 538.72 P
+(number of simpler widgets such as buttons and sliders.) 317.48 527.72 T
+1 9 Q
+(KEYWORDS) 317.48 506.39 T
+2 10 Q
+1.61 (UIMS, window toolkits, CSCW) 317.48 493.72 P
+1.61 (, groupware toolkits, opti-) 449.45 493.72 P
+(mistic concurrency control.) 317.48 482.72 T
+1 9 Q
+(1) 317.48 461.39 T
+(INTRODUCTION) 328.82 461.39 T
+2 10 Q
+3.22 (Jupiter supports long-term collaboration by providing a) 317.48 448.72 P
+0.06 (shared, persistent virtual world composed of) 317.48 437.72 P
+0 F
+0.06 (network places) 498.09 437.72 P
+2 F
+2.08 ([7]. By mirroring some of the ways people use physical) 317.48 426.72 P
+(places, network places provide a context in which) 317.48 415.72 T
+3 11 Q
+(\245) 317.48 402.72 T
+2 10 Q
+0.39 (users can work individually or with other users, by mov-) 328.28 402.72 P
+(ing between \050virtual\051 places,) 328.28 391.72 T
+3 11 Q
+(\245) 317.48 378.72 T
+2 10 Q
+0.32 (users can or) 328.28 378.72 P
+0.32 (ganize the materials they are working on and) 376.5 378.72 P
+0.72 (the resources they are using by distributing them among) 328.28 367.72 P
+(the places, and) 328.28 356.72 T
+3 11 Q
+(\245) 317.48 343.72 T
+2 10 Q
+0.65 (other users, materials, and resources can be brought into) 328.28 343.72 P
+0.08 (an activity at any time, immediately gaining access to the) 328.28 332.72 P
+(full context of the activity) 328.28 321.72 T
+(.) 431.51 321.72 T
+0.9 (In addition, the Jupiter world is intended to be highly cus-) 317.48 299.72 P
+-0.17 (tomizable by its users, so that they can adapt it to their needs) 317.48 288.72 P
+1.89 (as readily as people adapt physical spaces. This includes) 317.48 277.72 P
+4.66 (facilities for creating new places, connecting existing) 317.48 266.72 P
+6 (places, moving objects among places, creating new) 317.48 255.72 P
+3 (instances of generic objects, modifying the behavior of) 317.48 244.72 P
+3.39 (existing objects, and creating completely new types of) 317.48 233.72 P
+0.85 (generic objects. These last two capabilities involve writing) 317.48 222.72 P
+0.38 (programs in Jupiter) 317.48 211.72 P
+0.38 (\325) 396.38 211.72 P
+0.38 (s internal interpreted programming lan-) 399.16 211.72 P
+(guage.) 317.48 200.72 T
+1.15 (One of the key characteristics of Jupiter is that all objects) 317.48 178.72 P
+1.38 (there are) 317.48 167.72 P
+0 F
+1.38 (shar) 357.45 167.72 P
+1.38 (ed) 374.86 167.72 P
+2 F
+1.38 ( and) 384.3 167.72 P
+0 F
+1.38 (persistent) 406.51 167.72 P
+2 F
+1.38 (. This applies to the places) 445.4 167.72 P
+0.63 (themselves, to the documents or other materials, and to the) 317.48 156.72 P
+3.04 (tools. For example, the Whiteboard is a useful generic) 317.48 145.72 P
+-0.22 (object that provides a drawing surface with simple sketching) 317.48 134.72 P
+0.9 (tools. As users come and go from the place containing the) 317.48 123.72 P
+-0.13 (whiteboard they may open it, see its contents, and edit them;) 317.48 112.72 P
+1.65 (any number of users may be simultaneously viewing and) 317.48 101.72 P
+1.24 (editing it. Even if all the users leave the place, log out of) 317.48 90.72 P
+FMENDPAGE
+%%EndPage: "1" 1
+%%Page: "2" 2
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(2/10) 540.64 48.33 T
+2 F
+0.72 (Jupiter) 53.86 728.64 P
+0.72 (, and come back later) 80.68 728.64 P
+0.72 (, the whiteboard will retain the) 168.42 728.64 P
+(drawing that was left on it.) 53.86 717.64 T
+0.16 (Jupiter) 53.86 695.64 P
+0.16 (\325) 81.45 695.64 P
+0.16 (s central server stores the state of virtual objects and) 84.23 695.64 P
+1.38 (executes all of their associated program code. In contrast,) 53.86 684.64 P
+0.39 (the client programs run by users on their local workstations) 53.86 673.64 P
+0.48 (remain lar) 53.86 662.64 P
+0.48 (gely ignorant of this virtual-world model. Clients) 94.98 662.64 P
+1.13 (simply manage their local input/output hardware of behalf) 53.86 651.64 P
+1.25 (of the server and the user) 53.86 640.64 P
+1.25 (. In particular) 160.37 640.64 P
+1.25 (, clients create and) 216.62 640.64 P
+1 (modify windows according to speci\336cations received from) 53.86 629.64 P
+0.46 (the server) 53.86 618.64 P
+0.46 (, report user input events to the server) 93.07 618.64 P
+0.46 (, and \050when) 246.96 618.64 P
+0.78 (available\051 capture, transmit, receive, and display audio and) 53.86 607.64 P
+(video data under user and server control [8].) 53.86 596.64 T
+0.95 (This paper describes the low-level, client/server communi-) 53.86 574.64 P
+-0.16 (cations facilities used by the implementation of the window-) 53.86 563.64 P
+1.63 (ing toolkit to support Jupiter) 53.86 552.64 P
+1.63 (\325) 174.66 552.64 P
+1.63 (s pervasive sharing between) 177.44 552.64 P
+0.56 (users. The Jupiter programmer) 53.86 541.64 P
+0.56 (\325) 178.66 541.64 P
+0.56 (s view of the toolkit will be) 181.44 541.64 P
+(described in a separate, forthcoming paper) 53.86 530.64 T
+(.) 223.26 530.64 T
+0.02 (Jupiter user interactions are subject to two sources of signif-) 53.86 508.64 P
+0.87 (icant response latency) 53.86 497.64 P
+0.87 (, which occasionally cause delays up) 143.26 497.64 P
+-0.23 (to a few seconds. First, the serialization of server actions can) 53.86 486.64 P
+1.33 (introduce contention for execution resources. More gener-) 53.86 475.64 P
+-0.16 (ally) 53.86 464.64 P
+-0.16 (, though, some users connect to the system through high-) 68.21 464.64 P
+0.76 (latency communications paths, such as low-bandwidth dia-) 53.86 453.64 P
+2.13 (lup lines and long-haul or congested Internet routes. W) 53.86 442.64 P
+2.13 (e) 290.36 442.64 P
+1.86 (developed the design presented here in response to these) 53.86 431.64 P
+3.49 (speci\336c sources of latency) 53.86 420.64 P
+3.49 (, but the solutions described) 168.92 420.64 P
+1.06 (would be applicable to any situation with the potential for) 53.86 409.64 P
+(unacceptable user) 53.86 398.64 T
+(-event response times.) 125.02 398.64 T
+1.44 (The server and client communicate in terms of high-level) 53.86 376.64 P
+1.42 (widgets, such as sliders and text editors) 53.86 365.64 P
+2 8 Q
+1.14 (1) 220.43 369.64 P
+2 10 Q
+1.42 (. Both client and) 224.43 365.64 P
+1.48 (server keep track of widget state, and communicate high-) 53.86 354.64 P
+2.17 (level state changes, instead of low-level user events and) 53.86 343.64 P
+2.43 (graphics primitives. This high-level protocol means they) 53.86 332.64 P
+0.03 (transmit less information, and less frequently) 53.86 321.64 P
+0.03 (, than if a more) 233.88 321.64 P
+1.23 (traditional networked window system \050such as the X win-) 53.86 310.64 P
+2.87 (dow system [25]\051 were used. Because windows can be) 53.86 299.64 P
+1 (shared between several users, we need a concurrency con-) 53.86 288.64 P
+(trol algorithm to maintain consistency) 53.86 277.64 T
+(.) 205.43 277.64 T
+0.74 (The concurrency control algorithms use by groupware sys-) 53.86 255.64 P
+1.62 (tems for sharing can be classi\336ed as being pessimistic or) 53.86 244.64 P
+2.53 (optimistic. Pessimistic algorithms require communication) 53.86 233.64 P
+0.33 (with other sites or with a central coordinator before making) 53.86 222.64 P
+-0.07 (a change to data. This communication can be made apparent) 53.86 211.64 P
+1.34 (to the user) 53.86 200.64 P
+1.34 (, as with a \337oor control policy) 97.81 200.64 P
+1.34 (, or left implicit,) 225.49 200.64 P
+1.32 (where the user) 53.86 189.64 P
+1.32 (\325) 115.17 189.64 P
+1.32 (s program does the communication behind) 117.95 189.64 P
+0.64 (the scenes. Even in the latter case, the user must wait for a) 53.86 178.64 P
+(round-trip to the other sites before any change is \336nalized.) 53.86 167.64 T
+53.86 142.17 294.8 155.17 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 150.17 161.86 150.17 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+0 0 612 792 C
+2 9 Q
+0 X
+0 0 0 1 0 0 0 K
+0.59 (1.  W) 53.86 136.17 P
+0.59 (e use \322client\323 to refer to the Jupiter client, which is the pro-) 74.06 136.17 P
+-0.06 (gram that runs on the user) 53.86 126.17 P
+-0.06 (\325) 147.65 126.17 P
+-0.06 (s machine and displays windows on that) 150.15 126.17 P
+0.47 (machine\325) 53.86 116.17 P
+0.47 (s display) 86.85 116.17 P
+0.47 (. Our \322server\323 runs application programs, which) 118.49 116.17 P
+0.29 (make requests of the client and respond to user events reported by) 53.86 106.17 P
+1.36 (it. The X window system [25] uses these words in the opposite) 53.86 96.17 P
+1 (sense; \322clients\323 are applications, and the \322server\323 is the program) 53.86 86.17 P
+(that displays the windows.) 53.86 76.17 T
+2 10 Q
+0.58 (Optimistic concurrency control, on the other hand, requires) 317.48 728.64 P
+2.73 (no communication before applying changes locally) 317.48 717.64 P
+2.73 (. The) 535.15 717.64 P
+0.45 (party making a change applies it immediately) 317.48 706.64 P
+0.45 (, then informs) 501.7 706.64 P
+0.74 (the other parties of the action. If more than one participant) 317.48 695.64 P
+0.24 (makes a change at the same time, a con\337ict resolution algo-) 317.48 684.64 P
+1.69 (rithm creates compensating changes to move everyone to) 317.48 673.64 P
+(the same \336nal state.) 317.48 662.64 T
+0.35 (Optimistic algorithms are well-suited for high-latency com-) 317.48 640.64 P
+1.67 (munications channels since the results of a user) 317.48 629.64 P
+1.67 (\325) 519.25 629.64 P
+1.67 (s actions) 522.03 629.64 P
+2.24 (may be displayed without waiting for a communications) 317.48 618.64 P
+0.82 (round-trip. For these reasons, we chose an optimistic algo-) 317.48 607.64 P
+1.96 (rithm for Jupiter) 317.48 596.64 P
+1.96 (. The client always applies user changes) 386.4 596.64 P
+1.17 (\050such as moving a slider or typing new text\051 immediately) 317.48 585.64 P
+1.17 (,) 555.92 585.64 P
+2.28 (without waiting for a server response, thereby providing) 317.48 574.64 P
+(users with immediate feedback.) 317.48 563.64 T
+0.72 (Another way of classifying concurrency control algorithms) 317.48 541.64 P
+0.17 (is by whether they use a central coordinator or are fully dis-) 317.48 530.64 P
+0.44 (tributed. Because Jupiter already had a central server main-) 317.48 519.64 P
+0.85 (taining the persistent virtual world, it was natural for us to) 317.48 508.64 P
+(use a centralized architecture.) 317.48 497.64 T
+-0.05 (The combination of these two choices turned out to simplify) 317.48 475.64 P
+0.24 (our system design considerably) 317.48 464.64 P
+0.24 (. While there are example of) 443.37 464.64 P
+1.83 (both centralized and distributed groupware systems using) 317.48 453.64 P
+0.39 (pessimistic concurrency control, the systems using optimis-) 317.48 442.64 P
+0.25 (tic algorithms are fully distributed. A distributed, optimistic) 317.48 431.64 P
+1.62 (algorithm must be prepared to handle a change from any) 317.48 420.64 P
+1.4 (participant at any time. Much of the complexity for these) 317.48 409.64 P
+0.43 (algorithms comes from this requirement, and getting all the) 317.48 398.64 P
+(cases right is very dif) 317.48 387.64 T
+(\336cult.) 402.84 387.64 T
+2.24 (Instead, Jupiter uses the optimistic protocol only for the) 317.48 365.64 P
+3.07 (individual server) 317.48 354.64 P
+3.07 (-client links. T) 387.83 354.64 P
+3.07 (o the server) 451.87 354.64 P
+3.07 (, each client) 504.25 354.64 P
+1.37 (appears to be operating synchronously with respect to the) 317.48 343.64 P
+1.43 (server) 317.48 332.64 P
+1.43 (\325) 342.28 332.64 P
+1.43 (s actions. The server can thus use a simple change) 345.06 332.64 P
+0.32 (propagation algorithm to keep all the clients updated and in) 317.48 321.64 P
+(sync.) 317.48 310.64 T
+-0.24 (In the next section, we review related work. Sections 3 and 4) 317.48 288.64 P
+1.53 (describe the toolkit\325) 317.48 277.64 P
+1.53 (s design in more detail. In Sections 5) 399.97 277.64 P
+0.12 (and 6, we describe the two-way optimistic algorithm, which) 317.48 266.64 P
+0.9 (draws from previous work, then describe how it is used to) 317.48 255.64 P
+4.3 (achieve) 317.48 244.64 P
+0 F
+4.3 (n) 354.82 244.64 P
+2 F
+4.3 (-way consistency) 359.82 244.64 P
+4.3 (. Section 7 discusses issues) 432.62 244.64 P
+2.06 (related to choosing message transformations, a necessary) 317.48 233.64 P
+(part of the optimistic algorithm we use.) 317.48 222.64 T
+1 9 Q
+(2) 317.48 201.31 T
+(RELA) 328.82 201.31 T
+(TED WORK) 352.65 201.31 T
+2 10 Q
+0.51 (The related work falls into two main categories, groupware) 317.48 188.64 P
+1.17 (systems with their approaches to concurrency control, and) 317.48 177.64 P
+4.37 (window systems that cope with low-bandwidth, high-) 317.48 166.64 P
+(latency communication links.) 317.48 155.64 T
+0.68 (A number of groupware systems provide either toolkits for) 317.48 133.64 P
+0.39 (building shared applications, or speci\336c shared applications) 317.48 122.64 P
+1.19 (such as text or drawing editors. These include CoEx [20],) 317.48 111.64 P
+0.46 (DistEdit [17], GroupDesign [16], GroupKit [24], the Grove) 317.48 100.64 P
+0.19 (text editor [12], LIZA [14], MMConf [5], Rendezvous [21],) 317.48 89.64 P
+0.94 (Suite [1) 317.48 78.64 P
+0.94 (1], and V) 349.44 78.64 P
+0.94 (isual Obliq [3]. LIZA, Rendezvous, Suite) 388.2 78.64 P
+FMENDPAGE
+%%EndPage: "2" 2
+%%Page: "3" 3
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(3/10) 540.64 48.33 T
+2 F
+0.11 (and V) 53.86 728.64 P
+0.11 (isual Obliq use a centralized coordinator) 77.53 728.64 P
+0.11 (, while CoEx,) 239.58 728.64 P
+-0.24 (DistEdit, GroupDesign, GroupKit, the Grove text editor) 53.86 717.64 P
+-0.24 (, and) 275.6 717.64 P
+(MMConf are distributed.) 53.86 706.64 T
+1.1 (Of these, GroupDesign and Grove are the only systems to) 53.86 684.64 P
+-0.09 (use optimistic concurrency control, and they have decentral-) 53.86 673.64 P
+0.26 (ized architectures. As discussed above, these algorithms are) 53.86 662.64 P
+0.69 (made more complex by having to support full) 53.86 651.64 P
+0 F
+0.69 (n) 244.96 651.64 P
+2 F
+0.69 (-way repli-) 249.96 651.64 P
+1.13 (cation. The Jupiter two-way algorithm is derived from the) 53.86 640.64 P
+1.68 (dOPT algorithm used by Grove. This paper extends their) 53.86 629.64 P
+1.3 (work by showing a simpli\336ed algorithm that takes advan-) 53.86 618.64 P
+0.65 (tage of the centralized architecture, and discusses the prag-) 53.86 607.64 P
+1.74 (matics of designing the message transformations required) 53.86 596.64 P
+(by the algorithm.) 53.86 585.64 T
+1.38 (Jupiter is similar to V) 53.86 563.64 P
+1.38 (isual Obliq in a dif) 145.44 563.64 P
+1.38 (ferent way) 225.77 563.64 P
+1.38 (. Both) 268.97 563.64 P
+2.72 (systems use techniques from the FormsVBT system for) 53.86 552.64 P
+2.27 (Modula-3 [4] and provide tools for rapid prototyping of) 53.86 541.64 P
+0.94 (shared applications. V) 53.86 530.64 P
+0.94 (isual Obliq requires that the applica-) 144.29 530.64 P
+4.28 (tion explicitly manage sharing, while Jupiter provides) 53.86 519.64 P
+-0.04 (shared widgets. Also, V) 53.86 508.64 P
+-0.04 (isual Obliq is not optimized for low-) 148.95 508.64 P
+(bandwidth or high-latency communications.) 53.86 497.64 T
+-0.14 (Another group of systems deal with low-bandwidth commu-) 53.86 475.64 P
+2.15 (nications channels in single-user window systems. These) 53.86 464.64 P
+-0.09 (systems use two basic approaches to dealing with low-band-) 53.86 453.64 P
+(width: compression and code-shipping.) 53.86 442.64 T
+1.19 (Compression systems include Xremote, Low-bandwidth X) 53.86 420.64 P
+0.85 (\050LBX\051 [13], Higher bandwidth X \050HBX\051 [9, 10], and vari-) 53.86 409.64 P
+1.85 (ous commercial programs for providing remote access to) 53.86 398.64 P
+4.24 (Microsoft W) 53.86 387.64 P
+4.24 (indows connections, such as CarbonCopy) 109.07 387.64 P
+4.24 (.) 292.3 387.64 P
+1.5 (They try to reduce the bandwidth used while keeping the) 53.86 376.64 P
+0.22 (same semantics for the network protocol. Although remark-) 53.86 365.64 P
+0.82 (able compression ratios can be achieved \050HBX gets a 20:1) 53.86 354.64 P
+0.48 (compression ratio in some cases\051, they do not eliminate the) 53.86 343.64 P
+1.23 (round trips caused by user interactions such as keystrokes) 53.86 332.64 P
+(and mouse clicks.) 53.86 321.64 T
+1.45 (Jupiter eliminates many round-trips by only sending mes-) 53.86 299.64 P
+0.42 (sages for lar) 53.86 288.64 P
+0.42 (ger) 103.38 288.64 P
+0.42 (-scale widget value updates, not for individ-) 115.95 288.64 P
+3.33 (ual low-level keyboard and mouse events. However) 53.86 277.64 P
+3.33 (, it) 280.91 277.64 P
+1.72 (requires a trade-of) 53.86 266.64 P
+1.72 (f from the application designer: Jupiter) 130.41 266.64 P
+1.03 (applications must use the Jupiter toolkit, and are thus lim-) 53.86 255.64 P
+(ited to the set of widgets it provides.) 53.86 244.64 T
+0.32 (The other approach to coping with slow networks is to split) 53.86 222.64 P
+-0.11 (the application into two parts, and send the code for one part) 53.86 211.64 P
+1.19 (to the user) 53.86 200.64 P
+1.19 (\325) 98.28 200.64 P
+1.19 (s machine where it can have fast access to the) 101.06 200.64 P
+1.34 (display and input devices. This is done by Sun Microsys-) 53.86 189.64 P
+1.53 (tems\325 NeWS [15] and HotJava [26] systems, and by Bell) 53.86 178.64 P
+(Lab\325) 53.86 167.64 T
+(s Blit terminals [22]. W) 72.19 167.64 T
+(e call this) 166.11 167.64 T
+0 F
+(code-shipping) 206.94 167.64 T
+2 F
+(.) 263.6 167.64 T
+1.17 (The code-shipping approach is in principle very powerful,) 53.86 145.64 P
+0.19 (since it allows the application to customize the communica-) 53.86 134.64 P
+2.1 (tions protocol to its particular needs. An application can) 53.86 123.64 P
+1.35 (send most of its user interface to the other side, and only) 53.86 112.64 P
+2.44 (communicate high-level events, such as \322please run this) 53.86 101.64 P
+0.16 (database transaction with these inputs.\323 The Sam text editor) 53.86 90.64 P
+([23] for the Blit is an example of such an application.) 53.86 79.64 T
+1.3 (However) 317.48 476.36 P
+1.3 (, code-shipping forces the application designer to) 353.73 476.36 P
+1.34 (write a distributed application. The program must be split) 317.48 465.36 P
+-0.21 (and a network protocol invented for it. While this is straight-) 317.48 454.36 P
+0.26 (forward in some cases, the problems of distributed systems,) 317.48 443.36 P
+0.85 (such as maintenance of replicated state, must be addressed) 317.48 432.36 P
+0.88 (by the programmers of these system. In some systems, the) 317.48 421.36 P
+0.26 (code shipped to the user interface engine must be written in) 317.48 410.36 P
+0.09 (a dif) 317.48 399.36 P
+0.09 (ferent programming language from the application, fur-) 335.44 399.36 P
+(ther complicating development.) 317.48 388.36 T
+0.07 (Again, by trading of) 317.48 366.36 P
+0.07 (f some generality) 398.61 366.36 P
+0.07 (, Jupiter is able to hide) 467.53 366.36 P
+0.94 (these network problems from the application. The applica-) 317.48 355.36 P
+1.09 (tion programmer sees a conventional toolkit interface, and) 317.48 344.36 P
+(the protocols and remote code are handled by the system.) 317.48 333.36 T
+1 9 Q
+(3) 317.48 312.02 T
+(THE APPLICA) 328.82 312.02 T
+(TION INTERF) 388.15 312.02 T
+(ACE) 444.16 312.02 T
+2 10 Q
+2.43 (Jupiter is built on top of an unmodi\336ed instance of the) 317.48 299.36 P
+5.66 (LambdaMOO server; all of the server) 317.48 288.36 P
+5.66 (-side facilities) 496.38 288.36 P
+1.44 (described here are written in the MOO programming lan-) 317.48 277.36 P
+0.02 (guage [6]. The server contains a database of all the informa-) 317.48 266.36 P
+4.55 (tion in the Jupiter environment, as well as a MOO) 317.48 255.36 P
+0.4 (interpreter) 317.48 244.36 P
+0.4 (. W) 358.58 244.36 P
+0.4 (indowing applications are written by Jupiter) 373.02 244.36 P
+0.4 (\325) 551.75 244.36 P
+0.4 (s) 554.53 244.36 P
+(users and run in this server) 317.48 233.36 T
+(.) 424.41 233.36 T
+3.5 (The programming interface presented to an application) 317.48 211.36 P
+-0.09 (writer is very similar to that of the FormsVBT system [1, 4].) 317.48 200.36 P
+1.02 (A window is described with an S-expression that speci\336es) 317.48 189.36 P
+-0.1 (the types of widgets present and a containment hierarchy for) 317.48 178.36 P
+0.82 (laying them out. For example, Figure 1 shows the descrip-) 317.48 167.36 P
+0.67 (tion of a window we use for editable documents in Jupiter) 317.48 156.36 P
+0.67 (,) 555.92 156.36 P
+(and Figure 2 shows how that window appears to the user) 317.48 145.36 T
+(.) 544.12 145.36 T
+0.85 (This window consists of a vertical stack of things \050VBox\051,) 317.48 123.36 P
+0.16 (the \336rst of which is a horizontal row \050HBox\051 consisting of a) 317.48 112.36 P
+0.22 (push-button named \322help\323 containing the text \322Help\323, some) 317.48 101.36 P
+0.13 (\336ller that serves to place the two buttons at either end of the) 317.48 90.36 P
+1.77 (row) 317.48 79.36 P
+1.77 (, and another button named \322quit\323 and displaying the) 332.38 79.36 P
+317.48 615.46 558.42 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 597.47 551.48 732.47 R
+7 X
+0 0 0 1 0 0 0 K
+V
+1 8 Q
+0 X
+(\050VBox) 331.65 727.14 T
+(\050HBox) 340.55 716.14 T
+(\050Button %help \050T) 349.44 705.14 T
+(ext \322Help\323\051\051) 412.84 705.14 T
+(\050Fill\051) 349.44 694.14 T
+(\050Button %quit \050T) 349.44 683.14 T
+(ext \050FGColor red\051 \322Dismiss\323\051\051\051) 411.06 683.14 T
+(\050Bar\051) 340.55 672.14 T
+(\050T) 340.55 661.14 T
+(extEdit %contents \050BGColor white\051\051\051) 347.51 661.14 T
+1 9 Q
+2.44 (Figure 1:) 331.65 641.47 P
+4 F
+2.44 (An example form for Jupiter) 374.6 641.47 P
+2.44 (. Figure 2) 494.41 641.47 P
+(shows the resulting window) 331.65 631.47 T
+(.) 440.7 631.47 T
+0 0 612 792 C
+317.48 483.02 558.42 615.46 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 462.46 560.48 498.46 R
+7 X
+0 0 0 1 0 0 0 K
+V
+1 9 Q
+0 X
+(Figure 2:) 331.65 492.46 T
+4 F
+(A window created by the form in Figure 1.) 372.16 492.46 T
+%%BeginBinary:  3808     
+196 94 196 94 0 335.48 512.46
+/red <
+000000000069F54C4C8FFFEF86DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAA555555555555555555555555555555550000
+0000000000000000000000000000613EC472FFFFFFFFFF8D9B8600E3F74DD098
+40ABCD152B2CB15693264D9A8B55B939D51C49B63DC1722F99FF40966B8CEA99
+FF8FFFEF6BFAB2CF7CCF7CCF7CCF99A833C011EE66CC33B2812A25E173FFC16A
+F8B1BA76C47CCE82D888E30D1E15009945A273B5995DDB9C86DF73BFB07F8FEF
+2856E6AC089099FF4C73CCADD6003F7FFFC0E0A42F9154D499D566E2B960EC31
+B660BE27B05B70E85BDAA5C64280C14CAA388E718E71C655FF00FF00FF00FF00
+> store
+/green <
+000000000069F551518BFFE78BE7FFFFFFFFAAAAAAAA5555555500000000FFFF
+FFFFAAAAAAAA5555555500000000FFFFFFFFAAAAAAAA5555555500000000FFFF
+FFFFAAAAAAAA55555555000000008757D79F0000000000E39BE300CBDE39BD70
+60C0D91F4041C58071264D9A6A75CE4EE126929254D49C2F94F740966B8CEA8B
+E756C88F86FFDF2F94F78BE777C799A800C011EE66CC33B2812A25E15DDB9C6A
+F8B1BA76C47CCE82D888E354C48C0000040A0707995DDB9C86DF86DFB07F8FEF
+2856E6AC5BAB89E44C73CCADD6003F7FFFC0E0A42F9154D499D54ED08E60EC42
+C581BE278C4870E857D79FC64280C171AA8E38718EC67155FFFF0000FFFF0000
+> store
+/blue <
+000000000069F54C4C429C6F99FFFFAA5500FFAA5500FFAA5500FFAA5500FFAA
+5500FFAA5500FFAA5500FFAA5500FFAA5500FFAA5500FFAA5500FFAA5500FFAA
+5500FFAA5500FFAA5500FFAA5500D98CFFFFFFFFFFFFFF8D9BE34FAFBF28AF50
+80D5E62A5557D9AB71264D9A6A75CE4EE126AAAA54D49CCF86DF40966B8CEA86
+DF56C88F8FFFEE2F7CCF8FEF8FEFFFA899C011EECCFF66B2812A25E173FFC16A
+F8B1BA76C47CCE82D888E326594099008AFFE660005DDB9C86DF99FFB07F8FEF
+2856E6AC08B176C44C73CCADD63F0000B400E0A42F9154D499D54ED08E60EC46
+C989BE275B2E70E846CA80C64280C19EAA8E8EC638717155FFFFFFFF00000000
+> store
+ BEGINBITMAPCOLORc
+
+zzz
+?F8P7BFO#F8J"J"
+>BEQ9BE8z"Jz"
+;BFBEP:MBFBE
+
+
+:$8$=#J':"G"
+FFFFFFFFFFFFFFFFPE8787878787878787:$8$="J(9"G"
+BFFFBFBFFFBFBFPFBF87BFBFBF8787BFBFJ"
+Q1BFE#;%J&9,8#9$9$
+FFFFFFFFFFFFPFBF87BF8787878787BF87BF8787BF87878787878787878787<%:%:&J"9$8+9$9$
+FFFFFFFFFFBFBFFFBFFFBFBFFFPHBF87BFBFBF87BFBF87BFBF87BFBF87BFBF87BFBF<%;#J$E$9$
+BFBFBFBFFFFFQ)87BFBF87BFBF87BFBFE$J#;%D%8%
+BFBFBFQ 87BFBFBF8787BFBF8787BFBF8787E"8"J"=$E$9$
+FFFFPL8787BFBF87BFBF87BFBF:$8$8)8$J(8$8(8"8%8$9$
+FFFFFFFFFFFFBFFFFFFFBFFFFFFFFFFFBFP?878787878787BF8787878787BFBF87878787878787878787BF8787BF:$8$9r8#J'9r8z9$
+BFBFBFBFBFBFBFBFBFP@BFBFBFBFBFBFBF0BFBFBFBF
+J$
+6FFFFFFJ$
+6BFBFBF
+8zJz
+;BEP;MBE7"J"
+BEQ'BEZ
+R+r"z
+F87AR#F8<$
+7B7A7A
+;&?RB#
+7B7B7C7A7AFFFF:$C&C"
+7B7B7CF8F8FFF8F8F8>$>";"
+7C7A7AF8F89$J#=#:#9"
+7B7B7C6FFFFFFFFFFFFFF:":$E%;$9%8"
+7C7C7A7AFFF8F8FFFFF8F8FFF8F8FFF88"
+7B7$<$
+7B7B7C7C7A7A8t
+7A#A"=$9%;+8"
+7B7A7AFFFFFFF8FFFFF8F8FFFFF8FFF8F8FFFFF8FF"w"=$:#=%8#9"
+F87BF8F8F8F8F8F8F8F8F8F8F8F8F8B"
+7A9s"
+7C7A
+
+J$>"=#
+@FFF8FFFFFFFFJ%>"="
+?FFF8F8F8F8F8
+JP&8#9$9#;%:#8%:#8%
+>F8FFF8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8FFFFJ%8(9$:$:&8+8*
+>F8FFF8F8F8FFF8F8FFF8F8FFF8F8F8F8FFF8FFF8F8FFFFF8F8FFF8F8FFF8F8FFFFF8F8FFF8F8FFFFF8JPJ$G$@#:"
+46FFF8F8F8FFFFFFFFF8J&J%G$@$
+4F8F8F8F8F85F8F8FFFFFFF8F8F8F8F8J$J"8"
+O FFF8F8?FFFFJQ8%8(8";$8&8$8)
+AFFFFFFFFFFFFF8F8FFFFFFFFFFFFF8F8FFFFF8FFFFFFF8F8FFFFFFF8FFFFFFJz8';#:%8#:r
+?2F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+J$?$
+O.FFFFFFFFFFFFJ$?$
+O.F8F8F8F8F8F8
+J#J"
+HFFFFIFFJ"J"
+HF8JF8J"J"
+?FFO!FFJ%8#<"9#;#8#8#:#9#8Q9#8%
+>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8FFFFJ*:#8%:":'809+
+>F8FFF8F8F8FFF8F8FFFFF8FFF8F8FFF8F8F8FFF8F8FFFFF8F8FFF8FFF8F8FFF8F8FFF8F8F8FFF8F8FFF8F8FFF8F8FFJP@$:#:#>"9$<&
+4F8FFFFFFF8FFFFFFF8FFFFF8F8F8FFFFJ&@$:#:$>"8$>$
+4F8F8F8F8F8FFF8F8F8FFF8F8F8F8FFF8F8FFF8F8J#9"8":#C"
+KF8FFFFFFF8FFFFJ*;(<"93P*8"
+?F8FFFFF8F8FFFFF8FFFFF8F8FFFFFFF8F8F8FFFFF8FFF8F8FFFFF8F8F8FFFFF8FFF8F8F8F8FFFFF8F8FFFFFFFFJ#8'8#8$<";%8#9%8&8#8'
+@F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+
+
+
+
+
+
+9s
+7A8"
+7A7w
+F8
+
+
+
+
+
+y
+7B"B"
+F87A7#s$
+F87B7C7A7AF89"
+7B8$;$
+F87B7B7A7AF8
+9$9$
+F87B7B7A7AF8:";"
+F8F8<$
+7B7C7A;&
+F87B7A7AF8
+<$
+F87AF8Z
+R+
+ENDBITMAP
+%%EndBinary
+335.23 605.96 335.23 513.21 2 L
+1 H
+2 Z
+N
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "3" 3
+%%Page: "4" 4
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(4/10) 540.64 48.33 T
+2 F
+0.44 (text \322Dismiss\323 drawn in red. Below this row is a thin black) 53.86 473.52 P
+(line \050Bar\051, and a text editor widget named \322contents\323.) 53.86 462.52 T
+0.16 (The name on a widget is used by the application to manipu-) 53.86 440.52 P
+0.54 (late the widget \050e.g., change its value\051 and by the toolkit to) 53.86 429.52 P
+0.02 (inform the application of any user interactions with the wid-) 53.86 418.52 P
+0.08 (get. The name is also used to refer to the widget in the com-) 53.86 407.52 P
+(munications protocol.) 53.86 396.52 T
+1.69 (T) 53.86 374.52 P
+1.69 (able 1 shows a list of the widgets supported by Jupiter) 59.27 374.52 P
+1.69 (.) 292.3 374.52 P
+0.89 (These are mostly the conventional set from other window-) 53.86 363.52 P
+0.51 (ing toolkits. The T) 53.86 352.52 P
+0.51 (ypeIn widget is for single line text entry) 129.13 352.52 P
+0.51 (.) 292.3 352.52 P
+0.86 (The T) 53.86 341.52 P
+0.86 (extEdit widget is for editing lar) 78.17 341.52 P
+0.86 (ger \050plain text\051 docu-) 207.54 341.52 P
+2.17 (ments. The StrokeEdit widget is a graphical display and) 53.86 330.52 P
+-0.14 (interaction widget, similar to EZD [2] or Tk\325) 53.86 319.52 P
+-0.14 (s canvas widget) 231.76 319.52 P
+1.42 ([18]. The V) 53.86 308.52 P
+1.42 (ideoPane and AudioHighlight widgets provide) 103.03 308.52 P
+(support for audio/video communications.) 53.86 297.52 T
+0.43 (Each widget type exports a set of operations to the applica-) 53.86 275.52 P
+0.37 (tion. For example, the T) 53.86 264.52 P
+0.37 (extList widget, which allows a user) 151.3 264.52 P
+1.46 (to select from a list of text items, supports operations for) 53.86 253.52 P
+0.42 (changing the list of items and for setting which item is cur-) 53.86 242.52 P
+-0.18 (rently selected. W) 53.86 231.52 P
+-0.18 (idgets with small values, such as Booleans) 125.59 231.52 P
+-0.25 (and Numerics, support setting that value. W) 53.86 220.52 P
+-0.25 (idgets with com-) 228.07 220.52 P
+0.8 (plex value types, such as the T) 53.86 209.52 P
+0.8 (extEdit and StrokeEdit wid-) 180.45 209.52 P
+(gets, supply operations for incremental update.) 53.86 198.52 T
+-0.21 (In addition, each widget type supplies a set of event noti\336ca-) 53.86 176.52 P
+-0.24 (tions, most of which are a result of user interactions. Buttons) 53.86 165.52 P
+0.33 (notify the application when they have been activated by the) 53.86 154.52 P
+0.04 (user) 53.86 143.52 P
+0.04 (. Numerics do so when the user chooses a new value for) 69.97 143.52 P
+0.73 (them. The StrokeEdit widget has a number of user interac-) 53.86 132.52 P
+-0.02 (tion modes, allowing the user to click on existing strokes, or) 53.86 121.52 P
+1.13 (add new ones. When any widget event occurs, a predeter-) 53.86 110.52 P
+-0.06 (mined application routine is invoked with information about) 53.86 99.52 P
+(the event.) 53.86 88.52 T
+53.86 480.19 294.8 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 447.31 296.86 744.31 R
+7 X
+0 0 0 1 0 0 0 K
+V
+5 10 Q
+0 X
+(Layout widgets) 59.86 723.64 T
+2 F
+(HBox, VBox) 59.86 710.64 T
+(horizontal or vertical composition) 131.86 710.64 T
+(Fill, Glue, Bar) 59.86 697.64 T
+(spacing between widgets) 131.86 697.64 T
+(Rim, Border) 59.86 684.64 T
+(space around a widget subtree) 131.86 684.64 T
+5 F
+(Leaf widgets) 59.86 671.64 T
+2 F
+(Numeric) 59.86 658.64 T
+(a slider) 131.86 658.64 T
+(StrokeEdit) 59.86 645.64 T
+(graphical display and interaction) 131.86 645.64 T
+(T) 59.86 632.64 T
+(ext) 65.27 632.64 T
+(output only) 131.86 632.64 T
+(T) 59.86 619.64 T
+(extEdit) 65.27 619.64 T
+(full text editor) 131.86 619.64 T
+(T) 59.86 606.64 T
+(extList) 65.27 606.64 T
+(list of text items to choose from) 131.86 606.64 T
+(T) 59.86 593.64 T
+(ypeIn) 65.27 593.64 T
+(single-line input) 131.86 593.64 T
+(T) 59.86 580.64 T
+(ypescript) 65.27 580.64 T
+(append-only with user input) 131.86 580.64 T
+(V) 59.86 567.64 T
+(ideoPane) 66.48 567.64 T
+(displays a digital video stream) 131.86 567.64 T
+5 F
+(Filter widgets, which decorate a widget subtr) 59.86 554.64 T
+(ee) 251.6 554.64 T
+2 F
+(AudioHighlight) 59.86 541.64 T
+(\337ashes a border around the subtree) 131.86 541.64 T
+(when a user speaks) 131.86 530.64 T
+(Boolean) 59.86 517.64 T
+(shows a visible on/of) 131.86 517.64 T
+(f value) 216.4 517.64 T
+(Button) 59.86 504.64 T
+(push once or momentary) 131.86 504.64 T
+53.86 480.31 294.8 486.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 484.31 296.86 484.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+53.86 480.31 287.86 486.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 484.31 296.86 484.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+53.86 480.31 294.8 486.31 C
+53.86 480.31 294.8 486.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 484.31 296.86 484.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+53.86 480.31 294.8 486.31 C
+53.86 480.19 294.8 735.31 C
+1 9 Q
+0 X
+0 0 0 1 0 0 0 K
+(T) 68.03 489.31 T
+(able 1:) 72.86 489.31 T
+4 F
+(Widget types available in Jupiter) 103.88 489.31 T
+53.86 732.31 287.86 732.31 2 L
+V
+0.5 H
+0 Z
+N
+53.86 719.31 287.86 719.31 2 L
+V
+N
+53.86 680.31 287.86 680.31 2 L
+V
+N
+53.86 667.31 287.86 667.31 2 L
+V
+N
+53.86 563.31 287.86 563.31 2 L
+V
+N
+53.86 550.31 287.86 550.31 2 L
+V
+N
+53.86 500.31 287.86 500.31 2 L
+V
+N
+0 0 612 792 C
+2 10 Q
+0 X
+0 0 0 1 0 0 0 K
+0.77 (Jupiter applications are sharable, with the toolkit automati-) 317.48 728.64 P
+1.45 (cally maintaining identical widget values for each partici-) 317.48 717.64 P
+0.8 (pating user) 317.48 706.64 P
+0.8 (. Each change made by a user is reported to the) 361.89 706.64 P
+(application and automatically propagated to the other users.) 317.48 695.64 T
+1 9 Q
+(4) 317.48 674.31 T
+(THE CLIENT) 328.82 674.31 T
+(-SER) 381.32 674.31 T
+(VER INTERF) 402.66 674.31 T
+(ACE) 455.67 674.31 T
+2 10 Q
+1.36 (Jupiter) 317.48 661.64 P
+1.36 (\325) 345.07 661.64 P
+1.36 (s users run the client on their local workstation. It) 347.85 661.64 P
+0.44 (makes a TCP connection to the server) 317.48 650.64 P
+0.44 (, running on a central) 471.39 650.64 P
+1.11 (machine. The client program is assumed to evolve slowly) 317.48 639.64 P
+1.11 (,) 555.92 639.64 P
+0.02 (with users obtaining a new one primarily when major proto-) 317.48 628.64 P
+0.27 (col changes occur) 317.48 617.64 P
+0.27 (. Currently) 389.11 617.64 P
+0.27 (, implementations for the client) 432.07 617.64 P
+1.84 (exist for several Unix platforms, using the T) 317.48 606.64 P
+1.84 (cl/Tk toolkit) 506.85 606.64 P
+-0.06 ([18], and for Microsoft W) 317.48 595.64 P
+-0.06 (indows, using the native W) 421 595.64 P
+-0.06 (indows) 529.53 595.64 P
+(programming environment.) 317.48 584.64 T
+1.72 (The client-server protocol for Jupiter lar) 317.48 562.64 P
+1.72 (gely parallels the) 486.67 562.64 P
+0.44 (programmer) 317.48 551.64 P
+0.44 (\325) 367.28 551.64 P
+0.44 (s interface; most calls by applications result in) 370.06 551.64 P
+1.34 (messages to the client, and most client messages generate) 317.48 540.64 P
+4.26 (event noti\336cations to the application. The protocol is) 317.48 529.64 P
+0.06 (designed to use one-way messages, not requiring immediate) 317.48 518.64 P
+(replies, whenever possible.) 317.48 507.64 T
+1.16 (When a window is created, the server sends the S-expres-) 317.48 485.64 P
+0.73 (sion describing the window to the client, which creates the) 317.48 474.64 P
+(corresponding window) 317.48 463.64 T
+(.) 408.76 463.64 T
+1.1 (After the window is created, updates to widget values can) 317.48 441.64 P
+0.48 (originate from either the client or server) 317.48 430.64 P
+0.48 (. Updates to simple) 479.77 430.64 P
+0.4 (widgets, such as Numerics and Booleans, include the entire) 317.48 419.64 P
+0.29 (widget value. For user) 317.48 408.64 P
+0.29 (-originated changes, low-level mouse) 407.58 408.64 P
+0.33 (and keystroke interactions are \336ltered out. For example, the) 317.48 397.64 P
+-0.09 (Numeric widget does not send intermediate values while the) 317.48 386.64 P
+1.23 (slider is being moved, but waits until the mouse button is) 317.48 375.64 P
+(released to send the \336nal widget value.) 317.48 364.64 T
+0.75 (More complex widgets, such as T) 317.48 342.64 P
+0.75 (extEdits and StrokeEdits,) 455.53 342.64 P
+-0.21 (use incremental state update messages. For T) 317.48 331.64 P
+-0.21 (extEdits, a gen-) 496.35 331.64 P
+1.62 (eral \322replace this region of text with this value\323 message) 317.48 320.64 P
+-0.13 (suf) 317.48 309.64 P
+-0.13 (\336ces. StrokeEdits use a more complex protocol, shown in) 329.52 309.64 P
+(T) 317.48 298.64 T
+(able 2.) 322.89 298.64 T
+0.21 (Both client and server maintain a full copy of each widget\325) 317.48 276.64 P
+0.21 (s) 554.53 276.64 P
+1.16 (value. The client copy allows user changes to be re\337ected) 317.48 265.64 P
+-0.25 (immediately in the window) 317.48 254.64 P
+-0.25 (, before they are processed by the) 425.8 254.64 P
+0.25 (server) 317.48 243.64 P
+0.25 (. The server) 341.36 243.64 P
+0.25 (\325) 389.72 243.64 P
+0.25 (s copy is used to coordinate updates gen-) 392.5 243.64 P
+0.14 (erated by the various clients sharing the widget. In addition,) 317.48 232.64 P
+2.19 (the server) 317.48 221.64 P
+2.19 (\325) 359.19 221.64 P
+2.19 (s copy provides quick access for applications;) 361.97 221.64 P
+-0.12 (they do not incur round-trip delays for fetching the values of) 317.48 210.64 P
+(widgets in order to do computations.) 317.48 199.64 T
+1 9 Q
+(5) 317.48 178.31 T
+(THE TWO-W) 328.82 178.31 T
+(A) 381.32 178.31 T
+(Y SYNCHRONIZA) 386.98 178.31 T
+(TION PROT) 460.82 178.31 T
+(OCOL) 509.66 178.31 T
+2 10 Q
+0.18 (As mentioned earlier) 317.48 165.64 P
+0.18 (, optimistic concurrency control allows) 401.32 165.64 P
+0.21 (clients to change widget values without having to wait for a) 317.48 154.64 P
+0.13 (server interaction. If either the client or the server initiates a) 317.48 143.64 P
+3 (change to a widget, the change is immediately applied) 317.48 132.64 P
+1.47 (locally and a noti\336cation is sent to the other party) 317.48 121.64 P
+1.47 (. When) 528.08 121.64 P
+2.89 (messages cross on the wire, each receiver \336xes up the) 317.48 110.64 P
+2.24 (incoming message so that it makes sense relative to the) 317.48 99.64 P
+0.73 (receiver) 317.48 88.64 P
+0.73 (\325) 350.05 88.64 P
+0.73 (s current state. The algorithm we describe guaran-) 352.83 88.64 P
+0.75 (tees that these \336xups will suf) 317.48 77.64 P
+0.75 (\336ce, that the client and server) 436.9 77.64 P
+FMENDPAGE
+%%EndPage: "4" 4
+%%Page: "5" 5
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(5/10) 540.64 48.33 T
+2 F
+1.44 (will always agree on the widget value when all messages) 53.86 220.53 P
+(have been received and processed.) 53.86 209.53 T
+1.55 (Unlike other groupware systems, Jupiter does not use the) 53.86 187.53 P
+5.31 (synchronization protocol directly between the clients.) 53.86 176.53 P
+0.45 (Instead, each client synchronizes with the server) 53.86 165.53 P
+0.45 (, the server) 249.74 165.53 P
+0.64 (serializes all changes and echoes changes made by one cli-) 53.86 154.53 P
+1.8 (ent to all others that are sharing the widget. This lets us) 53.86 143.53 P
+3.81 (achieve) 53.86 132.53 P
+0 F
+3.81 (n) 90.71 132.53 P
+2 F
+3.81 (-way synchronization by running independent) 95.71 132.53 P
+2.03 (two-party synchronization protocols on each client-server) 53.86 121.53 P
+(link.) 53.86 110.53 T
+1.54 (Figure 3 shows an example of two messages for a single) 53.86 88.53 P
+1.61 (T) 53.86 77.53 P
+1.61 (extEdit widget that cross. If the messages are not trans-) 59.27 77.53 P
+53.86 465.31 294.8 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 442.81 296.86 744.31 R
+7 X
+0 0 0 1 0 0 0 K
+V
+5 10 Q
+0 X
+(Server Operations) 59.86 723.64 T
+2 F
+(create stroke, delete stroke) 59.86 710.64 T
+(change the set of graphic) 181.36 710.64 T
+(items being displayed) 181.36 699.64 T
+53.86 472.31 294.8 478.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 476.31 296.86 476.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+53.86 472.31 287.86 478.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 476.31 296.86 476.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+53.86 472.31 294.8 478.31 C
+53.86 472.31 294.8 478.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 476.31 296.86 476.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+53.86 472.31 294.8 478.31 C
+53.86 465.31 294.8 735.31 C
+1 9 Q
+0 X
+0 0 0 1 0 0 0 K
+(T) 68.03 481.31 T
+(able 2:) 72.86 481.31 T
+4 F
+(Operations available on StrokeEdit widgets) 103.88 481.31 T
+2 10 Q
+(move stroke) 59.86 686.64 T
+(move an existing stroke) 181.36 686.64 T
+(set stroke attributes) 59.86 673.64 T
+(change color) 181.36 673.64 T
+(, etc. of an) 232.33 673.64 T
+(existing stroke) 181.36 662.64 T
+(set mode) 59.86 649.64 T
+(set a user interaction mode,) 181.36 649.64 T
+(allowing local creation or) 181.36 638.64 T
+(deletion of strokes) 181.36 627.64 T
+(set creation attributes) 59.86 614.64 T
+(set attributes for strokes cre-) 181.36 614.64 T
+(ated by the user) 181.36 603.64 T
+5 F
+(Client Operations) 59.86 590.64 T
+2 F
+(hit down, hit up) 59.86 577.64 T
+(report simple mouse hits of) 181.36 577.64 T
+(existing strokes) 181.36 566.64 T
+(sweep down, sweep drag,) 59.86 553.64 T
+(sweep up) 59.86 542.64 T
+-0.28 (report strokes hit by a sweep) 181.36 553.64 P
+(operation that potentially) 181.36 542.64 T
+(passes through several) 181.36 531.64 T
+(strokes) 181.36 520.64 T
+(create stroke, delete stroke) 59.86 507.64 T
+(reports user) 181.36 507.64 T
+(-initiated cre-) 228.09 507.64 T
+(ations and deletions) 181.36 496.64 T
+53.86 732.31 296.86 732.31 2 L
+V
+0.5 H
+0 Z
+N
+53.86 719.31 296.86 719.31 2 L
+V
+0.25 H
+N
+53.86 599.31 296.86 599.31 2 L
+V
+0.5 H
+N
+53.86 586.31 296.86 586.31 2 L
+V
+0.25 H
+N
+53.86 492.31 296.86 492.31 2 L
+V
+0.5 H
+N
+0 0 612 792 C
+53.86 227.2 294.8 465.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+116.86 438.31 116.86 312.31 2 L
+3 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+206.86 438.31 206.86 312.31 2 L
+N
+199.3 348.63 206.86 339.31 195.51 343.21 197.41 345.92 4 Y
+V
+116.86 402.31 197.41 345.92 2 L
+0.5 H
+N
+128.2 343.21 116.86 339.31 124.41 348.63 126.31 345.92 4 Y
+V
+206.86 402.31 126.31 345.92 2 L
+N
+2 10 Q
+(client) 107.86 447.31 T
+(server) 197.86 447.31 T
+(del 4) 89.86 404.48 T
+(del 2) 214.14 404.48 T
+4 9 Q
+(\322ABCDE\323) 224.86 429.31 T
+(\322ACDE\323) 224.86 375.31 T
+(\322ACD\323) 224.86 321.31 T
+(\322ABCDE\323) 71.86 429.31 T
+(\322ABCE\323) 71.86 375.31 T
+(\322ACE\323) 71.86 321.31 T
+53.86 216.57 291.97 306.57 R
+7 X
+V
+1 F
+0 X
+2.6 (Figure 3:) 68.03 300.57 P
+4 F
+2.6 (An example of an update con\337ict. The) 111.14 300.57 P
+0.21 (client has deleted the fourth character) 68.03 290.57 P
+0.21 (, \322D\323, while the) 219.15 290.57 P
+2.74 (server has deleted the second one, \322B\323. Without) 68.03 280.57 P
+1.67 (concurrency control, the client and server wind up) 68.03 270.57 P
+2.59 (with dif) 68.03 260.57 P
+2.59 (ferent \336nal values. The \336x is to have the) 98.47 260.57 P
+0.42 (server transform the client\325) 68.03 250.57 P
+0.42 (s message into \322del 3\323 so) 175.16 250.57 P
+(that both client and server get the same result.) 68.03 240.57 T
+0 0 612 792 C
+2 10 Q
+0 X
+0 0 0 1 0 0 0 K
+0.09 (formed on receipt, the client and server wind up with dif) 317.48 479.19 P
+0.09 (fer-) 543.99 479.19 P
+0.79 (ent \336nal values for the widget. Since the client intended to) 317.48 468.19 P
+1.51 (delete the \322D\323 in the original string, its message must be) 317.48 457.19 P
+0.42 (\336xed up to read \322delete 3\323 when the server detects the con-) 317.48 446.19 P
+(\337ict.) 317.48 435.19 T
+-0.17 (The general tool for handling con\337icting messages is a func-) 317.48 413.19 P
+-0.1 (tion,) 317.48 402.19 P
+0 F
+-0.1 (xform) 337.93 402.19 P
+2 F
+-0.1 (, that maps a pair of messages to the \336xed up ver-) 361.27 402.19 P
+(sions. W) 317.48 391.19 T
+(e write) 351.68 391.19 T
+0 F
+(xform) 322.48 378.19 T
+2 F
+(\050) 345.81 378.19 T
+0 F
+(c, s) 349.14 378.19 T
+2 F
+(\051) 362.47 378.19 T
+0 F
+( =) 365.8 378.19 T
+2 F
+({) 377.55 378.19 T
+0 F
+(c\325, s\325) 382.35 378.19 T
+2 F
+(}) 402.34 378.19 T
+1.18 (where) 317.48 365.19 P
+0 F
+1.18 (c) 345.59 365.19 P
+2 F
+1.18 ( and) 350.03 365.19 P
+0 F
+1.18 (s) 371.84 365.19 P
+2 F
+1.18 ( are the original client and server messages.) 375.73 365.19 P
+-0.24 (The messages) 317.48 354.19 P
+0 F
+-0.24 (c\325) 375.32 354.19 P
+2 F
+-0.24 ( and) 383.09 354.19 P
+0 F
+-0.24 (s\325) 402.04 354.19 P
+2 F
+-0.24 ( must have the property that if the cli-) 409.26 354.19 P
+1.4 (ent applies) 317.48 343.19 P
+0 F
+1.4 (c) 365.83 343.19 P
+2 F
+1.4 ( followed by) 370.27 343.19 P
+0 F
+1.4 (s\325) 427.54 343.19 P
+2 F
+1.4 (, and the server applies) 434.76 343.19 P
+0 F
+1.4 (s) 536.19 343.19 P
+2 F
+1.4 ( fol-) 540.08 343.19 P
+0.85 (lowed by) 317.48 332.19 P
+0 F
+0.85 (c\325) 358.61 332.19 P
+2 F
+0.85 (, then the client and server will wind up in the) 366.38 332.19 P
+(same \336nal state.) 317.48 321.19 T
+0.73 (Of course, there are many possible functions that have this) 317.48 299.19 P
+1.78 (property) 317.48 288.19 P
+1.78 (. For example, the function) 350.71 288.19 P
+0 F
+1.78 (xform) 470.44 288.19 P
+2 F
+1.78 (\050) 493.77 288.19 P
+0 F
+1.78 (c) 497.1 288.19 P
+2 F
+1.78 (,) 501.54 288.19 P
+0 F
+1.78 (s) 508.32 288.19 P
+2 F
+1.78 (\051 = {delete) 512.21 288.19 P
+1.82 (everything, delete everything} would satisfy our ordering) 317.48 277.19 P
+-0.19 (property) 317.48 266.19 P
+-0.19 (, but would probably not satisfy many users! In gen-) 350.71 266.19 P
+1.82 (eral, the transforms should try to \336nd some \322reasonable\323) 317.48 255.19 P
+1.14 (way to combine the two operations into a \336nal ef) 317.48 244.19 P
+1.14 (fect. For) 523.4 244.19 P
+(our delete example, this is easy to do:) 317.48 233.19 T
+0 F
+(xform) 322.48 220.19 T
+2 F
+(\050del) 345.81 220.19 T
+0 F
+(x) 363.86 220.19 T
+2 F
+(, del) 368.3 220.19 T
+0 F
+(y) 388.02 220.19 T
+2 F
+(\051 =) 392.46 220.19 T
+({del) 352.48 209.19 T
+0 F
+(x) 372 209.19 T
+2 F
+(-1, del) 376.44 209.19 T
+0 F
+(y) 404.49 209.19 T
+2 F
+(} if) 408.93 209.19 T
+0 F
+(x) 424.84 209.19 T
+2 F
+( >) 429.28 209.19 T
+0 F
+(y) 439.92 209.19 T
+2 F
+({del) 352.48 198.19 T
+0 F
+(x) 372 198.19 T
+2 F
+(, del) 376.44 198.19 T
+0 F
+(y) 396.16 198.19 T
+2 F
+(-1} if) 400.6 198.19 T
+0 F
+(x) 424.84 198.19 T
+2 F
+( <) 429.28 198.19 T
+0 F
+(y) 439.92 198.19 T
+2 F
+({no-op, no-op} if) 352.48 187.19 T
+0 F
+(x) 424.85 187.19 T
+2 F
+( =) 429.29 187.19 T
+0 F
+(y) 439.93 187.19 T
+2 F
+2.85 (That is, we modify the later index in the document to) 317.48 174.19 P
+1.69 (account for the earlier deletion. Other pairs of operations) 317.48 163.19 P
+0.4 (present more dif) 317.48 152.19 P
+0.4 (\336culties; Section 7 talks about the issues in) 383.65 152.19 P
+(designing transformations in more detail.) 317.48 141.19 T
+1.57 (In describing the full protocol, it is helpful to picture the) 317.48 119.19 P
+1.32 (state space that the client and server pass through as they) 317.48 108.19 P
+0.14 (process messages. Figure 4 shows an example. Each state is) 317.48 97.19 P
+1.31 (labelled with the number of messages from the client and) 317.48 86.19 P
+0.63 (server that have been processed to that point. For example,) 317.48 75.19 P
+317.48 485.86 558.42 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+2 10 Q
+0 X
+0 0 0 1 0 0 0 K
+(0,0) 429.98 714.99 T
+(1,0) 402.98 687.98 T
+(1,1) 429.98 660.98 T
+(1,2) 456.98 633.98 T
+(0,1) 456.98 687.98 T
+(0,2) 483.98 660.98 T
+(0,3) 511.98 633.98 T
+(1,3) 483.98 606.99 T
+(2,0) 375.98 660.98 T
+(3,0) 348.98 633.98 T
+(2,1) 402.98 633.98 T
+(3,1) 375.98 606.98 T
+(2,2) 429.98 606.98 T
+(3,2) 402.98 579.98 T
+(2,3) 456.98 579.98 T
+(3,3) 429.98 552.99 T
+418.04 644.31 411.98 640.81 415.48 646.87 416.76 645.59 4 Y
+V
+429.98 658.81 416.76 645.59 2 L
+0.5 H
+2 Z
+N
+426.48 619.87 429.98 613.81 423.92 617.31 425.2 618.59 4 Y
+V
+411.98 631.81 425.2 618.59 2 L
+N
+J
+445.04 617.31 438.98 613.81 442.48 619.87 443.76 618.59 4 Y
+V
+J
+456.98 631.81 443.76 618.59 2 L
+J
+456.98 631.81 456.45 631.28 2 L
+N
+[1.563 4.689] 1.563 I
+456.45 631.28 444.29 619.12 2 L
+N
+J
+444.29 619.12 443.76 618.59 2 L
+N
+J
+457.98 592.87 461.48 586.81 455.42 590.31 456.7 591.59 4 Y
+V
+J
+443.48 604.81 456.7 591.59 2 L
+J
+443.48 604.81 444.01 604.28 2 L
+N
+[1.563 4.689] 1.563 I
+444.01 604.28 456.17 592.12 2 L
+N
+J
+456.17 592.12 456.7 591.59 2 L
+N
+J
+426.48 673.87 429.98 667.81 423.92 671.31 425.2 672.59 4 Y
+V
+411.98 685.81 425.2 672.59 2 L
+N
+J
+453.48 646.87 456.98 640.81 450.92 644.31 452.2 645.59 4 Y
+V
+J
+438.98 658.81 452.2 645.59 2 L
+J
+438.98 658.81 439.51 658.28 2 L
+N
+[1.563 4.689] 1.563 I
+439.51 658.28 451.67 646.12 2 L
+N
+J
+451.67 646.12 452.2 645.59 2 L
+N
+J
+418.04 698.31 411.98 694.81 415.48 700.87 416.76 699.59 4 Y
+V
+429.98 712.81 416.76 699.59 2 L
+N
+J
+422.54 698.31 416.48 694.81 419.98 700.87 421.26 699.59 4 Y
+V
+J
+434.48 712.81 421.26 699.59 2 L
+J
+434.48 712.81 433.95 712.28 2 L
+N
+[1.563 4.689] 1.563 I
+433.95 712.28 421.79 700.12 2 L
+N
+J
+421.79 700.12 421.26 699.59 2 L
+N
+J
+430.98 673.87 434.48 667.81 428.42 671.31 429.7 672.59 4 Y
+V
+J
+416.48 685.81 429.7 672.59 2 L
+J
+416.48 685.81 417.01 685.28 2 L
+N
+[1.563 4.689] 1.563 I
+417.01 685.28 429.17 673.12 2 L
+N
+J
+429.17 673.12 429.7 672.59 2 L
+N
+J
+359.54 689.31 353.48 685.81 356.98 691.87 358.26 690.59 4 Y
+V
+371.48 703.81 358.26 690.59 2 L
+N
+453.48 592.87 456.98 586.81 450.92 590.31 452.2 591.59 4 Y
+V
+438.98 604.81 452.2 591.59 2 L
+N
+J
+501.05 691.87 504.55 685.81 498.49 689.31 499.77 690.59 4 Y
+V
+J
+486.55 703.81 499.77 690.59 2 L
+J
+486.55 703.81 487.08 703.28 2 L
+N
+[1.563 4.689] 1.563 I
+487.08 703.28 499.24 691.12 2 L
+N
+J
+499.24 691.12 499.77 690.59 2 L
+N
+J
+(client) 335.48 696.99 T
+(server) 500.05 696.98 T
+317.48 477.36 558.42 544.86 R
+7 X
+V
+1 9 Q
+0 X
+3.5 (Figure 4:) 331.65 538.86 P
+4 F
+3.5 (The state space the client and server) 375.66 538.86 P
+1.75 (traverse while processing messages. Each node is) 331.65 528.86 P
+5.22 (labelled with the number of client and server) 331.65 518.86 P
+1.86 (messages processed when in that state. A con\337ict) 331.65 508.86 P
+(has occurred starting from the state 1,1.) 331.65 498.86 T
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "5" 5
+%%Page: "6" 6
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(6/10) 540.64 48.33 T
+2 F
+1.24 (if the client is in the state \0502,3\051, it has generated and pro-) 53.86 386.64 P
+0.68 (cessed two messages of its own, and has received and pro-) 53.86 375.64 P
+(cessed three from the server) 53.86 364.64 T
+(.) 165.49 364.64 T
+1.47 (As each message is processed, the client or server moves) 53.86 342.64 P
+-0.1 (down though the state space. If they process messages in the) 53.86 331.64 P
+1.49 (same order \050that is, there are no con\337icts\051, then they will) 53.86 320.64 P
+0.45 (take the same path. If there is a con\337ict, then the paths will) 53.86 309.64 P
+2.2 (diver) 53.86 298.64 P
+2.2 (ge, as shown in the diagram. The client and server) 74.23 298.64 P
+0.35 (moved to the state \0501,1\051 together by \336rst processing a client) 53.86 287.64 P
+0.01 (message, and then a server message. At that point, the client) 53.86 276.64 P
+2.87 (and server processed dif) 53.86 265.64 P
+2.87 (ferent messages, moving to the) 159.19 265.64 P
+0.76 (states \0502,1\051 and \0501,2\051, respectively) 53.86 254.64 P
+0.76 (. They each received and) 192.07 254.64 P
+1.19 (processed the other) 53.86 243.64 P
+1.19 (\325) 133.8 243.64 P
+1.19 (s message using the) 136.58 243.64 P
+0 F
+1.19 (xform) 222.99 243.64 P
+2 F
+1.19 ( function to) 246.32 243.64 P
+0.33 (move to state \0502,2\051. Then the server generated another mes-) 53.86 232.64 P
+(sage, sending it and the client to \0502,3\051.) 53.86 221.64 T
+0.82 (The protocol labels each message with the state the sender) 53.86 199.64 P
+0.67 (was in just before the message was generated. The concur-) 53.86 188.64 P
+0.22 (rency-control algorithm uses these labels to detect con\337icts,) 53.86 177.64 P
+0.05 (and the) 53.86 166.64 P
+0 F
+0.05 (xform) 85.61 166.64 P
+2 F
+0.05 ( function to resolve them. The algorithm guar-) 108.94 166.64 P
+0.65 (antees that, no matter how far the client and server diver) 53.86 155.64 P
+0.65 (ge) 285.36 155.64 P
+0.52 (in state space, when they do reach the same state, they will) 53.86 144.64 P
+(have identical values for all their widgets.) 53.86 133.64 T
+1.43 (The) 53.86 111.64 P
+0 F
+1.43 (xform) 73.34 111.64 P
+2 F
+1.43 ( function takes a pair of client and server mes-) 96.67 111.64 P
+0.94 (sages that were generated from the same starting state and) 53.86 100.64 P
+3.36 (returns transformed messages that allow the client and) 53.86 89.64 P
+-0.22 (server to reach the same \336nal state. As long as the server and) 53.86 78.64 P
+53.86 393.31 294.8 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+2 10 Q
+0 X
+0 0 0 1 0 0 0 K
+(0,0) 166.36 714.99 T
+(1,0) 139.36 687.98 T
+(1,1) 166.36 660.98 T
+(1,2) 193.36 633.98 T
+(0,1) 193.36 687.98 T
+(0,2) 220.36 660.98 T
+(2,0) 112.36 660.98 T
+(2,1) 139.36 633.98 T
+(2,2) 166.36 606.98 T
+162.86 673.87 166.36 667.81 160.3 671.31 161.58 672.59 4 Y
+V
+148.36 685.81 161.58 672.59 2 L
+0.5 H
+2 Z
+N
+J
+221.36 673.87 224.86 667.81 218.8 671.31 220.08 672.59 4 Y
+V
+J
+206.86 685.81 220.08 672.59 2 L
+J
+206.86 685.81 207.39 685.28 2 L
+N
+[1.563 4.689] 1.563 I
+207.39 685.28 219.55 673.12 2 L
+N
+J
+219.55 673.12 220.08 672.59 2 L
+N
+J
+154.42 698.31 148.36 694.81 151.86 700.87 153.14 699.59 4 Y
+V
+166.36 712.81 153.14 699.59 2 L
+N
+J
+194.36 700.87 197.86 694.81 191.8 698.31 193.08 699.59 4 Y
+V
+J
+179.86 712.81 193.08 699.59 2 L
+J
+179.86 712.81 180.39 712.28 2 L
+N
+[1.563 4.689] 1.563 I
+180.39 712.28 192.55 700.12 2 L
+N
+J
+192.55 700.12 193.08 699.59 2 L
+N
+J
+95.92 689.31 89.86 685.81 93.36 691.87 94.64 690.59 4 Y
+V
+107.86 703.81 94.64 690.59 2 L
+N
+J
+237.43 691.87 240.93 685.81 234.87 689.31 236.15 690.59 4 Y
+V
+J
+222.93 703.81 236.15 690.59 2 L
+J
+222.93 703.81 223.46 703.28 2 L
+N
+[1.563 4.689] 1.563 I
+223.46 703.28 235.62 691.12 2 L
+N
+J
+235.62 691.12 236.15 690.59 2 L
+N
+J
+(client) 71.86 696.99 T
+(server) 236.43 696.98 T
+53.86 370.17 294.8 437.67 R
+7 X
+V
+1 9 Q
+0 X
+1.07 (Figure 5:) 68.03 431.67 P
+4 F
+1.07 (In this example, the server generates two) 109.61 431.67 P
+2.5 (messages, s1 and s2, that con\337ict with the client) 68.03 421.67 P
+1.56 (message c. In order to process s2, the client must) 68.03 411.67 P
+(compute c\325, even though it will never execute it.) 68.03 401.67 T
+2 10 Q
+(c) 152.92 705.98 T
+(s2) 211.36 683.48 T
+(s1) 188.97 705.98 T
+(s1\325) 157.36 678.98 T
+(0,0) 166.36 557.49 T
+(1,0) 139.36 530.48 T
+(1,1) 166.36 503.48 T
+(1,2) 193.36 476.48 T
+(0,1) 193.36 530.48 T
+(0,2) 220.36 503.48 T
+(2,0) 112.36 503.48 T
+(2,1) 139.36 476.48 T
+(2,2) 166.36 449.48 T
+162.86 516.37 166.36 510.31 160.3 513.81 161.58 515.09 4 Y
+V
+148.36 528.31 161.58 515.09 2 L
+N
+J
+221.36 516.37 224.86 510.31 218.8 513.81 220.08 515.09 4 Y
+V
+J
+206.86 528.31 220.08 515.09 2 L
+J
+206.86 528.31 207.39 527.78 2 L
+N
+[1.563 4.689] 1.563 I
+207.39 527.78 219.55 515.62 2 L
+N
+J
+219.55 515.62 220.08 515.09 2 L
+N
+J
+154.42 540.81 148.36 537.31 151.86 543.37 153.14 542.09 4 Y
+V
+166.36 555.31 153.14 542.09 2 L
+N
+181.42 513.81 175.36 510.31 178.86 516.37 180.14 515.09 4 Y
+3 X
+V
+193.36 528.31 180.14 515.09 2 L
+1 H
+N
+J
+194.36 543.37 197.86 537.31 191.8 540.81 193.08 542.09 4 Y
+0 X
+V
+J
+179.86 555.31 193.08 542.09 2 L
+J
+179.86 555.31 180.39 554.78 2 L
+0.5 H
+N
+[1.563 4.689] 1.563 I
+180.39 554.78 192.55 542.62 2 L
+N
+J
+192.55 542.62 193.08 542.09 2 L
+N
+J
+95.92 531.81 89.86 528.31 93.36 534.37 94.64 533.09 4 Y
+V
+107.86 546.31 94.64 533.09 2 L
+N
+J
+237.43 534.37 240.93 528.31 234.87 531.81 236.15 533.09 4 Y
+V
+J
+222.93 546.31 236.15 533.09 2 L
+J
+222.93 546.31 223.46 545.78 2 L
+N
+[1.563 4.689] 1.563 I
+223.46 545.78 235.62 533.62 2 L
+N
+J
+235.62 533.62 236.15 533.09 2 L
+N
+J
+(client) 71.86 539.49 T
+(server) 236.43 539.48 T
+(c) 152.92 548.48 T
+(s2) 211.36 525.98 T
+(s1) 188.97 548.48 T
+(s1\325) 157.36 521.48 T
+(c\325) 188.86 519.31 T
+189.86 489.37 193.36 483.31 187.3 486.81 188.58 488.09 4 Y
+V
+175.36 501.31 188.58 488.09 2 L
+N
+(s2\325) 184.36 494.49 T
+2 12 Q
+(\050a\051) 85.54 616.41 T
+(\050b\051) 85.36 457.12 T
+98.86 582.31 251.86 582.31 2 L
+N
+0 0 612 792 C
+2 10 Q
+0 X
+0 0 0 1 0 0 0 K
+0.46 (client diver) 317.48 391.32 P
+0.46 (ge by only one step, we can use the) 363.03 391.32 P
+0 F
+0.46 (xform) 511.03 391.32 P
+2 F
+0.46 ( func-) 534.36 391.32 P
+0.85 (tion directly) 317.48 380.32 P
+0.85 (. If they diver) 366.29 380.32 P
+0.85 (ge further) 423.08 380.32 P
+0.85 (, however) 462.68 380.32 P
+0.85 (, the situation) 502.56 380.32 P
+0.35 (is more complex. Consider Figure5a. In this case, the client) 317.48 369.32 P
+0.08 (has executed) 317.48 358.32 P
+0 F
+0.08 (c) 371.51 358.32 P
+2 F
+0.08 ( and receives the con\337icting message) 375.95 358.32 P
+0 F
+0.08 (s1) 527.51 358.32 P
+2 F
+0.08 ( from) 536.4 358.32 P
+-0.17 (the server) 317.48 347.32 P
+-0.17 (. It uses the) 355.9 347.32 P
+0 F
+-0.17 (xform) 403.26 347.32 P
+2 F
+-0.17 ( function to compute) 426.59 347.32 P
+0 F
+-0.17 (s1\325) 511.45 347.32 P
+2 F
+-0.17 ( to get to) 523.66 347.32 P
+1.01 (the state \0501,1\051. The server then generates message) 317.48 336.32 P
+0 F
+1.01 (s2) 526.59 336.32 P
+2 F
+1.01 ( from) 535.48 336.32 P
+2.23 (the state \0500,1\051, indicating that it still hasn\325) 317.48 325.32 P
+2.23 (t processed) 499.82 325.32 P
+0 F
+2.23 (c) 551.48 325.32 P
+2 F
+2.23 (.) 555.92 325.32 P
+0.2 (What should the client do? It can\325) 317.48 314.32 P
+0.2 (t use) 454.04 314.32 P
+0 F
+0.2 (xform) 475.55 314.32 P
+2 F
+0.2 (\050) 498.88 314.32 P
+0 F
+0.2 (c) 502.21 314.32 P
+2 F
+0.2 (,) 506.65 314.32 P
+0 F
+0.2 (s2) 511.85 314.32 P
+2 F
+0.2 (\051 because) 520.74 314.32 P
+0 F
+-0.21 (c) 317.48 303.32 P
+2 F
+-0.21 ( and) 321.92 303.32 P
+0 F
+-0.21 (s2) 340.93 303.32 P
+2 F
+-0.21 ( were not generated from the same starting state. For) 349.82 303.32 P
+0.08 (example, if) 317.48 292.32 P
+0 F
+0.08 (c) 365.14 292.32 P
+2 F
+0.08 ( is \322del 4,\323) 369.58 292.32 P
+0 F
+0.08 (s1) 415.18 292.32 P
+2 F
+0.08 ( is \322del 1,\323 and) 424.08 292.32 P
+0 F
+0.08 (s2) 486.71 292.32 P
+2 F
+0.08 ( is \322del 3,\323 then) 495.6 292.32 P
+0.99 (the correct transform for) 317.48 281.32 P
+0 F
+0.99 (s2) 421.95 281.32 P
+2 F
+0.99 ( is \322no-op,\323 but) 430.84 281.32 P
+0 F
+0.99 (xform) 498.96 281.32 P
+2 F
+0.99 (\050) 522.29 281.32 P
+0 F
+0.99 (c) 525.62 281.32 P
+2 F
+0.99 (,) 530.06 281.32 P
+0 F
+0.99 (s2) 536.04 281.32 P
+2 F
+0.99 (\051 is) 544.93 281.32 P
+(\322del 3.\323) 317.48 270.32 T
+0.23 (The solution is depicted in Figure 5b. When the client com-) 317.48 248.32 P
+0.04 (putes) 317.48 237.32 P
+0 F
+0.04 (s1\325) 341.13 237.32 P
+2 F
+0.04 (, it must also remember) 353.35 237.32 P
+0 F
+0.04 (c\325) 450.23 237.32 P
+2 F
+0.04 (, the other returned value) 458 237.32 P
+0.3 (from) 317.48 226.32 P
+0 F
+0.3 (xform) 339.72 226.32 P
+2 F
+0.3 (. This represents a hypothetical message that the) 363.05 226.32 P
+0.68 (client could have generated to move from the state \0500,1\051 to) 317.48 215.32 P
+(\0501,1\051. When) 317.48 204.32 T
+0 F
+(s2) 368.02 204.32 T
+2 F
+( arrives, the client can use) 376.91 204.32 T
+0 F
+(c\325) 483.27 204.32 T
+2 F
+( to compute) 491.04 204.32 T
+0 F
+(xform) 322.48 191.32 T
+2 F
+(\050) 345.81 191.32 T
+0 F
+(c\325) 349.14 191.32 T
+2 F
+(,) 356.91 191.32 T
+0 F
+(s2) 361.91 191.32 T
+2 F
+(\051 = {) 370.8 191.32 T
+0 F
+(c\325) 389.57 191.32 T
+(\325) 396.23 191.32 T
+2 F
+(,) 399.56 191.32 T
+0 F
+(s2\325) 404.56 191.32 T
+2 F
+(}) 416.78 191.32 T
+0.18 (It executes) 317.48 178.32 P
+0 F
+0.18 (s2\325) 363.39 178.32 P
+2 F
+0.18 ( to get to the state \0501,2\051. If the server has pro-) 375.61 178.32 P
+1.23 (cessed the client\325) 317.48 167.32 P
+1.23 (s message, it will be in the state \0501,2\051 as) 388.25 167.32 P
+-0.19 (well. If not, its next message will originate from \0500,3\051, so the) 317.48 156.32 P
+(client saves) 317.48 145.32 T
+0 F
+(c\325) 366.36 145.32 T
+(\325) 373.02 145.32 T
+2 F
+( just in case.) 376.35 145.32 T
+0.82 (W) 317.48 123.32 P
+0.82 (e are now ready to examine the full algorithm, shown in) 326.12 123.32 P
+1.28 (Figure 6. W) 317.48 112.32 P
+1.28 (e describe it from the client\325) 367.29 112.32 P
+1.28 (s perspective, but) 486.16 112.32 P
+1.28 (the server) 317.48 101.32 P
+1.28 (\325) 358.28 101.32 P
+1.28 (s actions are identical. The algorithm maintains) 361.06 101.32 P
+0.4 (the invariant shown in Figure 7. The server was last known) 317.48 90.32 P
+0.01 (to be in the state \050) 317.48 79.32 P
+0 F
+0.01 (x) 388.91 79.32 P
+2 F
+0.01 (,) 393.35 79.32 P
+0 F
+0.01 (y) 398.36 79.32 P
+2 F
+0.01 (\051. Since then, the client has sent) 402.8 79.32 P
+0 F
+0.01 (k) 532.03 79.32 P
+2 F
+0.01 ( mes-) 536.47 79.32 P
+317.48 397.99 558.42 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 301.61 558.42 733.61 R
+7 X
+0 0 0 1 0 0 0 K
+V
+1 8 Q
+0 X
+(int myMsgs = 0;  /* number of messages generated */) 331.65 728.28 T
+(int otherMsgs = 0;  /* number of messages received */) 331.65 717.28 T
+(queue outgoing = {};) 331.65 706.28 T
+(Generate\050op\051 {) 331.65 684.28 T
+(apply op locally;) 340.55 673.28 T
+(send\050op, myMsgs, otherMsgs\051;) 340.55 662.27 T
+(add \050op, myMsgs\051 to outgoing;) 340.55 651.27 T
+(myMsgs = myMsgs + 1;) 340.55 640.27 T
+(}) 331.65 629.27 T
+(Receive\050msg\051 {) 331.65 607.27 T
+(/* Discard acknowledged messages. */) 340.55 596.27 T
+(for m in \050outgoing\051 {) 340.55 585.27 T
+(if \050m.myMsgs < msg.otherMsgs\051) 349.44 574.27 T
+(remove m from outgoing) 358.34 563.27 T
+(}) 340.55 552.27 T
+(/* ASSERT msg.myMsgs == otherMsgs. */) 340.55 541.27 T
+(for i in [1..length\050outgoing\051] {) 340.55 530.27 T
+(/* T) 349.44 519.27 T
+(ransform new message and the ones in) 361.45 519.27 T
+( the queue. */) 356.12 508.27 T
+({msg, outgoing[i]} = xform\050msg, outgoing[i]\051;) 349.44 497.27 T
+(}) 340.55 486.27 T
+(apply msg.op locally;) 340.55 475.27 T
+(otherMsgs = otherMsgs + 1;) 340.55 464.27 T
+(}) 331.65 453.27 T
+1 9 Q
+0.56 (Figure 6:) 331.65 433.61 P
+4 F
+0.56 (The algorithm used by client and server to) 372.73 433.61 P
+1.92 (deal with con\337icting messages. The pair \050myMsgs,) 331.65 423.61 P
+(otherMsgs\051 corresponds to the state from Figure 4.) 331.65 413.61 T
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "6" 6
+%%Page: "7" 7
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(7/10) 540.64 48.33 T
+2 F
+1.4 (sages, leaving it in the state \050) 53.86 465.02 P
+0 F
+1.4 (x) 178.06 465.02 P
+2 F
+1.4 (+) 182.5 465.02 P
+0 F
+1.4 (k) 188.14 465.02 P
+2 F
+1.4 (,) 192.58 465.02 P
+0 F
+1.4 (y) 198.98 465.02 P
+2 F
+1.4 (\051. These messages are) 203.42 465.02 P
+0.13 (kept in the) 53.86 454.02 P
+0 F
+0.13 (outgoing) 98.97 454.02 P
+2 F
+0.13 ( queue. In the code,) 134.53 454.02 P
+0 F
+0.13 (myMsgs) 216.01 454.02 P
+2 F
+0.13 (is) 251.41 454.02 P
+0 F
+0.13 (x) 260.71 454.02 P
+2 F
+0.13 (+) 265.15 454.02 P
+0 F
+0.13 (k) 270.79 454.02 P
+2 F
+0.13 (, and) 275.23 454.02 P
+0 F
+(otherMsgs) 53.86 443.02 T
+2 F
+(is) 98.58 443.02 T
+0 F
+(y) 107.75 443.02 T
+2 F
+(.) 111.54 443.02 T
+0.33 (Sending a message while maintaining this invariant is easy:) 53.86 421.02 P
+0.03 (just apply the operation locally to move to \050) 53.86 410.02 P
+0 F
+0.03 (x) 229.05 410.02 P
+2 F
+0.03 (+) 233.49 410.02 P
+0 F
+0.03 (k) 239.13 410.02 P
+2 F
+0.03 (+1,) 243.57 410.02 P
+0 F
+0.03 (y) 259.24 410.02 P
+2 F
+0.03 (\051, trans-) 263.68 410.02 P
+0.23 (mit it to the server) 53.86 399.02 P
+0.23 (, and then append the message to the out-) 127.71 399.02 P
+(going message queue.) 53.86 388.02 T
+0.54 (For reception, we know that the next incoming server mes-) 53.86 366.02 P
+-0.16 (sage must originate from one of the states between \050) 53.86 355.02 P
+0 F
+-0.16 (x) 260.98 355.02 P
+2 F
+-0.16 (,) 265.42 355.02 P
+0 F
+-0.16 ( y) 267.92 355.02 P
+2 F
+-0.16 (\051 and) 274.69 355.02 P
+1.86 (\050) 53.86 344.02 P
+0 F
+1.86 (x) 57.19 344.02 P
+2 F
+1.86 (+) 61.63 344.02 P
+0 F
+1.86 (k) 67.27 344.02 P
+2 F
+1.86 (,) 71.71 344.02 P
+0 F
+1.86 (y) 78.57 344.02 P
+2 F
+1.86 (\051 inclusive; that is, the server will have processed) 83.01 344.02 P
+0.78 (some arbitrary number of those) 53.86 333.02 P
+0 F
+0.78 (k) 185.8 333.02 P
+2 F
+0.78 ( client messages. Assume) 190.24 333.02 P
+1.13 (that it comes from state \050) 53.86 322.02 P
+0 F
+1.13 (x) 159.24 322.02 P
+2 F
+1.13 (+) 163.68 322.02 P
+0 F
+1.13 (i) 169.32 322.02 P
+2 F
+1.13 (,) 172.1 322.02 P
+0 F
+1.13 (y) 178.24 322.02 P
+2 F
+1.13 (\051, taking the server to \050) 182.68 322.02 P
+0 F
+1.13 (x) 279.44 322.02 P
+2 F
+1.13 (+) 283.88 322.02 P
+0 F
+1.13 (i) 289.52 322.02 P
+2 F
+1.13 (,) 292.3 322.02 P
+0 F
+0.23 (y) 53.86 311.02 P
+2 F
+0.23 (+1\051. First, discard the saved messages that take us from \050) 58.3 311.02 P
+0 F
+0.23 (x) 287.86 311.02 P
+2 F
+0.23 (,) 292.3 311.02 P
+0 F
+1.24 (y) 53.86 300.02 P
+2 F
+1.24 (\051 to \050) 58.3 300.02 P
+0 F
+1.24 (x) 80.21 300.02 P
+2 F
+1.24 (+) 84.65 300.02 P
+0 F
+1.24 (i) 90.29 300.02 P
+2 F
+1.24 (,) 93.07 300.02 P
+0 F
+1.24 (y) 99.3 300.02 P
+2 F
+1.24 (\051, as they are no longer needed. Next, run the) 103.74 300.02 P
+1.13 (incoming message through the transformer with respect to) 53.86 289.02 P
+0.65 (each of the saved messages. The \336nal result will be a mes-) 53.86 278.02 P
+1.68 (sage that takes us from \050) 53.86 267.02 P
+0 F
+1.68 (x) 159.76 267.02 P
+2 F
+1.68 (+) 164.2 267.02 P
+0 F
+1.68 (k) 169.84 267.02 P
+2 F
+1.68 (,) 174.28 267.02 P
+0 F
+1.68 (y) 180.97 267.02 P
+2 F
+1.68 (\051 to \050) 185.41 267.02 P
+0 F
+1.68 (x) 208.22 267.02 P
+2 F
+1.68 (+) 212.66 267.02 P
+0 F
+1.68 (k) 218.3 267.02 P
+2 F
+1.68 (,) 222.74 267.02 P
+0 F
+1.68 (y) 229.42 267.02 P
+2 F
+1.68 (+1\051, which we) 233.86 267.02 P
+1.38 (apply locally) 53.86 256.02 P
+1.38 (. While doing this, save the transformed ver-) 106.53 256.02 P
+0.57 (sion of each saved message. When we are done, we have a) 53.86 245.02 P
+2.55 (sequence of saved messages that takes us from the last) 53.86 234.02 P
+1.75 (known server state, \050) 53.86 223.02 P
+0 F
+1.75 (x) 142.42 223.02 P
+2 F
+1.75 (+) 146.86 223.02 P
+0 F
+1.75 (i) 152.5 223.02 P
+2 F
+1.75 (,) 155.28 223.02 P
+0 F
+1.75 (y) 162.03 223.02 P
+2 F
+1.75 (+1\051, to our current state, \050) 166.47 223.02 P
+0 F
+1.75 (x) 277.78 223.02 P
+2 F
+1.75 (+) 282.22 223.02 P
+0 F
+1.75 (k) 287.86 223.02 P
+2 F
+1.75 (,) 292.3 223.02 P
+0 F
+0.59 (y) 53.86 212.02 P
+2 F
+0.59 (+1\051. W) 58.3 212.02 P
+0.59 (e have thus restored the invariant and are ready for) 86.5 212.02 P
+(the next incoming message.) 53.86 201.02 T
+1 9 Q
+(Some \336ne points) 53.86 179.69 T
+2 10 Q
+3.26 (In our system, messages must be saved until they are) 53.86 168.02 P
+0.31 (acknowledged by the other party) 53.86 157.02 P
+0.31 (, since they may be needed) 185.52 157.02 P
+3.12 (in order to \336x up incoming messages. Normally) 53.86 146.02 P
+3.12 (, these) 266.13 146.02 P
+3.07 (acknowledgments are piggy-backed on traf) 53.86 135.02 P
+3.07 (\336c going the) 238.67 135.02 P
+-0.13 (other way) 53.86 124.02 P
+-0.13 (. However) 92.79 124.02 P
+-0.13 (, it is possible for the traf) 133.91 124.02 P
+-0.13 (\336c to a window) 233.24 124.02 P
+-0.15 (to be one-sided \050e.g., for a status display window being peri-) 53.86 113.02 P
+2.11 (odically updated\051. Therefore, each side must periodically) 53.86 102.02 P
+0.35 (generate explicit acknowledgments \050i.e. no-op messages\051 to) 53.86 91.02 P
+(prevent the outgoing queues from growing forever) 53.86 80.02 T
+(.) 255.49 80.02 T
+53.86 471.69 294.8 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+140.92 671.31 134.86 667.81 138.36 673.87 139.64 672.59 4 Y
+0 X
+0 0 0 1 0 0 0 K
+V
+152.86 685.81 139.64 672.59 2 L
+0.5 H
+2 Z
+N
+167.92 698.31 161.86 694.81 165.36 700.87 166.64 699.59 4 Y
+V
+179.86 712.81 166.64 699.59 2 L
+N
+J
+149.36 646.87 152.86 640.81 146.79 644.31 148.08 645.59 4 Y
+V
+J
+134.86 658.81 148.08 645.59 2 L
+J
+134.86 658.81 135.39 658.28 2 L
+N
+[1.563 4.689] 1.563 I
+135.39 658.28 147.55 646.12 2 L
+N
+J
+147.55 646.12 148.08 645.59 2 L
+N
+J
+109.42 689.31 103.36 685.81 106.86 691.87 108.14 690.59 4 Y
+V
+121.36 703.81 108.14 690.59 2 L
+N
+J
+250.93 691.87 254.43 685.81 248.37 689.31 249.65 690.59 4 Y
+V
+J
+236.43 703.81 249.65 690.59 2 L
+J
+236.43 703.81 236.96 703.28 2 L
+N
+[1.563 4.689] 1.563 I
+236.96 703.28 249.12 691.12 2 L
+N
+J
+249.12 691.12 249.65 690.59 2 L
+N
+J
+2 10 Q
+(client) 85.36 696.99 T
+(server) 249.93 696.98 T
+53.86 471.69 294.8 546.31 R
+7 X
+V
+1 9 Q
+0 X
+-0.21 (Figure 7:) 68.03 540.31 P
+4 F
+-0.21 (Whenever our algorithm is not processing a) 108.33 540.31 P
+0.86 (message, the situation shown above holds \050as seen) 68.03 530.31 P
+0.27 (by the client\051. The server was last known to be in the) 68.03 520.31 P
+1.67 (state \050) 68.03 510.31 P
+6 F
+1.67 (x) 94.72 510.31 P
+4 F
+1.67 (,) 99.22 510.31 P
+6 F
+1.67 (y) 105.89 510.31 P
+4 F
+1.67 (\051. W) 110.39 510.31 P
+1.67 (e are in the state \050) 128.4 510.31 P
+6 F
+1.67 (x) 209.32 510.31 P
+4 F
+1.67 (+) 213.82 510.31 P
+6 F
+1.67 (k) 219.07 510.31 P
+4 F
+1.67 (,) 223.57 510.31 P
+6 F
+1.67 (y) 230.25 510.31 P
+4 F
+1.67 (\051 and have) 234.75 510.31 P
+0.78 (saved all the messages necessary to get from \050) 68.03 500.31 P
+6 F
+0.78 (x) 262.85 500.31 P
+4 F
+0.78 (,) 267.35 500.31 P
+6 F
+0.78 (y) 273.13 500.31 P
+4 F
+0.78 (\051) 277.63 500.31 P
+0.91 (to \050) 68.03 490.31 P
+6 F
+0.91 (x) 81.94 490.31 P
+4 F
+0.91 (+) 86.44 490.31 P
+6 F
+0.91 (k) 91.7 490.31 P
+4 F
+0.91 (,) 96.2 490.31 P
+6 F
+0.91 (y) 102.11 490.31 P
+4 F
+0.91 (\051. The next server message must originate) 106.61 490.31 P
+(from some state along this path.) 68.03 480.31 T
+86.92 617.31 80.86 613.81 84.36 619.87 85.64 618.59 4 Y
+V
+98.86 631.81 85.64 618.59 2 L
+N
+113.92 644.31 107.86 640.81 111.36 646.87 112.64 645.59 4 Y
+V
+125.86 658.81 112.64 645.59 2 L
+N
+0 10 Q
+(x,y) 179.86 714.87 T
+(x+i,y) 121.36 660.87 T
+(x+k,y) 71.86 606.87 T
+(x+i,y+) 143.86 633.87 T
+1 8 Q
+(1) 171.52 633.87 T
+157.36 685.81 161.86 690.31 R
+V
+7 X
+N
+211.36 685.81 215.86 690.31 R
+0 X
+V
+7 X
+N
+103.36 631.81 107.86 636.31 R
+0 X
+V
+7 X
+N
+184.36 658.81 188.86 663.31 R
+0 X
+V
+7 X
+N
+130.36 604.81 134.86 609.31 R
+0 X
+V
+7 X
+N
+238.36 658.81 242.86 663.31 R
+0 X
+V
+7 X
+N
+211.36 631.81 215.86 636.31 R
+0 X
+V
+7 X
+N
+184.36 604.81 188.86 609.31 R
+0 X
+V
+7 X
+N
+157.36 577.81 161.86 582.31 R
+0 X
+V
+7 X
+N
+130.36 550.81 134.86 555.31 R
+0 X
+V
+7 X
+N
+103.36 577.81 107.86 582.31 R
+0 X
+V
+7 X
+N
+0 0 612 792 C
+2 10 Q
+0 X
+0 0 0 1 0 0 0 K
+2.08 (An important consideration is the interaction of message) 317.48 482.03 P
+1.25 (numbering with locking. The toolkit requires that applica-) 317.48 471.03 P
+0.43 (tions hold a per) 317.48 460.03 P
+0.43 (-window lock whenever they are examining) 380.5 460.03 P
+1.66 (or changing widget values for that window) 317.48 449.03 P
+1.66 (. If a message) 498.45 449.03 P
+1.62 (arrives from a client while this lock is held, the message) 317.48 438.03 P
+(cannot be processed until the lock is released.) 317.48 427.03 T
+0.68 (However) 317.48 405.03 P
+0.68 (, messages must not be acknowledged before they) 353.73 405.03 P
+1.09 (are processed. Figure 8 illustrates this problem. The client) 317.48 394.03 P
+1.29 (sends a message to window B, which has been locked by) 317.48 383.03 P
+-0.01 (application code in the server) 317.48 372.03 P
+-0.01 (. As a result, processing of that) 434.63 372.03 P
+1.24 (message is deferred until the lock is released. Meanwhile,) 317.48 361.03 P
+-0.21 (the client sends a message to the unlocked window A, which) 317.48 350.03 P
+2.42 (generates a reply that acknowledges both of the client\325) 317.48 339.03 P
+2.42 (s) 554.53 339.03 P
+0.19 (messages. While the window is locked, the application gen-) 317.48 328.03 P
+0.09 (erates a message for B, which also claims to have been gen-) 317.48 317.03 P
+0.31 (erated after both client messages. However) 317.48 306.03 P
+0.31 (, the client\325) 490.81 306.03 P
+0.31 (s \336rst) 536.16 306.03 P
+1.2 (message actually hasn\325) 317.48 295.03 P
+1.2 (t been processed yet. The sequence) 411.9 295.03 P
+0.88 (numbers will fool both client and server into assuming the) 317.48 284.03 P
+(messages don\325) 317.48 273.03 T
+(t con\337ict when in fact they do.) 375.9 273.03 T
+0.63 (This example shows that locks af) 317.48 251.03 P
+0.63 (fecting any message must) 453.49 251.03 P
+-0.08 (delay processing of all messages with higher sequence num-) 317.48 240.03 P
+0.04 (bers. T) 317.48 229.03 P
+0.04 (o avoid unnecessary delays, message counters should) 344.59 229.03 P
+0.42 (be maintained at a granularity at least as \336ne as the locking) 317.48 218.03 P
+0.43 (granularity the applications use. Our system happens to use) 317.48 207.03 P
+1.18 (window locking, so our counters are maintained on a per) 317.48 196.03 P
+1.18 (-) 555.09 196.03 P
+0.18 (window basis. W) 317.48 185.03 P
+0.18 (e could have used per) 386.2 185.03 P
+0.18 (-widget counters, but) 473.36 185.03 P
+1.13 (that would have reduced the opportunity for piggy-backed) 317.48 174.03 P
+(acknowledgments.) 317.48 163.03 T
+1 9 Q
+(Comparison to dOPT) 317.48 141.7 T
+2 10 Q
+-0.02 (Our concurrency algorithm is similar to the dOPT algorithm) 317.48 130.03 P
+0.17 (used in Grove. Our) 317.48 119.03 P
+0 F
+0.17 (xform) 397.32 119.03 P
+2 F
+0.17 ( function corresponds to the trans-) 420.65 119.03 P
+1.12 (formation matrix) 317.48 108.03 P
+5 F
+1.12 (T) 390.27 108.03 P
+2 F
+1.12 ( in their system. In addition to the two) 396.94 108.03 P
+0.38 (operations being transformed,) 317.48 97.03 P
+5 F
+0.38 (T) 440.81 97.03 P
+2 F
+0.38 ( also requires two priorities) 447.48 97.03 P
+-0.04 (for tie-breaking. This is because) 317.48 86.03 P
+5 F
+-0.04 (T) 448.36 86.03 P
+2 F
+-0.04 ( might be applied to oper-) 455.03 86.03 P
+1.96 (ations for any two sites in the system. Because) 317.48 75.03 P
+0 F
+1.96 (xform) 523.97 75.03 P
+2 F
+1.96 ( is) 547.3 75.03 P
+317.48 488.69 558.42 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 489.9 558.42 556.73 R
+7 X
+0 0 0 1 0 0 0 K
+V
+1 9 Q
+0 X
+0.5 (Figure 8:) 331.65 550.73 P
+4 F
+0.5 (Sequence numbers must be assigned at a) 372.66 550.73 P
+0.5 (grain at least as \336ne as the locking granularity of the) 331.65 540.73 P
+0 (toolkit. Otherwise, an incoming message waiting for a) 331.65 530.73 P
+8.92 (lock on one window might be incorrectly) 331.65 520.73 P
+0.44 (acknowledged by the reply to a message for another) 331.65 510.73 P
+(window) 331.65 500.73 T
+(.) 361.16 500.73 T
+371.69 685.06 371.69 568.06 2 L
+3 H
+2 Z
+N
+479.69 685.06 479.69 568.06 2 L
+N
+511.19 685.06 511.19 568.06 2 L
+N
+371.69 667.06 497.69 653.56 2 L
+0.5 H
+N
+497.69 653.56 497.69 581.56 2 L
+N
+505.35 580.92 511.19 577.06 504.2 577.48 504.78 579.2 4 Y
+V
+497.69 581.56 504.78 579.2 2 L
+N
+378.64 576.21 371.69 577.06 378.14 579.79 378.39 578 4 Y
+V
+511.19 596.56 378.39 578 2 L
+N
+473.19 638.17 479.69 635.57 472.76 634.57 472.98 636.37 4 Y
+V
+371.69 648.56 472.98 636.37 2 L
+N
+378.62 604.07 371.69 605.07 378.19 607.67 378.4 605.87 4 Y
+V
+479.69 618.06 378.4 605.87 2 L
+N
+506.69 667.06 506.69 586.06 2 L
+4 H
+3 X
+N
+2 10 Q
+0 X
+(lock) 515.69 667.06 T
+(A) 476.97 691.73 T
+(B) 506.69 691.73 T
+(server) 482.97 720.47 T
+(client) 360.46 700.63 T
+(B\0500,0\051) 417.86 664.73 T
+(A\0501,0\051) 417.31 646.73 T
+(A\0502,0\051) 417.31 615.24 T
+(B\0502,1\051) 417.86 588.24 T
+(window) 462.05 706.3 T
+(window) 498.9 706.3 T
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "7" 7
+%%Page: "8" 8
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(8/10) 540.64 48.33 T
+2 F
+-0.15 (always applied to operations between a client and the server) 53.86 618.09 P
+-0.15 (,) 292.3 618.09 P
+1.54 (it can have the tie-breaking rules built-in, simplifying the) 53.86 607.09 P
+(speci\336cation of the transformations.) 53.86 596.09 T
+0.14 (The dOPT algorithm also has code for saving messages that) 53.86 574.09 P
+1.13 (arrived out of order from a site, then applying them when) 53.86 563.09 P
+1.83 (earlier messages had been processed. Because we do not) 53.86 552.09 P
+2.66 (multicast updates, we can assume a transport layer that) 53.86 541.09 P
+0.47 (delivers messages in order) 53.86 530.09 P
+0.47 (, such as TCP) 160.68 530.09 P
+0.47 (, and omit the reor-) 215.99 530.09 P
+(dering code.) 53.86 519.09 T
+2.86 (Finally) 53.86 497.09 P
+2.86 (, Jupiter) 81.55 497.09 P
+2.86 (\325) 117 497.09 P
+2.86 (s algorithm \336xes a problem with dOPT) 119.78 497.09 P
+2.86 (.) 292.3 497.09 P
+0.06 (When sites diver) 53.86 486.09 P
+0.06 (ge by more than one step in the state space,) 121 486.09 P
+0.66 (dOPT does not transform saved messages when processing) 53.86 475.09 P
+3.87 (incoming messages \050the situation shown in Figure 5\051.) 53.86 464.09 P
+2.55 (Unfortunately) 53.86 453.09 P
+2.55 (, simply transforming saved messages does) 109.31 453.09 P
+1.63 (not work for the) 53.86 442.09 P
+0 F
+1.63 (n) 127.58 442.09 P
+2 F
+1.63 (-way case, since the next message can) 132.58 442.09 P
+1.32 (come from a third site that is in an inconvenient message) 53.86 431.09 P
+1.73 (state. Since we handle) 53.86 420.09 P
+0 F
+1.73 (n) 152.14 420.09 P
+2 F
+1.73 (-way consistency dif) 157.14 420.09 P
+1.73 (ferently) 243.17 420.09 P
+1.73 (, this) 273.62 420.09 P
+(problem does not arise in our algorithm.) 53.86 409.09 T
+1 9 Q
+(6) 53.86 387.76 T
+(GLOBAL CONSISTENCY) 65.2 387.76 T
+2 10 Q
+0.54 (The algorithm described in the previous section allows two) 53.86 375.09 P
+1.54 (parties to maintain synchronized widget state. By using a) 53.86 364.09 P
+0 (central coordinator) 53.86 353.09 P
+0 (, it is easy to extend it to synchronize any) 129.27 353.09 P
+2.22 (number of parties sharing a widget. T) 53.86 342.09 P
+2.22 (o do this, the line) 216.74 342.09 P
+-0.08 (\322apply msg.op locally\323 from Figure 6 is implemented on the) 53.86 331.09 P
+1.15 (server as shown in Figure 9. As a message arrives from a) 53.86 320.09 P
+2.09 (client, it is sent to all the other clients as well as being) 53.86 309.09 P
+(applied to the local copy of widget value.) 53.86 298.09 T
+-0.17 (Essentially) 53.86 276.09 P
+-0.17 (, the optimistic algorithm hides the asynchrony of) 97.1 276.09 P
+1.43 (the clients from the server) 53.86 265.09 P
+1.43 (. The pair) 163.46 265.09 P
+1.43 (-wise optimistic algo-) 204.72 265.09 P
+0.21 (rithm makes each client appear to the server to be operating) 53.86 254.09 P
+2.11 (completely synchronously; whenever a client generates a) 53.86 243.09 P
+1.65 (change, it appears that the client has processed all server) 53.86 232.09 P
+0.26 (messages sent so far) 53.86 221.09 P
+0.26 (. If all the clients are synchronous, then) 135.47 221.09 P
+1.62 (the simple algorithm of echoing changes from one to the) 53.86 210.09 P
+(others works.) 53.86 199.09 T
+0.82 (It may be easier to think in terms of the two-party guaran-) 53.86 177.09 P
+0.52 (tees. As long as the server sends to a client every change it) 53.86 166.09 P
+1.16 (applies that the client did not generate, then the two-party) 53.86 155.09 P
+2.42 (algorithm guarantees the client and server will have the) 53.86 144.09 P
+0.41 (same value for the widgets at quiescence. Since each of the) 53.86 133.09 P
+1.09 (clients\325 values is equal to the server) 53.86 122.09 P
+1.09 (\325) 203.51 122.09 P
+1.09 (s value, they must be) 206.29 122.09 P
+(equal to each other as well.) 53.86 111.09 T
+53.86 624.76 294.8 735.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 548.22 291.97 732.47 R
+7 X
+0 0 0 1 0 0 0 K
+V
+1 8 Q
+0 X
+(/* apply \322msg\323 received from \322client\323 */) 68.03 727.14 T
+(apply msg.op to local copy of widget;) 68.03 716.14 T
+(for \050c in client list for this window\051 {) 68.03 705.14 T
+(if \050c != client\051) 76.93 694.14 T
+(Send\050c, msg\051;) 85.82 683.14 T
+(}) 68.03 672.14 T
+1 9 Q
+3.96 (Figure 9:) 68.03 652.47 P
+4 F
+3.96 (The algorithm used by the server to) 112.5 652.47 P
+3.54 (maintain consistency between clients. This code) 68.03 642.47 P
+(replaces the line \322apply msg.op locally\323 in Figure 6.) 68.03 632.47 T
+0 0 612 792 C
+1 9 Q
+0 X
+0 0 0 1 0 0 0 K
+(7) 317.48 729.31 T
+(CHOOSING TRANSFORMA) 328.82 729.31 T
+(TION FUNCTIONS) 443.65 729.31 T
+2 10 Q
+0.32 (An important part of using the optimistic protocol is choos-) 317.48 716.64 P
+3.55 (ing transformations for the pairs of widget operations.) 317.48 705.64 P
+0.97 (While the transformation to use is obvious for some pairs,) 317.48 694.64 P
+1.21 (con\337icting requirements in the system make other choices) 317.48 683.64 P
+1.79 (more dif) 317.48 672.64 P
+1.79 (\336cult. This section discusses these concerns, and) 353.25 672.64 P
+(how we balanced them in Jupiter) 317.48 661.64 T
+(.) 448.85 661.64 T
+1.34 (At \336rst, the combinatorics of the problem can seem over-) 317.48 639.64 P
+-0.19 (whelming. Jupiter supports 19 client and 24 server messages) 317.48 628.64 P
+2.36 (that directly operate on individual widgets, yielding 456) 317.48 617.64 P
+-0.22 (potential pairs to consider) 317.48 606.64 P
+-0.22 (. Fortunately) 419.88 606.64 P
+-0.22 (, most of these combi-) 470.13 606.64 P
+-0.14 (nations are uninteresting. Messages can only be in con\337ict if) 317.48 595.64 P
+0.46 (they are trying to update the same widget, so any messages) 317.48 584.64 P
+(from dif) 317.48 573.64 T
+(ferent widget types need not be transformed.) 350.35 573.64 T
+0.06 (The messages for window creation and deletion could cause) 317.48 551.64 P
+2.52 (con\337icts if window ids were reused, since one message) 317.48 540.64 P
+1.19 (might refer to an old instance of a window) 317.48 529.64 P
+1.19 (, while another) 496.33 529.64 P
+0.57 (referred to a new instance with the same id. If the server is) 317.48 518.64 P
+1.84 (careful to avoid reusing window ids, we can avoid these) 317.48 507.64 P
+-0.02 (problems, and need only consider widget-speci\336c messages.) 317.48 496.64 P
+0.85 (By considering only con\337icts within a widget type, we are) 317.48 474.64 P
+0.01 (left with 65 cases. Of these, 42 are from the StrokeEdit wid-) 317.48 463.64 P
+-0.01 (get, where a number of client messages report user selection) 317.48 452.64 P
+0.17 (of strokes. These messages are similar enough to be consid-) 317.48 441.64 P
+0.79 (ered at once, reducing the number of cases for StrokeEdits) 317.48 430.64 P
+(to 18 and for all of Jupiter to 41.) 317.48 419.64 T
+0.09 (T) 317.48 397.64 P
+0.09 (o give a \337avor for how the transformations work, we show) 322.89 397.64 P
+-0.1 (a few examples. T) 317.48 386.64 P
+-0.1 (able 3 shows some of the client and server) 389.8 386.64 P
+0.99 (operations for several widgets, and T) 317.48 375.64 P
+0.99 (able 2 from earlier in) 470.04 375.64 P
+(the paper gives the list for the StrokeEdit widget.) 317.48 364.64 T
+1.76 (Simple widgets, like Numeric sliders and Booleans, have) 317.48 246.64 P
+0.22 (small values that are always sent in their entirety) 317.48 235.64 P
+0.22 (. For these,) 513.55 235.64 P
+0.18 (we designate one of server or client to be the \322winner) 317.48 224.64 P
+0.18 (,\323 giv-) 532.7 224.64 P
+(ing) 317.48 213.64 T
+0 F
+(xform) 322.48 200.64 T
+2 F
+(\050SetV) 345.81 200.64 T
+(alue\050v1\051, SetV) 368.03 200.64 T
+(alue\050v2\051\051) 425.24 200.64 T
+(= {no-op, SetV) 437.48 189.64 T
+(alue\050v2\051}) 497.64 189.64 T
+(The \322losing\323 message is simply discarded.) 317.48 176.64 T
+2.59 (For T) 317.48 154.64 P
+2.59 (extLists, transformations for SetV) 341.87 154.64 P
+2.59 (alue vs. Replace-) 484.64 154.64 P
+-0.01 (Items and Activate vs. ReplaceItems discard the user action.) 317.48 143.64 P
+0.93 (Each of these client messages is returning the index in the) 317.48 132.64 P
+2.53 (list of text of the currently selected item. However) 317.48 121.64 P
+2.53 (, the) 538.67 121.64 P
+2.17 (application has changed this list, and most likely cannot) 317.48 110.64 P
+0.88 (make sense of this obsolete index. In this case, we believe) 317.48 99.64 P
+0.01 (that the user will usually be able to identify the problem and) 317.48 88.64 P
+(recover; the application is less likely to be that smart.) 317.48 77.64 T
+5 F
+(W) 323.48 346.64 T
+(idget) 333.3 346.64 T
+(Client messages) 381.48 346.64 T
+(Server messages) 475.18 346.64 T
+2 F
+(Numeric) 323.48 333.64 T
+(SetV) 381.48 333.64 T
+(alue) 400.37 333.64 T
+(SetV) 475.18 333.64 T
+(alue) 494.08 333.64 T
+(T) 323.48 320.64 T
+(extList) 328.89 320.64 T
+(SetV) 381.48 320.64 T
+(alue) 400.37 320.64 T
+(SetV) 475.18 320.64 T
+(alue) 494.08 320.64 T
+(Activate) 381.48 307.64 T
+(ReplaceItems) 475.18 307.64 T
+(T) 323.48 294.64 T
+(extEdit) 328.89 294.64 T
+(Replace) 381.48 294.64 T
+(Replace) 475.18 294.64 T
+1 9 Q
+5.04 (T) 331.65 279.31 P
+5.04 (able 3:) 336.48 279.31 P
+4 F
+5.04 (Messages de\336ned for selected Jupiter) 372.54 279.31 P
+317.48 260.31 558.42 266.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 264.31 560.48 264.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+317.48 260.31 551.48 266.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 264.31 560.48 264.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+317.48 260.31 558.42 266.31 C
+317.48 260.31 558.42 266.31 C
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+317.48 264.31 560.48 264.31 2 L
+0.25 H
+2 Z
+0 X
+0 0 0 1 0 0 0 K
+N
+317.48 260.31 558.42 266.31 C
+0 0 612 792 C
+4 9 Q
+0 X
+0 0 0 1 0 0 0 K
+(widgets.) 331.65 269.31 T
+317.48 355.31 558.42 355.31 2 L
+V
+0.5 H
+0 Z
+N
+317.48 342.31 558.42 342.31 2 L
+V
+0.25 H
+N
+317.48 329.31 558.42 329.31 2 L
+V
+N
+317.48 303.31 558.42 303.31 2 L
+V
+N
+317.48 290.31 558.42 290.31 2 L
+V
+0.5 H
+N
+FMENDPAGE
+%%EndPage: "8" 8
+%%Page: "9" 9
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(9/10) 540.64 48.33 T
+2 F
+0.22 (The Replace operation for T) 53.86 728.64 P
+0.22 (extEdits deletes a region of text) 167.34 728.64 P
+1.13 (and inserts a string to replace it. For Replace vs. Replace,) 53.86 717.64 P
+4.22 (the transformation produces a \336nal state that \050a\051 has) 53.86 706.64 P
+1.72 (removed all the text requested by either Replace, \050b\051 has) 53.86 695.64 P
+1.53 (inserted the text requested by each, sorted by the starting) 53.86 684.64 P
+2.36 (points of the delete regions. W) 53.86 673.64 P
+2.36 (e arbitrarily chose to put) 187.61 673.64 P
+(server text \336rst if both try to insert at the same spot.) 53.86 662.64 T
+1.85 (One interesting subcase occurs when one Replace inserts) 53.86 640.64 P
+-0.2 (text into the middle of the region of text being deleted by the) 53.86 629.64 P
+0.05 (other) 53.86 618.64 P
+0.05 (. W) 73.86 618.64 P
+0.05 (e choose to insert the text anyway) 87.54 618.64 P
+0.05 (, since we want to) 222.69 618.64 P
+0.41 (preserve the user) 53.86 607.64 P
+0.41 (\325) 122.79 607.64 P
+0.41 (s input if possible. This is true even if the) 125.57 607.64 P
+0.38 (inserted text is coming from the server) 53.86 596.64 P
+0.38 (, since it may be text) 210.14 596.64 P
+(another user typed that is being echoed to this window) 53.86 585.64 T
+(.) 271.24 585.64 T
+0.28 (However) 53.86 563.64 P
+0.28 (, the transformed Replace in this case has to delete) 90.11 563.64 P
+0.63 (two regions, the one before the inserted text, and one after) 53.86 552.64 P
+0.63 (.) 292.3 552.64 P
+-0.17 (There is no \322delete disjoint regions\323 operation for T) 53.86 541.64 P
+-0.17 (ext) 259.52 541.64 P
+-0.17 (Edits,) 271.74 541.64 P
+-0.04 (so we split the operation into two messages, with the second) 53.86 530.64 P
+0.92 (one implicitly generated from a fractional state number) 53.86 519.64 P
+0.92 (. In) 280.55 519.64 P
+0.69 (general, one has to be careful that a transformation doesn\325) 53.86 508.64 P
+0.69 (t) 292.02 508.64 P
+0.49 (produce new operations not in the original set de\336ned for a) 53.86 497.64 P
+1.43 (widget. This was the only time we had this problem, and) 53.86 486.64 P
+(message splitting let us \336nesse the problem.) 53.86 475.64 T
+0.34 (The StrokeEdit widget\325) 53.86 453.64 P
+0.34 (s input modes cause particular prob-) 147.86 453.64 P
+0.88 (lems in choosing transformations. For example, two of the) 53.86 442.64 P
+1.49 (modes a StrokeEdit can be placed in allow users to draw) 53.86 431.64 P
+0.17 (new lines \050\322line mode\323\051 and to click with the mouse to gen-) 53.86 420.64 P
+0.98 (erate reports about which strokes were hit \050\322hit mode\323\051. If) 53.86 409.64 P
+0.88 (an application switches a StrokeEdit from line mode to hit) 53.86 398.64 P
+1.66 (mode, then it ar) 53.86 387.64 P
+1.66 (guably doesn\325) 121.43 387.64 P
+1.66 (t expect to receive noti\336ca-) 179.29 387.64 P
+-0.06 (tions of new lines created by the user) 53.86 376.64 P
+-0.06 (. On the other hand, we) 201.49 376.64 P
+0.49 (don\325) 53.86 365.64 P
+0.49 (t want to discard the user) 72.01 365.64 P
+0.49 (\325) 175.08 365.64 P
+0.49 (s ef) 177.86 365.64 P
+0.49 (fort, either) 192.33 365.64 P
+0.49 (. Currently) 234.48 365.64 P
+0.49 (, we) 277.65 365.64 P
+1.06 (keep the strokes, but this decision comes under discussion) 53.86 354.64 P
+(from time to time.) 53.86 343.64 T
+(T) 53.86 321.64 T
+(o summarize, the guidelines we tried to follow were:) 59.27 321.64 T
+3 11 Q
+(\245) 53.86 308.64 T
+2 10 Q
+-0.01 (The set of operations should be closed under the transfor-) 64.66 308.64 P
+(mation rules.) 64.66 297.64 T
+3 11 Q
+(\245) 53.86 284.64 T
+2 10 Q
+(T) 64.66 284.64 T
+(ry not to discard user input.) 70.42 284.64 T
+3 11 Q
+(\245) 53.86 271.64 T
+2 10 Q
+(T) 64.66 271.64 T
+(ry to avoid confusing application code.) 70.42 271.64 T
+-0.16 (While we could not always satisfy all these at once, we were) 53.86 258.64 P
+2.55 (generally happy with the compromises we were able to) 53.86 247.64 P
+(reach.) 53.86 236.64 T
+1 9 Q
+(8) 53.86 215.31 T
+(CONCLUSIONS) 65.2 215.31 T
+2 10 Q
+1.55 (The Jupiter window toolkit is client-platform independent) 53.86 202.64 P
+2.32 (and provides fast response to low-level user interactions) 53.86 191.64 P
+4.76 (even over low-bandwidth, high-latency communication) 53.86 180.64 P
+0.9 (channels. It achieves these goals through the use of a high) 53.86 169.64 P
+0.88 (level of abstraction on the wire: Jupiter clients and servers) 53.86 158.64 P
+0.26 (communicate solely in terms of high-level widgets and user) 53.86 147.64 P
+(events.) 53.86 136.64 T
+0.28 (T) 53.86 114.64 P
+0.28 (o solve the distributed-state synchronization problems that) 59.27 114.64 P
+0.15 (this design entails, Jupiter uses an optimistic algorithm with) 53.86 103.64 P
+-0.08 (widget-type-speci\336c transformations to recover from server/) 53.86 92.64 P
+0.09 (client con\337icts. Jupiter) 53.86 81.64 P
+0.09 (\325) 145.23 81.64 P
+0.09 (s combination of a centralized archi-) 148.01 81.64 P
+3.12 (tecture and optimistic concurrency control gives us the) 317.48 728.64 P
+0.02 (advantages of both: easy serializability of concurrent update) 317.48 717.64 P
+(streams and fast interactive response.) 317.48 706.64 T
+-0.15 (Our concurrency-control algorithm is a variant of one devel-) 317.48 684.64 P
+-0.11 (oped by Ellis and Gibbs for their Grove text editor) 317.48 673.64 P
+-0.11 (. Our con-) 517.83 673.64 P
+(tributions include) 317.48 662.64 T
+3 11 Q
+(\245) 317.48 649.64 T
+2 10 Q
+2.52 (signi\336cant simpli\336cation and improvement due to our) 328.28 649.64 P
+-0.2 (added assumption of an ordered, reliable communications) 328.28 638.64 P
+(channel between exactly two participants,) 328.28 627.64 T
+3 11 Q
+(\245) 317.48 614.64 T
+2 10 Q
+0.42 (a mechanism for doing full) 328.28 614.64 P
+0 F
+0.42 (n) 441.21 614.64 P
+2 F
+0.42 (-way sharing of widget val-) 446.21 614.64 P
+(ues using the pair) 328.28 603.64 T
+(-wise algorithm, and) 398.35 603.64 T
+3 11 Q
+(\245) 317.48 590.64 T
+2 10 Q
+0.67 (a discussion of some of the issues involved in designing) 328.28 590.64 P
+0.86 (the associated transformation functions for pairs of con-) 328.28 579.64 P
+(\337icting messages.) 328.28 568.64 T
+1 9 Q
+(9) 317.48 547.31 T
+(ACKNOWLEDGMENTS) 328.82 547.31 T
+2 10 Q
+0.54 (In addition to the authors, Ron Frederick and Bob Krivacic) 317.48 534.64 P
+-0.08 (have helped with the implementation of Jupiter) 317.48 523.64 P
+-0.08 (. Early use of) 505.33 523.64 P
+0.2 (the toolkit by Berry Kercheval gave us valuable insight into) 317.48 512.64 P
+-0.13 (its design. W) 317.48 501.64 P
+-0.13 (e are also grateful to Doug T) 368.92 501.64 P
+-0.13 (erry and Ron Fred-) 482.43 501.64 P
+-0.02 (erick for reading early drafts of this paper) 317.48 490.64 P
+-0.02 (, and to Lisa Alfke) 483.81 490.64 P
+(for tracking down many papers for us on short notice.) 317.48 479.64 T
+1 9 Q
+(REFERENCES) 317.48 458.31 T
+2 10 Q
+([1]) 317.48 445.64 T
+5.02 (Gideon A) 339.08 445.64 P
+5.02 (vrahami, Kenneth P) 382.52 445.64 P
+5.02 (. Brooks, Marc H.) 471.16 445.64 P
+2.44 (Brown, \322A two-view approach to constructing user) 339.08 434.64 P
+2.27 (interfaces,\323) 339.08 423.64 P
+0 F
+2.27 (Computer Graphics) 389.65 423.64 P
+2 F
+2.27 (, 23\0503\051, \050July 1989\051,) 471.64 423.64 P
+(pp. 137-146) 339.08 412.64 T
+([2]) 317.48 395.64 T
+0.31 (Joel Bartlett, \322Don\325) 339.08 395.64 P
+0.31 (t \336dget with widgets, draw!\323) 418.11 395.64 P
+0 F
+0.31 (Pr) 536.85 395.64 P
+0.31 (oc.) 546.48 395.64 P
+0.13 (6th Annual X T) 339.08 384.64 P
+0.13 (echnical Confer) 399.38 384.64 P
+0.13 (ence) 463.3 384.64 P
+2 F
+0.13 (, Jan 1992, pp 1) 481.62 384.64 P
+0.13 (17-) 545.09 384.64 P
+(131) 339.08 373.64 T
+([3]) 317.48 356.64 T
+5.27 (Krishna Bharat and Marc H. Brown, \322Building) 339.08 356.64 P
+7.83 (Distributed, Multi-User Applications by Direct) 339.08 345.64 P
+-0.04 (Manipulation\323) 339.08 334.64 P
+0 F
+-0.04 (Pr) 399.86 334.64 P
+-0.04 (oceedings of the ACM Symposium on) 409.49 334.64 P
+1.36 (User Interface and Softwar) 339.08 323.64 P
+1.36 (e T) 451.95 323.64 P
+1.36 (echnology) 464.89 323.64 P
+2 F
+1.36 ( \050UIST \32594\051,) 505.99 323.64 P
+(1994, pp 71-81) 339.08 312.64 T
+([4]) 317.48 295.64 T
+2.45 (Marc H. Brown and James R. Meehan,) 339.08 295.64 P
+0 F
+2.45 (FormsVBT) 514.53 295.64 P
+7.74 (Refer) 339.08 284.64 P
+7.74 (ence manual) 360.37 284.64 P
+2 F
+7.74 (, available as part of) 418.92 284.64 P
+4 9 Q
+7.74 (ftp://) 540.91 284.64 P
+(gatekeeper) 339.08 273.64 T
+(.dec.com/pub/DEC/Modula-3/contrib/) 383.61 273.64 T
+(formsvbt.25Mar93.ps.Z) 339.08 262.64 T
+2 10 Q
+([5]) 317.48 245.64 T
+2 (T) 339.08 245.64 P
+2 (errence Crowley) 344.49 245.64 P
+2 (, Paul Milazzo, Ellie Baker) 412.2 245.64 P
+2 (, Harry) 528.11 245.64 P
+3.29 (Forsdick, and Raymond T) 339.08 234.64 P
+3.29 (omlinson, \322MMConf: an) 452.68 234.64 P
+9.7 (infrastructure for building shared multimedia) 339.08 223.64 P
+1.86 (applications\323) 339.08 212.64 P
+0 F
+1.86 (Pr) 396.21 212.64 P
+1.86 (oc. of the Confer) 405.84 212.64 P
+1.86 (ence on Computer) 478.26 212.64 P
+1.86 (-) 555.09 212.64 P
+0.46 (Supported Cooperative W) 339.08 201.64 P
+0.46 (ork) 442.97 201.64 P
+2 F
+0.46 ( \050CSCW \32590\051, Oct. 1990,) 456.3 201.64 P
+(pp 329-342) 339.08 190.64 T
+([6]) 317.48 173.64 T
+3.36 (Pavel Curtis,) 339.08 173.64 P
+0 F
+3.36 (LambdaMOO Pr) 399.96 173.64 P
+3.36 (ogrammer) 471 173.64 P
+3.36 (\325) 513.03 173.64 P
+3.36 (s Manual) 515.07 173.64 P
+2 F
+3.36 (,) 555.92 173.64 P
+17.18 (available as) 339.08 162.64 P
+4 9 Q
+17.19 (ftp://ftp.parc.xerox.com/pub/MOO/) 422.87 162.64 P
+(ProgrammersManual.ps) 339.08 151.64 T
+2 10 Q
+([7]) 317.48 134.64 T
+0.13 (Pavel Curtis and David A. Nichols, \322MUDs Grow Up:) 339.08 134.64 P
+0.08 (Social V) 339.08 123.64 P
+0.08 (irtual Reality in the Real W) 373.28 123.64 P
+0.08 (orld,\323) 483.17 123.64 P
+0 F
+0.08 (Pr) 508.8 123.64 P
+0.08 (oceedings) 518.43 123.64 P
+0.04 (of the 1994 IEEE Computer Confer) 339.08 112.64 P
+0.04 (ence) 480.86 112.64 P
+2 F
+0.04 (, pp. 193--200,) 499.18 112.64 P
+14.48 (January 1994. Also available as) 339.08 101.64 P
+4 9 Q
+14.49 (ftp://) 540.91 101.64 P
+(ftp.parc.xerox.com/pub/MOO/papers/) 339.08 90.64 T
+(MUDsGrowUp.ps) 339.08 79.64 T
+2 10 Q
+(.) 409.08 79.64 T
+FMENDPAGE
+%%EndPage: "9" 9
+%%Page: "10" 10
+612 792 0 FMBEGINPAGE
+[0 0 0 1 0 0 0]
+[ 0 1 1 0 1 0 0]
+[ 1 0 1 0 0 1 0]
+[ 1 1 0 0 0 0 1]
+[ 1 0 0 0 0 1 1]
+[ 0 1 0 0 1 0 1]
+[ 0 0 1 0 1 1 0]
+ 7 FrameSetSepColors
+FrameNoSep
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+0 0 0 1 0 0 0 K
+53.86 40.82 558.42 54.99 R
+7 X
+0 0 0 1 0 0 0 K
+V
+0 10 Q
+0 X
+(Pr) 53.86 48.33 T
+(oceedings of UIST \32495) 63.49 48.33 T
+(10/10) 535.64 48.33 T
+2 F
+([8]) 53.86 728.64 T
+3.83 (Pavel Curtis, Michael Dixon, Ron Frederick, and) 75.46 728.64 P
+8.05 (David A. Nichols, \322The Jupiter Audio/V) 75.46 717.64 P
+8.05 (ideo) 277.58 717.64 P
+0.99 (Architecture: Secure Multimedia in Network Places,\323) 75.46 706.64 P
+(to appear in) 75.46 695.64 T
+0 F
+(ACM Multimedia \32595) 125.17 695.64 T
+2 F
+(.) 210.72 695.64 T
+([9]) 53.86 678.64 T
+7.76 (John Danskin, \322Previewing PostScript over a) 75.46 678.64 P
+0.62 (telephone in 3 seconds per page,\323) 75.46 667.64 P
+0 F
+0.62 (Pr) 216.09 667.64 P
+0.62 (oc. 9th Annual X) 225.72 667.64 P
+(T) 75.46 656.64 T
+(echnical Confer) 80.1 656.64 T
+(ence) 143.89 656.64 T
+2 F
+(, Jan 1995, pp 23-40) 162.21 656.64 T
+([10]) 53.86 639.64 T
+2.78 (John Danskin, \322Higher bandwidth X,\323) 75.46 639.64 P
+0 F
+2.78 (Pr) 245.18 639.64 P
+2.78 (oceedings) 254.81 639.64 P
+(ACM Multimedia \32594) 75.46 628.64 T
+2 F
+(, Oct. 1994, pp 89-96) 161.01 628.64 T
+([1) 53.86 611.64 T
+(1]) 61.82 611.64 T
+1.53 (Prasun Dewan and Rajiv Choudhary) 75.46 611.64 P
+1.53 (, \322Primitives for) 227.02 611.64 P
+2.65 (programming multi-user interfaces,\323) 75.46 600.64 P
+0 F
+2.65 (Pr) 232.26 600.64 P
+2.65 (oceedings of) 241.89 600.64 P
+1.03 (the ACM Symposium on User Interface and Softwar) 75.46 589.64 P
+1.03 (e) 290.36 589.64 P
+(T) 75.46 578.64 T
+(echnology) 80.1 578.64 T
+2 F
+( \050UIST \32591\051, 1991, pp 69-78) 121.2 578.64 T
+([12]) 53.86 561.64 T
+1.35 (C. A. Ellis and S. J. Gibbs, \322Concurrency control in) 75.46 561.64 P
+4.89 (groupware systems,\323) 75.46 550.64 P
+0 F
+4.89 (Pr) 171.62 550.64 P
+4.89 (oc. 1989 ACM SIGMOD) 181.25 550.64 P
+0.19 (International Confer) 75.46 539.64 P
+0.19 (ence on the Management of Data) 158.34 539.64 P
+2 F
+0.19 (,) 292.3 539.64 P
+(June 1989, pp 399-407) 75.46 528.64 T
+([13]) 53.86 511.64 T
+1.7 (Jim Fulton and Chris Kent Kantarjiev) 75.46 511.64 P
+1.7 (, \322A report on) 234.15 511.64 P
+4.21 (Low Bandwidth X \050LBX\051\323,) 75.46 500.64 P
+0 F
+4.21 (Pr) 205.33 500.64 P
+4.21 (oc. 7th Annual X) 214.96 500.64 P
+(T) 75.46 489.64 T
+(echnical Confer) 80.1 489.64 T
+(ence) 143.89 489.64 T
+2 F
+(, Jan. 1993, p 251) 162.21 489.64 T
+([14]) 53.86 472.64 T
+0.35 (S. J. Gibbs, \322LIZA: An extensible groupware toolkit\323,) 75.46 472.64 P
+0 F
+0.93 (CHI \32589 Confer) 75.46 461.64 P
+0.93 (ence Pr) 140.28 461.64 P
+0.93 (oceedings) 171.65 461.64 P
+2 F
+0.93 (, April 1989, pp 29-) 211.65 461.64 P
+(35) 75.46 450.64 T
+([15]) 53.86 433.64 T
+-0.05 (James Gosling, David S. H. Rosenthal, and Michelle J.) 75.46 433.64 P
+(Arden,) 75.46 422.64 T
+0 F
+(The NeWS Book) 105.45 422.64 T
+2 F
+(, Springer) 170.44 422.64 T
+(-V) 209.68 422.64 T
+(erlag, 1989.) 219.12 422.64 T
+([16]) 53.86 405.64 T
+3.21 (Alain Karsenty and Michel Beaudouin-Lafon, \322An) 75.46 405.64 P
+4.5 (algorithm for distributed groupware applications,\323) 75.46 394.64 P
+0 F
+6.08 (Pr) 75.46 383.64 P
+6.08 (oc. of the 13th International Confer) 85.09 383.64 P
+6.08 (ence on) 257.9 383.64 P
+1.15 (Distributed Computing Systems) 75.46 372.64 P
+2 F
+1.15 ( \050ICDCS\051, May 1993,) 204.42 372.64 P
+(pp. 195-202) 75.46 361.64 T
+([17]) 53.86 344.64 T
+3.48 (Michael Knister and Atul Prakash, \322Issues in the) 75.46 344.64 P
+3.68 (design of a toolkit for supporting multiple group) 75.46 333.64 P
+4.32 (editors,\323) 339.08 728.64 P
+0 F
+4.32 (Computing Systems) 380.06 728.64 P
+2 F
+4.32 ( 6\0502\051, \050Spring 1993\051,) 462.98 728.64 P
+(pp.) 339.08 717.64 T
+(135-166) 354.08 717.64 T
+([18]) 317.48 700.64 T
+0.95 (John K. Ousterhout,) 339.08 700.64 P
+0 F
+0.95 (T) 424.97 700.64 P
+0.95 (cl and the Tk T) 429.61 700.64 P
+0.95 (oolkit) 492.48 700.64 P
+2 F
+0.95 (, Addison-) 515.26 700.64 P
+(W) 339.08 689.64 T
+(esley) 347.72 689.64 T
+(, 1994.) 367.62 689.64 T
+([19]) 317.48 672.64 T
+2.58 (Keith Packard, \322Designing LBX,\323) 339.08 672.64 P
+0 F
+2.58 (Pr) 488.83 672.64 P
+2.58 (oc. of the 8th) 498.46 672.64 P
+-0.22 (Annual X T) 339.08 661.64 P
+-0.22 (echnical Confer) 383.27 661.64 P
+-0.22 (ence) 446.84 661.64 P
+2 F
+-0.22 (, Jan. 1994, pp 121-133) 465.16 661.64 P
+([20]) 317.48 644.64 T
+0.62 (Dorab Patel and Scott D. Kalter) 339.08 644.64 P
+0.62 (, \322A UNIX toolkit for) 469 644.64 P
+3.68 (distributed synchronous collaborative applications,\323) 339.08 633.64 P
+0 F
+(Computing Systems) 339.08 622.64 T
+2 F
+( 6\0502\051, \050Spring 1993\051, pp 105-133) 417.69 622.64 T
+([21]) 317.48 605.64 T
+-0.01 (John F) 339.08 605.64 P
+-0.01 (. Patterson, Ralph D. Hill, and Steven L. Rohall,) 365.21 605.64 P
+1.49 (\322Rendezvous: an architecture for synchronous multi-) 339.08 594.64 P
+5.85 (user applications,\323) 339.08 583.64 P
+0 F
+5.85 (Pr) 427.71 583.64 P
+5.85 (oc. of the Confer) 437.34 583.64 P
+5.85 (ence on) 521.75 583.64 P
+1.02 (Computer) 339.08 572.64 P
+1.02 (-Supported Cooperative W) 378.88 572.64 P
+1.02 (ork) 487.22 572.64 P
+2 F
+1.02 ( \050CSCW \32590\051,) 500.55 572.64 P
+(Oct. 1990, pp 317-328) 339.08 561.64 T
+([22]) 317.48 544.64 T
+0.11 (Rob Pike, \322The Blit: a multiplexed graphics terminal,\323) 339.08 544.64 P
+0 F
+1.16 (A) 339.08 533.64 P
+1.16 (T&T Bell Labs T) 344.82 533.64 P
+1.16 (ech. Journal) 414.89 533.64 P
+2 F
+1.16 (, 63\0508\051 \050Oct 1984\051, pp) 466.04 533.64 P
+(1607-1631) 339.08 522.64 T
+([23]) 317.48 505.64 T
+1.83 (Rob Pike, \322The text editor Sam,\323) 339.08 505.64 P
+0 F
+1.83 (Softwar) 485.03 505.64 P
+1.83 (e Practice) 515.78 505.64 P
+(and Experience) 339.08 494.64 T
+2 F
+( 17\0501) 401.56 494.64 T
+(1\051 \050Nov 1987\051, pp 813-45.) 422.02 494.64 T
+([24]) 317.48 477.64 T
+2.66 (Mark Roseman and Saul Greenber) 339.08 477.64 P
+2.66 (g, \322GroupKit: A) 487.83 477.64 P
+0.93 (groupware toolkit for building real-time conferencing) 339.08 466.64 P
+1.44 (applications,\323) 339.08 455.64 P
+0 F
+1.44 (Pr) 398.29 455.64 P
+1.44 (oc. of the Confer) 407.92 455.64 P
+1.44 (ence on Computer) 479.09 455.64 P
+1.44 (-) 555.09 455.64 P
+0.11 (Supported Cooperative W) 339.08 444.64 P
+0.11 (ork) 442.26 444.64 P
+2 F
+0.11 ( \050CSCW \32592\051, Nov) 455.59 444.64 P
+0.11 (. 1992,) 530.82 444.64 P
+(pp 43-50) 339.08 433.64 T
+([25]) 317.48 416.64 T
+3.65 (Robert. W) 339.08 416.64 P
+3.65 (. Schei\337er and James Gettys; with Jim) 383.47 416.64 P
+1.1 (Flowers and David Rosenthal,) 339.08 405.64 P
+0 F
+1.1 (X W) 467.08 405.64 P
+1.1 (indow system: the) 484.57 405.64 P
+4.66 (complete r) 339.08 394.64 P
+4.66 (efer) 385.86 394.64 P
+4.66 (ence to Xlib, X pr) 401.04 394.64 P
+4.66 (otocol, ICCCM,) 489.59 394.64 P
+(XLFD) 339.08 383.64 T
+2 F
+(, Digital Press, 1992) 364.08 383.64 T
+([26]) 317.48 366.64 T
+0.35 (Sun Microsystems,) 339.08 366.64 P
+0 F
+0.35 (Hot Java Home Page) 418.95 366.64 P
+2 F
+0.35 (, available as) 505.8 366.64 P
+4 9 Q
+(http://java.sun.com) 339.08 355.64 T
+2 10 Q
+(.) 414.62 355.64 T
+FMENDPAGE
+%%EndPage: "10" 10
+%%Trailer
+%%BoundingBox: 0 0 612 792
+%%PageOrder: Ascend
+%%Pages: 10
+%%DocumentFonts: Times-Italic
+%%+ Helvetica-Bold
+%%+ Times-Roman
+%%+ Courier-Bold
+%%+ Helvetica
+%%+ Times-Bold
+%%+ Helvetica-Oblique
+%%EOF
