@@ -1,0 +1,41 @@
+- lenguajes de programación
+
+java: usando osgi para la modularidad de la aplicación.
+osgi book
+scala: osgi?
+python:
+
+posibilidad de realizar el núcleo en java y demas clientes en scala (o viceversa)
+
+plugin de netbeans: java
+
+- diagrama de componentes
+
+ver en argouml
+
+- especificación de protocolo
+
+protocolo de comunicacion entre los clientes (lease stand-alone y plugin netbeans) y el nucleo
+tbd
+
+- sincronización:
+
+algoritmo de jupiter
+pensado para alta latencia y para bajo ancho de banda
+
+- varias opciones
+  - una de las partes que comparte el archivo es el server y las demas se clientes se conectan directamente a el 
+    (caso tipico: varias personas en una misma lan)
+	 sin necesidad de un servidor central, sino que una de las partes crea el servidor y comparte un archivo.
+
+  - servidor dedicado y se evita problemas de ruteo, firewall, etc. 
+    reducir la complejidad del usuario final
+
+interfaces:
+
+  - app standalone: por ejemplo implementanda en swing, con posibilidad de crear un proceso servidor o conectarse a otro servidor
+  - netbeans: idem anterior pero embebido en netbeans
+    integracion con scm (git, svn)
+  - github: ?
+
+
