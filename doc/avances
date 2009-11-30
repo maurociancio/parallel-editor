@@ -39,3 +39,8 @@ interfaces:
   - github: ?
 
 
+- resumen:
+ -osgi
+ -jupiter
+ -scala
+ -nb plugins
