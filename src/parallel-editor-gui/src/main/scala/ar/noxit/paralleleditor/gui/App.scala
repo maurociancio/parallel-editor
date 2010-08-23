@@ -1,11 +1,11 @@
 package ar.noxit.paralleleditor.gui
 
-/**
- * Hello world!
- *
- */
-object App {
-    def main(args: Array[String]){
-        println( "Hello World!" )
+import scala.swing.{SimpleSwingApplication, MainFrame}
+import java.awt.Dimension
+
+object App extends SimpleSwingApplication {
+    def top = new MainFrame {
+        title = "Parallel Editor GUI"
+        size = new Dimension(400, 300)
     }
 }
