@@ -1,4 +1,4 @@
-package ar.noxit.paralleleditor
+package ar.noxit.paralleleditor.kernel
 
 import org.junit._
 import Assert._
@@ -8,10 +8,4 @@ class AppTest {
 
     @Test
     def testOK() = assertTrue(true)
-
-//    @Test
-//    def testKO() = assertTrue(false)
-
 }
-
-
