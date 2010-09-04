@@ -147,6 +147,29 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 	\end{itemize}
 	\section{Criterios de calidad}
 	\section{Tecnologías}
+	
+	\begin{itemize}
+	
+	\item Scala: para el desarrollo de los módulos cliente, nucleo e interfaz gráfica se utilizará el lenguaje de programación Scala. El mismo está diseñado teniendo en mente concurrencia, expresividad y escalabilidad. El resultado de la compilación produce código objeto que corre sobre la máquina virtual de java, aprovechando la estabilidad y madurez de la misma. Provee un modelo de comunicación por mensajes basado en actores que simplifica y abstrae de los problemas clásicos que surgen de la naturaleza concurrente del dominio.
+Se eligió este lenguaje ya que ofrece una visión alternativa a los problemas clásicos de la concurrencia y será de soporte principalmente para el núcleo de la aplicación.
+
+	\item Java: el lenguaje Scala permite utilizar código Java y viceversa. El plugin que se desarrollará para el IDE Eclipse será desarrollado con el lenguaje Java, ya que Eclipse se encuentra desarrollado en esa plataforma.
+
+	\item Spring: framework para la inyección de dependencias.
+
+	\item Maven: herramienta para la la gestión y automatización de los procesos del ciclo de vida del proyecto en términos de compilación, dependencias, tests, integración, etc.
+
+	\item Framework de unit testing: Scala Test y TestNG.
+
+	\item Versionado GIT: sistema de versionado de código distribuído.
+
+	\item Eclipse IDE: es el estandar de facto entre los entornos de desarrollo integrado para Java.
+
+	\item GitHub: el código fuente será alojado en este sitio. El sitio provee gráficos y estadísticas útiles sobre el desarrollo del código fuente.	
+
+	\end{itemize}
+
+	
 	\section{Infraestructura necesaria}
 	\section{Riesgos}
 	\section{Requerimientos funcionales}
