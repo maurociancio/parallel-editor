@@ -5,7 +5,7 @@
 \usepackage{makeidx}
 
 \title { \textbf{Propuesta de Trabajo Profesional}}
-\date{2do cuatrimestre de 2010}
+\date{2do cuatrimestre de 2009}
 \author{\textbf{Ciancio Alessio, Mauro Lucas} \\
 		\textbf{Gilioli, Leandro Ezequiel}	  \\
 		\texttt{\{maurociancio,legilioli\}@gmail.com}
@@ -17,36 +17,23 @@
 \tableofcontents
 \newpage
 
-	\section{Integrantes}
-
-A continuación se listan los alumnos que desarrollaron esta propuesta y se incluye sus datos personales:
-
-	\begin{itemize}
-		\item Ciancio Alessio, Mauro Lucas. \\
-		      Padrón 86.357.
-		\item Gilioli, Leandro Ezequiel. \\
-		      Padrón 86.075.
-	\end{itemize}
-
 	\section{Contexto}
 
-	En el presente documento se definirá el plan de proyecto para la propuesta realizada en el documento de visión titulado ``Visión Trabajo Profesional" (para más información ver \cite{visiontpprof}). 
-
+	En el presente documento se definirá el plan de proyecto para la propuesta realizada en el documento de visión titulado "Visión Trabajo Profesional" (para más información ver \cite{visiontpprof}). 
 	Dentro del mismo se definiran entre otros los siguientes puntos: alcance, planificación, riesgos y criterios de calidad. 
-
 	Este documento servirá de soporte en el proceso de desarrollo del producto y definirá criterios para medir el avance del proyecto de forma objetiva.	
 		
 	\section{Objetivo del proyecto}
 
-El objetivo del proyecto es obtener un producto de software que permita a los usuarios elaborar documentos de texto de forma concurrente y en tiempo real. El producto se dividirá en dos sub productos de menor tamaño: el primero permitirá la edición colaborativa de texto usando un software independiente de cualquier otra aplicación. El segundo comprenderá la integración con un entorno de desarrollo integrado (IDE \cite{ide}).
+El objetivo del proyecto es obtener un producto de software que permita a los usuarios elaborar documentos de texto de forma concurrente y en tiempo real. El producto se dividirá en dos sub productos de menor tamaño: el primero permitirá la edición colaborativa de texto usando un software independiente de cualquier otra aplicación. El segundo comprenderá la integración con un entorno de desarrollo integrado (IDE).
 
-El nombre producto será ``Parallel Editor".
+El nombre producto será "Parallel Editor".
 
 A su vez, se pretende desarrollar el producto siguiendo los criterios de calidad que se definen más adelante en este documento.
 
 También se desarrollará documentación de usuario y técnica del producto de modo que sea posible la extensión e incorporación a otras plataformas e IDE's.
 
-El producto será desarrollado teniendo en cuenta la integración del mismo en otros contextos, por lo que se podrá observar una vez finalizado que los dos subproductos reutilizan un gran porcentaje del código fuente desarrollado una sola vez. Este punto es importante y es considerado en los requerimientos no funcionales.	
+El producto será desarrollado teniendo en cuenta la integración del mismo en otros contextos, por lo que se podrá observar una vez finalizado que los dos subproductos reutilizan un gran porcentaje del código fuente desarrollado una sola vez. Este punto es importante y es considerado en los requerimientos funcionales.	
 	
 	\section{Necesidades del cliente / Mercado}
 	
@@ -60,36 +47,76 @@ El producto será desarrollado teniendo en cuenta la integración del mismo en o
 	\end{itemize}
 
 	\section{Competencia}
+	
+	
+	\begin{enumerate}
+\item Google Docs y Google Wave
 
-En esta sección se describirán productos existentes en el mercado y se compararán con la presente propuesta:
+Provee la posibilidad de editar en tiempo real concurrentemente documentos con formato utilizando un navegador compatible. Posibilita la participación de múltiples usuarios en línea. Sin embargo, su mayor desventaja consiste en la dependencia de una conexión a internet para la disponibilidad del servicio, no es posible hasta ahora, la utilización del mismo en una red LAN privada. Además es solo utilizable a través de la interfaz web del navegador por lo cual su integración con herramientas de terceros no es posible. Cabe aclarar que google recientemente ha dejado de desarrollar Google Wave.
 
-	\subsection{Google Docs y Google Wave}
 
-	Provee la posibilidad de editar en tiempo real concurrentemente documentos con formato utilizando un navegador compatible. Posibilita la participación de múltiples usuarios en línea.
 
-	Sin embargo, su mayor desventaja consiste en la dependencia de una conexión a internet para la disponibilidad del servicio, no es posible hasta ahora, la utilización del mismo en una red LAN privada.
+		\item BeeWeeVee
 
-	 Además es sólo utilizable a través de la interfaz web del navegador por lo cual su integración con herramientas de terceros no es posible.
+http://www.beweevee.com/
+Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones. Se provee como un software development kit para el desarrollo sobre la plataforma .Net. Por este motivo si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no cubre totalmente el espacio de potenciales aplicaciones que podrían beneficiarse pero que no se desarrollan en .Net. Es de licencia libre para uso académico y aplicaciones open source, aunque tiene un costo para la integración en desarrollos privados.
 
-	Las URL de éstos productos son las siguientes: http://wave.google.com y http://docs.google.com.
+		\item COLA
+		
+COLA (mustafa K. Isik)
+%http://wiki.eclipse.org/RT_Shared_Editing
+%http://www.scribd.com/doc/3587749/Wiring-Hacker-Synapses
 
-	\subsection{BeeWeeVee}
+COLA es un plugin para la integración con Eclipse que permite la colaboración en tiempo real de los usuarios para editar un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad de usuarios que pueden participan en una sesión de edición de código a dos participantes.
+	\end{enumerate}
+		
+		
+	
 
-	Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones. Se provee como un software development kit para el desarrollo sobre la plataforma .NET. Por este motivo si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no cubre totalmente el espacio de potenciales aplicaciones que podrían beneficiarse pero que no se desarrollan en .NET. 
 
-	Es de licencia libre para uso académico y aplicaciones open source, aunque tiene un costo para la integración en desarrollos privados.
+El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del mismo usando tecnologías que corren sobre la maquina virtual de Java, lograr independencia sobre otros frameworks o componentes de software y lograr que puede haber mas de dos participantes en la misma sesión de edición.
 
-	La URL de este producto es: http://www.beweevee.com.
-
-	\subsection{COLA - Eclipse Plugin}
-
-	COLA es un plugin para la integración con Eclipse que permite la colaboración en tiempo real de los usuarios para editar un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad de usuarios que pueden participan en una sesión de edición de código a dos participantes.
-
+Estas características descriptas determinaran los requerimientos funcionales y no funcionales que se describirán mas adelante.
 	\section{Alcance}
+	
+	En la visión del proyecto se listaron las posibles funcionalidades que podría incluir el producto, de ellas se seleccionarán las siguientes para ser completadas en el presente proyecto:
+	
+\subsection{Núcleo}
+Consiste en una biblioteca de software que proveera servicios de apertura y cierre de sesiones de desarrollo. Se encargará de la administración de los participantes de la sesión de desarrollo, recibiendo e informando los cambios indroducidos por cada uno de ellos y resolviendo los conflictos que se produzcan debido a la concurrencia.
+También el nucleo ofrecerá una API de modo que las aplicaciones que requieran un servidor embebido puedan usar la misma.
+
+\subsection{API Cliente}
+Comprenderá la biblioteca que se encarga de implementar el protocolo de comunicación de un participante de la sesión con el núcleo del sistema. Esta API sera utilizada tanto por el cliente GUI como también por el plugin.
+\subsection{Interfaz gráfica}
+
+Se desarrollará una pequeña aplicacion independiente que permitirá la edición colaborativa utilizando las APIs antes mencionadas.
+
+\subsection{Integración con IDE}
+Se desarrollará un agregado o plug-in para integrar la funcionalidad de desarrollo colaborativo en tiempo real dentro del IDE Eclipse.
+
+ 
 	\section{Estimación}
 	\section{Planificación}
 	\section{Estimacion}
 	\section{Metodología de desarrollo}
+	
+Para el desarrollo del proyecto se aplicará la metodología SCRUM.
+
+
+Scrum es una metodología agil de desarrollo de software. Se enfoca principalmente en entregar la mayor cantidad de valor al negocio en el tiempo mas corto posible teniendo en cuenta las prioridades del cliente. Permite obtener versiones funcionales y operativas del producto en intervalos cortos de tiempo posibilitando el retorno de la inversión del cliente con cada iteración.
+En cada iteración se realizan tareas de diseño, desarrollo y prueba. El equipo de trabajo consta de un conjunto de profesionales auto-organizado que determina cual es la mejor forma de completar las tareas para entregar las funcionalidades mas prioritarias.
+Cada 2 a 4 semanas se puede ver un incremento funcional en el producto que esta listo para usar y puede decidirse liberarlo en ese momento o continuar mejorándolo en otra iteración. La longitud del sprint se fija en un período tal que sea posible dejar posibles cambios afuera.
+
+Dentro del equipo de trabajo típico de SCRUM, existen los siguientes roles:
+Product Owner: decide cuales son las características del producto. Es el responsable de definir cuales serán las prioridades de la iteración tratando de maximizar el retorno de la inversión. Aprueba o rechaza el trabajo realizado.
+Equipo Scrum: es el equipo auto-organizado multidisciplinario de personas que se encargan de la ejecución de las tareas que se planifican para cada sprint.
+Scrum Master: es el responsable de la adminsitracion del proyecto. Se asegura que se apliquen los principios de SCRUM durante el desarrollo de mismo. Se asegura que el equipo de trabajo sea totalmente funcional y productivo. Aisla al equipo de interferencias externas y elimina los impedimentos para que puedan completar sus tareas.
+
+Durante el desarrollo del proyecto se realizant tres tipos de reuniones:
+Sprint plannig: se realiza al inicio de cada sprint. Participan el product owner, scrum master y el equipo de trabajo. Se realiza la priorización y seleccion de las tareas y funcionalides que serán desarrolladas durante el sprint a iniciar. Al final de esta reunión se obtiene el objetivo y la planificación del sprint.
+Daily scrum meeting: la realizan el equipo de trabajo junto con el scrum master. Es una reunión corta y lo mas frecuente posible (idealmente diaria).  Tiene como objetivo poner al tanto al equipo de trabajo de las tareas que esta realizando cada integrante y de los problemas que surgieron.
+Sprint Review: Se realiza al final de cada sprint. El equipo muestra el resultado del trabajo desarrollado. Toma generalmente la forma de una demostración de las funcionalidades logradas. Participan el cliente, product owner, scrum manager y el equipo scrum.
+Sprint Retrospective: participan exclusivamente los miembros del equipo scrum. Se exponen lecciones aprendidas a lo largo del sprint que termino y se toman decisiones sobre aspectos a conservar o cambiar de la forma de trabajo.
 	\section{Criterios de calidad}
 	\section{Tecnologías}
 	\section{Infraestructura necesaria}
@@ -106,11 +133,6 @@ En esta sección se describirán productos existentes en el mercado y se compara
 	\emph{Visión Trabajo Profesional}.
 	Facultad de Ingeniería.
 	Universidad de Buenos Aires. 
-
-	\bibitem{ide}
-	Entorno de desarrollo integrado. \\
-	http://es.wikipedia.org/wiki/Entorno\_de\_desarrollo\_integrado
-
 \end{thebibliography}
 
 \end{document}
