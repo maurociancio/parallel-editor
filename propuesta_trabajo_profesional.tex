@@ -15,10 +15,37 @@
 \begin{document}
 \maketitle
 \tableofcontents
+\newpage
 
 	\section{Contexto}
+
+	En el presente documento se definirá el plan de proyecto para la propuesta realizada en el documento de visión titulado "Visión Trabajo Profesional" (para más información ver \cite{visiontpprof}). 
+	Dentro del mismo se definiran entre otros los siguientes puntos: alcance, planificación, riesgos y criterios de calidad. 
+	Este documento servirá de soporte en el proceso de desarrollo del producto y definirá criterios para medir el avance del proyecto de forma objetiva.	
+		
 	\section{Objetivo del proyecto}
+
+El objetivo del proyecto es obtener un producto de software que permita a los usuarios elaborar documentos de texto de forma concurrente y en tiempo real. El producto se dividirá en dos sub productos de menor tamaño: el primero permitirá la edición colaborativa de texto usando un software independiente de cualquier otra aplicación. El segundo comprenderá la integración con un entorno de desarrollo integrado (IDE).
+
+El nombre producto será "Parallel Editor".
+
+A su vez, se pretende desarrollar el producto siguiendo los criterios de calidad que se definen más adelante en este documento.
+
+También se desarrollará documentación de usuario y técnica del producto de modo que sea posible la extensión e incorporación a otras plataformas e IDE's.
+
+El producto será desarrollado teniendo en cuenta la integración del mismo en otros contextos, por lo que se podrá observar una vez finalizado que los dos subproductos reutilizan un gran porcentaje del código fuente desarrollado una sola vez. Este punto es importante y es considerado en los requerimientos funcionales.	
+	
 	\section{Necesidades del cliente / Mercado}
+	
+	Se necesita una herramienta con las siguientes características:
+	\begin{itemize}
+		\item La posibilidad de que dos o mas personas editen un mismo documento en tiempo real sin la necesidad de estar fisicamente en el mismo lugar.
+		\item Provisión al usuario de un mecanismo sencillo para la iniciación de una sesión de edición.
+		\item Bajo costo de infraestructura al no requerir un servidor central dedicado para este producto.
+		\item Resolución transparente de los posibles conflictos de la naturaleza concurrente de la edición en tiempo real.
+		\item Independencia de una conexión a Internet para su disponibilidad. Esto se traduce a que el producto pueda funcionar en una red LAN que no esté conectada a internet.
+	\end{itemize}
+
 	\section{Competencia}
 	\section{Alcance}
 	\section{Estimación}
