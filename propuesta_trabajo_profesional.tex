@@ -247,6 +247,17 @@ Desconectarse de sesión de edición.
 Editar documentos.
 
 	\section{Requerimientos no funcionales}
+
+
+\subsection{Integrabilidad} Se garantizará implementando dos interfaces de usuario distintas (GUI y Plugin) que hagan uso del mismo código base, solamente desarrollando las funcionalidades necesarias o distintas para cada caso.
+Por otra parte, se definirá y documentará una API de modo que pueda ser incorporado a otros productos por terceras partes.
+
+\subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual se podrá ver toda la información transmitida entre los clientes. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
+
+\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma version de documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el nucleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
+
+\subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
+	
 	\section{Entregables}
 	\section{Glosario}
 
