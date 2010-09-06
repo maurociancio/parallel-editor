@@ -203,6 +203,49 @@ En ambos casos no se necesita conectividad internet.
 	
 	\section{Riesgos}
 	\section{Requerimientos funcionales}
+	
+	Se separaran los requerimientos funcionales segun al modulo al que correspondan.
+
+	\subsection{Nucleo}
+	\begin{enumerate}
+	\item Resolucion de conflictos: implementación del algoritmo de resolución de conflictos. Se utilizará el algoritmo de Júpiter \cite{jupiter} para resolver el escenario concurrente presente en el producto.
+	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El nucleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial a documento. El origen de este documento dependerá de la aplicación cliente.
+	\item Participantes: los participantes son los usuarios conectados y los cuales pueden observar los documentos que se existen. No existirá restricción en cuanto a que usuarios pueden editar cuales documentos, sino que cualquier usuario podrá suscribirse a un documento para editarlo o ver su contenido.
+	
+	\end{enumerate}
+
+
+	\subsection{Cliente}
+
+
+Implementacion API Cliente: diseñar e implementar la API que se le ofrecerá a las aplicaciones cliente para que hagan uso de los servicios ofrecidos por el producto.
+A su vez, es necesario implementar el protocolo de comunicación con el núcleo para el envío y recepción de mensajes en ámbos sentidos.
+
+Notificacion de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
+A su vez se deberan atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
+
+	\subsection{GUI} 
+	Se requiere una aplicación gráfica que permita las siguientes funcionalidades
+	\begin{enumerate}
+	\item Crear sesiones de edicion.
+	\item Conectar a una sesion de edicion.
+	\item Ver documentos disponibles para edicion una vez que se ha conectado a un servidor.
+	\item Crear documento de texto vacio.
+	\item Compartir documento local para edicion colaborativa con otros participantes.
+	\item Guardar el documento en edición.
+	\item Editar un documento de texto.
+	\item Listar usuarios que se encuentran en la sesión de edición.
+	\item Desconectar sesion de edicion.
+	\end{enumerate}
+
+
+\subsection{Plugin}
+Se requiere un modulo plug-in para la incorporación a un entorno integrado de desarrollo de las siguientes fuincionalidades:
+Compartir documento actual para edición colaborativa.
+Conectarse a sesión de edicion.
+Desconectarse de sesión de edición.
+Editar documentos.
+
 	\section{Requerimientos no funcionales}
 	\section{Entregables}
 	\section{Glosario}
@@ -219,6 +262,13 @@ En ambos casos no se necesita conectividad internet.
 	Entorno de desarrollo integrado. \\
 	http://es.wikipedia.org/wiki/Entorno\_de\_desarrollo\_integrado
 
+	%TODO COMPLETAR DATOS PAPER JUPITER
+	\bibitem{jupiter}
+	Autores jupiter,
+	\emph{poner el paper de jupiter aca}.
+	Facultad de Ingeniería.
+	Universidad de Buenos Aires.
+	 
 \end{thebibliography}
 
 \end{document}
