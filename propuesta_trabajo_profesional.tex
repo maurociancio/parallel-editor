@@ -113,7 +113,7 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 
 	En cada tarea detallada en la WBS se tuvo en cuenta el esfuerzo necesario de análisis, desarrollo, documentación y testing.
 
-	En la imágen \ref{WBS} se puede observar la WBS para el producto.
+	En la imágen \ref{WBS} se puede observar la WBS para el producto. Se observan las columnas que muestran el nombre de la tarea y la estimación de esfuerzo para la misma.
 
 % TODO, hacer que la imagen aparezca cerca
 	\begin{figure}[H]
@@ -123,9 +123,30 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 		\end{center}
 	\end{figure}
 
+	El valor final de la estimación es 390 horas hombres (HH). Las horas hombre son horas hombres productivas.
 
 	\section{Planificación}
-	\section{Estimacion}
+
+	Se cuenta con dos recursos con una disponibilidad de 4HH diarias resultando en un total de 20HH/recurso/semana.
+
+	La estimación es de 390HH productivas, y se supone que cada 4HH de desarrollo 3HH son productivas. Por lo tanto la relación que surge es de 4/3 y al valor estimado se le agrega un 33\% más en concepto de horas reales y horas productivas.
+
+	Por lo tanto, el valor que resulta es: 390HH + 33\% de 390HH = 520 HH
+
+	Por último, a este valor se le agrega un 20\% en concepto de estabilización y cierre de bugs pendientes al finalizar los sprints planificados.
+
+	520HH + 20\% de 520HH = 625HH
+
+	La estimación final de desarrollo es de 625HH.
+
+	A continuación se muestra un diagrama de Gannt (ver ).
+
+% GANNT aca
+
+	El Gannt no incluye el buffer agregado al final. Se planificaron 3hh/dia/recurso productivas y el Gannt fue armado siguiendo este valor. La jornada de cada día fue realizada con esa cantidad de horas.
+
+	Este diagrama representa una guía para la organización y planificación de las tareas que serán llevadas a cabo para completar el proyecto. La planificación definitiva de las mismas se realizará con mayor precisión al inicio de cada sprint (sprint planning meeting) incluyendo primero aquellas tareas que agreguen mayor valor en cada iteración y generen una versión usable del producto al finalizar cada una de las mimas.
+
 	\section{Metodología de desarrollo}
 	
 	Para el desarrollo del proyecto se aplicará la metodología Scrum.
