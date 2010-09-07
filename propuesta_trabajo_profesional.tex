@@ -54,7 +54,7 @@ El producto será desarrollado teniendo en cuenta la integración del mismo en o
 	
 	Se necesita una herramienta con las siguientes características:
 	\begin{itemize}
-		\item La posibilidad de que dos o mas personas editen un mismo documento en tiempo real sin la necesidad de estar fisicamente en el mismo lugar.
+		\item La posibilidad de que dos o más personas editen un mismo documento en tiempo real sin la necesidad de estar fisicamente en el mismo lugar.
 		\item Provisión al usuario de un mecanismo sencillo para la iniciación de una sesión de edición.
 		\item Bajo costo de infraestructura al no requerir un servidor central dedicado para este producto.
 		\item Resolución transparente de los posibles conflictos de la naturaleza concurrente de la edición en tiempo real.
@@ -77,7 +77,7 @@ En esta sección se describirán productos existentes en el mercado y se compara
 
 	\subsection{BeeWeeVee}
 
-	Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones. Se provee como un software development kit para el desarrollo sobre la plataforma .NET. Por este motivo si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no cubre totalmente el espacio de potenciales aplicaciones que podrían beneficiarse pero que no se desarrollan en .NET. 
+	Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones. Se provee como un software development kit para el desarrollo sobre la plataforma .NET. Por este motivo, si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no cubre totalmente el espacio de potenciales aplicaciones ya que las aplicaciones que no se desarrollan en .NET no pueden integralo.
 
 	Es de licencia libre para uso académico y aplicaciones open source, aunque tiene un costo para la integración en desarrollos privados.
 
@@ -87,7 +87,7 @@ En esta sección se describirán productos existentes en el mercado y se compara
 
 	COLA es un plugin para la integración con Eclipse que permite la colaboración en tiempo real de los usuarios para editar un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad de usuarios que pueden participan en una sesión de edición de código a dos participantes.
 
-%TODO ver si poner esto aca o en otro lado
+	\subsection{Comparación con la presente propuesta}
 El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del mismo usando tecnologías que corren sobre la maquina virtual de Java, lograr independencia sobre otros frameworks o componentes de software y lograr que pueda haber mas de dos participantes en la misma sesión de edición.
 
 Estas características descriptas determinaran los requerimientos funcionales y no funcionales que se describirán mas adelante.
@@ -133,11 +133,11 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 
 	La estimación es de 390HH productivas, y se supone que cada 4HH de desarrollo 3HH son productivas. Por lo tanto la relación que surge es de 4/3 y al valor estimado se le agrega un 33\% más en concepto de horas reales y horas productivas.
 
-	Por lo tanto, el valor que resulta es: 390HH + 33\% de 390HH = 520 HH
+	Por lo tanto, el valor que resulta es: 390HH + 33\% de 390HH = 520 HH.
 
 	Por último, a este valor se le agrega un 20\% en concepto de estabilización y cierre de bugs pendientes al finalizar los sprints planificados.
 
-	520HH + 20\% de 520HH = 625HH
+	520HH + 20\% de 520HH = 625HH.
 
 	La estimación final de desarrollo es de 625HH.
 
@@ -159,7 +159,7 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 	
 	Para el desarrollo del proyecto se aplicará la metodología Scrum.
 
-	Scrum es una metodología agil de desarrollo de software. Se enfoca principalmente en entregar la mayor cantidad de valor al negocio en el tiempo mas corto posible teniendo en cuenta las prioridades del cliente. Permite obtener versiones funcionales y operativas del producto en intervalos cortos de tiempo posibilitando el retorno de la inversión del cliente con cada iteración.
+	Scrum es una metodología agil de desarrollo de software. Se enfoca principalmente en entregar la mayor cantidad de valor al negocio en el tiempo más corto posible teniendo en cuenta las prioridades del cliente. Permite obtener versiones funcionales y operativas del producto en intervalos cortos de tiempo posibilitando el retorno de la inversión del cliente con cada iteración.
 	
 	En cada iteración se realizan tareas de diseño, desarrollo y prueba. El equipo de trabajo consta de un conjunto de profesionales auto-organizado que determina cual es la mejor forma de completar las tareas para entregar las funcionalidades mas prioritarias.
 	
@@ -261,7 +261,7 @@ En el siguiente dibujo se observa un posible escenario reflejando la arquitectur
 
 En el segundo caso, se dispone de una arquitectura cliente-servidor en la cual participa un servidor dedicado corriendo el nucleo de la aplicación y los distintos clientes que se conectan con el mismo. La conexión se establece entre el componente cliente y el componente núcleo abstrayendo a la aplicación GUI de la complejidad subyacente.
 
-Se puede ver en el sig dibujo:
+Se puede ver en el siguiente diagrama:
 
 % TODO, hacer que la imagen aparezca cerca
 	\begin{figure}[H]
@@ -326,15 +326,17 @@ Exposición (E): P * I.
 
 	\subsection{Cliente}
 
-
-Implementacion API Cliente: diseñar e implementar la API que se le ofrecerá a las aplicaciones cliente para que hagan uso de los servicios ofrecidos por el producto.
+	\begin{enumerate}
+\item Implementacion API Cliente: diseñar e implementar la API que se le ofrecerá a las aplicaciones cliente para que hagan uso de los servicios ofrecidos por el producto.
 A su vez, es necesario implementar el protocolo de comunicación con el núcleo para el envío y recepción de mensajes en ámbos sentidos.
 
-Notificacion de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
-A su vez se deberan atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
+\item Notificacion de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
+
+\item A su vez se deberan atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
+	\end{enumerate}
 
 	\subsection{GUI} 
-	Se requiere una aplicación gráfica que permita las siguientes funcionalidades
+	Se requiere una aplicación gráfica que permita las siguientes funcionalidades:
 	\begin{enumerate}
 	\item Crear sesiones de edicion.
 	\item Conectar a una sesion de edicion.
