@@ -312,10 +312,10 @@ Exposición (E): P * I.
 	
 	Se separaran los requerimientos funcionales segun al modulo al que correspondan.
 
-	\subsection{Nucleo}
+	\subsection{Núcleo}
 	\begin{enumerate}
 	\item Resolucion de conflictos: implementación del algoritmo de resolución de conflictos. Se utilizará el algoritmo de Júpiter \cite{jupiter} para resolver el escenario concurrente presente en el producto.
-	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El nucleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial a documento. El origen de este documento dependerá de la aplicación cliente.
+	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El núcleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial a documento. El origen de este documento dependerá de la aplicación cliente.
 	\item Participantes: los participantes son los usuarios conectados y los cuales pueden observar los documentos que se existen. No existirá restricción en cuanto a que usuarios pueden editar cuales documentos, sino que cualquier usuario podrá suscribirse a un documento para editarlo o ver su contenido.
 	
 	\end{enumerate}
@@ -363,7 +363,7 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 
 \subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual se podrá ver toda la información transmitida entre los clientes. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
 
-\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma version de documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el nucleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
+\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma version de documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
 
 \subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
 	
