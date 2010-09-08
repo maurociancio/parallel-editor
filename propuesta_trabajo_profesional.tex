@@ -213,6 +213,16 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 
 	Este diagrama representa una guía para la organización y planificación de las tareas que serán llevadas a cabo para completar el proyecto. La planificación definitiva de las mismas se realizará con mayor precisión al inicio de cada sprint (sprint planning meeting) incluyendo primero aquellas tareas que agreguen mayor valor en cada iteración y generen una versión usable del producto al finalizar cada una de las mismas.
 
+	\section{Entregables}
+
+	\begin{itemize}
+	\item Manual de usuario: contendrá la descripción y la forma de utilización de las funcionalidades de la GUI y el Plugin. Para los otros módulos se entregará la documentación técnica referente a la API.
+	\item Manual técnico: se desarrollará el manual técnico para los módulos Núcleo y Cliente. Se incluirá documentación sobre la arquitectura, despliegue, los principales módulos, principales puntos de extensión.
+	\item Plan de proyecto: el presente documento y la información de avance para cada sprint.
+	\item Software: el producto listo para despliegue en CD.
+	\end{itemize}
+
+
 	\section{Metodología de desarrollo}
 	
 	Para el desarrollo del proyecto se aplicará la metodología Scrum.
@@ -262,16 +272,6 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 		\item Burndown chart.
 	\end{itemize}
 
-	\section{Criterios de calidad}
-	
-Se realizarán dos tipos de pruebas sobre el producto una vez iniciado el desarrollo. Como primer tipo se realizarán pruebas unitarias sobre el código fuente desarrollado. El objetivo es encontrar problemas en la lógica de la aplicación y a su vez documentar indirectamente el uso de la API.
-
-	El porcentaje del código fuente que se pretende cubrir con las pruebas unitarias es del 60\%. El foco de las pruebas se concentrará en los módulos núcleo y cliente del producto.
-
-	El segundo tipo de prueba a realizar son las pruebas funcionales. Estas tienen como característica que son dificilmente automatizables y deben ser realizadas por el usuario que utilizara la aplicación. Las pruebas se correrán al finalizar cada uno de los sprints definidos en la planificación de modo que funcionalidades ya desarrolladas no sean afectadas.
-
-La definición de las pruebas a ejecutar se realizará al inicio de cada sprint.	
-	
 	\section{Tecnologías}
 	
 	\begin{itemize}
@@ -330,7 +330,17 @@ Se puede ver en la siguiente figura:
 Esta alternativa permite concentrar todos los documentos que editan los usuarios en un solo punto.
 
 En ambos casos no se necesita conectividad internet.	
+
+	\section{Criterios de calidad}
 	
+Se realizarán dos tipos de pruebas sobre el producto una vez iniciado el desarrollo. Como primer tipo se realizarán pruebas unitarias sobre el código fuente desarrollado. El objetivo es encontrar problemas en la lógica de la aplicación y a su vez documentar indirectamente el uso de la API.
+
+	El porcentaje del código fuente que se pretende cubrir con las pruebas unitarias es del 60\%. El foco de las pruebas se concentrará en los módulos núcleo y cliente del producto.
+
+	El segundo tipo de prueba a realizar son las pruebas funcionales. Estas tienen como característica que son dificilmente automatizables y deben ser realizadas por el usuario que utilizara la aplicación. Las pruebas se correrán al finalizar cada uno de los sprints definidos en la planificación de modo que funcionalidades ya desarrolladas no sean afectadas.
+
+La definición de las pruebas a ejecutar se realizará al inicio de cada sprint.
+
 	\section{Riesgos}
 
 A continuación se hará una lista de riesgos que fueron relevados al inicio del desarrollo del proyecto.
@@ -367,16 +377,6 @@ Impacto (I): valor numérico entre 1 y 3.
 
 Exposición (E): P * I.
 
-
-	
-	\section{Entregables}
-
-	\begin{itemize}
-	\item Manual de usuario: contendrá la descripción y la forma de utilización de las funcionalidades de la GUI y el Plugin. Para los otros módulos se entregará la documentación técnica referente a la API.
-	\item Manual técnico: se desarrollará el manual técnico para los módulos Núcleo y Cliente. Se incluirá documentación sobre la arquitectura, despliegue, los principales módulos, principales puntos de extensión.
-	\item Plan de proyecto: el presente documento y la información de avance para cada sprint.
-	\item Software: el producto listo para despliegue en CD.
-	\end{itemize}
 
 	\section{Glosario}
 
