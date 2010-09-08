@@ -111,7 +111,7 @@ Estas características descriptas determinarán los requerimientos funcionales y
 
 	\section{Requerimientos funcionales}
 	
-	Se separaran los requerimientos funcionales segun al modulo al que correspondan.
+	Se separaran los requerimientos funcionales segun al módulo al que correspondan.
 
 	\subsection{Núcleo}
 	\begin{enumerate}
@@ -137,24 +137,24 @@ A su vez, es necesario implementar el protocolo de comunicación con el núcleo 
 	Se requiere una aplicación gráfica que permita las siguientes funcionalidades:
 	\begin{enumerate}
 	\item Crear sesiones de edicion.
-	\item Conectar a una sesion de edicion.
-	\item Ver documentos disponibles para edicion una vez que se ha conectado a un servidor.
-	\item Crear documento de texto vacio.
-	\item Compartir documento local para edicion colaborativa con otros participantes.
+	\item Conectar a una sesión de edición.
+	\item Ver documentos disponibles para edición una vez que se ha conectado a un servidor.
+	\item Crear documento de texto vacío.
+	\item Compartir documento local para edición colaborativa con otros participantes.
 	\item Guardar el documento en edición.
 	\item Editar un documento de texto.
 	\item Listar usuarios que se encuentran en la sesión de edición.
-	\item Desconectar sesion de edicion.
+	\item Desconectar de la sesión de edición.
 	\end{enumerate}
 
 
 \subsection{Plugin}
-Se requiere un modulo plug-in para la incorporación a un entorno integrado de desarrollo de las siguientes fuincionalidades:
+Se requiere un módulo plug-in para la incorporación a un entorno integrado de desarrollo de las siguientes fuincionalidades:
 	\begin{enumerate}
 	\item Compartir documento actual para edición colaborativa.
 	\item Conectarse a sesión de edicion.
 	\item Desconectarse de sesión de edición.
-	\item Editar documentos.
+	\item Editar el documento presente en el IDE.
 	\end{enumerate}
 	\section{Requerimientos no funcionales}
 
@@ -164,9 +164,9 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 
 \subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual se podrá ver toda la información transmitida entre los clientes. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
 
-\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma version de documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
+\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma versión del documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
 
-\subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
+\subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de Java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
 
 	\section{Estimación}
 
@@ -276,7 +276,7 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 	
 	\begin{itemize}
 	
-	\item Scala: para el desarrollo de los módulos cliente, núcleo e interfaz gráfica se utilizará el lenguaje de programación Scala. El mismo está diseñado teniendo en mente concurrencia, expresividad y escalabilidad. El resultado de la compilación produce código objeto que corre sobre la máquina virtual de java, aprovechando la estabilidad y madurez de la misma. Provee un modelo de comunicación por mensajes basado en actores que simplifica y abstrae de los problemas clásicos que surgen de la naturaleza concurrente del dominio.
+	\item Scala: para el desarrollo de los módulos cliente, núcleo e interfaz gráfica se utilizará el lenguaje de programación Scala. El mismo está diseñado teniendo en mente concurrencia, expresividad y escalabilidad. El resultado de la compilación produce código objeto que corre sobre la máquina virtual de Java, aprovechando la estabilidad y madurez de la misma. Provee un modelo de comunicación por mensajes basado en actores que simplifica y abstrae de los problemas clásicos que surgen de la naturaleza concurrente del dominio.
 Se eligió este lenguaje ya que ofrece una visión alternativa a los problemas clásicos de la concurrencia y será de soporte principalmente para el núcleo de la aplicación.
 
 	\item Java: el lenguaje Scala permite utilizar código Java y viceversa. El plugin que se desarrollará para el IDE Eclipse será desarrollado con el lenguaje Java, ya que Eclipse se encuentra desarrollado en esa plataforma.
@@ -353,7 +353,7 @@ A continuación se hará una lista de riesgos que fueron relevados al inicio del
 	1 & Demoras en el desarrollo de las funcionalidades por la poca experiencia en el desarrollo con Scala.
 	& 2 & 3 & 6 &
 	Retrasar el desarrollo para incorporar conocimientos sobre las herramientas.
-	Cambiar la herramienta por otra en la que se tenga mayor epxepriencia. \\ \hline
+	Cambiar la herramienta por otra en la que se tenga mayor experiencia. \\ \hline
 
 	2 & Demoras en el desarrollo de la integración con Eclipse debido al desconocimiento de la arquitectura del mismo.
 	& 2 & 2 & 4 &
@@ -384,11 +384,11 @@ Exposición (E): P * I.
 
 \begin{itemize}
 
-\item \textbf{API}: una interfaz de programación de aplicaciones o API (del inglés application programming interface) es el conjunto de funciones y procedimientos (o métodos, en laprogramación orientada a objetos que ofrece cierta biblioteca para ser utilizado por otro software como una capa de abstracción. Usados generalmente en las bibliotecas.
+\item \textbf{API}: una interfaz de programación de aplicaciones o API (del inglés application programming interface) es el conjunto de funciones y procedimientos (o métodos, en la programación orientada a objetos que ofrece cierta biblioteca para ser utilizado por otro software como una capa de abstracción. Usados generalmente en las bibliotecas.
 
 \item \textbf{IDE}: entorno de programación que ha sido empaquetado como un programa de aplicación, es decir, consiste en un editor de código, un compilador, un depurador y un constructor de interfaz gráfica (GUI). Los IDEs pueden ser aplicaciones por sí solas o pueden ser parte de aplicaciones existentes.
 
-\item \textbf{Plugin}: Un complemento es una aplicación que se relaciona con otra para aportarle una función nueva y generalmente muy especifica. Esta aplicación adicional es ejecutada por la aplicación principal e interactúan por medio de la API.
+\item \textbf{Plugin}: Un complemento es una aplicación que se relaciona con otra para aportarle una función nueva y generalmente muy específica. Esta aplicación adicional es ejecutada por la aplicación principal e interactúan por medio de la API.
 
 \item \textbf{WBS}: estructura de descomposición del trabajo o EDT, también conocido por su nombre en inglés Work Breakdown Structure o WBS, es una estructura exhaustiva, jerárquica y descendente formada por los entregables a realizar en un proyecto. La EDT es una herramienta muy común y crítica en la gestión de proyectos.
 
