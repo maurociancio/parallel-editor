@@ -17,7 +17,7 @@
 \tableofcontents
 \newpage
 
-	\section{Integrantes}
+	\section{Equipo de trabajo}
 
 A continuación se listan los alumnos que desarrollaron esta propuesta y se incluye sus datos personales:
 
@@ -108,6 +108,65 @@ Estas características descriptas determinarán los requerimientos funcionales y
 
 	\subsection{Integración con IDE}
 	Se desarrollará un agregado o plug-in para integrar la funcionalidad de desarrollo colaborativo en tiempo real dentro del IDE Eclipse.
+
+	\section{Requerimientos funcionales}
+	
+	Se separaran los requerimientos funcionales segun al modulo al que correspondan.
+
+	\subsection{Núcleo}
+	\begin{enumerate}
+	\item Resolucion de conflictos: implementación del algoritmo de resolución de conflictos. Se utilizará el algoritmo de Júpiter \cite{jupiter} para resolver el escenario concurrente presente en el producto.
+	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El núcleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial a documento. El origen de este documento dependerá de la aplicación cliente.
+	\item Participantes: los participantes son los usuarios conectados y los cuales pueden observar los documentos que se existen. No existirá restricción en cuanto a que usuarios pueden editar cuales documentos, sino que cualquier usuario podrá suscribirse a un documento para editarlo o ver su contenido.
+	
+	\end{enumerate}
+
+
+	\subsection{Cliente}
+
+	\begin{enumerate}
+\item Implementacion API Cliente: diseñar e implementar la API que se le ofrecerá a las aplicaciones cliente para que hagan uso de los servicios ofrecidos por el producto.
+A su vez, es necesario implementar el protocolo de comunicación con el núcleo para el envío y recepción de mensajes en ámbos sentidos.
+
+\item Notificacion de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
+
+\item A su vez se deberan atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
+	\end{enumerate}
+
+	\subsection{GUI} 
+	Se requiere una aplicación gráfica que permita las siguientes funcionalidades:
+	\begin{enumerate}
+	\item Crear sesiones de edicion.
+	\item Conectar a una sesion de edicion.
+	\item Ver documentos disponibles para edicion una vez que se ha conectado a un servidor.
+	\item Crear documento de texto vacio.
+	\item Compartir documento local para edicion colaborativa con otros participantes.
+	\item Guardar el documento en edición.
+	\item Editar un documento de texto.
+	\item Listar usuarios que se encuentran en la sesión de edición.
+	\item Desconectar sesion de edicion.
+	\end{enumerate}
+
+
+\subsection{Plugin}
+Se requiere un modulo plug-in para la incorporación a un entorno integrado de desarrollo de las siguientes fuincionalidades:
+	\begin{enumerate}
+	\item Compartir documento actual para edición colaborativa.
+	\item Conectarse a sesión de edicion.
+	\item Desconectarse de sesión de edición.
+	\item Editar documentos.
+	\end{enumerate}
+	\section{Requerimientos no funcionales}
+
+
+\subsection{Integrabilidad} Se garantizará implementando dos interfaces de usuario distintas (GUI y Plugin) que hagan uso del mismo código base, solamente desarrollando las funcionalidades necesarias o distintas para cada caso.
+Por otra parte, se definirá y documentará una API de modo que pueda ser incorporado a otros productos por terceras partes.
+
+\subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual se podrá ver toda la información transmitida entre los clientes. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
+
+\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma version de documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
+
+\subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
 
 	\section{Estimación}
 
@@ -308,64 +367,7 @@ Impacto (I): valor numérico entre 1 y 3.
 
 Exposición (E): P * I.
 
-	\section{Requerimientos funcionales}
-	
-	Se separaran los requerimientos funcionales segun al modulo al que correspondan.
 
-	\subsection{Núcleo}
-	\begin{enumerate}
-	\item Resolucion de conflictos: implementación del algoritmo de resolución de conflictos. Se utilizará el algoritmo de Júpiter \cite{jupiter} para resolver el escenario concurrente presente en el producto.
-	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El núcleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial a documento. El origen de este documento dependerá de la aplicación cliente.
-	\item Participantes: los participantes son los usuarios conectados y los cuales pueden observar los documentos que se existen. No existirá restricción en cuanto a que usuarios pueden editar cuales documentos, sino que cualquier usuario podrá suscribirse a un documento para editarlo o ver su contenido.
-	
-	\end{enumerate}
-
-
-	\subsection{Cliente}
-
-	\begin{enumerate}
-\item Implementacion API Cliente: diseñar e implementar la API que se le ofrecerá a las aplicaciones cliente para que hagan uso de los servicios ofrecidos por el producto.
-A su vez, es necesario implementar el protocolo de comunicación con el núcleo para el envío y recepción de mensajes en ámbos sentidos.
-
-\item Notificacion de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
-
-\item A su vez se deberan atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
-	\end{enumerate}
-
-	\subsection{GUI} 
-	Se requiere una aplicación gráfica que permita las siguientes funcionalidades:
-	\begin{enumerate}
-	\item Crear sesiones de edicion.
-	\item Conectar a una sesion de edicion.
-	\item Ver documentos disponibles para edicion una vez que se ha conectado a un servidor.
-	\item Crear documento de texto vacio.
-	\item Compartir documento local para edicion colaborativa con otros participantes.
-	\item Guardar el documento en edición.
-	\item Editar un documento de texto.
-	\item Listar usuarios que se encuentran en la sesión de edición.
-	\item Desconectar sesion de edicion.
-	\end{enumerate}
-
-
-\subsection{Plugin}
-Se requiere un modulo plug-in para la incorporación a un entorno integrado de desarrollo de las siguientes fuincionalidades:
-	\begin{enumerate}
-	\item Compartir documento actual para edición colaborativa.
-	\item Conectarse a sesión de edicion.
-	\item Desconectarse de sesión de edición.
-	\item Editar documentos.
-	\end{enumerate}
-	\section{Requerimientos no funcionales}
-
-
-\subsection{Integrabilidad} Se garantizará implementando dos interfaces de usuario distintas (GUI y Plugin) que hagan uso del mismo código base, solamente desarrollando las funcionalidades necesarias o distintas para cada caso.
-Por otra parte, se definirá y documentará una API de modo que pueda ser incorporado a otros productos por terceras partes.
-
-\subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual se podrá ver toda la información transmitida entre los clientes. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
-
-\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma version de documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
-
-\subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
 	
 	\section{Entregables}
 
