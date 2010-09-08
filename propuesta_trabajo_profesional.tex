@@ -34,7 +34,7 @@ El profesor tutor de este trabajo profesional es Pablo Cosso.
 
 	En el presente documento se definirá el plan de proyecto para la propuesta realizada en el documento de visión titulado ``Visión Trabajo Profesional" (para más información ver \cite{visiontpprof}). 
 
-	Dentro del mismo se definiran entre otros los siguientes puntos: alcance, planificación, riesgos y criterios de calidad. 
+	Dentro del mismo se definirán entre otros los siguientes puntos: alcance, planificación, riesgos y criterios de calidad. 
 
 	Este documento servirá de soporte en el proceso de desarrollo del producto y definirá criterios para medir el avance del proyecto de forma objetiva.	
 		
@@ -88,15 +88,15 @@ En esta sección se describirán productos existentes en el mercado y se compara
 	COLA es un plugin para la integración con Eclipse que permite la colaboración en tiempo real de los usuarios para editar un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad de usuarios que pueden participan en una sesión de edición de código a dos participantes.
 
 	\subsection{Comparación con la presente propuesta}
-El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del mismo usando tecnologías que corren sobre la maquina virtual de Java, lograr independencia sobre otros frameworks o componentes de software y lograr que pueda haber mas de dos participantes en la misma sesión de edición.
+El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del mismo usando tecnologías que corren sobre la máquina virtual de Java, lograr independencia sobre otros frameworks o componentes de software y lograr que pueda haber mas de dos participantes en la misma sesión de edición.
 
-Estas características descriptas determinaran los requerimientos funcionales y no funcionales que se describirán mas adelante.
+Estas características descriptas determinarán los requerimientos funcionales y no funcionales que se describirán mas adelante.
 
 	\section{Alcance}
    En la visión del proyecto se listaron las posibles funcionalidades que podría incluir el producto, de ellas se seleccionarán las siguientes para ser completadas en el presente proyecto:
    
 	\subsection{Núcleo}
-	Consiste en una biblioteca de software que proveera servicios de apertura y cierre de sesiones de desarrollo. Se encargará de la administración de los participantes de la sesión de desarrollo, recibiendo e informando los cambios indroducidos por cada uno de ellos y resolviendo los conflictos que se produzcan debido a la concurrencia.
+	Consiste en una biblioteca de software que proveerá servicios de apertura y cierre de sesiones de desarrollo. Se encargará de la administración de los participantes de la sesión de desarrollo, recibiendo e informando los cambios indroducidos por cada uno de ellos y resolviendo los conflictos que se produzcan debido a la concurrencia.
 	
 	También el núcleo ofrecerá una API de modo que las aplicaciones que requieran un servidor embebido puedan usar la misma.
 
@@ -104,7 +104,7 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 	Comprenderá la biblioteca que se encarga de implementar el protocolo de comunicación de un participante de la sesión con el núcleo del sistema. Esta API sera utilizada tanto por el cliente GUI como también por el plugin.
 
 	\subsection{Interfaz gráfica}
-	Se desarrollará una pequeña aplicacion independiente que permitirá la edición colaborativa utilizando las APIs antes mencionadas.
+	Se desarrollará una pequeña aplicación independiente que permitirá la edición colaborativa utilizando las APIs antes mencionadas.
 
 	\subsection{Integración con IDE}
 	Se desarrollará un agregado o plug-in para integrar la funcionalidad de desarrollo colaborativo en tiempo real dentro del IDE Eclipse.
@@ -152,7 +152,7 @@ Estas características descriptas determinaran los requerimientos funcionales y 
 
 	El gráfico no incluye el buffer agregado al final. Se planificaron 3HH/dia/recurso productivas y el diagrama fue armado siguiendo este valor. La jornada de cada día fue realizada con esa cantidad de horas.
 
-	Este diagrama representa una guía para la organización y planificación de las tareas que serán llevadas a cabo para completar el proyecto. La planificación definitiva de las mismas se realizará con mayor precisión al inicio de cada sprint (sprint planning meeting) incluyendo primero aquellas tareas que agreguen mayor valor en cada iteración y generen una versión usable del producto al finalizar cada una de las mimas.
+	Este diagrama representa una guía para la organización y planificación de las tareas que serán llevadas a cabo para completar el proyecto. La planificación definitiva de las mismas se realizará con mayor precisión al inicio de cada sprint (sprint planning meeting) incluyendo primero aquellas tareas que agreguen mayor valor en cada iteración y generen una versión usable del producto al finalizar cada una de las mismas.
 
 	\section{Metodología de desarrollo}
 	
