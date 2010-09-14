@@ -4,4 +4,6 @@ trait DocumentHandler {
 
     def applyChange(operation: EditOperation)
     def installOnUpdateCallback()
+
+    def unsuscribe
 }

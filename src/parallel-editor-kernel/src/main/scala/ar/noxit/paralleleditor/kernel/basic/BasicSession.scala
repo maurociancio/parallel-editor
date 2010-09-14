@@ -8,6 +8,6 @@ class BasicSession(val username: String, val kernel: BasicKernel) extends Sessio
         throw new IllegalArgumentException("username cannot be null")
 
     def logout = {
-        kernel.logout(this)
+        kernel logout this
     }
 }

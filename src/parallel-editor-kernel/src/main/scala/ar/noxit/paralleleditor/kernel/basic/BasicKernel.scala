@@ -10,7 +10,7 @@ import scala.List
 class BasicKernel extends Kernel {
 
     var sessions: List[Session] = List()
-    var documents: List[Document] = List()
+    var documents: List[BasicDocument] = List()
 
     def login(username: String) = {
         val newSession = new BasicSession(username, this)
@@ -23,20 +23,36 @@ class BasicKernel extends Kernel {
         if (!sessions.contains(session))
             throw new IllegalArgumentException("session not logged in")
 
-        sessions = sessions.filter{ _ == session }
+        sessions = sessions filter { _ == session }
+        documents foreach {doc => doc silentUnsuscribe session}
     }
 
     def newDocument(owner: Session, title: String, initialContent: String) = {
-        if (documents.exists{ _ == title })
+        if (documents exists { _ == title })
             throw new DocumentTitleAlreadyExitsException("document title already exists")
 
         val newDocument = new BasicDocument(title, initialContent)
         documents = newDocument :: documents
 
-        new BasicDocumentHandler(owner, newDocument)
+        newDocument suscribe owner
     }
 
     def documentCount = {
-        documents.size
+        documents size
+    }
+
+    def sessionCount = {
+        sessions size
+    }
+
+    def documentByTitle(docTitle: String) = {
+        documents find { _.title == docTitle }
+    }
+
+    def documentByTitleCount(docTitle: String) = {
+        val doc = documentByTitle(docTitle)
+        if (doc isEmpty)
+            None
+        Some((doc.get).suscriberCount)
     }
 }
