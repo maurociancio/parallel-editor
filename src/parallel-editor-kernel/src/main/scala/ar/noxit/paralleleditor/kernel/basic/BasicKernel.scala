@@ -23,7 +23,7 @@ class BasicKernel extends Kernel {
         if (!sessions.contains(session))
             throw new IllegalArgumentException("session not logged in")
 
-        sessions = sessions filter { _ == session }
+        sessions = sessions filter { _ != session }
         documents foreach {doc => doc silentUnsuscribe session}
     }
 
