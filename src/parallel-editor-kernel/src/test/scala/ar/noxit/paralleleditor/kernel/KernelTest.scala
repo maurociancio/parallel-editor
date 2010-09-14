@@ -32,6 +32,7 @@ class KernelTest extends AssertionsForJUnit {
         handler.unsuscribe
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel sessionCount, 1)
+        assertEquals(kernel.documentByTitleCount("title").get, 0)
     }
 
 //        intercept[StringIndexOutOfBoundsException] {

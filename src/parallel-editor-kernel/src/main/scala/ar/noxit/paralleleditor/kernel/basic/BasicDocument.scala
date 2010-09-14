@@ -27,7 +27,7 @@ class BasicDocument(val title: String, var content: String) extends Document {
         if (!suscribers.exists { _ == session})
             throw new DocumentSuscriptionNotExistsException("the session is not suscribed to this document")
 
-        suscribers = suscribers filter { _ == session}
+        suscribers = suscribers filter { _ != session}
     }
 
     def silentUnsuscribe(session: Session) = {
