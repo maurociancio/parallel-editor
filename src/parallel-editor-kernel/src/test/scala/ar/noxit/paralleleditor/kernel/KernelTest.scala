@@ -27,19 +27,32 @@ class KernelTest extends AssertionsForJUnit {
 
         val handler = kernel newDocument(session, "title")
         assertEquals(kernel documentCount, 1)
-        assertEquals(kernel.documentByTitleCount("title").get, 1)
+        assertEquals(kernel.documentSuscriberCount("title").get, 1)
 
         handler.unsuscribe
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel sessionCount, 1)
-        assertEquals(kernel.documentByTitleCount("title").get, 0)
+        assertEquals(kernel.documentSuscriberCount("title").get, 0)
 
         session.logout
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel sessionCount, 0)
-        assertEquals(kernel.documentByTitleCount("title").get, 0)
+        assertEquals(kernel.documentSuscriberCount("title").get, 0)
     }
 
+    @Test
+    def testLogout = {
+        val session = kernel login "username"
+        val handler = kernel newDocument(session, "title")
+
+        assertEquals(kernel sessionCount, 1)
+        assertEquals(kernel.documentSuscriberCount("title").get, 1)
+
+        session.logout
+
+        assertEquals(kernel sessionCount, 0)
+        assertEquals(kernel.documentSuscriberCount("title").get, 0)
+    }
 //        intercept[StringIndexOutOfBoundsException] {
 //            "concise".charAt(-1)
 //        }

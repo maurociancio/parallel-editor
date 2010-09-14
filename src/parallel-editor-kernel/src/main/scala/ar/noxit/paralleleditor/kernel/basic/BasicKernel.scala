@@ -49,7 +49,7 @@ class BasicKernel extends Kernel {
         documents find { _.title == docTitle }
     }
 
-    def documentByTitleCount(docTitle: String) = {
+    def documentSuscriberCount(docTitle: String) = {
         val doc = documentByTitle(docTitle)
         if (doc isEmpty)
             None
