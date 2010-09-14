@@ -11,7 +11,11 @@ class KernelTest {
         val factory = new BasicKernelFactory
         val kernel = factory buildKernel
 
+        assertEquals(kernel.documentCount, 0)
+
         val session = kernel login "username"
         val handler = kernel newDocument(session, "title")
+
+        assertEquals(kernel.documentCount, 1)
     }
 }

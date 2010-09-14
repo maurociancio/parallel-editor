@@ -13,7 +13,7 @@ class BasicKernel extends Kernel {
     var documents: List[Document] = List()
 
     def login(username: String) = {
-        val newSession = new BasicSession(username)
+        val newSession = new BasicSession(username, this)
         sessions = newSession :: sessions
 
         newSession
@@ -21,7 +21,7 @@ class BasicKernel extends Kernel {
 
     def logout(session: Session) = {
         if (!sessions.contains(session))
-            throw new IllegalArgumentException("invalid session") 
+            throw new IllegalArgumentException("session not logged in")
 
         sessions = sessions.filter{ _ == session }
     }
@@ -34,5 +34,9 @@ class BasicKernel extends Kernel {
         documents = newDocument :: documents
 
         new BasicDocumentHandler(owner, newDocument)
+    }
+
+    def documentCount = {
+        documents.size
     }
 }
