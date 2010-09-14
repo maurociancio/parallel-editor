@@ -53,6 +53,7 @@ class BasicKernel extends Kernel {
         val doc = documentByTitle(docTitle)
         if (doc isEmpty)
             None
-        Some((doc.get).suscriberCount)
+        else
+            Some((doc.get).suscriberCount)
     }
 }
