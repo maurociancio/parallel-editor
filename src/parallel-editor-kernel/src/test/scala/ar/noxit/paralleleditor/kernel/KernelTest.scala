@@ -1,5 +1,6 @@
 package ar.noxit.paralleleditor.kernel
 
+import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import org.junit._
 import Assert._
@@ -53,7 +54,15 @@ class KernelTest extends AssertionsForJUnit {
         assertEquals(kernel sessionCount, 0)
         assertEquals(kernel.documentSuscriberCount("title").get, 0)
     }
-//        intercept[StringIndexOutOfBoundsException] {
-//            "concise".charAt(-1)
-//        }
+
+    @Test
+    def testTwoDocumentsWithSameTitle : Unit = {
+        val session = kernel login "username"
+        val docSession = kernel newDocument(session, "title")
+
+        // espera que la llamada a newDocument lance excepción
+        intercept[DocumentTitleAlreadyExitsException] {
+            kernel newDocument(session, "title")
+        }
+    }
 }
