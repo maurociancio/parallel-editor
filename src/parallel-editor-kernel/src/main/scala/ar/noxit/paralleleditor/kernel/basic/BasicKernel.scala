@@ -1,10 +1,7 @@
 package ar.noxit.paralleleditor.kernel.basic
 
-import ar.noxit.paralleleditor.kernel.BasicDocumentHandler
+import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
-import ar.noxit.paralleleditor.kernel.Document
-import ar.noxit.paralleleditor.kernel.Session
-import ar.noxit.paralleleditor.kernel.Kernel
 import scala.List
 
 class BasicKernel extends Kernel {

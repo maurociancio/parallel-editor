@@ -17,7 +17,7 @@ class BasicDocument(val title: String, var content: String) extends Document {
             throw new DocumentSuscriptionAlreadyExistsException("the session is already suscribed to this document")
 
         suscribers = session :: suscribers
-        new BasicDocumentHandler(session, this)
+        new BasicDocumentSession(session, this)
     }
 
     def unsuscribe(session: Session) = {

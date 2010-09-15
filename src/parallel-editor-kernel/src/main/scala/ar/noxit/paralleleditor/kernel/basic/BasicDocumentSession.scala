@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.kernel
 
 import ar.noxit.paralleleditor.kernel.basic.BasicDocument
 
-class BasicDocumentHandler(val owner: Session, val document: BasicDocument) extends DocumentHandler {
+class BasicDocumentSession(val owner: Session, val document: BasicDocument) extends DocumentSession {
 
     def applyChange(operation: EditOperation) = {
         operation executeOn document

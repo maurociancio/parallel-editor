@@ -1,9 +1,8 @@
 package ar.noxit.paralleleditor.kernel
 
-trait DocumentHandler {
+trait DocumentSession {
 
     def applyChange(operation: EditOperation)
-    def installOnUpdateCallback()
-
+    def installOnUpdateCallback
     def unsuscribe
 }
