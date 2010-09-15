@@ -25,11 +25,11 @@ class KernelTest extends AssertionsForJUnit {
         val session = kernel login "username"
         assertEquals(kernel sessionCount, 1)
 
-        val handler = kernel newDocument(session, "title")
+        val docSession = kernel newDocument(session, "title")
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel.documentSuscriberCount("title").get, 1)
 
-        handler.unsuscribe
+        docSession.unsuscribe
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel sessionCount, 1)
         assertEquals(kernel.documentSuscriberCount("title").get, 0)
@@ -43,7 +43,7 @@ class KernelTest extends AssertionsForJUnit {
     @Test
     def testLogout = {
         val session = kernel login "username"
-        val handler = kernel newDocument(session, "title")
+        val docSession = kernel newDocument(session, "title")
 
         assertEquals(kernel sessionCount, 1)
         assertEquals(kernel.documentSuscriberCount("title").get, 1)
