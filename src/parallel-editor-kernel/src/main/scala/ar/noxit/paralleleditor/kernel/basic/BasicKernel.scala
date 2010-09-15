@@ -25,7 +25,7 @@ class BasicKernel extends Kernel {
     }
 
     def newDocument(owner: Session, title: String, initialContent: String) = {
-        if (documents exists { _ == title })
+        if (documents exists { _.title == title })
             throw new DocumentTitleAlreadyExitsException("document title already exists")
 
         val newDocument = new BasicDocument(title, initialContent)
