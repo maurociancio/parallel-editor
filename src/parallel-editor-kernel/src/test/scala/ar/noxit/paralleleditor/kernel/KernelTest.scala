@@ -65,4 +65,11 @@ class KernelTest extends AssertionsForJUnit {
             kernel newDocument(session, "title")
         }
     }
+
+    @Test
+    def testNonexistentDocumentSuscriberCount : Unit = {
+        intercept[NoSuchElementException] {
+            (kernel documentByTitle "pirulo").get
+        }
+    }
 }
