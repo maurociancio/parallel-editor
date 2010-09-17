@@ -13,14 +13,7 @@ class KernelService {
         while (!shouldExit) {
             val client = socket.accept
 
-            actor {
-                val in = client.getInputStream
-                val out = client.getOutputStream
-
-                out.write(in.read)
-
-                client.close
-            }
+            new Client(client).start
         }
     }
 }
