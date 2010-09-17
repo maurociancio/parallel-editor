@@ -14,10 +14,11 @@ class KernelConnectionTest extends AssertionsForJUnit {
     @Test
     def testDocumentCount : Unit = {
         val kernel = new BasicKernel
-        val ka = new KernelActor(kernel)
-        ka.start
+        val ka = new KernelActor(kernel).start
 
+        val client = new ClientActor(ka).start
+
+        client ! "myUsername"
         Thread.sleep(1000)
-        new ClientActor(ka, "myname").start
     }
 }
