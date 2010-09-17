@@ -21,8 +21,18 @@ class KernelActor(val kernel: Kernel) extends Actor {
                     val newSession = kernel.login(username)
                     caller ! newSession
 
-                case ("newdoc", session: Session, name: String) =>
-                    println("new document requested " + name + " from session " + session)
+                case ("doclist", caller: Actor) => {
+                    // ask kernel for the document list
+                    val documentList = kernel.documentList
+
+                    // return it to the caller
+                    caller ! ("doclist", documentList)
+                }
+
+                case ("newdoc", caller: Actor, session: Session, title: String) =>
+                    println("new document requested " + title + " from session " + session)
+                    val docSession = kernel.newDocument(session, title)
+                    caller ! docSession
 
                 case "quit" =>
                     println("quit requested")

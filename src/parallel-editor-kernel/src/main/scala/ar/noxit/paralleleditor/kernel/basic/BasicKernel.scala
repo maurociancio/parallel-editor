@@ -34,6 +34,10 @@ class BasicKernel extends Kernel {
         newDocument suscribe owner
     }
 
+    def documentList = {
+        documents.map( _.title )
+    }
+
     def documentCount = {
         documents size
     }

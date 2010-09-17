@@ -7,6 +7,7 @@ import ar.noxit.paralleleditor.kernel.remote.KernelService
 import org.junit._
 import Assert._
 import org.scalatest.junit.AssertionsForJUnit
+import scala.actors.Actor._
 
 @Test
 class KernelConnectionTest extends AssertionsForJUnit {
@@ -16,9 +17,19 @@ class KernelConnectionTest extends AssertionsForJUnit {
         val kernel = new BasicKernel
         val ka = new KernelActor(kernel).start
 
-        val client = new ClientActor(ka).start
+        val nullActor = actor{
+            loop {
+                receive {
+                    case any =>
+                        println("null actor " + any)
+                }
+            }
+        }
+        val client = new ClientActor(ka, nullActor).start
 
         client ! "myUsername"
-        Thread.sleep(1000)
+        client ! "doclist"
+        client ! ("newdoc", "my title")
+        Thread.sleep(4000)
     }
 }
