@@ -11,11 +11,7 @@ class BasicSession(val username: String, val kernel: BasicKernel) extends Sessio
     if (username == null)
         throw new IllegalArgumentException("username cannot be null")
 
-    def installOnUpdateCallback(callback: UpdateCallback) = {
-        this updateCallback = callback
-    }
+    def installOnUpdateCallback(callback: UpdateCallback) = this updateCallback = callback
 
-    def logout = {
-        kernel logout this
-    }
+    def logout = kernel logout this
 }

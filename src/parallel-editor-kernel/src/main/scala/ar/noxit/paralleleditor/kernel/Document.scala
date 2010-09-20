@@ -2,5 +2,5 @@ package ar.noxit.paralleleditor.kernel
 
 trait Document {
 
-    def suscribe(session: Session) : DocumentSession
+    def subscribe(session: Session) : DocumentSession
 }

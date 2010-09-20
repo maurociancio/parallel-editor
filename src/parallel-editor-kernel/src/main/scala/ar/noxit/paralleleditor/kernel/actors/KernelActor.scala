@@ -13,13 +13,14 @@ class KernelActor(val kernel: Kernel) extends Actor {
         loopWhile(!exit) {
             println("choosing")
             react {
-                case ("login", username: String, caller: Actor) =>
+                case ("login", username: String, caller: Actor) => {
                     println("login requested " + username)
 
                     // TODO catch user already login exception and send it to
                     // the caller, so he could pick a new name
                     val newSession = kernel.login(username)
                     caller ! newSession
+                }
 
                 case ("doclist", caller: Actor) => {
                     // ask kernel for the document list
@@ -29,14 +30,16 @@ class KernelActor(val kernel: Kernel) extends Actor {
                     caller ! ("doclist", documentList)
                 }
 
-                case ("newdoc", caller: Actor, session: Session, title: String) =>
+                case ("newdoc", caller: Actor, session: Session, title: String) => {
                     println("new document requested " + title + " from session " + session)
                     val docSession = kernel.newDocument(session, title)
                     caller ! docSession
+                }
 
-                case "quit" =>
+                case "quit" => {
                     println("quit requested")
                     exit = true
+                }
 
                 case _ =>
                     println("default")

@@ -1,5 +1,4 @@
 package ar.noxit.paralleleditor.kernel.exceptions
 
-class DocumentSuscriptionAlreadyExistsException(message: String) extends RuntimeException(message) {
-
+class DocumentSubscriptionAlreadyExistsException(message: String) extends RuntimeException(message) {
 }

@@ -21,7 +21,7 @@ class BasicKernel extends Kernel {
             throw new IllegalArgumentException("session not logged in")
 
         sessions = sessions filter { _ != session }
-        documents foreach {doc => doc silentUnsuscribe session}
+        documents foreach {doc => doc silentUnsubscribe session}
     }
 
     def newDocument(owner: Session, title: String, initialContent: String) = {
@@ -31,30 +31,22 @@ class BasicKernel extends Kernel {
         val newDocument = new BasicDocument(title, initialContent)
         documents = newDocument :: documents
 
-        newDocument suscribe owner
+        newDocument subscribe owner
     }
 
-    def documentList = {
-        documents.map( _.title )
-    }
+    def documentList = documents.map( _.title )
 
-    def documentCount = {
-        documents size
-    }
+    def documentCount = documents size
 
-    def sessionCount = {
-        sessions size
-    }
+    def sessionCount = sessions size
 
-    def documentByTitle(docTitle: String) = {
-        documents find { _.title == docTitle }
-    }
+    def documentByTitle(docTitle: String) = documents find { _.title == docTitle }
 
-    def documentSuscriberCount(docTitle: String) = {
+    def documentSubscriberCount(docTitle: String) = {
         val doc = documentByTitle(docTitle)
         if (doc isEmpty)
             None
         else
-            Some((doc.get).suscriberCount)
+            Some((doc.get).subscriberCount)
     }
 }
