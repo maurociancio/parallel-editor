@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel
 import ar.noxit.paralleleditor.kernel.actors.ClientActor
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import ar.noxit.paralleleditor.kernel.actors.KernelActor
-import messages.{RemoteLogoutRequest, RemoteNewDocumentRequest, RemoteDocumentList, RemoteLogin}
+import messages._
 import org.junit.Assert._
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
@@ -15,10 +15,12 @@ class KernelConnectionTest extends AssertionsForJUnit {
 
     var kernel: BasicKernel = _
     var client: Actor = _
+    var ka: Actor = _
+    var remoteEchoClient: Actor = _
 
     @Before
     def setUp : Unit = {
-        val remoteEchoClient = actor {
+        remoteEchoClient = actor {
             loop {
                 receive {
                     case any => println("null actor received " + any)
@@ -26,7 +28,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
             }
         }
         kernel = new BasicKernel
-        val ka = new KernelActor(kernel).start
+        ka = new KernelActor(kernel).start
         client = new ClientActor(ka, remoteEchoClient).start
     }
 
@@ -50,12 +52,31 @@ class KernelConnectionTest extends AssertionsForJUnit {
         Thread.sleep(300)
 
         assertEquals(kernel.documentCount, 1)
-        assertEquals(kernel.documentSubscriberCount("title").get, l1)
+        assertEquals(kernel.documentSubscriberCount("title").get, 1)
 
         client ! RemoteLogoutRequest
         Thread.sleep(300)
 
         assertEquals(kernel.documentCount, 1)
         assertEquals(kernel.documentSubscriberCount("title").get, 0)
+    }
+
+    @Test
+    def test2Clients : Unit = {
+        val client2 = new ClientActor(ka, self).start
+
+        client ! RemoteLogin("myUsername")
+        client ! RemoteNewDocumentRequest("title")
+        client2 ! RemoteLogin("myUsername2")
+        client2 ! RemoteDocumentList
+
+        Thread.sleep(300)
+
+        val docList = receive {
+            case RemoteDocumentListResponse(docList) => docList
+        }
+
+        assertEquals(docList, List("title"))
+        assertEquals(kernel.sessionCount, 2)
     }
 }

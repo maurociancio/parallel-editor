@@ -14,5 +14,4 @@ case class NewDocumentRequest(val session: Session, val title: String)
 case class NewDocumentResponse(val docSession: DocumentSession)
 
 case class DocumentListRequest(val session: Session)
-
 case class DocumentListResponse(val documents: List[String])
