@@ -13,5 +13,7 @@ class BasicSession(val username: String, val kernel: BasicKernel) extends Sessio
 
     def installOnUpdateCallback(callback: UpdateCallback) = this updateCallback = callback
 
+    def notifyUpdate(message: AnyRef) = updateCallback update message
+
     def logout = kernel logout this
 }

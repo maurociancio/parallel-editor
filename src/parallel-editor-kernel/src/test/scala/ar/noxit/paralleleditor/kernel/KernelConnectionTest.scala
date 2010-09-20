@@ -3,33 +3,59 @@ package ar.noxit.paralleleditor.kernel
 import ar.noxit.paralleleditor.kernel.actors.ClientActor
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import ar.noxit.paralleleditor.kernel.actors.KernelActor
-import ar.noxit.paralleleditor.kernel.remote.KernelService
+import messages.{RemoteLogoutRequest, RemoteNewDocumentRequest, RemoteDocumentList, RemoteLogin}
+import org.junit.Assert._
 import org.junit._
-import Assert._
 import org.scalatest.junit.AssertionsForJUnit
 import scala.actors.Actor._
+import scala.actors.Actor
 
 @Test
 class KernelConnectionTest extends AssertionsForJUnit {
 
-    @Test
-    def testDocumentCount : Unit = {
-        val kernel = new BasicKernel
-        val ka = new KernelActor(kernel).start
+    var kernel: BasicKernel = _
+    var client: Actor = _
 
-        val nullActor = actor{
+    @Before
+    def setUp : Unit = {
+        val remoteEchoClient = actor {
             loop {
                 receive {
-                    case any =>
-                        println("null actor " + any)
+                    case any => println("null actor received " + any)
                 }
             }
         }
-        val client = new ClientActor(ka, nullActor).start
+        kernel = new BasicKernel
+        val ka = new KernelActor(kernel).start
+        client = new ClientActor(ka, remoteEchoClient).start
+    }
 
-        client ! "myUsername"
-        client ! "doclist"
-        client ! ("newdoc", "my title")
-        Thread.sleep(4000)
+    @Test
+    def testSessionCount : Unit = {
+        client ! RemoteLogin("myUsername")
+        Thread.sleep(300)
+
+        assertEquals(kernel.sessionCount, 1)
+
+        client ! RemoteLogoutRequest
+        Thread.sleep(300)
+
+        assertEquals(kernel.sessionCount, 0)
+    }
+
+    @Test
+    def testDocumentCount : Unit = {
+        client ! RemoteLogin("myUsername")
+        client ! RemoteNewDocumentRequest("title")
+        Thread.sleep(300)
+
+        assertEquals(kernel.documentCount, 1)
+        assertEquals(kernel.documentSubscriberCount("title").get, l1)
+
+        client ! RemoteLogoutRequest
+        Thread.sleep(300)
+
+        assertEquals(kernel.documentCount, 1)
+        assertEquals(kernel.documentSubscriberCount("title").get, 0)
     }
 }

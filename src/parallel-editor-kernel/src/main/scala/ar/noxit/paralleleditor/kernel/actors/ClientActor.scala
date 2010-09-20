@@ -3,57 +3,71 @@ package ar.noxit.paralleleditor.kernel.actors
 import ar.noxit.paralleleditor.kernel.DocumentSession
 import ar.noxit.paralleleditor.kernel.callback.ActorCallback
 import ar.noxit.paralleleditor.kernel.Session
-import scala.actors.Actor
+import scala.actors._
+import ar.noxit.paralleleditor.kernel.messages._
 
-class ClientActor(val kernel: Actor, val connectionClient: Actor) extends Actor {
+class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor {
 
     var docSessions: List[DocumentSession] = List()
+    val timeout = 5000
 
     def act = {
         println("waiting for username")
-        val username = receive {
-            case username: String => username
+        val username = receiveWithin(timeout) {
+            case RemoteLogin(username) => username
+            case TIMEOUT => doTimeout
         }
         println("username received " + username)
 
         // logging into the kernel
-        kernel ! ("login", username, this)
+        kernel ! LoginRequest(username, this)
 
-        // we expect a non null session in order to continue
-        val session = receive {
-            case session: Session if session != null => {
+        // we expect a session in order to continue
+        val session = receiveWithin(timeout) {
+            case LoginResponse(session) => {
                 println("session received")
+                // return session
                 session
             }
+            case TIMEOUT => doTimeout
         }
         println(session)
 
-        session.installOnUpdateCallback(new ActorCallback(connectionClient))
+        // notify the remote client
+        remoteClient ! RemoteLoginOkResponse
+
+        // install callback
+        session.installOnUpdateCallback(new ActorCallback(this))
 
         var exit = false
         loopWhile(!exit) {
             react {
-                case ("newdoc", title: String) => {
+                case RemoteNewDocumentRequest(title) => {
                     println("new doc requested " + title)
 
-                    kernel ! ("newdoc", this, session, title)
-                    receive {
-                        case docSession: DocumentSession => {
+                    kernel ! NewDocumentRequest(session, title)
+                    receiveWithin(timeout) {
+                        case NewDocumentResponse(docSession) => {
                             println("received doc session")
 
                             docSessions = docSession :: docSessions
-                            connectionClient ! ("newdoc", title)
+                            remoteClient ! RemoteNewDocumentOkResponse
                         }
+                        case TIMEOUT => doTimeout
                     }
                 }
 
-                case "doclist" => {
+                case RemoteDocumentList => {
                     println("doclist requested")
 
-                    kernel ! ("doclist", connectionClient)
+                    kernel ! DocumentListRequest(session)
                 }
 
-                case "logout" => {
+                case DocumentListResponse(docList) => {
+                    remoteClient ! RemoteDocumentListResponse(docList)
+                }
+
+                case RemoteLogoutRequest => {
                     println("logout requested")
                     session.logout
 
@@ -62,4 +76,6 @@ class ClientActor(val kernel: Actor, val connectionClient: Actor) extends Actor 
             }
         }
     }
+
+    def doTimeout = throw new IllegalStateException("time out")
 }

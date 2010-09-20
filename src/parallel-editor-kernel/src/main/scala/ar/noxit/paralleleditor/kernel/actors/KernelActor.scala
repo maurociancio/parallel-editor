@@ -1,6 +1,7 @@
 package ar.noxit.paralleleditor.kernel.actors
 
 import ar.noxit.paralleleditor.kernel._
+import ar.noxit.paralleleditor.kernel.messages._
 import scala.actors.Actor
 import scala.actors.Actor._
 
@@ -13,36 +14,31 @@ class KernelActor(val kernel: Kernel) extends Actor {
         loopWhile(!exit) {
             println("choosing")
             react {
-                case ("login", username: String, caller: Actor) => {
+                case LoginRequest(username, caller) => {
                     println("login requested " + username)
 
                     // TODO catch user already login exception and send it to
                     // the caller, so he could pick a new name
                     val newSession = kernel.login(username)
-                    caller ! newSession
+                    caller ! LoginResponse(newSession)
                 }
 
-                case ("doclist", caller: Actor) => {
+                case DocumentListRequest(session) => {
                     // ask kernel for the document list
                     val documentList = kernel.documentList
 
                     // return it to the caller
-                    caller ! ("doclist", documentList)
+                    session notifyUpdate DocumentListResponse(documentList)
                 }
 
-                case ("newdoc", caller: Actor, session: Session, title: String) => {
+                case NewDocumentRequest(session, title) => {
                     println("new document requested " + title + " from session " + session)
+
                     val docSession = kernel.newDocument(session, title)
-                    caller ! docSession
+                    session notifyUpdate NewDocumentResponse(docSession)
                 }
 
-                case "quit" => {
-                    println("quit requested")
-                    exit = true
-                }
-
-                case _ =>
-                    println("default")
+                case _ => println("default")
             }
         }
         // la ejecución nunca llega acá
