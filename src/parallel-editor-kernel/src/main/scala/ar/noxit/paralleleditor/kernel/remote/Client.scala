@@ -1,40 +1,66 @@
 package ar.noxit.paralleleditor.kernel.remote
 
-import java.io.{InputStream,OutputStream}
 import java.net.Socket
 import scala.actors.Actor
 import scala.actors.Actor._
+import java.io._
 
-class Client(val socket: Socket) extends Actor {
-    val input = new InputActor(this, socket.getInputStream)
-    val output = new OutputActor(this, socket.getOutputStream)
+class RemoteClient(val socket: Socket) {
+    var initialized = false
+    var input: Actor = _
+    val output = new OutputActor(new ObjectOutputStream(socket.getOutputStream))
+    var target: Actor = _
 
-    def act = {
-        input.start
+    def start : Unit = {
+        checkTarget
+        markAsInitialized
+
+        input = new InputActor(target, new ObjectInputStream(socket.getInputStream))
         output.start
+        input.start
+    }
 
-        while (true) {
-            receive {
-                case n:Int => output ! n
-            }
+    def stop = {
+        checkInitialized
+
+        socket close
+    }
+
+    private def checkInitialized = {
+        if (!initialized)
+            throw new IllegalStateException("not initialized")
+    }
+
+    private def markAsInitialized = {
+        if (initialized)
+            throw new IllegalStateException("already initialized")
+        initialized = true
+    }
+
+    private def checkTarget: Unit = {
+        if (target == null)
+            throw new IllegalStateException("target actor cannot be null")
+    }
+}
+
+class InputActor(val target: Actor, val input: ObjectInput) extends Actor {
+    override def act = {
+        var exit = false
+        while (!exit) {
+            val in: Any = input.readObject()
+            println("received " + in)
+            target ! in
         }
     }
 }
 
-class InputActor(val client: Actor, val input: InputStream) extends Actor {
+class OutputActor(val output: ObjectOutput) extends Actor {
     override def act = {
-        while (true) {
-            val in = input.read
-            client ! in
-        }
-    }
-}
-
-class OutputActor(val client: Actor, val output: OutputStream) extends Actor {
-    override def act = {
-        while (true) {
-            receive {
-                case n: Int => output.write(n)
+        var exit = false
+        loopWhile(!exit) {
+            react {
+                case message: Any =>
+                    output writeObject message
             }
         }
     }

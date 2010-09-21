@@ -1,19 +1,35 @@
 package ar.noxit.paralleleditor.kernel.remote
 
 import java.net.ServerSocket
-import scala.actors.Actor._
+import ar.noxit.paralleleditor.kernel.basic.BasicKernel
+import ar.noxit.paralleleditor.kernel.actors.{KernelActor, ClientActor}
+import actors.Actor
 
-class KernelService {
+class KernelService extends Actor {
+    var sExit = false
+    val server = new ServerSocket(5000)
+    val kernel = new BasicKernel
+    val ka = new KernelActor(kernel)
 
-    var shouldExit = false
+    def act = {
+        while (!sExit) {
+            // client socket
+            val clientSocket = server.accept
 
-    def init = {
-        val socket = new ServerSocket(5000)
+            // new client
+            val aClient = new RemoteClient(clientSocket)
 
-        while (!shouldExit) {
-            val client = socket.accept
+            // output actor
+            val outputActor = aClient.output
 
-            new Client(client).start
+            // client actor
+            val clientActor = new ClientActor(ka, outputActor).start
+
+            // set the target actor
+            aClient.target = clientActor
+
+            // start the new client
+            aClient.start
         }
     }
 }

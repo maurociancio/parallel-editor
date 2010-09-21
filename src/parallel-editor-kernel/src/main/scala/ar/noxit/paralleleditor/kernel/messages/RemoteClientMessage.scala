@@ -1,5 +1,8 @@
 package ar.noxit.paralleleditor.kernel.messages
 
+import scala.serializable
+
+@serializable
 case class RemoteLogin(val username: String)
 case class RemoteLogoutRequest
 case class RemoteLoginOkResponse
