@@ -12,6 +12,8 @@ class KernelService extends Actor {
     val ka = new KernelActor(kernel)
 
     def act = {
+        ka.start
+
         while (!sExit) {
             // client socket
             val clientSocket = server.accept
