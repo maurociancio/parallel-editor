@@ -6,7 +6,7 @@ trait Loggable {
     val logger: Logger = Logging.getLogger(this)
 
     def checkFormat(msg:String, refs:Seq[Any]): String =
-        if (refs.size > 0) msg.format(refs) else msg
+        if (refs.size > 0) msg.format(refs: _*) else msg
 
     def trace(msg:String, refs:Any*) = logger trace checkFormat(msg, refs)
 
