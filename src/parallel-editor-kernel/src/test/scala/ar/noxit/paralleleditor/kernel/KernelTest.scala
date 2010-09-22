@@ -28,17 +28,17 @@ class KernelTest extends AssertionsForJUnit {
 
         val docSession = kernel newDocument(session, "title")
         assertEquals(kernel documentCount, 1)
-        assertEquals(kernel.documentSuscriberCount("title").get, 1)
+        assertEquals(kernel.documentSubscriberCount("title").get, 1)
 
-        docSession.unsuscribe
+        docSession.unsubscribe
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel sessionCount, 1)
-        assertEquals(kernel.documentSuscriberCount("title").get, 0)
+        assertEquals(kernel.documentSubscriberCount("title").get, 0)
 
         session.logout
         assertEquals(kernel documentCount, 1)
         assertEquals(kernel sessionCount, 0)
-        assertEquals(kernel.documentSuscriberCount("title").get, 0)
+        assertEquals(kernel.documentSubscriberCount("title").get, 0)
     }
 
     @Test
@@ -47,12 +47,12 @@ class KernelTest extends AssertionsForJUnit {
         val docSession = kernel newDocument(session, "title")
 
         assertEquals(kernel sessionCount, 1)
-        assertEquals(kernel.documentSuscriberCount("title").get, 1)
+        assertEquals(kernel.documentSubscriberCount("title").get, 1)
 
         session.logout
 
         assertEquals(kernel sessionCount, 0)
-        assertEquals(kernel.documentSuscriberCount("title").get, 0)
+        assertEquals(kernel.documentSubscriberCount("title").get, 0)
     }
 
     @Test

@@ -4,5 +4,5 @@ trait DocumentSession {
 
     def applyChange(operation: EditOperation)
     def installOnUpdateCallback
-    def unsuscribe
+    def unsubscribe
 }

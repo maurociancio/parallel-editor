@@ -11,7 +11,7 @@ class BasicDocumentSession(val owner: Session, val document: BasicDocument) exte
     def installOnUpdateCallback() = {
     }
 
-    def unsuscribe = {
-        document unsuscribe owner
+    def unsubscribe = {
+        document unsubscribe owner
     }
 }
