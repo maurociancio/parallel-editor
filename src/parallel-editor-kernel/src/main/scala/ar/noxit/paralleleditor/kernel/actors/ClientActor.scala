@@ -34,7 +34,7 @@ class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor {
         println(session)
 
         // notify the remote target
-        remoteClient ! RemoteLoginOkResponse
+        remoteClient ! RemoteLoginOkResponse()
 
         // install callback
         session.installOnUpdateCallback(new ActorCallback(this))
