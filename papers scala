@@ -1,0 +1,6 @@
+- Event-Based Programming without Inversion of Control,
+Philipp Haller and Martin Odersky, Proc. JMLC 2006, and
+http://lampwww.epfl.ch/~odersky/papers/jmlc06.pdf
+- Actors that Unify Threads and Events,
+Philipp Haller and Martin Odersky, Proc. COORDINATION 2007.
+http://lamp.epfl.ch/~phaller/doc/haller07coord.pdf
