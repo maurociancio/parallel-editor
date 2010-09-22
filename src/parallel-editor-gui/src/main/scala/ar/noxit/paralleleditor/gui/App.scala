@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.gui
 import java.awt.Dimension
 import scala.swing._
 import scala.swing.event._
+import scala.actors.Actor._
 
 object App extends SimpleSwingApplication {
     def top = new MainFrame {
@@ -25,8 +26,9 @@ object App extends SimpleSwingApplication {
 
         listenTo(connect)
         reactions += {
-            case ButtonClicked(connect) =>
+            case ButtonClicked(connect) => {
                 println("clicked")
+            }
         }
     }
 }

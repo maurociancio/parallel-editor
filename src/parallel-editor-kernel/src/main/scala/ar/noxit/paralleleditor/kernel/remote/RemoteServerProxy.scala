@@ -5,13 +5,11 @@ import java.net.Socket
 import java.io.{ObjectOutput, ObjectOutputStream}
 import ar.noxit.paralleleditor.kernel.messages._
 
-class ClientService extends Actor {
-    def act = {
-        val socket = new Socket("localhost", 5000)
-        val output = new OutputWriterActor(new ObjectOutputStream(socket.getOutputStream)).start
-
-        // TODO close the socket
-    }
+/**
+ * Esta clase representa al servidor remoto desde el punto de vista del cliente.
+ */
+class RemoteServerProxy(socket: Socket) {
+    val output = new OutputWriterActor(new ObjectOutputStream(socket.getOutputStream)).start
 }
 
 // TODO change class' name

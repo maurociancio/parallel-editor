@@ -1,18 +1,24 @@
 package ar.noxit.paralleleditor.gui
 
 import swing._
+import scala.swing.event.ValueChanged
 
-object GUI extends SimpleSwingApplication{
+object GUI extends SimpleSwingApplication {
+    def top = new MainFrame {
+        title = "Parallel Editor GUI"
+        menuBar = new BarraMenuesGUI
 
-  def top = new MainFrame{
-    
-    title = "Parallel Editor GUI"
+        contents = new FlowPanel {
+            val textArea = new TextArea("hola mundo", 20, 50)
+            contents += textArea
 
-    menuBar = new BarraMenuesGUI
+            listenTo(textArea)
 
-    contents = new FlowPanel {
-          contents += new TextArea("hola mundo",20,50)
+            reactions += {
+                case vc: ValueChanged => {
+                    println(vc)
+                }
+            }
+        }
     }
-
-  }
 }
