@@ -1,17 +1,15 @@
 package ar.noxit.paralleleditor.kernel
 
-import ar.noxit.paralleleditor.kernel.basic.BasicDocument
+import messages.Unsubscribe
+import scala.actors.Actor
 
-class BasicDocumentSession(val owner: Session, val document: BasicDocument) extends DocumentSession {
+class BasicDocumentSession(val session: Session, val documentActor: Actor) extends DocumentSession {
 
-    def applyChange(operation: EditOperation) = {
-        operation executeOn document
+    override def applyChange(operation: EditOperation) = {
+        documentActor ! operation
     }
 
-    def installOnUpdateCallback() = {
-    }
-
-    def unsubscribe = {
-        document unsubscribe owner
+    override def unsubscribe = {
+        documentActor ! Unsubscribe(session)
     }
 }

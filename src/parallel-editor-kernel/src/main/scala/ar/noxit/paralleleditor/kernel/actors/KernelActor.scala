@@ -15,7 +15,7 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
         loopWhile(!exit) {
             trace("Choosing")
             react {
-                case LoginRequest(username, caller) => {
+                case LoginRequest(username) => {
                     trace("Login Requested by=[%s]", username)
 
                     // TODO catch user already login exception and send it to
@@ -23,7 +23,7 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                     val newSession = kernel.login(username)
 
                     trace("Sending Login Response")
-                    caller ! LoginResponse(newSession)
+                    sender ! LoginResponse(newSession)
                 }
 
                 case DocumentListRequest(session) => {

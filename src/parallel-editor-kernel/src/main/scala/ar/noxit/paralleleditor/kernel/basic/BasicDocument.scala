@@ -3,12 +3,13 @@ package ar.noxit.paralleleditor.kernel.basic
 import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
 import scala.List
+import scala.actors.Actor
 
-class BasicDocument(val title: String, var content: String) extends Document {
+class BasicDocument(val title: String, var content: String, val actor: Actor) extends Document {
 
-    var subscribers: List[Session] = List()
+    private var subscribers: List[Session] = List()
 
-    def subscribe(session: Session) = {
+    override def subscribe(session: Session) = {
         if (session == null)
             throw new IllegalArgumentException("unexpected null session")
 
@@ -16,14 +17,14 @@ class BasicDocument(val title: String, var content: String) extends Document {
             throw new DocumentSubscriptionAlreadyExistsException("the session is already suscribed to this document")
 
         subscribers = session :: subscribers
-        new BasicDocumentSession(session, this)
+        new BasicDocumentSession(session, actor)
     }
 
     def unsubscribe(session: Session) = {
         if (session == null)
             throw new IllegalArgumentException("unexpected null session")
 
-        if (!subscribers exists session)
+        if (!subscribers.contains(session))
             throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
 
         subscribers = subscribers filter { _ != session}

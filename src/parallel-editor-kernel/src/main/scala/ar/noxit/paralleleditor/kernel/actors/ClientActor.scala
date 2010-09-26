@@ -24,7 +24,7 @@ class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor with
 
         trace("Sending login request")
         // logging into the kernel
-        kernel ! LoginRequest(username, this)
+        kernel ! LoginRequest(username)
 
         trace("Waiting for session")
         // we expect a session in order to continue

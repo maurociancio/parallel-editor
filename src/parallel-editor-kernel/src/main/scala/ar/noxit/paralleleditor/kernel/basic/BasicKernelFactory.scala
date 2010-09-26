@@ -4,7 +4,7 @@ import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 
 class BasicKernelFactory extends KernelFactory {
 
-    def buildKernel = {
+    override def buildKernel = {
         new BasicKernel
     }
 }

@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel.messages
 import scala.actors.Actor
 import ar.noxit.paralleleditor.kernel.{DocumentSession, Session}
 
-case class LoginRequest(val username: String, val caller: Actor)
+case class LoginRequest(val username: String)
 
 case class LoginResponse(val session: Session) {
     if (session == null)

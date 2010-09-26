@@ -2,51 +2,86 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
+import logger.Loggable
+import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
 
-class BasicKernel extends Kernel {
+class BasicKernel extends Kernel with Loggable {
+    val timeout = 5000
+    var sessions = List[Session]()
+    var documents = List[DocumentActor]()
 
-    var sessions: List[Session] = List()
-    var documents: List[BasicDocument] = List()
-
-    def login(username: String) = {
+    override def login(username: String) = {
         val newSession = new BasicSession(username, this)
         sessions = newSession :: sessions
 
         newSession
     }
 
-    def logout(session: Session) = {
-        if (!sessions contains session)
-            throw new IllegalArgumentException("session not logged in")
-
-        sessions = sessions filter { _ != session }
-        documents foreach {doc => doc silentUnsubscribe session}
-    }
-
-    def newDocument(owner: Session, title: String, initialContent: String) = {
-        if (documents exists { _.title == title })
+    override def newDocument(owner: Session, title: String, initialContent: String) = {
+        if (documents exists {_.title == title})
             throw new DocumentTitleAlreadyExitsException("document title already exists")
 
-        val newDocument = new BasicDocument(title, initialContent)
-        documents = newDocument :: documents
+        // create a document actor
+        val newDocActor = newDocumentActor(title, initialContent)
 
-        newDocument subscribe owner
+        // add document to list
+        documents = newDocActor :: documents
+
+        val session = newDocActor !? (timeout, Subscribe(owner))
+        session match {
+            case Some(session: DocumentSession) => session
+            case None => {
+                // TODO throw an exception
+                throw new IllegalStateException()
+            }
+        }
     }
 
-    def documentList = documents.map { _.title }
+    protected def newDocumentActor(title: String, initialContent: String): DocumentActor = {
+        // create new document factory
+        val doc = new BasicDocumentFactory(title, initialContent)
+
+        // create a document actor
+        val actor = new BasicDocumentActor(doc)
+
+        // start the actor
+        actor.start
+
+        actor
+    }
+
+    override def documentList = documents.map {_.title}
+
+    def logout(session: Session) = {
+        if (!sessions.contains(session))
+            throw new IllegalArgumentException("session not logged in")
+
+        sessions = sessions filter {_ != session}
+        documents foreach {doc => doc ! SilentUnsubscribe(session)}
+    }
 
     def documentCount = documents size
 
     def sessionCount = sessions size
 
-    def documentByTitle(docTitle: String) = documents find { _.title == docTitle }
+    // TODO change this method to private
+    def documentByTitle(docTitle: String) = documents find {_.title == docTitle}
 
     def documentSubscriberCount(docTitle: String) = {
-        val doc = documentByTitle(docTitle)
-        if (doc isEmpty)
-            None
-        else
-            Some((doc.get).subscriberCount)
+        documentByTitle(docTitle) match {
+            case Some(doc) => {
+                val result = doc !? (timeout, SubscriberCount())
+                result match {
+                    case Some(count: Integer) => Some(count)
+                    case None => {
+                        // TODO throw an exception if the timeout is exceeded
+                        warn("Timeout exceeded")
+                        None
+                    }
+                }
+            }
+            case None => None
+        }
     }
 }
