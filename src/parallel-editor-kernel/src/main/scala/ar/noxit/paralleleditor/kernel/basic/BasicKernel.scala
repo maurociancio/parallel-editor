@@ -17,7 +17,7 @@ class BasicKernel extends Kernel {
     }
 
     def logout(session: Session) = {
-        if (!sessions.contains(session))
+        if (!sessions contains session)
             throw new IllegalArgumentException("session not logged in")
 
         sessions = sessions filter { _ != session }
@@ -34,7 +34,7 @@ class BasicKernel extends Kernel {
         newDocument subscribe owner
     }
 
-    def documentList = documents.map( _.title )
+    def documentList = documents.map { _.title }
 
     def documentCount = documents size
 

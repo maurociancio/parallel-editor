@@ -16,7 +16,6 @@ class BarraMenuesGUI extends MenuBar {
         contents += new MenuItem("Cortar")
         contents += new MenuItem("Pegar")
         contents += new MenuItem("Buscar...")
-
     }
 
     this.contents += menuArchivo
