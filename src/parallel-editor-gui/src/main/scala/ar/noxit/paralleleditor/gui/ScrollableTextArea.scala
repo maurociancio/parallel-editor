@@ -4,13 +4,11 @@ import scala.swing._
 import scala.swing.event.ValueChanged
 
 class ScrollableTextArea extends FlowPanel {
-
     var oldSize = 0
 
     val areaEdicion = new EditorPane {
         text = "Hola Mundo"
         preferredSize = new Dimension(640, 480)
-
     }
 
     val scrollAreaEdicion = new ScrollPane(areaEdicion)
@@ -37,14 +35,14 @@ class ScrollableTextArea extends FlowPanel {
             areaEdicion.caret.position_=(areaEdicion.text.length)
             val initPos = areaEdicion.caret.position
             val sizeDiff = calculateDiffSize
-         //   if (sizeDiff>0){
-                addEntry(evt toString)
-                addEntry(
-                    "Edicion en pos: " + Integer.toString(initPos) +
-                     " - Diff tamaño: " + Integer.toString( sizeDiff )
-                  //   " - Cambio: " + areaEdicion.text.substring(initPos,sizeDiff)
+            //   if (sizeDiff>0){
+            addEntry(evt toString)
+            addEntry(
+                "Edicion en pos: " + Integer.toString(initPos) +
+                        " - Diff tamaño: " + Integer.toString(sizeDiff)
+                //   " - Cambio: " + areaEdicion.text.substring(initPos,sizeDiff)
                 )
-         //   }
+            //   }
         }
     }
 
@@ -57,8 +55,6 @@ class ScrollableTextArea extends FlowPanel {
     def addEntry(msg: String) {
         debugConsole append (msg + '\n')
     }
-    
+
     contents += split
-
-
 }
