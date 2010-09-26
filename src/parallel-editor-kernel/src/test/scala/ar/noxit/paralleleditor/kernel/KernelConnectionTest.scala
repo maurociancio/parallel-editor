@@ -3,7 +3,8 @@ package ar.noxit.paralleleditor.kernel
 import ar.noxit.paralleleditor.kernel.actors.ClientActor
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import ar.noxit.paralleleditor.kernel.actors.KernelActor
-import ar.noxit.paralleleditor.kernel.messages._
+import common.{RemoteLogoutRequest, RemoteLogin, RemoteDocumentList, RemoteNewDocumentRequest}
+import messages._
 import org.junit.Assert._
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit

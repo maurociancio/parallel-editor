@@ -4,8 +4,9 @@ import ar.noxit.paralleleditor.kernel.DocumentSession
 import ar.noxit.paralleleditor.kernel.callback.ActorCallback
 import ar.noxit.paralleleditor.kernel.Session
 import scala.actors._
-import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.kernel.logger.Loggable
+import ar.noxit.paralleleditor.kernel.messages._
+import ar.noxit.paralleleditor.kernel.common._
 
 class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor with Loggable {
 

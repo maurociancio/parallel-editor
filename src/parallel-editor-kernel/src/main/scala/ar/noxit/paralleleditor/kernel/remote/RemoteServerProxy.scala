@@ -4,6 +4,7 @@ import actors.Actor
 import java.net.Socket
 import java.io.{ObjectOutput, ObjectOutputStream}
 import ar.noxit.paralleleditor.kernel.messages._
+import ar.noxit.paralleleditor.kernel.common.RemoteLogin
 
 /**
  * Esta clase representa al servidor remoto desde el punto de vista del cliente.

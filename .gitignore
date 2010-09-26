@@ -6,3 +6,4 @@
 *~
 src/parallel-editor-kernel/target/
 src/parallel-editor-gui/target/
+src/parallel-editor-common/target/
