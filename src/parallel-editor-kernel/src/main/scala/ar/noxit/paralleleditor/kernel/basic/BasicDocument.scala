@@ -12,7 +12,7 @@ class BasicDocument(val title: String, var content: String) extends Document {
         if (session == null)
             throw new IllegalArgumentException("unexpected null session")
 
-        if (subscribers exists { _ == session})
+        if (subscribers contains session)
             throw new DocumentSubscriptionAlreadyExistsException("the session is already suscribed to this document")
 
         subscribers = session :: subscribers
@@ -23,7 +23,7 @@ class BasicDocument(val title: String, var content: String) extends Document {
         if (session == null)
             throw new IllegalArgumentException("unexpected null session")
 
-        if (!subscribers.exists { _ == session})
+        if (!subscribers exists session)
             throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
 
         subscribers = subscribers filter { _ != session}
