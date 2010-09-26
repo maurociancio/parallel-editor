@@ -3,14 +3,6 @@ package ar.noxit.paralleleditor.gui
 import scala.swing._
 import scala.swing.event.ValueChanged
 
-/**
- * Created by IntelliJ IDEA.
- * User: legilioli
- * Date: 23/09/2010
- * Time: 23:41:32
- * To change this template use File | Settings | File Templates.
- */
-
 class ScrollableTextArea extends FlowPanel {
 
     var oldSize = 0
