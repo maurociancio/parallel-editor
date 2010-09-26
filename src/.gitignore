@@ -2,3 +2,7 @@
 .project
 .settings/
 .scala_dependencies
+
+parallel-editor.iml
+parallel-editor.ipr
+parallel-editor.iws
