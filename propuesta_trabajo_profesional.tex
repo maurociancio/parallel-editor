@@ -28,7 +28,7 @@ A continuación se listan los alumnos que desarrollaron esta propuesta y se incl
 		      Padrón 86.075.
 	\end{itemize}
 
-El profesor tutor de este trabajo profesional es Pablo Cosso.
+El profesor tutor de este trabajo profesional es el Lic. Pablo Cosso.
 
 	\section{Contexto}
 
@@ -40,21 +40,21 @@ El profesor tutor de este trabajo profesional es Pablo Cosso.
 		
 	\section{Objetivo del proyecto}
 
-El objetivo del proyecto es obtener un producto de software que permita a los usuarios elaborar documentos de texto de forma concurrente y en tiempo real. El producto se dividirá en dos sub productos de menor tamaño: el primero permitirá la edición colaborativa de texto usando un software independiente de cualquier otra aplicación. El segundo comprenderá la integración con un entorno de desarrollo integrado.
+El objetivo del proyecto es obtener un producto de software que permita a los usuarios elaborar documentos de texto de forma concurrente y en tiempo real. El producto se dividirá en dos subproductos de menor tamaño: el primero permitirá la edición colaborativa de texto usando un software independiente de cualquier otra aplicación. El segundo comprenderá la integración con un entorno de desarrollo integrado.
 
 El nombre producto será ``Parallel Editor".
 
 A su vez, se pretende desarrollar el producto siguiendo los criterios de calidad que se definen más adelante en este documento.
 
-También se desarrollará documentación de usuario y técnica del producto de modo que sea posible la extensión e incorporación a otras plataformas e IDE's.
+También se desarrollará documentación de usuario y técnica del producto de modo que sea posible la extensión e incorporación a otras plataformas e IDEs.
 
-El producto será desarrollado teniendo en cuenta la integración del mismo en otros contextos, por lo que se podrá observar una vez finalizado que los dos subproductos reutilizan un gran porcentaje del código fuente desarrollado una sola vez. Este punto es importante y es considerado en los requerimientos no funcionales.	
+El producto será desarrollado teniendo en cuenta la integración del mismo en otros contextos, por lo que se podrá observar una vez finalizado que los dos subproductos reutilizan un gran porcentaje del código fuente desarrollado una única vez. Este punto es importante y es considerado en los requerimientos no funcionales.	
 	
 	\section{Necesidades del cliente / Mercado}
 	
 	Se necesita una herramienta con las siguientes características:
 	\begin{itemize}
-		\item La posibilidad de que dos o más personas editen un mismo documento en tiempo real sin la necesidad de estar fisicamente en el mismo lugar.
+		\item La posibilidad de que dos o más personas editen un mismo documento en tiempo real sin la necesidad de estar físicamente en el mismo lugar.
 		\item Provisión al usuario de un mecanismo sencillo para la iniciación de una sesión de edición.
 		\item Bajo costo de infraestructura al no requerir un servidor central dedicado para este producto.
 		\item Resolución transparente de los posibles conflictos de la naturaleza concurrente de la edición en tiempo real.
@@ -69,15 +69,15 @@ En esta sección se describirán productos existentes en el mercado y se compara
 
 	Provee la posibilidad de editar en tiempo real concurrentemente documentos con formato utilizando un navegador compatible. Posibilita la participación de múltiples usuarios en línea.
 
-	Sin embargo, su mayor desventaja consiste en la dependencia de una conexión a internet para la disponibilidad del servicio, no es posible hasta ahora, la utilización del mismo en una red LAN privada.
+	Sin embargo, su mayor desventaja consiste en la dependencia de una conexión a internet para la disponibilidad del servicio. No es posible hasta ahora, la utilización del mismo en una red LAN privada.
 
 	 Además es sólo utilizable a través de la interfaz web del navegador por lo cual su integración con herramientas de terceros no es posible. Cabe aclarar que Google ha abandonado el desarrollo de Google Wave.
 
 	
 
-	\subsection{BeeWeeVee \cite{beeweevee}}
+	\subsection{BeWeeVee \cite{beeweevee}}
 
-	Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones. Se provee como un software development kit para el desarrollo sobre la plataforma .NET. Por este motivo, si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no cubre totalmente el espacio de potenciales aplicaciones ya que las aplicaciones que no se desarrollan en .NET no pueden integralo.
+	Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones. Se provee como un software development kit para el desarrollo sobre la plataforma .NET. Por este motivo, si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no cubre totalmente el espacio de potenciales aplicaciones ya que las aplicaciones que no se desarrollan en .NET no pueden integrarlo.
 
 	Es de licencia libre para uso académico y aplicaciones open source, aunque tiene un costo para la integración en desarrollos privados.
 
@@ -85,7 +85,7 @@ En esta sección se describirán productos existentes en el mercado y se compara
 
 	\subsection{COLA \cite{cola} - Eclipse Plugin}
 
-	COLA es un plugin para la integración con Eclipse que permite la colaboración en tiempo real de los usuarios para editar un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad de usuarios que pueden participan en una sesión de edición de código a dos participantes.
+	COLA es un plugin para la integración con Eclipse que permite la colaboración en tiempo real de los usuarios para editar un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad de usuarios que pueden participar en una sesión de edición de código a dos participantes.
 
 	\subsection{Comparación con la presente propuesta}
 El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del mismo usando tecnologías que corren sobre la máquina virtual de Java, lograr independencia sobre otros frameworks o componentes de software y lograr que pueda haber mas de dos participantes en la misma sesión de edición.
@@ -96,28 +96,28 @@ Estas características descriptas determinarán los requerimientos funcionales y
    En la visión del proyecto se listaron las posibles funcionalidades que podría incluir el producto, de ellas se seleccionarán las siguientes para ser completadas en el presente proyecto:
    
 	\subsection{Núcleo}
-	Consiste en una biblioteca de software que proveerá servicios de apertura y cierre de sesiones de desarrollo. Se encargará de la administración de los participantes de la sesión de desarrollo, recibiendo e informando los cambios indroducidos por cada uno de ellos y resolviendo los conflictos que se produzcan debido a la concurrencia.
+	Consiste en una biblioteca de software que proveerá servicios de apertura y cierre de sesiones de desarrollo. Se encargará de la administración de los participantes de la sesión de desarrollo, recibiendo e informando los cambios introducidos por cada uno de ellos y resolviendo los conflictos que se produzcan debido a la concurrencia.
 	
 	También el núcleo ofrecerá una API de modo que las aplicaciones que requieran un servidor embebido puedan usar la misma.
 
 	\subsection{API Cliente}
-	Comprenderá la biblioteca que se encarga de implementar el protocolo de comunicación de un participante de la sesión con el núcleo del sistema. Esta API sera utilizada tanto por el cliente GUI como también por el plugin.
+	Comprenderá la biblioteca que se encarga de implementar el protocolo de comunicación de un participante de la sesión con el núcleo del sistema. Esta API será utilizada tanto por el cliente GUI como también por el plugin.
 
 	\subsection{Interfaz gráfica}
 	Se desarrollará una pequeña aplicación independiente que permitirá la edición colaborativa utilizando las APIs antes mencionadas.
 
 	\subsection{Integración con IDE}
-	Se desarrollará un agregado o plug-in para integrar la funcionalidad de desarrollo colaborativo en tiempo real dentro del IDE Eclipse.
+	Se desarrollará un agregado o plugin para integrar la funcionalidad de desarrollo colaborativo en tiempo real dentro del IDE Eclipse.
 
 	\section{Requerimientos funcionales}
 	
-	Se separaran los requerimientos funcionales segun al módulo al que correspondan.
+	Se separarán los requerimientos funcionales segun el módulo al que correspondan.
 
 	\subsection{Núcleo}
 	\begin{enumerate}
-	\item Resolucion de conflictos: implementación del algoritmo de resolución de conflictos. Se utilizará el algoritmo de Júpiter \cite{jupiter} para resolver el escenario concurrente presente en el producto.
-	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El núcleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial a documento. El origen de este documento dependerá de la aplicación cliente.
-	\item Participantes: los participantes son los usuarios conectados y los cuales pueden observar los documentos que se existen. No existirá restricción en cuanto a que usuarios pueden editar cuales documentos, sino que cualquier usuario podrá suscribirse a un documento para editarlo o ver su contenido.
+	\item Resolución de conflictos: implementación del algoritmo de resolución de conflictos. Se utilizará el algoritmo Júpiter \cite{jupiter} para resolver el escenario concurrente presente en el producto.
+	\item Documentos: implementación de las entidades que mantienen el estado del documento en memoria, mientras los participantes aplican operaciones sobre ellos para agregar o borrar contenido. El núcleo ofrecerá servicios para crear documentos vacíos o para asignar un contenido inicial al documento. El origen de este documento dependerá de la aplicación cliente.
+	\item Participantes: los participantes son los usuarios conectados y los cuales pueden observar los documentos que existen. No existirá restricción en cuanto a qué usuarios pueden editar cuales documentos, sino que cualquier usuario podrá suscribirse a un documento para editarlo o ver su contenido.
 	
 	\end{enumerate}
 
@@ -128,15 +128,15 @@ Estas características descriptas determinarán los requerimientos funcionales y
 \item Implementacion API Cliente: diseñar e implementar la API que se le ofrecerá a las aplicaciones cliente para que hagan uso de los servicios ofrecidos por el producto.
 A su vez, es necesario implementar el protocolo de comunicación con el núcleo para el envío y recepción de mensajes en ámbos sentidos.
 
-\item Notificacion de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
+\item Notificación de eventos: ofrecer una abstracción a la aplicación que use esta API para manejar los eventos hacia y desde el núcleo. Los eventos que se enviarán son los correspondientes al ingreso de texto en la aplicación cliente y los eventos que se reciben son los que se originan en los otros participantes de la sesión de edición.
 
-\item A su vez se deberan atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
+\item A su vez se deberán atender otro tipo de eventos tales como: mensajes de chat, mensajes de ingreso o egreso de algún participante a la sesión de edición, etc.
 	\end{enumerate}
 
 	\subsection{GUI} 
 	Se requiere una aplicación gráfica que permita las siguientes funcionalidades:
 	\begin{enumerate}
-	\item Crear sesiones de edicion.
+	\item Crear sesiones de edición.
 	\item Conectar a una sesión de edición.
 	\item Ver documentos disponibles para edición una vez que se ha conectado a un servidor.
 	\item Crear documento de texto vacío.
@@ -149,10 +149,10 @@ A su vez, es necesario implementar el protocolo de comunicación con el núcleo 
 
 
 \subsection{Plugin}
-Se requiere un módulo plug-in para la incorporación a un entorno integrado de desarrollo de las siguientes fuincionalidades:
+Se requiere un módulo plugin para la incorporación a un entorno integrado de desarrollo de las siguientes funcionalidades:
 	\begin{enumerate}
 	\item Compartir documento actual para edición colaborativa.
-	\item Conectarse a sesión de edicion.
+	\item Conectarse a sesión de edición.
 	\item Desconectarse de sesión de edición.
 	\item Editar el documento presente en el IDE.
 	\end{enumerate}
@@ -162,9 +162,9 @@ Se requiere un módulo plug-in para la incorporación a un entorno integrado de 
 \subsection{Integrabilidad} Se garantizará implementando dos interfaces de usuario distintas (GUI y Plugin) que hagan uso del mismo código base, solamente desarrollando las funcionalidades necesarias o distintas para cada caso.
 Por otra parte, se definirá y documentará una API de modo que pueda ser incorporado a otros productos por terceras partes.
 
-\subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual se podrá ver toda la información transmitida entre los clientes. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
+\subsection{Seguridad} El producto para esta primer versión utilizará un protocolo de texto plano, en el cual toda la información transmitida entre los clientes no será cifrada. Si se pretende transmitir información sensible se deberá añadir una capa que permita el cifrado de la comunicación. Se buscará que esta capa adicional de seguridad sea fácilmente incorporable al producto.
 
-\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participanates deben poseer la misma versión del documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que este es el encargado de aplicar el mecanismo de resolución de conflictos.
+\subsection{Confiabilidad} Los usuarios deberán poseer una versión consistente del documento que se encuentran editando. Al finalizar la sesión de edición todos los participantes deben poseer la misma versión del documento. Para garantizar este requerimiento se realizarán pruebas unitarias exhaustivas sobre el núcleo de la aplicación, ya que éste es el encargado de aplicar el mecanismo de resolución de conflictos.
 
 \subsection{Portabilidad} Se buscará hacer que el desarrollo sea compatible con las principales plataformas, para esto se realizará sobre la máquina virtual de Java aprovechando que cuenta con implementaciones para distintas arquitecturas.	
 
@@ -229,11 +229,11 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 	
 	Para el desarrollo del proyecto se aplicará la metodología Scrum \cite{scrum}.
 
-	Scrum es una metodología agil de desarrollo de software. Se enfoca principalmente en entregar la mayor cantidad de valor al negocio en el tiempo más corto posible teniendo en cuenta las prioridades del cliente. Permite obtener versiones funcionales y operativas del producto en intervalos cortos de tiempo posibilitando el retorno de la inversión del cliente con cada iteración.
+	Scrum es una metodología ágil de desarrollo de software. Se enfoca principalmente en entregar la mayor cantidad de valor al negocio en el tiempo más corto posible teniendo en cuenta las prioridades del cliente. Permite obtener versiones funcionales y operativas del producto en intervalos cortos de tiempo posibilitando el retorno de la inversión del cliente con cada iteración.
 	
-	En cada iteración se realizan tareas de diseño, desarrollo y prueba. El equipo de trabajo consta de un conjunto de profesionales auto-organizado que determina cual es la mejor forma de completar las tareas para entregar las funcionalidades mas prioritarias.
+	En cada iteración se realizan tareas de diseño, desarrollo y prueba. El equipo de trabajo consta de un conjunto de profesionales auto-organizados que determinan cual es la mejor forma de completar las tareas para entregar las funcionalidades mas prioritarias.
 	
-	Cada 2 a 4 semanas se puede ver un incremento funcional en el producto que esta listo para usar y puede decidirse liberarlo en ese momento o continuar mejorándolo en otra iteración. La longitud del sprint se fija en un período tal que sea posible dejar posibles cambios afuera.
+	Cada 2 a 4 semanas se puede ver un incremento funcional en el producto que está listo para usar y puede decidirse liberarlo en ese momento o continuar mejorándolo en otra iteración. La longitud del sprint se fija en un período tal que sea posible dejar posibles cambios afuera.
 
 	\subsection{Roles}
 
@@ -244,21 +244,21 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 
 	\item \textit{Equipo Scrum}: es el equipo auto-organizado multidisciplinario de personas que se encargan de la ejecución de las tareas que se planifican para cada sprint.
 
-	\item \textit{Scrum Master}: es el responsable de la adminsitracion del proyecto. Se asegura que se apliquen los principios de Scrum durante el desarrollo de mismo. Se asegura que el equipo de trabajo sea totalmente funcional y productivo. Aisla al equipo de interferencias externas y elimina los impedimentos para que puedan completar sus tareas.
+	\item \textit{Scrum Master}: es el responsable de la administración del proyecto. Se asegura que se apliquen los principios de Scrum durante el desarrollo de mismo. Se asegura que el equipo de trabajo sea totalmente funcional y productivo. Aísla al equipo de interferencias externas y elimina los impedimentos para que puedan completar sus tareas.
 	
 	\end{itemize}
 
 	\subsection{Reuniones}
-	Durante el desarrollo del proyecto se realizant tres tipos de reuniones:
+	Durante el desarrollo del proyecto se realizan tres tipos de reuniones:
 
 	\begin{itemize}
-	\item \textit{Sprint planning}: se realiza al inicio de cada sprint. Participan el product owner, scrum master y el equipo de trabajo. Se realiza la priorización y seleccion de las tareas y funcionalides que serán desarrolladas durante el sprint a iniciar. Al final de esta reunión se obtiene el objetivo y la planificación del sprint.
+	\item \textit{Sprint planning}: se realiza al inicio de cada sprint. Participan el product owner, scrum master y el equipo de trabajo. Se realiza la priorización y selección de las tareas y funcionalides que serán desarrolladas durante el sprint a iniciar. Al final de esta reunión se obtiene el objetivo y la planificación del sprint.
 
-	\item \textit{Daily scrum meeting}: la realizan el equipo de trabajo junto con el scrum master. Es una reunión corta y lo mas frecuente posible (idealmente diaria).  Tiene como objetivo poner al tanto al equipo de trabajo de las tareas que esta realizando cada integrante y de los problemas que surgieron.
+	\item \textit{Daily scrum meeting}: la realizan el equipo de trabajo junto con el scrum master. Es una reunión corta y lo mas frecuente posible (idealmente diaria).  Tiene como objetivo poner al tanto al equipo de trabajo de las tareas que está realizando cada integrante y de los problemas que surgieron.
 
 	\item \textit{Sprint Review}: Se realiza al final de cada sprint. El equipo muestra el resultado del trabajo desarrollado. Toma generalmente la forma de una demostración de las funcionalidades logradas. Participan el cliente, product owner, scrum manager y el equipo scrum.
 
-	\item \textit{Sprint Retrospective}: participan exclusivamente los miembros del equipo Scrum. Se exponen lecciones aprendidas a lo largo del sprint que termino y se toman decisiones sobre aspectos a conservar o cambiar de la forma de trabajo.
+	\item \textit{Sprint Retrospective}: participan exclusivamente los miembros del equipo Scrum. Se exponen lecciones aprendidas a lo largo del sprint que terminó y se toman decisiones sobre aspectos a conservar o cambiar de la forma de trabajo.
 	\end{itemize}
 
 
@@ -268,7 +268,7 @@ Por otra parte, se definirá y documentará una API de modo que pueda ser incorp
 	\begin{itemize}
 		\item Informe de avance.
 		\item Funcionalidades desarrolladas.
-		\item Indicador de cobertura de la prueba. Detalle que porcentaje y que partes del código fuente fueron alcanzados por los test unitarios.
+		\item Indicador de cobertura de la prueba. Detalle de que porcentaje y que partes del código fuente fueron alcanzados por los test unitarios.
 		\item Estado de los tests funcionales.
 		\item Resultado de los tests que se ejecutaron.
 		\item Burndown chart.
@@ -289,11 +289,11 @@ Se eligió este lenguaje ya que ofrece una visión alternativa a los problemas c
 
 	\item Framework de unit testing: Scala Test y TestNG.
 
-	\item Versionado GIT: sistema de versionado de código distribuído.
+	\item Versionado GIT: sistema de versionado de código distribuido.
 
-	\item Eclipse IDE: es el estandar de facto entre los entornos de desarrollo integrado para Java.
+	\item Eclipse IDE: es el estándar de facto entre los entornos de desarrollo integrado para Java.
 
-	\item GitHub: el código fuente será alojado en este sitio. El sitio provee gráficos y estadísticas útiles sobre el desarrollo del código fuente.	
+	\item GitHub: el código fuente será alojado en este sitio. El mismo provee gráficos y estadísticas útiles sobre el desarrollo del código fuente.	
 
 	\end{itemize}
 
@@ -318,7 +318,7 @@ En la figura \ref{peer} se observa un posible escenario reflejando la arquitectu
 
 
 
-En el segundo caso, se dispone de una arquitectura cliente-servidor en la cual participa un servidor dedicado corriendo el Núcleo de la aplicación y los distintos clientes que se conectan con el mismo. La conexión se establece entre el componente cliente y el componente núcleo abstrayendo a la aplicación GUI de la complejidad subyacente.
+En el segundo caso, se dispone de una arquitectura cliente-servidor en la cual participa un servidor dedicado corriendo el núcleo de la aplicación y los distintos clientes que se conectan con el mismo. La conexión se establece entre el componente cliente y el componente núcleo abstrayendo a la aplicación GUI de la complejidad subyacente.
 
 Se puede ver en la siguiente figura:
 
@@ -331,7 +331,7 @@ Se puede ver en la siguiente figura:
 
 Esta alternativa permite concentrar todos los documentos que editan los usuarios en un solo punto.
 
-En ambos casos no se necesita conectividad internet.	
+En ambos casos no se necesita conectividad a internet.	
 
 	\section{Criterios de calidad}
 	
@@ -339,7 +339,7 @@ Se realizarán dos tipos de pruebas sobre el producto una vez iniciado el desarr
 
 	El porcentaje del código fuente que se pretende cubrir con las pruebas unitarias es del 60\%. El foco de las pruebas se concentrará en los módulos núcleo y cliente del producto.
 
-	El segundo tipo de prueba a realizar son las pruebas funcionales. Estas tienen como característica que son dificilmente automatizables y deben ser realizadas por el usuario que utilizara la aplicación. Las pruebas se correrán al finalizar cada uno de los sprints definidos en la planificación de modo que funcionalidades ya desarrolladas no sean afectadas.
+	El segundo tipo de prueba a realizar son las pruebas funcionales. Estas tienen como característica que son difícilmente automatizables y deben ser realizadas por el usuario que utilizará la aplicación. Las pruebas se correrán al finalizar cada uno de los sprints definidos en la planificación de modo que funcionalidades ya desarrolladas no sean afectadas.
 
 La definición de las pruebas a ejecutar se realizará al inicio de cada sprint.
 
@@ -350,7 +350,7 @@ A continuación se hará una lista de riesgos que fueron relevados al inicio del
 \begin{center}
     \begin{tabular}{ | l | p{5cm} | l | l | l | p{5cm} |}
     \hline
-    ID & Riego & P & I & E & Plan de mitigación \\ \hline
+    ID & Riesgo & P & I & E & Plan de mitigación \\ \hline
 
 	1 & Demoras en el desarrollo de las funcionalidades por la poca experiencia en el desarrollo con Scala.
 	& 2 & 3 & 6 &
@@ -386,11 +386,11 @@ Exposición (E): P * I.
 
 \begin{itemize}
 
-\item \textbf{API}: una interfaz de programación de aplicaciones o API (del inglés application programming interface) es el conjunto de funciones y procedimientos (o métodos, en la programación orientada a objetos que ofrece cierta biblioteca para ser utilizado por otro software como una capa de abstracción. Usados generalmente en las bibliotecas.
+\item \textbf{API}: una interfaz de programación de aplicaciones o API (del inglés application programming interface) es el conjunto de funciones y procedimientos (o métodos, en la programación orientada a objetos) que ofrece cierta biblioteca para ser utilizado por otro software como una capa de abstracción. Usados generalmente en las bibliotecas.
 
 \item \textbf{IDE}: entorno de programación que ha sido empaquetado como un programa de aplicación, es decir, consiste en un editor de código, un compilador, un depurador y un constructor de interfaz gráfica (GUI). Los IDEs pueden ser aplicaciones por sí solas o pueden ser parte de aplicaciones existentes.
 
-\item \textbf{Plugin}: Un complemento es una aplicación que se relaciona con otra para aportarle una función nueva y generalmente muy específica. Esta aplicación adicional es ejecutada por la aplicación principal e interactúan por medio de la API.
+\item \textbf{Plugin}: un complemento es una aplicación que se relaciona con otra para aportarle una función nueva y generalmente muy específica. Esta aplicación adicional es ejecutada por la aplicación principal e interactúan por medio de la API.
 
 \item \textbf{WBS}: estructura de descomposición del trabajo o EDT, también conocido por su nombre en inglés Work Breakdown Structure o WBS, es una estructura exhaustiva, jerárquica y descendente formada por los entregables a realizar en un proyecto. La EDT es una herramienta muy común y crítica en la gestión de proyectos.
 
@@ -431,7 +431,7 @@ Exposición (E): P * I.
 
 	\bibitem{beeweevee}
 	Corvalius,
-	\emph{BeeWeeVee}. 
+	\emph{BeWeeVee}. 
 	\textsl{http://www.beweevee.com}.
 	
 	\bibitem{cola}
