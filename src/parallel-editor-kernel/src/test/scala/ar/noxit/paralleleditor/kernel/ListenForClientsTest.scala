@@ -24,26 +24,23 @@ class ListenForClientsTest extends AssertionsForJUnit {
     def testIncomingConnection:Unit = {
 
 
-        kernel = new BasicKernel
-        ka = new KernelActor(kernel).start
-        clientFactory = new BasicClientActorFactory(ka)
+        val kernel = new BasicKernel
+        val ka = new KernelActor(kernel).start
+        val clientActorFactory = new BasicClientActorFactory(ka)
 
-        // create a server socket
+        // abro un socket
         val serverSocket = new ServerSocket(5000);
 
+        // acepto conexiones
+        val socket = serverSocket.accept();
+        System.out.println("Cliente nuevo");
 
-        connectionsListener = actor {
-            // create a socket object from the serversocket object
-            val socket = serverSocket.accept();
+        //instancio un proxy de cliente remoto a partir de la conexion recibida
+        val remoteClientProxy  = new RemoteClientProxy(socket,clientActorFactory)
 
-            // connection notification
-            System.out.println("Cliente nuevo");
-
-                  val remoteClientProxy  = new RemoteClientProxy(socket)
-                  cliente = new ClientActor(ka,remoteClientProxy.gateway)
-                  cliente start
-
-        }
+        //creo un actorCliente a partir del proxy de cliente remoto
+        val cliente = new ClientActor(ka,remoteClientProxy.gateway)
+        cliente start
 
     }
 
