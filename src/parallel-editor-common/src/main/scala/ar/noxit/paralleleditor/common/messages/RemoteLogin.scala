@@ -1,4 +1,4 @@
-package ar.noxit.paralleleditor.kernel.common
+package ar.noxit.paralleleditor.common.messages
 
 import scala.serializable
 
