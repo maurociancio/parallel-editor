@@ -2,5 +2,6 @@ package ar.noxit.paralleleditor.kernel
 
 trait EditOperation {
 
-    def executeOn(document: Document)
+    var source: Session
+    def executeOn(documentData: DocumentData)
 }

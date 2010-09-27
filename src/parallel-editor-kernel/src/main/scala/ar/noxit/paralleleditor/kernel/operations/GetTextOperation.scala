@@ -1,0 +1,17 @@
+package ar.noxit.paralleleditor.kernel.operations
+
+import ar.noxit.paralleleditor.kernel.{Session, DocumentData, EditOperation}
+
+class GetTextOperation extends EditOperation {
+
+    var source: Session = _
+    var text: String = _
+
+    def executeOn(documentData: DocumentData) = {
+        text = documentData.data
+    }
+
+    override def toString = {
+        "GetTextOperation"
+    }
+}
