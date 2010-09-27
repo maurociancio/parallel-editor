@@ -1,4 +1,4 @@
-package ar.noxit.paralleleditor.kernel.logger
+package ar.noxit.paralleleditor.common.logger
 
 import org.slf4j.{LoggerFactory, Logger}
 

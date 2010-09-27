@@ -1,7 +1,7 @@
 package ar.noxit.paralleleditor.kernel.basic
 
 import actors.Actor
-import ar.noxit.paralleleditor.kernel.logger.Loggable
+import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages.{Unsubscribe, Subscribe, SubscriberCount, SilentUnsubscribe}
 import ar.noxit.paralleleditor.kernel.EditOperation
 

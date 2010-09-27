@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
-import logger.Loggable
+import ar.noxit.paralleleditor.common.logger.Loggable
 import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
 

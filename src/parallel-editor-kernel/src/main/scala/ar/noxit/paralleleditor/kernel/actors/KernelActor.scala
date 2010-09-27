@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.kernel.actors
 
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.messages._
-import logger.Loggable
+import ar.noxit.paralleleditor.common.logger.Loggable
 import scala.actors.Actor
 import scala.actors.Actor._
 

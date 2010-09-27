@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel.actors
 import ar.noxit.paralleleditor.kernel.DocumentSession
 import ar.noxit.paralleleditor.kernel.callback.ActorCallback
 import scala.actors._
-import ar.noxit.paralleleditor.kernel.logger.Loggable
+import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 
