@@ -20,7 +20,7 @@ class RemoteClientProxy(socket: Socket, clientActorFactory: ClientActorFactory) 
     /**
      * Actor externo que será el destinatario de los mensajes recibidos del cliente remoto.
      */
-    private val recipientActor = clientActorFactory.newClientActor(gateway)
+    private val recipientActor = clientActorFactory.newClientActor(gateway).start
 
     /**
      * Actor interno que se encarga de leer los mensajes provenientes de la red (que vienen del cliente remoto) y

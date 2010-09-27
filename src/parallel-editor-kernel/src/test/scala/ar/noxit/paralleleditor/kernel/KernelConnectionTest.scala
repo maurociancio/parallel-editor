@@ -8,6 +8,7 @@ import org.scalatest.junit.AssertionsForJUnit
 import scala.actors.Actor._
 import scala.actors.Actor
 import ar.noxit.paralleleditor.common.messages._
+import Assert._
 
 @Test
 class KernelConnectionTest extends AssertionsForJUnit {

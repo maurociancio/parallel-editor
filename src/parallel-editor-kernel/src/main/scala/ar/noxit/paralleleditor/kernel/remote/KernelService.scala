@@ -11,7 +11,7 @@ trait ClientActorFactory {
 
 class BasicClientActorFactory(kernel: Actor) extends ClientActorFactory {
     override def newClientActor(gateway: Actor) = {
-        new ClientActor(kernel, gateway).start
+        new ClientActor(kernel, gateway)
     }
 }
 
