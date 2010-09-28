@@ -6,8 +6,9 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
+import ar.noxit.paralleleditor.kernel.remote.Finalizable
 
-class ClientActor(private val kernel: Actor) extends Actor with Loggable {
+class ClientActor(private val kernel: Actor, private val finalizable: Finalizable) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
     private val timeout = 5000
 
@@ -60,12 +61,14 @@ class ClientActor(private val kernel: Actor) extends Actor with Loggable {
                 case "EXIT" => {
                     trace("Exit received")
                     logoutFromKernel(session)
+                    finalizable.finalizeNow
                     exit = true
                 }
 
                 case RemoteLogoutRequest => {
                     trace("Logout Requested")
                     logoutFromKernel(session)
+                    finalizable.finalizeNow
                     exit = true
                 }
             }
@@ -144,6 +147,8 @@ class ClientActor(private val kernel: Actor) extends Actor with Loggable {
 
     private def doTimeout = {
         warn("Timeout waiting for a message")
+        // TODO mandar mensajes para que terminen los demas actores
+        // TODO finalizar el finalizable
         throw new IllegalStateException("time out")
     }
 }
