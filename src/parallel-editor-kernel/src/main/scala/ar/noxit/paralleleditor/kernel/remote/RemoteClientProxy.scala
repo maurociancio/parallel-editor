@@ -15,7 +15,7 @@ class RemoteClientProxy(socket: Socket, clientActorFactory: ClientActorFactory) 
      * Actor que se encarga de recibir mensajes de algún otro actor y enviarlos al cliente remoto.
      * Enviará los mensajes por la red.
      */
-    val gateway: Actor = new GatewayActor(new ObjectOutputStream(socket.getOutputStream)).start
+    private val gateway: Actor = new GatewayActor(new ObjectOutputStream(socket.getOutputStream)).start
 
     /**
      * Actor externo que será el destinatario de los mensajes recibidos del cliente remoto.

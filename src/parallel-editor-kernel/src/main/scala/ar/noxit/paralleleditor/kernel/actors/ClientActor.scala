@@ -70,6 +70,7 @@ class ClientActor(private val kernel: Actor, private val remoteClient: Actor) ex
                     trace("Exit received")
                     remoteClient ! "EXIT" // TODO
 
+                    session.logout
                     exit = true
                 }
 

@@ -28,7 +28,7 @@ class ListenForClientsTest extends AssertionsForJUnit {
         val remoteClientProxy = new RemoteClientProxy(socket, clientActorFactory)
 
         //creo un actorCliente a partir del proxy de cliente remoto
-        val cliente = new ClientActor(ka, remoteClientProxy.gateway)
-        cliente start
+//        val cliente = new ClientActor(ka, remoteClientProxy.gateway)
+//        cliente start
     }
 }
