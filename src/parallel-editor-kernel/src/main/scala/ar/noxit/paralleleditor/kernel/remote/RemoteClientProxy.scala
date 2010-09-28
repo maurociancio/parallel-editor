@@ -20,34 +20,58 @@ class RemoteClientProxy(socket: Socket, clientActorFactory: ClientActorFactory) 
     /**
      * Actor externo que será el destinatario de los mensajes recibidos del cliente remoto.
      */
-    private val recipientActor = clientActorFactory.newClientActor(gateway).start
+    private val clientActor = clientActorFactory.newClientActor.start
 
     /**
      * Actor interno que se encarga de leer los mensajes provenientes de la red (que vienen del cliente remoto) y
-     * los despacha al destinatario (recipient)
+     * los despacha al destinatario (clientActor)
      */
-    private val networkListener = new NetworkListenerActor(recipientActor, new ObjectInputStream(socket.getInputStream)).start
+    private val networkListener = new NetworkListenerActor(new ObjectInputStream(socket.getInputStream)).start
+
+    // send actors to client actor
+    clientActor ! ("input", networkListener)
+    clientActor ! ("gateway", gateway)
+
+    // send client actor to network and gateway actors
+    networkListener ! ("client", clientActor)
+    gateway ! ("client", clientActor)
 }
 
 /**
  * Ver RemoteClientProxy ScalaDoc
  */
-class NetworkListenerActor(private val recipient: Actor, private val input: ObjectInput) extends Actor with Loggable {
-    override def act = {
-        try {
-            while(true) {
-                val inputMessage: Any = input.readObject()
-                trace("Message received %s", inputMessage)
+class NetworkListenerActor(private val input: ObjectInput) extends Actor with Loggable {
+    private var clientActor: Actor = _
+    private val timeout = 5000
 
-                recipient ! inputMessage
+    override def act = {
+        receiveWithin(timeout) {
+            case ("client", client: Actor) if clientActor == null => {
+                trace("client actor received")
+                clientActor = client
             }
+            case "EXIT" => exit
+            // TODO timeout
+        }
+
+        try {
+            processMessages
         } catch {
             case e: Exception => {
                 warn(e, "Exception thrown during receive")
 
                 // TODO cambiar por un mensaje
-                recipient ! "EXIT"
+                clientActor ! "EXIT"
             }
+        }
+    }
+
+    private def processMessages: Unit = {
+        while (true) {
+            val inputMessage: Any = input.readObject()
+            trace("Message received %s", inputMessage)
+
+            clientActor ! inputMessage
         }
     }
 }
@@ -56,9 +80,20 @@ class NetworkListenerActor(private val recipient: Actor, private val input: Obje
  * Ver RemoteClientProxy ScalaDoc
  */
 class GatewayActor(private val output: ObjectOutput) extends Actor with Loggable {
-    override def act = {
-        var exit = false
+    private var clientActor: Actor = _
+    private val timeout = 5000
 
+    override def act = {
+        receiveWithin(timeout) {
+            case ("client", client: Actor) if clientActor == null => {
+                trace("client actor received")
+                clientActor = client
+            }
+            case "EXIT" => this.exit()
+            // TODO timeout
+        }
+
+        var exit = false
         loopWhile(!exit) {
             react {
                 case "EXIT" => { // TODO cambiar mensaje
@@ -67,7 +102,16 @@ class GatewayActor(private val output: ObjectOutput) extends Actor with Loggable
                 }
                 case message: Any => {
                     trace("writing message to client [%s]", message)
-                    output writeObject message
+                    try {
+                        output writeObject message
+                    }
+                    catch {
+                        case e: Exception => {
+                            warn(e, "Exception thrown during send")
+                            clientActor ! "EXIT" // TODO
+                            exit = true
+                        }
+                    }
                 }
             }
         }

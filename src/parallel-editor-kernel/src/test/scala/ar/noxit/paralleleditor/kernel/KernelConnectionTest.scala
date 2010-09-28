@@ -29,7 +29,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
         }
         kernel = new BasicKernel
         ka = new KernelActor(kernel).start
-        client = new ClientActor(ka, remoteEchoClient).start
+        client = new ClientActor(ka).start
     }
 
     @Test
@@ -63,7 +63,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
 
     @Test
     def test2Clients : Unit = {
-        val client2 = new ClientActor(ka, self).start
+        val client2 = new ClientActor(ka).start
 
         client ! RemoteLogin("myUsername")
         client ! RemoteNewDocumentRequest("title")

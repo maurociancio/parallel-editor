@@ -6,12 +6,12 @@ import ar.noxit.paralleleditor.kernel.actors.{KernelActor, ClientActor}
 import actors.{DaemonActor, Actor}
 
 trait ClientActorFactory {
-    def newClientActor(gateway: Actor): Actor
+    def newClientActor: Actor
 }
 
 class BasicClientActorFactory(kernel: Actor) extends ClientActorFactory {
-    override def newClientActor(gateway: Actor) = {
-        new ClientActor(kernel, gateway)
+    override def newClientActor = {
+        new ClientActor(kernel)
     }
 }
 
