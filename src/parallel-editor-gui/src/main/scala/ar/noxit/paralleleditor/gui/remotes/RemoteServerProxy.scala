@@ -55,6 +55,8 @@ class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalCli
                     trace("Received message from kernel %s", msg)
                     localClientActor ! msg
                 }
+                case any: Any =>
+                    trace("Unknown message received %s", any)
             }
         }
     }
@@ -68,7 +70,7 @@ class NetworkListenerActor(private val input: ObjectInput, private val remoteKer
             val inputMessage: Any = input.readObject()
             trace("Received message %s", inputMessage)
 
-            remoteKernel ! inputMessage
+            remoteKernel ! ("from_kernel", inputMessage)
         }
     }
 }
