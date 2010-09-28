@@ -2,8 +2,8 @@ package ar.noxit.paralleleditor.kernel.remote
 
 import java.net.Socket
 import scala.actors.Actor
-import scala.actors.Actor._
 import java.io._
+import ar.noxit.paralleleditor.common.logger.Loggable
 
 /**
  * Esta clase encapsula la referencia a un cliente remoto proveyendo una interfaz para definir el destinatario
@@ -32,14 +32,22 @@ class RemoteClientProxy(socket: Socket, clientActorFactory: ClientActorFactory) 
 /**
  * Ver RemoteClientProxy ScalaDoc
  */
-class NetworkListenerActor(recipient: Actor, input: ObjectInput) extends Actor {
+class NetworkListenerActor(private val recipient: Actor, private val input: ObjectInput) extends Actor with Loggable {
     override def act = {
-        // TODO definir mensaje de salida
-        var exit = false
-        while (!exit) {
-            val inputMessage: Any = input.readObject()
-            println("received " + inputMessage)
-            recipient ! inputMessage
+        try {
+            while(true) {
+                val inputMessage: Any = input.readObject()
+                trace("Message received %s", inputMessage)
+
+                recipient ! inputMessage
+            }
+        } catch {
+            case e: Exception => {
+                warn(e, "Exception thrown during receive")
+
+                // TODO cambiar por un mensaje
+                recipient ! "EXIT"
+            }
         }
     }
 }
@@ -47,14 +55,20 @@ class NetworkListenerActor(recipient: Actor, input: ObjectInput) extends Actor {
 /**
  * Ver RemoteClientProxy ScalaDoc
  */
-class GatewayActor(output: ObjectOutput) extends Actor {
+class GatewayActor(private val output: ObjectOutput) extends Actor with Loggable {
     override def act = {
-        // TODO definir mensaje de salida
         var exit = false
 
         loopWhile(!exit) {
             react {
-                case message: Any => output writeObject message
+                case "EXIT" => { // TODO cambiar mensaje
+                    trace("Exit received, exiting")
+                    exit = true
+                }
+                case message: Any => {
+                    trace("writing message to client [%s]", message)
+                    output writeObject message
+                }
             }
         }
     }
