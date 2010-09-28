@@ -19,7 +19,8 @@ class DocumentDataTest extends AssertionsForJUnit {
         factory = new BasicKernelFactory
         kernel = factory buildKernel;
         session = kernel.login("username")
-        docSession = kernel.newDocument(session, "title")
+        // FIXME
+//        docSession = kernel.newDocument(session, "title")
     }
 
     @Test

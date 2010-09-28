@@ -28,14 +28,8 @@ class BasicKernel extends Kernel with Loggable {
         // add document to list
         documents = newDocActor :: documents
 
-        val session = newDocActor !? (timeout, Subscribe(owner))
-        session match {
-            case Some(session: DocumentSession) => session
-            case None => {
-                // TODO throw an exception
-                throw new IllegalStateException()
-            }
-        }
+        // susbscribe owner to the document
+        newDocActor ! Subscribe(owner)
     }
 
     protected def newDocumentActor(title: String, initialContent: String): DocumentActor = {
@@ -68,20 +62,12 @@ class BasicKernel extends Kernel with Loggable {
     // TODO change this method to private
     def documentByTitle(docTitle: String) = documents find {_.title == docTitle}
 
-    def documentSubscriberCount(docTitle: String) = {
+    def documentSubscriberCount(docTitle: String) {
         documentByTitle(docTitle) match {
             case Some(doc) => {
-                val result = doc !? (timeout, SubscriberCount())
-                result match {
-                    case Some(count: Integer) => Some(count)
-                    case None => {
-                        // TODO throw an exception if the timeout is exceeded
-                        warn("Timeout exceeded")
-                        None
-                    }
-                }
+                trace("Sending Subscriber Count Request")
+                doc ! SubscriberCount()
             }
-            case None => None
         }
     }
 }

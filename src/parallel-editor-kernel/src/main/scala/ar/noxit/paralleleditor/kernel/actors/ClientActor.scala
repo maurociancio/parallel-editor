@@ -8,7 +8,6 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 
 class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor with Loggable {
-
     var docSessions: List[DocumentSession] = List()
     val timeout = 5000
 
@@ -47,15 +46,13 @@ class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor with
                     trace("New Document Requested=[%s]", title)
 
                     kernel ! NewDocumentRequest(session, title)
-                    receiveWithin(timeout) {
-                        case NewDocumentResponse(docSession) => {
-                            trace("Received Document Session")
+                }
 
-                            docSessions = docSession :: docSessions
-                            remoteClient ! RemoteNewDocumentOkResponse
-                        }
-                        case TIMEOUT => doTimeout
-                    }
+                case NewDocumentResponse(docSession) => {
+                    trace("Received Document Session")
+
+                    docSessions = docSession :: docSessions
+                    remoteClient ! RemoteNewDocumentOkResponse
                 }
 
                 case RemoteDocumentList => {
@@ -64,8 +61,10 @@ class ClientActor(val kernel: Actor, val remoteClient: Actor) extends Actor with
                     kernel ! DocumentListRequest(session)
                 }
 
-                case DocumentListResponse(docList) =>
+                case DocumentListResponse(docList) => {
+                    trace("Document List Response")
                     remoteClient ! RemoteDocumentListResponse(docList)
+                }
 
                 case RemoteLogoutRequest => {
                     trace("Logout Requested")

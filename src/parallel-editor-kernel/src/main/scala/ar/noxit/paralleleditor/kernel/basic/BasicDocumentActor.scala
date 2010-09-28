@@ -2,8 +2,8 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.kernel.messages.{Unsubscribe, Subscribe, SubscriberCount, SilentUnsubscribe}
 import ar.noxit.paralleleditor.kernel.EditOperation
+import ar.noxit.paralleleditor.kernel.messages._
 
 class BasicDocumentActor(documentFactory: DocumentFactory) extends DocumentActor with Loggable {
     val document = documentFactory.newBasicDocument(this)
@@ -25,7 +25,8 @@ class BasicDocumentActor(documentFactory: DocumentFactory) extends DocumentActor
                 }
                 case Subscribe(who) => {
                     trace("Subscribe requested")
-                    reply(document subscribe who)
+                    val docSession = document subscribe who
+                    who notifyUpdate NewDocumentResponse(docSession)
                 }
                 case Unsubscribe(who) => {
                     trace("Unsubscribe requested")
