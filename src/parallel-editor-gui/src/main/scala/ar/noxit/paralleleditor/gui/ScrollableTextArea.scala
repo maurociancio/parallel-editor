@@ -37,8 +37,10 @@ class ScrollableTextArea extends FlowPanel {
             if (diffSize > 0) {
                 val added = areaEdicion.text.substring(initPos, initPos + diffSize)
                 addEntry("text added '%s' at pos: %d - size: %d".format(added, initPos, diffSize))
+                publish(InsertionEvent(initPos,added))
             } else {
                 addEntry("text removed at pos: %d - size: %d".format(initPos, diffSize))
+                publish(DeletionEvent(initPos,-diffSize))
             }
         }
     }
