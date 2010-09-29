@@ -60,14 +60,18 @@ class BasicKernel extends Kernel with Loggable {
     def sessionCount = sessions size
 
     // TODO change this method to private
-    def documentByTitle(docTitle: String) = documents find {_.title == docTitle}
+    def documentByTitle(docTitle: String) = documents find { _.title == docTitle }
 
-    def documentSubscriberCount(docTitle: String) {
+    def documentSubscriberCount(docTitle: String) = {
         documentByTitle(docTitle) match {
             case Some(doc) => {
                 trace("Sending Subscriber Count Request")
-                doc ! SubscriberCount()
+                val future = doc !! (SubscriberCount(), {
+                    case count: Int => count
+                })
+                Some(future)
             }
+            case _ => None
         }
     }
 }

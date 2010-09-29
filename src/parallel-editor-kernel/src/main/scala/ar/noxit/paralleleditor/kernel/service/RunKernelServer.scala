@@ -1,10 +1,9 @@
 package ar.noxit.paralleleditor.kernel.service
 
-import ar.noxit.paralleleditor.kernel.basic.BasicKernel
-import ar.noxit.paralleleditor.kernel.remote.KernelServer
+import ar.noxit.paralleleditor.kernel.remote.{SocketKernelService}
 
 object RunKernelServer {
     def main(args: Array[String]) {
-        new KernelServer().start
+        new SocketKernelService(5000).initialize.start
     }
 }
