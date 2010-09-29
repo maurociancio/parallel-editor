@@ -4,8 +4,12 @@ import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.network.{MessageOutput, MessageInput, NetworkConnection}
 
+trait Client {
+    def disconnect
+}
+
 trait ClientActorFactory {
-    def newClientActor(finalizable: Finalizable): Actor
+    def newClientActor(client: Client): Actor
 }
 
 /**
@@ -14,7 +18,8 @@ trait ClientActorFactory {
  * al cliente.
  */
 class RemoteClientProxy(private val networkConnection: NetworkConnection,
-                        private val clientActorFactory: ClientActorFactory) extends Finalizable {
+                        private val clientActorFactory: ClientActorFactory,
+                        private val disconnectCallback: DisconnectClientCallback) extends Client {
     /**
      * Actor que se encarga de recibir mensajes de algún otro actor y enviarlos al cliente remoto.
      * Enviará los mensajes por la red.
@@ -40,9 +45,9 @@ class RemoteClientProxy(private val networkConnection: NetworkConnection,
     networkListener ! ("client", clientActor)
     gateway ! ("client", clientActor)
 
-    override def finalizeNow = {
-        networkConnection.close
-        clientActor ! "EXIT" // TODO
+    override def disconnect = {
+        clientActor ! "EXIT";
+        disconnectCallback.disconnect(this)
     }
 }
 

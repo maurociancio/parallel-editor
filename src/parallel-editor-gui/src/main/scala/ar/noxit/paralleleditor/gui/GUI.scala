@@ -17,7 +17,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
         val connPanel = new ConnectionPanel
         val editArea =   new ScrollableTextArea
-        
+
         contents = new BoxPanel(Orientation.Vertical) {
             contents += editArea
             contents += connPanel
@@ -25,7 +25,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
         listenTo(connPanel)
         listenTo(editArea)
-        
+
         reactions += {
             case ConnectionRequest(host, port) => {
                 trace("Connecting to %s %s", host, port)
@@ -50,15 +50,15 @@ object GUI extends SimpleSwingApplication with Loggable {
                 if (connected)
                 actor ! ("deletion",pos,count)
             }
-            
+
         }
     }
 
     override def shutdown() {
         //TODO ver bien como terminar de desloguearse y cerrar sockets
         //este metodo se llama antes de cerrar la ventana
-      /*  if (connected)
-            actor ! ("logout","pepe")
-            */
+        if (connected)
+            actor ! ("logout")
+
     }
 }

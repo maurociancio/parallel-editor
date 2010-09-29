@@ -2,7 +2,6 @@ package ar.noxit.paralleleditor.kernel
 
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit._
-import ar.noxit.paralleleditor.kernel.remote.{ KernelServer}
 import java.net.Socket
 
 @Test
