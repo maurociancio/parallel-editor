@@ -37,6 +37,15 @@ class GuiActor extends Actor with Loggable {
                     trace("Login request received")
                     remoteKernelActor ! ("to_kernel", RemoteLogin(username))
                 }
+
+                case ("insertion",pos:Integer,text:String) => {
+                    remoteKernelActor ! ("to_kernel", "insert operation required")
+                }
+
+                case ("deletion",pos:Integer,count:Integer) => {
+                    remoteKernelActor ! ("to_kernel", "delete operation required" )
+                }
+                
                 case any: Any => {
                     warn("Uknown message received [%s]", any)
                 }
