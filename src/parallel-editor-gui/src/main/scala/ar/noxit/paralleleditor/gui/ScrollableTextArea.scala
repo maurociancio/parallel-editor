@@ -26,7 +26,10 @@ class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
         oneTouchExpandable = true
     }
 
+    contents += split
+
     listenTo(areaEdicion)
+    
     reactions += {
         case TextAdded(initPos, length) => {
             val newText = areaEdicion.text.substring(initPos, initPos + length)
@@ -44,13 +47,12 @@ class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
         debugConsole append (msg + '\n')
     }
 
-    contents += split
-
     override def removeText(pos: Int, count: Int) = {
         areaEdicion.disableFiringEvents
         try {
             val text = areaEdicion.text
             areaEdicion.text = text.substring(0, pos) + text.substring(pos + count)
+            areaEdicion.repaint
         } finally {
             areaEdicion.enableFiringEvents
         }
@@ -60,7 +62,8 @@ class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
         areaEdicion.disableFiringEvents
         try {
             val original = areaEdicion.text
-            areaEdicion.text = original.substring(0, pos) + original + text.substring(pos)
+            areaEdicion.text = original.substring(0, pos) + text + original.substring(pos)
+            areaEdicion.repaint
         } finally {
             areaEdicion.enableFiringEvents
         }
