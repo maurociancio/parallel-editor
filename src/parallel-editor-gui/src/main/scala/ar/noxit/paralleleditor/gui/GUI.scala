@@ -5,10 +5,10 @@ import scala.swing._
 import java.net.Socket
 import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
+import ar.noxit.paralleleditor.common.messages.{AddText, DeleteText}
 
 object GUI extends SimpleSwingApplication with Loggable {
-
-    var actor:Actor = _
+    var actor: Actor = _
     var connected = false
 
     def top = new MainFrame {
@@ -16,7 +16,7 @@ object GUI extends SimpleSwingApplication with Loggable {
         menuBar = new HomeMenuBar
 
         val connPanel = new ConnectionPanel
-        val editArea =   new ScrollableTextArea
+        val editArea = new ScrollableTextArea
 
         contents = new BoxPanel(Orientation.Vertical) {
             contents += editArea
@@ -39,16 +39,16 @@ object GUI extends SimpleSwingApplication with Loggable {
                 actor ! ("login", "pepe")
             }
 
-            case InsertionEvent(pos,text) => {
-                trace("Insertion required " +text+pos)
+            case InsertionEvent(pos, text) => {
+                trace("Insertion required " + text + pos)
                 if (connected)
-                actor ! ("insertion",pos,text)
+                    actor ! AddText(text, pos)
 
             }
-            case DeletionEvent(pos,count) => {
-                trace("Deletion required"+pos+","+count)
+            case DeletionEvent(pos, count) => {
+                trace("Deletion required" + pos + "," + count)
                 if (connected)
-                actor ! ("deletion",pos,count)
+                    actor ! DeleteText(pos, count)
             }
 
         }

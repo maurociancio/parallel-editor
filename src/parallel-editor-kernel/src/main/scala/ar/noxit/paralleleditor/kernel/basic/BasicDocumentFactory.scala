@@ -7,7 +7,7 @@ trait DocumentFactory {
 }
 
 class BasicDocumentFactory(val title: String, val contents: String) extends DocumentFactory {
-    override def newBasicDocument(actor: Actor) = {
-        new BasicDocument(title, contents, actor)
+    override def newBasicDocument(docActor: Actor) = {
+        new BasicDocument(title, contents, docActor)
     }
 }

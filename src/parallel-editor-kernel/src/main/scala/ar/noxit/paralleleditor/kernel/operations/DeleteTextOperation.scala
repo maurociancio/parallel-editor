@@ -9,6 +9,7 @@ class DeleteTextOperation(val startPos: Int, val size: Int) extends EditOperatio
     def executeOn(documentData: DocumentData) = {
         val original = documentData.data
         documentData.data = original.substring(0, startPos) + original.substring(startPos + size)
+        println(documentData.data)
     }
 
     override def toString = {

@@ -34,10 +34,10 @@ class BasicKernel extends Kernel with Loggable {
 
     protected def newDocumentActor(title: String, initialContent: String): DocumentActor = {
         // create new document factory
-        val doc = new BasicDocumentFactory(title, initialContent)
+        val docFactory = new BasicDocumentFactory(title, initialContent)
 
         // create a document actor
-        val actor = new BasicDocumentActor(doc)
+        val actor = new BasicDocumentActor(docFactory)
 
         // start the actor
         actor.start
@@ -46,6 +46,16 @@ class BasicKernel extends Kernel with Loggable {
     }
 
     override def documentList = documents.map {_.title}
+
+    override def subscribe(session: Session, title: String) = {
+        val doc = documentByTitle(title)
+
+        if (doc.isDefined) {
+            doc.get ! Subscribe(session)
+        } else {
+            warn("title does not exists")
+        }
+    }
 
     def logout(session: Session) = {
         if (!sessions.contains(session))
@@ -60,7 +70,7 @@ class BasicKernel extends Kernel with Loggable {
     def sessionCount = sessions size
 
     // TODO change this method to private
-    def documentByTitle(docTitle: String) = documents find { _.title == docTitle }
+    def documentByTitle(docTitle: String) = documents find {_.title == docTitle}
 
     def documentSubscriberCount(docTitle: String) = {
         documentByTitle(docTitle) match {

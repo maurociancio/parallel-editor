@@ -15,3 +15,5 @@ case class NewDocumentResponse(val docSession: DocumentSession)
 
 case class DocumentListRequest(val session: Session)
 case class DocumentListResponse(val documents: List[String])
+
+case class SubscribeToDocument(val session: Session, val title: String)

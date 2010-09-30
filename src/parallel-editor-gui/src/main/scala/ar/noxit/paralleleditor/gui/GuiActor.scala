@@ -3,10 +3,11 @@ package ar.noxit.paralleleditor.gui
 import remotes.LocalClientActorFactory
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.messages.{RemoteLogoutRequest, RemoteLogin}
+import ar.noxit.paralleleditor.common.messages.{DeleteText, AddText, RemoteLogoutRequest, RemoteLogin}
 
 class GuiActorFactory extends LocalClientActorFactory {
     val guiActor = new GuiActor
+
     override def newLocalClientActor = guiActor
 }
 
@@ -43,12 +44,12 @@ class GuiActor extends Actor with Loggable {
                     remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
                 }
 
-                case ("insertion",pos:Integer,text:String) => {
-                    remoteKernelActor ! ("to_kernel", "insert operation required")
+                case addText: AddText => {
+                    remoteKernelActor ! ("to_kernel", addText)
                 }
 
-                case ("deletion",pos:Integer,count:Integer) => {
-                    remoteKernelActor ! ("to_kernel", "delete operation required" )
+                case deleteText: DeleteText => {
+                    remoteKernelActor ! ("to_kernel", deleteText)
                 }
 
                 case any: Any => {

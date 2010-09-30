@@ -7,6 +7,7 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.kernel.remote.Client
+import ar.noxit.paralleleditor.kernel.operations.{DeleteTextOperation, AddTextOperation}
 
 class ClientActor(private val kernel: Actor, private val client: Client) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -26,6 +27,10 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         notifyClientLoginOk
 
         installCallback(session)
+
+        // TODO
+        kernel ! SubscribeToDocument(session, "new_document")
+
         processMessages(session)
     }
 
@@ -43,7 +48,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     trace("Received Document Session")
 
                     docSessions = docSession :: docSessions
-                    gatewayActor ! RemoteNewDocumentOkResponse
+                    gatewayActor ! RemoteNewDocumentOkResponse() // MAL
                 }
 
                 case RemoteDocumentList => {
@@ -56,6 +61,17 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     trace("Document List Response")
 
                     gatewayActor ! RemoteDocumentListResponse(docList)
+                }
+
+                case DeleteText(startPos, count) => {
+                    trace("delete text received")
+
+                    docSessions.foreach(session => session applyChange(new DeleteTextOperation(startPos, count)))
+                }
+
+                case AddText(text, startPos) => {
+                    trace("addtext text received")
+                    docSessions.foreach(session => session applyChange(new AddTextOperation(text, startPos)))
                 }
 
                 case "EXIT" => {

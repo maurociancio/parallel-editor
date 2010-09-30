@@ -5,7 +5,7 @@ import ar.noxit.paralleleditor.kernel._
 import scala.List
 import scala.actors.Actor
 
-class BasicDocument(val title: String, var data: String, val actor: Actor) extends Document with DocumentData {
+class BasicDocument(val title: String, var data: String, val docActor: Actor) extends Document with DocumentData {
 
     private var subscribers: List[Session] = List()
 
@@ -17,7 +17,7 @@ class BasicDocument(val title: String, var data: String, val actor: Actor) exten
             throw new DocumentSubscriptionAlreadyExistsException("the session is already suscribed to this document")
 
         subscribers = session :: subscribers
-        new BasicDocumentSession(session, actor)
+        new BasicDocumentSession(session, docActor)
     }
 
     def unsubscribe(session: Session) = {

@@ -1,11 +1,9 @@
 package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel.UpdateCallback
-import ar.noxit.paralleleditor.kernel.Document
 import ar.noxit.paralleleditor.kernel.Session
 
-class BasicSession(val username: String, val kernel: BasicKernel) extends Session {
-
+class BasicSession(val username: String, private val kernel: BasicKernel) extends Session {
     var updateCallback: UpdateCallback = _
 
     if (username == null)
@@ -13,7 +11,10 @@ class BasicSession(val username: String, val kernel: BasicKernel) extends Sessio
 
     override def installOnUpdateCallback(callback: UpdateCallback) = this updateCallback = callback
 
-    override def notifyUpdate(message: AnyRef) = updateCallback update message
+    override def notifyUpdate(message: AnyRef) = {
+        if (updateCallback != null)
+            updateCallback update message
+    }
 
     override def logout = kernel logout this
 }

@@ -4,10 +4,8 @@ import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import scala.actors.Actor
-import scala.actors.Actor._
 
 class KernelActor(val kernel: Kernel) extends Actor with Loggable {
-
     def act = {
         var exit = false
         info("Started")
@@ -33,6 +31,10 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
 
                     // return it to the caller
                     session notifyUpdate DocumentListResponse(documentList)
+                }
+                case SubscribeToDocument(session, title) => {
+                    trace("subscribe to document")
+                    kernel.subscribe(session, title)
                 }
 
                 case NewDocumentRequest(session, title) => {
