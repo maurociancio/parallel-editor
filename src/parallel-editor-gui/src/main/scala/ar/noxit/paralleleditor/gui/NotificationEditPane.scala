@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.gui
 import javax.swing.event.{DocumentListener, DocumentEvent}
 import swing.EditorPane
 import swing.event.Event
-import javax.swing.text.PlainDocument
+import javax.swing.text.{StyledEditorKit, PlainDocument}
 
 case class TextAdded(val initPos: Int, val length: Int) extends Event
 case class TextRemoved(val initPos: Int, val length: Int) extends Event
@@ -16,6 +16,10 @@ class NotificationEditPane extends EditorPane {
         override def fireInsertUpdate(e: DocumentEvent) = if (fireEvents) super.fireInsertUpdate(e)
     }
     peer.setDocument(doc)
+
+
+    editorKit = new StyledEditorKit
+    
 
     peer.getDocument.addDocumentListener(new DocumentListener {
         def changedUpdate(e: DocumentEvent) {
