@@ -4,12 +4,10 @@ import scala.swing._
 import scala.swing.event.ValueChanged
 
 class ScrollableTextArea extends FlowPanel {
-    val areaEdicion = new EditorPane {
+    val areaEdicion = new NotificationEditPane {
         text = "Hola Mundo"
         preferredSize = new Dimension(640, 480)
     }
-
-    var oldSize = areaEdicion.text.size
 
     val scrollAreaEdicion = new ScrollPane(areaEdicion)
 
@@ -31,24 +29,16 @@ class ScrollableTextArea extends FlowPanel {
 
     listenTo(areaEdicion)
     reactions += {
-        case evt: ValueChanged => {
-            val initPos = areaEdicion.caret.position
-            val diffSize = calculateDiffSize
-            if (diffSize > 0) {
-                val added = areaEdicion.text.substring(initPos, initPos + diffSize)
-                addEntry("text added '%s' at pos: %d - size: %d".format(added, initPos, diffSize))
-                publish(InsertionEvent(initPos,added))
-            } else {
-                addEntry("text removed at pos: %d - size: %d".format(initPos, diffSize))
-                publish(DeletionEvent(initPos,-diffSize))
-            }
-        }
-    }
+        case TextAdded(initPos, length) => {
+            val newText = areaEdicion.text.substring(initPos, initPos + length)
+            addEntry("text added '%s' at pos: %d - size: %d".format(newText, initPos, length))
 
-    def calculateDiffSize = {
-        val diff = areaEdicion.text.length - oldSize
-        oldSize = areaEdicion.text.length
-        diff
+            publish(InsertionEvent(initPos, newText))
+        }
+        case TextRemoved(initPos, length) => {
+            addEntry("text removed at pos: %d - size: %d".format(initPos, length))
+            publish(DeletionEvent(initPos, length))
+        }
     }
 
     def addEntry(msg: String) {
