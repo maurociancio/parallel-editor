@@ -23,10 +23,12 @@ object GUI extends SimpleSwingApplication with Loggable {
         val connPanel = new ConnectionPanel
         val editArea = new ScrollableTextArea
 
-        contents = new BoxPanel(Orientation.Vertical) {
-            contents += editArea
-            contents += connPanel
-        }
+        val panelGeneral = new BorderPanel()
+
+        panelGeneral.layout(connPanel) = BorderPanel.Position.South
+        panelGeneral.layout(editArea) = BorderPanel.Position.Center
+
+        contents = panelGeneral
 
         listenTo(connPanel)
         listenTo(editArea)
