@@ -5,13 +5,13 @@ import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages.{DeleteText, AddText, RemoteLogoutRequest, RemoteLogin}
 
-class GuiActorFactory extends LocalClientActorFactory {
-    val guiActor = new GuiActor
+class GuiActorFactory(private val doc: ConcurrentDocument) extends LocalClientActorFactory {
+    val guiActor = new GuiActor(doc)
 
     override def newLocalClientActor = guiActor
 }
 
-class GuiActor extends Actor with Loggable {
+class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
 
@@ -50,6 +50,15 @@ class GuiActor extends Actor with Loggable {
 
                 case deleteText: DeleteText => {
                     remoteKernelActor ! ("to_kernel", deleteText)
+                }
+
+                case ("from_kernel", addText: AddText) => {
+                    trace("received from kernel add text")
+                    doc.addText(addText.startPos, addText.text)
+                }
+                case ("from_kernel", deleteText: DeleteText) => {
+                    trace("received from kernel delete text")
+                    doc.removeText(deleteText.startPos, deleteText.size)
                 }
 
                 case any: Any => {

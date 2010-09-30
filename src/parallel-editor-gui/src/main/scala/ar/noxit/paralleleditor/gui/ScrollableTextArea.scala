@@ -1,11 +1,10 @@
 package ar.noxit.paralleleditor.gui
 
 import scala.swing._
-import scala.swing.event.ValueChanged
 
-class ScrollableTextArea extends FlowPanel {
+class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
     val areaEdicion = new NotificationEditPane {
-        text = "Hola Mundo"
+        text = ""
         preferredSize = new Dimension(640, 480)
     }
 
@@ -46,4 +45,24 @@ class ScrollableTextArea extends FlowPanel {
     }
 
     contents += split
+
+    override def removeText(pos: Int, count: Int) = {
+        areaEdicion.disableFiringEvents
+        try {
+            val text = areaEdicion.text
+            areaEdicion.text = text.substring(0, pos) + text.substring(pos + count)
+        } finally {
+            areaEdicion.enableFiringEvents
+        }
+    }
+
+    override def addText(pos: Int, text: String) = {
+        areaEdicion.disableFiringEvents
+        try {
+            val original = areaEdicion.text
+            areaEdicion.text = original.substring(0, pos) + original + text.substring(pos)
+        } finally {
+            areaEdicion.enableFiringEvents
+        }
+    }
 }

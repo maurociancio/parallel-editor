@@ -7,6 +7,11 @@ import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages.{AddText, DeleteText}
 
+trait ConcurrentDocument {
+    def addText(pos: Int, text: String)
+    def removeText(pos: Int, count: Int)
+}
+
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
     var connected = false
@@ -32,7 +37,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
                 val socket = new Socket(host, port.intValue)
                 connected = true
-                val factory = new GuiActorFactory
+                val factory = new GuiActorFactory(editArea)
                 new RemoteServerProxy(socket, factory)
 
                 actor = factory.guiActor
@@ -59,6 +64,5 @@ object GUI extends SimpleSwingApplication with Loggable {
         //este metodo se llama antes de cerrar la ventana
         if (connected)
             actor ! ("logout")
-
     }
 }

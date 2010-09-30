@@ -5,9 +5,9 @@ import scala.actors._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
-import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.kernel.remote.Client
-import ar.noxit.paralleleditor.kernel.operations.{DeleteTextOperation, AddTextOperation}
+import ar.noxit.paralleleditor.kernel.{EditOperation, Session, DocumentSession}
+import ar.noxit.paralleleditor.kernel.operations._
 
 class ClientActor(private val kernel: Actor, private val client: Client) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -66,12 +66,24 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                 case DeleteText(startPos, count) => {
                     trace("delete text received")
 
-                    docSessions.foreach(session => session applyChange(new DeleteTextOperation(startPos, count)))
+                    docSessions.foreach(session => session applyChange (new DeleteTextOperation(startPos, count)))
                 }
 
                 case AddText(text, startPos) => {
                     trace("addtext text received")
-                    docSessions.foreach(session => session applyChange(new AddTextOperation(text, startPos)))
+                    docSessions.foreach(session => session applyChange (new AddTextOperation(text, startPos)))
+                }
+
+                // estos mensajes vienen de los documentos y se deben propagar al cliente
+                case e: EditOperation => {
+                    trace("operation received from document")
+
+                    e match {
+                        case o: AddTextOperation =>
+                            gatewayActor ! AddText(o.text, o.startPos)
+                        case o: DeleteTextOperation =>
+                            gatewayActor ! DeleteText(o.startPos, o.size)
+                    }
                 }
 
                 case "EXIT" => {

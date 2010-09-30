@@ -6,7 +6,6 @@ import scala.List
 import scala.actors.Actor
 
 class BasicDocument(val title: String, var data: String, val docActor: Actor) extends Document with DocumentData {
-
     private var subscribers: List[Session] = List()
 
     override def subscribe(session: Session) = {
@@ -27,15 +26,22 @@ class BasicDocument(val title: String, var data: String, val docActor: Actor) ex
         if (!subscribers.contains(session))
             throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
 
-        subscribers = subscribers filter { _ != session}
+        subscribers = subscribers filter {_ != session}
     }
 
     def silentUnsubscribe(session: Session) = {
         try {
             this unsubscribe session
-        } catch  {
+        } catch {
             case e: DocumentSubscriptionNotExistsException => null
         }
+    }
+
+    def propagateOperation(session: Session, operation: EditOperation) = {
+        if (!subscribers.contains(session))
+            throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
+
+        subscribers.filter {_ != session}.foreach(_.notifyUpdate(operation))
     }
 
     def subscriberCount = {

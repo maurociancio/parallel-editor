@@ -4,6 +4,7 @@ import java.net.Socket
 import actors.Actor
 import java.io.{ObjectInputStream, ObjectInput, ObjectOutputStream, ObjectOutput}
 import ar.noxit.paralleleditor.common.logger.Loggable
+import ar.noxit.paralleleditor.common.messages.{DeleteText, AddText}
 
 trait LocalClientActorFactory {
     def newLocalClientActor: Actor
@@ -53,7 +54,15 @@ class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalCli
                 }
                 case ("from_kernel", msg: Any) => {
                     trace("Received message from kernel %s", msg)
-                    localClientActor ! msg
+
+                    msg match {
+                        case at: AddText =>
+                            localClientActor ! ("from_kernel", at)
+                        case dt: DeleteText =>
+                            localClientActor ! ("from_kernel", dt)
+                        case _ =>
+                            localClientActor ! msg
+                    }
                 }
                 case any: Any =>
                     trace("Unknown message received %s", any)
