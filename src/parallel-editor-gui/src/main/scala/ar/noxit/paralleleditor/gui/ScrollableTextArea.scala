@@ -2,31 +2,28 @@ package ar.noxit.paralleleditor.gui
 
 import scala.swing._
 
-class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
+class ScrollableTextArea extends SplitPane with ConcurrentDocument {
+    
     val areaEdicion = new NotificationEditPane {
         text = ""
-        preferredSize = new Dimension(640, 480)
     }
 
     val scrollAreaEdicion = new ScrollPane(areaEdicion)
 
+    scrollAreaEdicion preferredSize = new Dimension(320, 240)
+
     val debugConsole = new TextArea {
         text = "-- debug console --\n"
-        rows = 5
-        columns = 20
         editable = false
     }
 
     val scrollDebugConsole = new ScrollPane(debugConsole)
 
-    val split = new SplitPane {
-        orientation = Orientation.Horizontal
-        leftComponent = scrollAreaEdicion
-        rightComponent = scrollDebugConsole
-        oneTouchExpandable = true
-    }
+    orientation = Orientation.Horizontal
+    leftComponent = scrollAreaEdicion
+    rightComponent = scrollDebugConsole
+    oneTouchExpandable = true
 
-    contents += split
 
     listenTo(areaEdicion)
     
@@ -34,7 +31,6 @@ class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
         case TextAdded(initPos, length) => {
             val newText = areaEdicion.text.substring(initPos, initPos + length)
             addEntry("text added '%s' at pos: %d - size: %d".format(newText, initPos, length))
-
             publish(InsertionEvent(initPos, newText))
         }
         case TextRemoved(initPos, length) => {
@@ -45,6 +41,7 @@ class ScrollableTextArea extends FlowPanel with ConcurrentDocument {
 
     def addEntry(msg: String) {
         debugConsole append (msg + '\n')
+        debugConsole.caret.position = debugConsole.text.size       
     }
 
     override def removeText(pos: Int, count: Int) = {
