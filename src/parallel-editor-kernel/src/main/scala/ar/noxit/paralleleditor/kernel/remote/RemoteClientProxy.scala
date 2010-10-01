@@ -12,6 +12,8 @@ trait ClientActorFactory {
     def newClientActor(client: Client): Actor
 }
 
+case class NetworkActors(val gateway: Actor, val listener: Actor)
+
 /**
  * Esta clase encapsula la referencia a un cliente remoto proveyendo una interfaz para definir el destinatario
  * de los mensajes que recibirán por la red y permite obtener un actor al cual enviarle mensajes para que lleguen
@@ -38,8 +40,7 @@ class RemoteClientProxy(private val networkConnection: NetworkConnection,
     private val networkListener = new NetworkListenerActor(networkConnection.messageInput).start
 
     // send actors to client actor
-    clientActor ! ("input", networkListener)
-    clientActor ! ("gateway", gateway)
+    clientActor ! NetworkActors(gateway, networkListener)
 
     // send client actor to network and gateway actors
     networkListener ! ("client", clientActor)

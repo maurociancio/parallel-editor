@@ -5,27 +5,36 @@ import scala.actors._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
-import ar.noxit.paralleleditor.kernel.remote.Client
 import ar.noxit.paralleleditor.kernel.{EditOperation, Session, DocumentSession}
 import ar.noxit.paralleleditor.kernel.operations._
+import ar.noxit.paralleleditor.kernel.remote.{NetworkActors, Client}
 
 class ClientActor(private val kernel: Actor, private val client: Client) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
     private val timeout = 5000
 
-    private var inputActor: Actor = _
-    private var gatewayActor: Actor = _
+    private var listener: Actor = _
+    private var gateway: Actor = _
 
     override def act = {
         trace("Starting")
-        receiveActors
 
+        // receive network actors
+        val (gateway, listener) = receiveNetworkActors
+        this.listener = listener
+        this.gateway = gateway
+
+        // receive username
         val username = receiveUsername
-        sendLoginToKernel(username)
 
+        // login to kernel and wait for response
+        loginToKernel(username)
         val session = receiveSession
+
+        // notify client logged in
         notifyClientLoginOk
 
+        // install callback
         installCallback(session)
 
         // TODO
@@ -48,7 +57,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     trace("Received Document Session")
 
                     docSessions = docSession :: docSessions
-                    gatewayActor ! RemoteNewDocumentOkResponse() // MAL
+                    gateway ! RemoteNewDocumentOkResponse() // MAL
                 }
 
                 case RemoteDocumentList => {
@@ -60,7 +69,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                 case DocumentListResponse(docList) => {
                     trace("Document List Response")
 
-                    gatewayActor ! RemoteDocumentListResponse(docList)
+                    gateway ! RemoteDocumentListResponse(docList)
                 }
 
                 case DeleteText(startPos, count) => {
@@ -80,9 +89,9 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
 
                     e match {
                         case o: AddTextOperation =>
-                            gatewayActor ! AddText(o.text, o.startPos)
+                            gateway ! AddText(o.text, o.startPos)
                         case o: DeleteTextOperation =>
-                            gatewayActor ! DeleteText(o.startPos, o.size)
+                            gateway ! DeleteText(o.startPos, o.size)
                     }
                 }
 
@@ -107,23 +116,15 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         }
     }
 
-    private def receiveActors {
+    private def receiveNetworkActors = {
         trace("Waiting for actors")
 
-        while (!(inputActor != null && gatewayActor != null)) {
-            receiveWithin(timeout) {
-
-                case ("input", input: Actor) if inputActor == null => {
-                    trace("Received input actor")
-                    inputActor = input
-                }
-                case ("gateway", gateway: Actor) if gatewayActor == null => {
-                    trace("Received gateway actor")
-                    gatewayActor = gateway
-                }
-
-                case TIMEOUT => doTimeout
+        receiveWithin(timeout) {
+            case NetworkActors(gateway, listener) => {
+                trace("network actors received")
+                (gateway, listener)
             }
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -136,11 +137,10 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         }
 
         trace("Username received=[%s]", username)
-
         username
     }
 
-    private def sendLoginToKernel(username: String) = {
+    private def loginToKernel(username: String) = {
         trace("Sending login request")
 
         // logging into the kernel
@@ -162,7 +162,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
 
     private def notifyClientLoginOk {
         // notify the remote target
-        gatewayActor ! RemoteLoginOkResponse()
+        gateway ! RemoteLoginOkResponse()
     }
 
     private def installCallback(session: Session) {
@@ -171,8 +171,8 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
     }
 
     private def logoutFromKernel(session: Session) {
-        gatewayActor ! "EXIT" // TODO
-        inputActor ! "EXIT" // TODO
+        gateway ! "EXIT" // TODO
+        listener ! "EXIT" // TODO
 
         session.logout
     }
