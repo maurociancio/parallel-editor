@@ -53,13 +53,12 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                 }
 
 
-                case (RemoteLoginRefusedResponse(reason)) => {
-                    trace("login accepted from kernel.",reason)
-
-                }
+                //                case (RemoteLoginRefusedResponse(reason)) => {
+                //                    trace("login accepted from kernel.",reason)
+                //                }
                 case (RemoteLoginOkResponse) => {
                     trace("login refused from kernel. Reason: [%s]")
-                    
+
                 }
 
                 case ("from_kernel", addText: AddText) => {
