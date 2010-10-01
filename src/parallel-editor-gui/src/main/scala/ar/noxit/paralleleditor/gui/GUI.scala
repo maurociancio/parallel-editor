@@ -43,7 +43,7 @@ object GUI extends SimpleSwingApplication with Loggable {
                 new RemoteServerProxy(socket, factory)
 
                 actor = factory.guiActor
-                actor ! ("login", "pepe")
+                actor ! ("login", connPanel user)
             }
 
             case InsertionEvent(pos, text) => {

@@ -20,11 +20,27 @@ class ConnectionPanel extends FlowPanel {
     contents += connect
 
     listenTo(connect)
+    
     reactions += {
         case e: ButtonClicked => {
-            val host = ip text
-            val portNumber = port.text.toInt
-            ConnectionPanel.this.publish(ConnectionRequest(host, portNumber))
+            if (connect.text == "Desconectar")
+                desconectar()
+            else conectar()
         }
     }
+
+    private def conectar() {
+        val host = ip text
+        val portNumber = port.text.toInt
+        ConnectionPanel.this.publish(ConnectionRequest(host, portNumber))
+        List(ip,port,username).foreach(_.enabled = false )
+        connect.text = "Desconectar"
+
+    }
+
+    private def desconectar(){
+        //TODO cerrar todo aca
+        println("disconnection requested")
+    }
+    def user():String = username.text
 }
