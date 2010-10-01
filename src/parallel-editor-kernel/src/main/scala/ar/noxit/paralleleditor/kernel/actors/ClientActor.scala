@@ -7,7 +7,7 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{EditOperation, Session, DocumentSession}
 import ar.noxit.paralleleditor.kernel.operations._
-import ar.noxit.paralleleditor.kernel.remote.{NetworkActors, Client}
+import ar.noxit.paralleleditor.kernel.remote.{TerminateActor, NetworkActors, Client}
 
 class ClientActor(private val kernel: Actor, private val client: Client) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -15,6 +15,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
 
     private var listener: Actor = _
     private var gateway: Actor = _
+    private var session: Session = _
 
     override def act = {
         trace("Starting")
@@ -29,23 +30,22 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
 
         // login to kernel and wait for response
         loginToKernel(username)
-        val session = receiveSession
+        session = receiveSession
 
         // notify client logged in
         notifyClientLoginOk
 
         // install callback
-        installCallback(session)
+        installCallback()
 
         // TODO
         kernel ! SubscribeToDocument(session, "new_document")
 
-        processMessages(session)
+        processMessages()
     }
 
-    private def processMessages(session: Session) {
-        var exit = false
-        loopWhile(!exit) {
+    private def processMessages() {
+        loop {
             react {
                 case RemoteNewDocumentRequest(title) => {
                     trace("New Document Requested=[%s]", title)
@@ -95,18 +95,14 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     }
                 }
 
-                case "EXIT" => {
+                case TerminateActor() => {
                     trace("Exit received")
-                    logoutFromKernel(session)
-                    client.disconnect
-                    exit = true
+                    doExit
                 }
 
                 case RemoteLogoutRequest => {
                     trace("Logout Requested")
-                    logoutFromKernel(session)
-                    client.disconnect
-                    exit = true
+                    doExit
                 }
 
                 case message: Any => {
@@ -124,20 +120,20 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                 trace("network actors received")
                 (gateway, listener)
             }
-            case TIMEOUT => doTimeout
+            case TIMEOUT => doExit
         }
     }
 
     private def receiveUsername = {
         trace("Waiting for username")
 
-        val username = receiveWithin(timeout) {
-            case RemoteLogin(username) => username
-            case TIMEOUT => doTimeout
+        receiveWithin(timeout) {
+            case RemoteLogin(username) => {
+                trace("Username received=[%s]", username)
+                username
+            }
+            case TIMEOUT => doExit
         }
-
-        trace("Username received=[%s]", username)
-        username
     }
 
     private def loginToKernel(username: String) = {
@@ -156,7 +152,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                 trace("Session received")
                 session
             }
-            case TIMEOUT => doTimeout
+            case TIMEOUT => doExit
         }
     }
 
@@ -165,22 +161,22 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         gateway ! RemoteLoginOkResponse()
     }
 
-    private def installCallback(session: Session) {
+    private def installCallback() {
         // install callback
         session.installOnUpdateCallback(new ActorCallback(this))
     }
 
-    private def logoutFromKernel(session: Session) {
-        gateway ! "EXIT" // TODO
-        listener ! "EXIT" // TODO
-
-        session.logout
-    }
-
-    private def doTimeout = {
+    private def doExit = {
         warn("Timeout waiting for a message")
-        // TODO mandar mensajes para que terminen los demas actores
-        // TODO finalizar el finalizable
-        throw new IllegalStateException("time out")
+
+        if (gateway != null)
+            gateway ! TerminateActor()
+        if (listener != null)
+            listener ! TerminateActor()
+        if (session != null)
+            session.logout
+
+        client.disconnect
+        exit
     }
 }

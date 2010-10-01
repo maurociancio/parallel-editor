@@ -14,6 +14,7 @@ trait ClientActorFactory {
 
 case class NetworkActors(val gateway: Actor, val listener: Actor)
 case class ClientActor(val client: Actor)
+case class TerminateActor
 
 /**
  * Esta clase encapsula la referencia a un cliente remoto proveyendo una interfaz para definir el destinatario
@@ -48,7 +49,7 @@ class RemoteClientProxy(private val networkConnection: NetworkConnection,
     gateway ! ClientActor(clientActor)
 
     override def disconnect = {
-        clientActor ! "EXIT";
+        clientActor ! TerminateActor()
         disconnectCallback.disconnect(this)
     }
 }
@@ -67,15 +68,14 @@ abstract class BaseNetworkActor extends Actor with Loggable {
                 trace("client actor received")
                 client
             }
-            case "EXIT" => doExit
+            case TerminateActor() => doExit
             case TIMEOUT => doExit
         }
     }
 
     protected def doExit = {
-        // TODO cambiar por un mensaje
         if (client != null)
-            client ! "EXIT"
+            client ! TerminateActor()
         exit
     }
 }
@@ -116,7 +116,7 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
 
         loop {
             react {
-                case "EXIT" => {
+                case TerminateActor() => {
                     trace("Exit received, exiting")
                     doExit
                 }
