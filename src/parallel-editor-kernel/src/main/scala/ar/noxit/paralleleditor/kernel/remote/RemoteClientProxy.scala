@@ -1,8 +1,8 @@
 package ar.noxit.paralleleditor.kernel.remote
 
-import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.network.{MessageOutput, MessageInput, NetworkConnection}
+import actors.{TIMEOUT, Actor}
 
 trait Client {
     def disconnect
@@ -13,6 +13,7 @@ trait ClientActorFactory {
 }
 
 case class NetworkActors(val gateway: Actor, val listener: Actor)
+case class ClientActor(val client: Actor)
 
 /**
  * Esta clase encapsula la referencia a un cliente remoto proveyendo una interfaz para definir el destinatario
@@ -43,8 +44,8 @@ class RemoteClientProxy(private val networkConnection: NetworkConnection,
     clientActor ! NetworkActors(gateway, networkListener)
 
     // send client actor to network and gateway actors
-    networkListener ! ("client", clientActor)
-    gateway ! ("client", clientActor)
+    networkListener ! ClientActor(clientActor)
+    gateway ! ClientActor(clientActor)
 
     override def disconnect = {
         clientActor ! "EXIT";
@@ -56,27 +57,18 @@ class RemoteClientProxy(private val networkConnection: NetworkConnection,
  * Ver RemoteClientProxy ScalaDoc
  */
 class NetworkListenerActor(private val input: MessageInput) extends Actor with Loggable {
-    private var clientActor: Actor = _
+    private var client: Actor = _
     private val timeout = 5000
 
     override def act = {
-        receiveWithin(timeout) {
-            case ("client", client: Actor) if clientActor == null => {
-                trace("client actor received")
-                clientActor = client
-            }
-            case "EXIT" => exit
-            // TODO timeout
-        }
+        client = receiveClient
 
         try {
             processMessages
         } catch {
             case e: Exception => {
                 warn(e, "Exception thrown during receive")
-
-                // TODO cambiar por un mensaje
-                clientActor ! "EXIT"
+                doExit
             }
         }
     }
@@ -86,8 +78,26 @@ class NetworkListenerActor(private val input: MessageInput) extends Actor with L
             val inputMessage: Any = input.readMessage
             trace("Message received %s", inputMessage)
 
-            clientActor ! inputMessage
+            client ! inputMessage
         }
+    }
+
+    private def receiveClient = {
+        receiveWithin(timeout) {
+            case ClientActor(client) => {
+                trace("client actor received")
+                client
+            }
+            case "EXIT" => doExit
+            case TIMEOUT => doExit
+        }
+    }
+
+    private def doExit = {
+        // TODO cambiar por un mensaje
+        if (client != null)
+            client ! "EXIT"
+        exit
     }
 }
 
@@ -95,25 +105,17 @@ class NetworkListenerActor(private val input: MessageInput) extends Actor with L
  * Ver RemoteClientProxy ScalaDoc
  */
 class GatewayActor(private val output: MessageOutput) extends Actor with Loggable {
-    private var clientActor: Actor = _
+    private var client: Actor = _
     private val timeout = 5000
 
     override def act = {
-        receiveWithin(timeout) {
-            case ("client", client: Actor) if clientActor == null => {
-                trace("client actor received")
-                clientActor = client
-            }
-            case "EXIT" => this.exit()
-            // TODO timeout
-        }
+        client = receiveClient
 
-        var exit = false
-        loopWhile(!exit) {
+        loop {
             react {
-                case "EXIT" => { // TODO cambiar mensaje
+                case "EXIT" => {
                     trace("Exit received, exiting")
-                    exit = true
+                    doExit
                 }
                 case message: Any => {
                     trace("writing message to client [%s]", message)
@@ -123,12 +125,29 @@ class GatewayActor(private val output: MessageOutput) extends Actor with Loggabl
                     catch {
                         case e: Exception => {
                             warn(e, "Exception thrown during send")
-                            clientActor ! "EXIT" // TODO
-                            exit = true
+                            doExit
                         }
                     }
                 }
             }
         }
+    }
+
+    private def receiveClient = {
+        receiveWithin(timeout) {
+            case ClientActor(client) => {
+                trace("client actor received")
+                client
+            }
+            case "EXIT" => doExit
+            case TIMEOUT => doExit
+        }
+    }
+
+    private def doExit = {
+        // TODO cambiar por un mensaje
+        if (client != null)
+            client ! "EXIT"
+        exit
     }
 }
