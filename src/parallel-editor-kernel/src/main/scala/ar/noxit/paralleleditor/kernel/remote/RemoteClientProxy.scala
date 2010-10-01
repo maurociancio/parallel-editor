@@ -53,15 +53,39 @@ class RemoteClientProxy(private val networkConnection: NetworkConnection,
     }
 }
 
-/**
- * Ver RemoteClientProxy ScalaDoc
- */
-class NetworkListenerActor(private val input: MessageInput) extends Actor with Loggable {
-    private var client: Actor = _
-    private val timeout = 5000
+abstract class BaseNetworkActor extends Actor with Loggable {
+    protected var client: Actor = _
+    protected val timeout = 5000
 
     override def act = {
         client = receiveClient
+    }
+
+    private def receiveClient = {
+        receiveWithin(timeout) {
+            case ClientActor(client) => {
+                trace("client actor received")
+                client
+            }
+            case "EXIT" => doExit
+            case TIMEOUT => doExit
+        }
+    }
+
+    protected def doExit = {
+        // TODO cambiar por un mensaje
+        if (client != null)
+            client ! "EXIT"
+        exit
+    }
+}
+
+/**
+ * Ver RemoteClientProxy ScalaDoc
+ */
+class NetworkListenerActor(private val input: MessageInput) extends BaseNetworkActor {
+    override def act = {
+        super.act
 
         try {
             processMessages
@@ -81,35 +105,14 @@ class NetworkListenerActor(private val input: MessageInput) extends Actor with L
             client ! inputMessage
         }
     }
-
-    private def receiveClient = {
-        receiveWithin(timeout) {
-            case ClientActor(client) => {
-                trace("client actor received")
-                client
-            }
-            case "EXIT" => doExit
-            case TIMEOUT => doExit
-        }
-    }
-
-    private def doExit = {
-        // TODO cambiar por un mensaje
-        if (client != null)
-            client ! "EXIT"
-        exit
-    }
 }
 
 /**
  * Ver RemoteClientProxy ScalaDoc
  */
-class GatewayActor(private val output: MessageOutput) extends Actor with Loggable {
-    private var client: Actor = _
-    private val timeout = 5000
-
+class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
     override def act = {
-        client = receiveClient
+        super.act
 
         loop {
             react {
@@ -131,23 +134,5 @@ class GatewayActor(private val output: MessageOutput) extends Actor with Loggabl
                 }
             }
         }
-    }
-
-    private def receiveClient = {
-        receiveWithin(timeout) {
-            case ClientActor(client) => {
-                trace("client actor received")
-                client
-            }
-            case "EXIT" => doExit
-            case TIMEOUT => doExit
-        }
-    }
-
-    private def doExit = {
-        // TODO cambiar por un mensaje
-        if (client != null)
-            client ! "EXIT"
-        exit
     }
 }
