@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.gui
 import remotes.LocalClientActorFactory
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.messages.{DeleteText, AddText, RemoteLogoutRequest, RemoteLogin}
+import ar.noxit.paralleleditor.common.messages._
 
 class GuiActorFactory(private val doc: ConcurrentDocument) extends LocalClientActorFactory {
     val guiActor = new GuiActor(doc)
@@ -52,6 +52,16 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                     remoteKernelActor ! ("to_kernel", deleteText)
                 }
 
+
+                case (RemoteLoginRefusedResponse(reason)) => {
+                    trace("login accepted from kernel.",reason)
+
+                }
+                case (RemoteLoginOkResponse) => {
+                    trace("login refused from kernel. Reason: [%s]")
+                    
+                }
+
                 case ("from_kernel", addText: AddText) => {
                     trace("received from kernel add text")
                     doc.addText(addText.startPos, addText.text)
@@ -64,6 +74,7 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                 case any: Any => {
                     warn("Uknown message received [%s]", any)
                 }
+
             }
         }
     }
