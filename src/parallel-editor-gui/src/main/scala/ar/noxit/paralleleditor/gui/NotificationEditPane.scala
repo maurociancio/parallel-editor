@@ -1,14 +1,15 @@
 package ar.noxit.paralleleditor.gui
 
 import javax.swing.event.{DocumentListener, DocumentEvent}
-import swing.EditorPane
 import swing.event.Event
 import javax.swing.text.PlainDocument
+import swing.{TextArea, EditorPane}
 
 case class TextAdded(initPos: Int, length: Int) extends Event
 case class TextRemoved(initPos: Int, length: Int) extends Event
 
-class NotificationEditPane extends EditorPane {
+class NotificationEditPane extends TextArea {
+    //this.contentType = "text/plain"
     private var fireEvents = true
     private val doc = new PlainDocument {
         override def fireRemoveUpdate(e: DocumentEvent) = if (fireEvents) super.fireRemoveUpdate(e)
