@@ -46,6 +46,10 @@ object GUI extends SimpleSwingApplication with Loggable {
                 actor ! ("login", connPanel user)
             }
 
+            case DisconnectionRequest() => {
+                actor ! "logout"
+            }
+
             case InsertionEvent(pos, text) => {
                 trace("Insertion required " + text + pos)
                 if (connected)
