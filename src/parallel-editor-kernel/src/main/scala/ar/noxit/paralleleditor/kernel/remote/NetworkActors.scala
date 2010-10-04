@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor.kernel.remote
 
-import ar.noxit.paralleleditor.kernel.network.{MessageInput, MessageOutput}
+import ar.noxit.paralleleditor.common.network.{MessageInput, MessageOutput}
 import actors.{Actor, TIMEOUT}
 import ar.noxit.paralleleditor.common.logger.Loggable
 

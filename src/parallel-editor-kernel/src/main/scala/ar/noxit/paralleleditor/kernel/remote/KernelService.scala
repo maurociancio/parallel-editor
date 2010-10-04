@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel.remote
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import actors.{DaemonActor, Actor}
 import java.net.ServerSocket
-import ar.noxit.paralleleditor.kernel.network.{NetworkConnection, SocketNetworkConnection}
+import ar.noxit.paralleleditor.common.network.{NetworkConnection, SocketNetworkConnection}
 import ar.noxit.paralleleditor.kernel.Kernel
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.actors.{ClientActor, KernelActor}

@@ -1,7 +1,7 @@
 package ar.noxit.paralleleditor.kernel.remote
 
 import actors.Actor
-import ar.noxit.paralleleditor.kernel.network.{NetworkConnection, MessageOutput, MessageInput}
+import ar.noxit.paralleleditor.common.network.{NetworkConnection, MessageOutput, MessageInput}
 
 trait Client {
     def disconnect
