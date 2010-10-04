@@ -1,7 +1,7 @@
-package ar.noxit.paralleleditor.kernel.remote
+package ar.noxit.paralleleditor.common.remote
 
 import actors.Actor
-import ar.noxit.paralleleditor.common.network.{NetworkConnection, MessageOutput, MessageInput}
+import ar.noxit.paralleleditor.common.network.{DisconnectClientCallback, NetworkConnection, MessageOutput, MessageInput}
 
 trait Client {
     def disconnect
@@ -21,7 +21,7 @@ case class TerminateActor
  * al cliente.
  */
 abstract class BasePeerProxy(private val networkConnection: NetworkConnection,
-                                     private val disconnectCallback: DisconnectClientCallback) extends Client {
+                             private val disconnectCallback: DisconnectClientCallback) extends Client {
 
     /**
      * Actor que se encarga de recibir mensajes de algún otro actor y enviarlos al cliente remoto.

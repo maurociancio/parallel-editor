@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.kernel.remote
 import ar.noxit.paralleleditor.common.network.{MessageInput, MessageOutput}
 import actors.{Actor, TIMEOUT}
 import ar.noxit.paralleleditor.common.logger.Loggable
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, SetClientActor}
 
 abstract class BaseNetworkActor extends Actor with Loggable {
     protected var client: Actor = _

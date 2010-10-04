@@ -7,7 +7,7 @@ import ar.noxit.paralleleditor.common.network.{NetworkConnection, SocketNetworkC
 import ar.noxit.paralleleditor.kernel.Kernel
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.actors.{ClientActor, KernelActor}
-
+import ar.noxit.paralleleditor.common.remote.{Client, ClientActorFactory}
 
 /**
  * Actor que se encarga de escuchar conexiones entrantes y crear una representacion del cliente remoto

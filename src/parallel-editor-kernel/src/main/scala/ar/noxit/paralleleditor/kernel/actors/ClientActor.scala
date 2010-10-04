@@ -7,7 +7,7 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{EditOperation, Session, DocumentSession}
 import ar.noxit.paralleleditor.kernel.operations._
-import ar.noxit.paralleleditor.kernel.remote.{TerminateActor, NetworkActors, Client}
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Client}
 
 class ClientActor(private val kernel: Actor, private val client: Client) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()

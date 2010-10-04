@@ -2,14 +2,12 @@ package ar.noxit.paralleleditor.kernel.remote
 
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
+import ar.noxit.paralleleditor.common.network.DisconnectClientCallback
+import ar.noxit.paralleleditor.common.remote.Client
 
 case class AddClient(val client: Client)
 case class RemoveClient(val client: Client)
 case class RemoveAllClients
-
-trait DisconnectClientCallback {
-    def disconnect(client: Client)
-}
 
 class ClientListActor extends Actor with Loggable with DisconnectClientCallback {
     private var connectedClients = List[Client]()
