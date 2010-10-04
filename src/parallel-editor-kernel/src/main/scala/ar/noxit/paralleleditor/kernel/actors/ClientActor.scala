@@ -120,7 +120,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 trace("network actors received")
                 (gateway, listener)
             }
-            case TIMEOUT => doExit
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -132,7 +132,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 trace("Username received=[%s]", username)
                 username
             }
-            case TIMEOUT => doExit
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -152,7 +152,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 trace("Session received")
                 session
             }
-            case TIMEOUT => doExit
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -164,6 +164,11 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private def installCallback() {
         // install callback
         session.installOnUpdateCallback(new ActorCallback(this))
+    }
+
+    private def doTimeout = {
+        trace("timeout")
+        doExit
     }
 
     private def doExit = {
