@@ -5,7 +5,7 @@ import ar.noxit.paralleleditor.common.network.{MessageOutput, MessageInput, Netw
 class RemoteClientProxy(private val nc: NetworkConnection,
                         private val factory: ClientActorFactory,
                         private val callback: DisconnectClientCallback)
-        extends BaseRemoteClientProxy(nc, callback) {
+        extends BasePeerProxy(nc, callback) {
 
     protected def newGateway(output: MessageOutput) = new GatewayActor(output)
 

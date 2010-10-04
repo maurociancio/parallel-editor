@@ -20,7 +20,7 @@ case class TerminateActor
  * de los mensajes que recibirán por la red y permite obtener un actor al cual enviarle mensajes para que lleguen
  * al cliente.
  */
-abstract class BaseRemoteClientProxy(private val networkConnection: NetworkConnection,
+abstract class BasePeerProxy(private val networkConnection: NetworkConnection,
                                      private val disconnectCallback: DisconnectClientCallback) extends Client {
 
     /**
