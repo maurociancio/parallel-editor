@@ -56,6 +56,7 @@ abstract class BaseRemoteClientProxy(private val networkConnection: NetworkConne
 
     override def disconnect = {
         clientActor ! TerminateActor()
+        networkConnection.close
         disconnectCallback.disconnect(this)
     }
 }

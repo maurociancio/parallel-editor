@@ -167,7 +167,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
     }
 
     private def doExit = {
-        warn("Timeout waiting for a message")
+        warn("Client actor exiting")
 
         if (gateway != null)
             gateway ! TerminateActor()
