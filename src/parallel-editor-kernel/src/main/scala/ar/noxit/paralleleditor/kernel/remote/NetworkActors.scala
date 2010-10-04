@@ -52,8 +52,12 @@ class NetworkListenerActor(private val input: MessageInput) extends BaseNetworkA
             val inputMessage: Any = input.readMessage
             trace("Message received %s", inputMessage)
 
-            client ! inputMessage
+            onNewMessage(inputMessage)
         }
+    }
+
+    protected def onNewMessage(inputMessage: Any) {
+        client ! inputMessage
     }
 }
 
@@ -73,7 +77,7 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
                 case message: Any => {
                     trace("writing message to client [%s]", message)
                     try {
-                        output writeMessage message
+                        onNewMessage(message)
                     }
                     catch {
                         case e: Exception => {
@@ -84,5 +88,9 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
                 }
             }
         }
+    }
+
+    protected def onNewMessage(message: Any) {
+        output writeMessage message
     }
 }
