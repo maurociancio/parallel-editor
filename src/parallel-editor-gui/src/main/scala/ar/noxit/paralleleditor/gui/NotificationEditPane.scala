@@ -19,11 +19,11 @@ class NotificationEditPane extends TextArea {
 
         def insertUpdate(e: DocumentEvent) {
             val newText = text.substring(e.getOffset, e.getOffset + e.getLength)
-            publish(InsertionEvent(e.getOffset, newText))
+            publish(WrappedEvent(InsertionEvent(e.getOffset, newText)))
         }
 
         def removeUpdate(e: DocumentEvent) {
-            publish(DeletionEvent(e.getOffset, e.getLength))
+            publish(WrappedEvent(DeletionEvent(e.getOffset, e.getLength)))
         }
     })
     peer.setDocument(doc)

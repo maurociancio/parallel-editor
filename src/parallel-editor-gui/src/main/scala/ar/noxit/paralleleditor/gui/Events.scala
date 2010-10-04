@@ -14,5 +14,6 @@ case class DisconnectionRequest extends Event
  */
 
 abstract class EditionEvent extends Event
+case class WrappedEvent(val event: Event) extends Event
 case class InsertionEvent(val pos: Int, val text: String) extends EditionEvent
 case class DeletionEvent(val pos: Int, val count: Int) extends EditionEvent

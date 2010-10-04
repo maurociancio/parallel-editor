@@ -24,7 +24,7 @@ class DocumentArea extends SplitPane with ConcurrentDocument {
     listenTo(areaEdicion)
 
     reactions += {
-        case e: EditionEvent => {
+        case WrappedEvent(e) => {
             addEntry("event received %s".format(e))
             publish(e)
         }

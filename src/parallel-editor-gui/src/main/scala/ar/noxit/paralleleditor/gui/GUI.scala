@@ -56,7 +56,6 @@ object GUI extends SimpleSwingApplication with Loggable {
                 trace("Insertion required " + text + pos)
                 if (connected)
                     actor ! RemoteAddText(text, pos)
-
             }
             case DeletionEvent(pos, count) => {
                 trace("Deletion required" + pos + "," + count)
