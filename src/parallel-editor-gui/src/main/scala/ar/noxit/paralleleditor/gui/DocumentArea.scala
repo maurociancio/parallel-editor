@@ -2,20 +2,18 @@ package ar.noxit.paralleleditor.gui
 
 import scala.swing._
 
-class ScrollableTextArea extends SplitPane with ConcurrentDocument {
+class DocumentArea extends SplitPane with ConcurrentDocument {
     val areaEdicion = new NotificationEditPane {
         text = ""
     }
 
     val scrollAreaEdicion = new ScrollPane(areaEdicion)
-
     scrollAreaEdicion preferredSize = new Dimension(320, 240)
 
     val debugConsole = new TextArea {
         text = "-- debug console --\n"
         editable = false
     }
-
     val scrollDebugConsole = new ScrollPane(debugConsole)
 
     orientation = Orientation.Horizontal
@@ -26,14 +24,9 @@ class ScrollableTextArea extends SplitPane with ConcurrentDocument {
     listenTo(areaEdicion)
 
     reactions += {
-        case TextAdded(initPos, length) => {
-            val newText = areaEdicion.text.substring(initPos, initPos + length)
-            addEntry("text added '%s' at pos: %d - size: %d".format(newText, initPos, length))
-            publish(InsertionEvent(initPos, newText))
-        }
-        case TextRemoved(initPos, length) => {
-            addEntry("text removed at pos: %d - size: %d".format(initPos, length))
-            publish(DeletionEvent(initPos, length))
+        case e: EditionEvent => {
+            addEntry("event received %s".format(e))
+            publish(e)
         }
     }
 

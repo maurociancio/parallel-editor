@@ -1,18 +1,29 @@
 package ar.noxit.paralleleditor.common.remote
 
 import actors.Actor
-import ar.noxit.paralleleditor.common.network.{DisconnectClientCallback, NetworkConnection, MessageOutput, MessageInput}
+import ar.noxit.paralleleditor.common.network.{DisconnectablePeer, NetworkConnection, MessageOutput, MessageInput}
 
-trait Client {
+trait Peer {
     def disconnect
 }
 
-trait ClientActorFactory {
-    def newClientActor(client: Client): Actor
+trait PeerActorFactory {
+    def newClientActor(peer: Peer): Actor
 }
 
+/**
+ * Mensaje que transporta los actores gateway y listener hacia el actor peer
+ */
 case class NetworkActors(val gateway: Actor, val listener: Actor)
-case class SetClientActor(val client: Actor)
+
+/**
+ * Setea el actor peer a los actores listener y gateway
+ */
+case class SetPeerActor(val peer: Actor)
+
+/**
+ * Indica al actor que debe terminar su procesamiento. Enviado a los actores peer, gateway y listener
+ */
 case class TerminateActor
 
 /**
@@ -21,7 +32,7 @@ case class TerminateActor
  * al cliente.
  */
 abstract class BasePeerProxy(private val networkConnection: NetworkConnection,
-                             private val disconnectCallback: DisconnectClientCallback) extends Client {
+                             private val disconnectCallback: DisconnectablePeer) extends Peer {
 
     /**
      * Actor que se encarga de recibir mensajes de algún otro actor y enviarlos al cliente remoto.
@@ -44,8 +55,8 @@ abstract class BasePeerProxy(private val networkConnection: NetworkConnection,
     clientActor ! NetworkActors(gateway, networkListener)
 
     // send client actor to network and gateway actors
-    networkListener ! SetClientActor(clientActor)
-    gateway ! SetClientActor(clientActor)
+    networkListener ! SetPeerActor(clientActor)
+    gateway ! SetPeerActor(clientActor)
 
     // factory methods
     protected def newGateway(output: MessageOutput): Actor
@@ -56,6 +67,9 @@ abstract class BasePeerProxy(private val networkConnection: NetworkConnection,
 
     override def disconnect = {
         clientActor ! TerminateActor()
+        gateway ! TerminateActor()
+        networkListener ! TerminateActor()
+
         networkConnection.close
         disconnectCallback.disconnect(this)
     }

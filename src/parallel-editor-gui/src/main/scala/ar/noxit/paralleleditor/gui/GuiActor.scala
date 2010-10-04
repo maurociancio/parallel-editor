@@ -19,12 +19,10 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
         trace("Waiting for remote kernel actor registration")
 
         // espero registracion
-        receiveWithin(timeout) {
+        remoteKernelActor = receiveWithin(timeout) {
             case ("registration", caller: Actor) => {
                 trace("Remote kernel actor received, registered ok")
-
-                remoteKernelActor = caller
-                remoteKernelActor ! "registration_ok"
+                caller
             }
             // TODO timeout
         }
@@ -36,7 +34,7 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
             react {
                 case ("login", username: String) => {
                     trace("Login request received")
-                    remoteKernelActor ! ("to_kernel", RemoteLogin(username))
+                    remoteKernelActor ! ("to_kernel", RemoteLoginRequest(username))
                 }
 
                 case "logout" => {
@@ -51,14 +49,13 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                     remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
                 }
 
-                case addText: AddText => {
+                case addText: RemoteAddText => {
                     remoteKernelActor ! ("to_kernel", addText)
                 }
 
-                case deleteText: DeleteText => {
+                case deleteText: RemoteDeleteText => {
                     remoteKernelActor ! ("to_kernel", deleteText)
                 }
-
 
                 case RemoteLoginRefusedResponse(reason) => {
                     trace("login refused from kernel. Reason: %s",reason)
@@ -68,12 +65,12 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                     trace("login accepted from kernel.")
                 }
 
-                case ("from_kernel", addText: AddText) => {
+                case ("from_kernel", addText: RemoteAddText) => {
                     trace("received from kernel add text")
                     doc.addText(addText.startPos, addText.text)
                 }
-                
-                case ("from_kernel", deleteText: DeleteText) => {
+
+                case ("from_kernel", deleteText: RemoteDeleteText) => {
                     trace("received from kernel delete text")
                     doc.removeText(deleteText.startPos, deleteText.size)
                 }
@@ -81,7 +78,6 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                 case any: Any => {
                     warn("Uknown message received [%s]", any)
                 }
-
             }
         }
     }

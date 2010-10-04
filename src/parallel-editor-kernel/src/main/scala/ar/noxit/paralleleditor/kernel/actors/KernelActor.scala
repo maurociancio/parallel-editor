@@ -32,7 +32,7 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                     // return it to the caller
                     session notifyUpdate DocumentListResponse(documentList)
                 }
-                case SubscribeToDocument(session, title) => {
+                case SubscribeToDocumentRequest(session, title) => {
                     trace("subscribe to document")
                     kernel.subscribe(session, title)
                 }

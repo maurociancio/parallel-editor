@@ -34,7 +34,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
 //
 //    @Test
 //    def testSessionCount : Unit = {
-//        client ! RemoteLogin("myUsername")
+//        client ! RemoteLoginRequest("myUsername")
 //        Thread.sleep(300)
 //
 //        assertEquals(kernel.sessionCount, 1)
@@ -47,7 +47,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
 //
 //    @Test
 //    def testDocumentCount : Unit = {
-//        client ! RemoteLogin("myUsername")
+//        client ! RemoteLoginRequest("myUsername")
 //        client ! RemoteNewDocumentRequest("title")
 //        Thread.sleep(300)
 //
@@ -65,10 +65,10 @@ class KernelConnectionTest extends AssertionsForJUnit {
 //    def test2Clients : Unit = {
 ////        val client2 = new ClientActor(ka).start
 //
-//        client ! RemoteLogin("myUsername")
+//        client ! RemoteLoginRequest("myUsername")
 //        client ! RemoteNewDocumentRequest("title")
-////        client2 ! RemoteLogin("myUsername2")
-//        client2 ! RemoteDocumentList
+////        client2 ! RemoteLoginRequest("myUsername2")
+//        client2 ! RemoteDocumentListRequest
 //
 //        Thread.sleep(300)
 //

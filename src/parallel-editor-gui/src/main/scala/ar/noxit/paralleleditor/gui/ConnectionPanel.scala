@@ -20,7 +20,7 @@ class ConnectionPanel extends FlowPanel {
     contents += connect
 
     listenTo(connect)
-    
+
     reactions += {
         case e: ButtonClicked => {
             if (connect.text == "Desconectar")
@@ -33,22 +33,23 @@ class ConnectionPanel extends FlowPanel {
         val host = ip text
         val portNumber = port.text.toInt
         ConnectionPanel.this.publish(ConnectionRequest(host, portNumber))
+
         enableControls(false)
     }
 
-    private def desconectar(){
+    private def desconectar() {
         //trace("disconnection requested")
         publish(DisconnectionRequest())
         enableControls(true)
     }
 
-    private def enableControls(state:Boolean){
-        List(ip,port,username).foreach(_.enabled = state )
+    private def enableControls(state: Boolean) {
+        List(ip, port, username).foreach(_.enabled = state)
         def getButtonText = {
-            if (state==true) "Conectar" else "Desconectar"
+            if (state == true) "Conectar" else "Desconectar"
         }
         connect.text = getButtonText
     }
-    
+
     def user = username.text
 }

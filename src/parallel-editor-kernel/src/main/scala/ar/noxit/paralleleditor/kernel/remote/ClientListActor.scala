@@ -2,15 +2,33 @@ package ar.noxit.paralleleditor.kernel.remote
 
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.network.DisconnectClientCallback
-import ar.noxit.paralleleditor.common.remote.Client
+import ar.noxit.paralleleditor.common.network.DisconnectablePeer
+import ar.noxit.paralleleditor.common.remote.Peer
 
-case class AddClient(val client: Client)
-case class RemoveClient(val client: Client)
+/**
+ * Mensajes que se envian a la lista de peers
+ */
+
+/**
+ * Pide al ClientList que agregue a un nuevo client
+ */
+case class AddClient(val client: Peer)
+
+/**
+ * Pide al ClientList actor que termine la conexión con un peer
+ */
+case class RemoveClient(val client: Peer)
+
+/**
+ * Pide al actor ClientList que termine la conexión con todos los peer
+ */
 case class RemoveAllClients
 
-class ClientListActor extends Actor with Loggable with DisconnectClientCallback {
-    private var connectedClients = List[Client]()
+/**
+ * Actor que mantiene la lista de peers conectados al kernel.
+ */
+class ClientListActor extends Actor with Loggable with DisconnectablePeer {
+    private var connectedClients = List[Peer]()
 
     override def act = {
         loop {
@@ -21,7 +39,7 @@ class ClientListActor extends Actor with Loggable with DisconnectClientCallback 
                     if (!connectedClients.contains(newClient))
                         connectedClients = newClient :: connectedClients
                     else
-                        warn("Client already exists")
+                        warn("Peer already exists")
                 }
                 case RemoveClient(client) => {
                     trace("Removing client")
@@ -38,7 +56,7 @@ class ClientListActor extends Actor with Loggable with DisconnectClientCallback 
         }
     }
 
-    def disconnect(client: Client) = {
+    def disconnect(client: Peer) = {
         this ! RemoveClient(client)
     }
 }

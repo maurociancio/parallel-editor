@@ -7,7 +7,7 @@ import ar.noxit.paralleleditor.common.network.{NetworkConnection, SocketNetworkC
 import ar.noxit.paralleleditor.kernel.Kernel
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.actors.{ClientActor, KernelActor}
-import ar.noxit.paralleleditor.common.remote.{Client, ClientActorFactory}
+import ar.noxit.paralleleditor.common.remote.{Peer, PeerActorFactory}
 
 /**
  * Actor que se encarga de escuchar conexiones entrantes y crear una representacion del cliente remoto
@@ -18,7 +18,7 @@ abstract class KernelService extends DaemonActor with Loggable {
 
     protected var kernel: Kernel = _
     protected var ka: Actor = _
-    protected var clientActorFactory: ClientActorFactory = _
+    protected var clientActorFactory: PeerActorFactory = _
     protected val clientList = new ClientListActor
     clientList.start
 
@@ -57,7 +57,7 @@ abstract class KernelService extends DaemonActor with Loggable {
         clientList ! RemoveAllClients()
     }
 
-    protected def newClient(networkConnection: NetworkConnection): Client =
+    protected def newClient(networkConnection: NetworkConnection): Peer =
         new RemoteClientProxy(networkConnection, clientActorFactory, clientList)
 
     protected def newNetworkConnection(): NetworkConnection
@@ -66,11 +66,11 @@ abstract class KernelService extends DaemonActor with Loggable {
 
     protected def newKernelActor: Actor = new KernelActor(kernel).start
 
-    protected def newClientActorFactory: ClientActorFactory = new BasicClientActorFactory(ka)
+    protected def newClientActorFactory: PeerActorFactory = new BasicClientActorFactory(ka)
 }
 
-class BasicClientActorFactory(private val kernel: Actor) extends ClientActorFactory {
-    override def newClientActor(client: Client) = new ClientActor(kernel, client)
+class BasicClientActorFactory(private val kernel: Actor) extends PeerActorFactory {
+    override def newClientActor(client: Peer) = new ClientActor(kernel, client)
 }
 
 class SocketKernelService(private val port: Int) extends KernelService {

@@ -5,10 +5,12 @@ import scala.swing._
 import java.net.Socket
 import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.messages.{AddText, DeleteText}
+import ar.noxit.paralleleditor.common.messages.{RemoteAddText, RemoteDeleteText}
+import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 
 trait ConcurrentDocument {
     def addText(pos: Int, text: String)
+
     def removeText(pos: Int, count: Int)
 }
 
@@ -21,7 +23,7 @@ object GUI extends SimpleSwingApplication with Loggable {
         menuBar = new HomeMenuBar
 
         val connPanel = new ConnectionPanel
-        val editArea = new ScrollableTextArea
+        val editArea = new DocumentArea
 
         val panelGeneral = new BorderPanel()
 
@@ -40,7 +42,7 @@ object GUI extends SimpleSwingApplication with Loggable {
                 val socket = new Socket(host, port.intValue)
                 connected = true
                 val factory = new GuiActorFactory(editArea)
-                new RemoteServerProxy(socket, factory)
+                new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
                 actor = factory.guiActor
                 actor ! ("login", connPanel user)
@@ -53,13 +55,13 @@ object GUI extends SimpleSwingApplication with Loggable {
             case InsertionEvent(pos, text) => {
                 trace("Insertion required " + text + pos)
                 if (connected)
-                    actor ! AddText(text, pos)
+                    actor ! RemoteAddText(text, pos)
 
             }
             case DeletionEvent(pos, count) => {
                 trace("Deletion required" + pos + "," + count)
                 if (connected)
-                    actor ! DeleteText(pos, count)
+                    actor ! RemoteDeleteText(pos, count)
             }
 
         }

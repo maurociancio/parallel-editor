@@ -1,57 +1,53 @@
 package ar.noxit.paralleleditor.gui.remotes
 
-import java.net.Socket
 import actors.Actor
-import java.io.{ObjectInputStream, ObjectInput, ObjectOutputStream, ObjectOutput}
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.messages.{DeleteText, AddText}
+import ar.noxit.paralleleditor.common.messages.{RemoteDeleteText, RemoteAddText}
+import ar.noxit.paralleleditor.common.network._
+import concurrent.TIMEOUT
+import ar.noxit.paralleleditor.common.remote.{Peer, NetworkActors, BasePeerProxy}
 
 trait LocalClientActorFactory {
     def newLocalClientActor: Actor
 }
 
-class RemoteServerProxy(private val socket: Socket, private val clientActorFactory: LocalClientActorFactory) {
-    val gateway = new GatewayActor(new ObjectOutputStream(socket.getOutputStream)).start
-    val remoteKernel = new RemoteKernelActor(gateway, clientActorFactory).start
-    val networkListener = new NetworkListenerActor(new ObjectInputStream(socket.getInputStream), remoteKernel).start
-}
-
-class GatewayActor(private val output: ObjectOutput) extends Actor with Loggable {
-    override def act = {
-
-        var exit = false
-
-        loopWhile(!exit) {
-            react {
-                case "exit" => {
-                     exit=true
-                     trace("Terminating")
-                }
-                case message: Any => {
-                    trace("Sending message %s", message)
-                    output writeObject message
-                }
-            }
-        }
+object NullDisconnectablePeer extends DisconnectablePeer {
+    def disconnect(peer: Peer) = {
     }
 }
 
-class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalClientActorFactory) extends Actor with Loggable {
+class RemoteServerProxy(private val networkConnection: NetworkConnection,
+                        private val clientActorFactory: LocalClientActorFactory)
+        extends BasePeerProxy(networkConnection, NullDisconnectablePeer) {
+
+    protected def newNetworkListener(input: MessageInput) = new NetworkListenerActor(input) {
+        override protected def onNewMessage(inputMessage: Any) = {
+            peer ! ("from_kernel", inputMessage)
+        }
+    }
+
+    protected def newGateway(output: MessageOutput) = new GatewayActor(output)
+
+    protected def newClient() = new RemoteKernelActor(clientActorFactory)
+}
+
+class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory) extends Actor with Loggable {
     val localClientActor = clientActorFactory.newLocalClientActor.start
     val timeout = 5000
 
+    private var listener: Actor = _
+    private var gateway: Actor = _
 
     override def act = {
         trace("Sending registration to local client")
+
+        val (gateway, listener) = receiveNetworkActors
+        this.listener = listener
+        this.gateway = gateway
+
         localClientActor ! ("registration", this)
 
-        receiveWithin(timeout) {
-            case "registration_ok" => trace("Registration ok")
-            // TODO timeout
-        }
-
-        var exit = false
-        loopWhile(!exit) {
+        loop {
             react {
                 case ("to_kernel", msg: Any) => {
                     trace("Received message to kernel %s", msg)
@@ -61,9 +57,9 @@ class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalCli
                     trace("Received message from kernel %s", msg)
 
                     msg match {
-                        case at: AddText =>
+                        case at: RemoteAddText =>
                             localClientActor ! ("from_kernel", at)
-                        case dt: DeleteText =>
+                        case dt: RemoteDeleteText =>
                             localClientActor ! ("from_kernel", dt)
                         case _ =>
                             localClientActor ! msg
@@ -72,37 +68,30 @@ class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalCli
 
                 case "exit" => {
                     doExit
-                    exit = true
                 }
 
                 case any: Any =>
                     trace("Unknown message received %s", any)
             }
         }
-
-
     }
 
-    private def doExit {
+    private def receiveNetworkActors = {
+        trace("Waiting for actors")
+
+        receiveWithin(timeout) {
+            case NetworkActors(gateway, listener) => {
+                trace("network actors received")
+                (gateway, listener)
+            }
+            case TIMEOUT => doExit
+        }
+    }
+
+    private def doExit = {
         gateway ! "exit"
         trace("Terminating")
-   }
-}
 
-class NetworkListenerActor(private val input: ObjectInput, private val remoteKernel: Actor) extends Actor with Loggable {
-    override def act = {
-
-        var exit = false
-        while (!exit) {
-            val inputMessage: Any = input.readObject()
-            trace("Received message %s", inputMessage)
-            inputMessage match {
-                case "exit" => {
-                     exit=true
-                     trace("Terminating")
-                }
-                case _ => remoteKernel ! ("from_kernel", inputMessage)
-            }
-        }
+        exit
     }
 }

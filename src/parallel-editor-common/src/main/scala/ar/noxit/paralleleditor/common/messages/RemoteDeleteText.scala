@@ -3,4 +3,4 @@ package ar.noxit.paralleleditor.common.messages
 import scala.serializable
 
 @serializable
-case class AddText(val text: String, val startPos: Int)
+case class RemoteDeleteText(val startPos: Int, val size: Int)
