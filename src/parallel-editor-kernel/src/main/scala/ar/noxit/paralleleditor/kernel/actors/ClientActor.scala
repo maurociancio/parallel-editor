@@ -100,7 +100,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     doExit
                 }
 
-                case RemoteLogoutRequest => {
+                case RemoteLogoutRequest() => {
                     trace("Logout Requested")
                     doExit
                 }

@@ -39,7 +39,14 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                     remoteKernelActor ! ("to_kernel", RemoteLogin(username))
                 }
 
-                case ("logout") => {
+                case "logout" => {
+                    trace("Logout request received")
+                    remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
+                    remoteKernelActor ! "exit"
+                    exit = true
+                }
+
+                case "exit" => {
                     trace("Logout request received")
                     remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
                 }
@@ -53,18 +60,19 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                 }
 
 
-                //                case (RemoteLoginRefusedResponse(reason)) => {
-                //                    trace("login accepted from kernel.",reason)
-                //                }
-                case (RemoteLoginOkResponse) => {
-                    trace("login refused from kernel. Reason: [%s]")
+                case RemoteLoginRefusedResponse(reason) => {
+                    trace("login refused from kernel. Reason: %s",reason)
+                }
 
+                case RemoteLoginOkResponse() => {
+                    trace("login accepted from kernel.")
                 }
 
                 case ("from_kernel", addText: AddText) => {
                     trace("received from kernel add text")
                     doc.addText(addText.startPos, addText.text)
                 }
+                
                 case ("from_kernel", deleteText: DeleteText) => {
                     trace("received from kernel delete text")
                     doc.removeText(deleteText.startPos, deleteText.size)

@@ -18,11 +18,15 @@ class RemoteServerProxy(private val socket: Socket, private val clientActorFacto
 
 class GatewayActor(private val output: ObjectOutput) extends Actor with Loggable {
     override def act = {
-        // TODO definir mensaje de salida
+
         var exit = false
 
         loopWhile(!exit) {
             react {
+                case "exit" => {
+                     exit=true
+                     trace("Terminating")
+                }
                 case message: Any => {
                     trace("Sending message %s", message)
                     output writeObject message
@@ -35,6 +39,7 @@ class GatewayActor(private val output: ObjectOutput) extends Actor with Loggable
 class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalClientActorFactory) extends Actor with Loggable {
     val localClientActor = clientActorFactory.newLocalClientActor.start
     val timeout = 5000
+
 
     override def act = {
         trace("Sending registration to local client")
@@ -64,22 +69,40 @@ class RemoteKernelActor(private val gateway: Actor, clientActorFactory: LocalCli
                             localClientActor ! msg
                     }
                 }
+
+                case "exit" => {
+                    doExit
+                    exit = true
+                }
+
                 case any: Any =>
                     trace("Unknown message received %s", any)
             }
         }
+
+
     }
+
+    private def doExit {
+        gateway ! "exit"
+        trace("Terminating")
+   }
 }
 
 class NetworkListenerActor(private val input: ObjectInput, private val remoteKernel: Actor) extends Actor with Loggable {
     override def act = {
-        // TODO definir mensaje de salida
+
         var exit = false
         while (!exit) {
             val inputMessage: Any = input.readObject()
             trace("Received message %s", inputMessage)
-
-            remoteKernel ! ("from_kernel", inputMessage)
+            inputMessage match {
+                case "exit" => {
+                     exit=true
+                     trace("Terminating")
+                }
+                case _ => remoteKernel ! ("from_kernel", inputMessage)
+            }
         }
     }
 }
