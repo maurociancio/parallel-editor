@@ -2,16 +2,19 @@ package ar.noxit.paralleleditor.gui.remotes
 
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.messages.{RemoteDeleteText, RemoteAddText}
 import ar.noxit.paralleleditor.common.network._
 import concurrent.TIMEOUT
-import ar.noxit.paralleleditor.common.remote.{Peer, NetworkActors, BasePeerProxy}
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, Peer, NetworkActors, BasePeerProxy}
+import ar.noxit.paralleleditor.common.messages.RemoteLogoutRequest
+import ar.noxit.paralleleditor.gui.{FromKernel, ToKernel}
 
 trait LocalClientActorFactory {
+
     def newLocalClientActor: Actor
 }
 
 object NullDisconnectablePeer extends DisconnectablePeer {
+
     def disconnect(peer: Peer) = {
     }
 }
@@ -21,17 +24,20 @@ class RemoteServerProxy(private val networkConnection: NetworkConnection,
         extends BasePeerProxy(networkConnection, NullDisconnectablePeer) {
 
     protected def newNetworkListener(input: MessageInput) = new NetworkListenerActor(input) {
+
         override protected def onNewMessage(inputMessage: Any) = {
-            peer ! ("from_kernel", inputMessage)
+            peer ! FromKernel(inputMessage)
         }
     }
 
     protected def newGateway(output: MessageOutput) = new GatewayActor(output)
 
-    protected def newClient() = new RemoteKernelActor(clientActorFactory)
+    protected def newClient() = new RemoteKernelActor(clientActorFactory, this)
 }
 
-class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory) extends Actor with Loggable {
+class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory,
+                        private val peer: Peer) extends Actor with Loggable {
+
     val localClientActor = clientActorFactory.newLocalClientActor.start
     val timeout = 5000
 
@@ -49,27 +55,18 @@ class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory)
 
         loop {
             react {
-                case ("to_kernel", msg: Any) => {
+                case ToKernel(msg) => {
                     trace("Received message to kernel %s", msg)
                     gateway ! msg
                 }
-                case ("from_kernel", msg: Any) => {
+                case FromKernel(msg) => {
                     trace("Received message from kernel %s", msg)
-
-                    msg match {
-                        case at: RemoteAddText =>
-                            localClientActor ! ("from_kernel", at)
-                        case dt: RemoteDeleteText =>
-                            localClientActor ! ("from_kernel", dt)
-                        case _ =>
-                            localClientActor ! msg
-                    }
+                    localClientActor ! msg
                 }
-
-                case "exit" => {
+                case TerminateActor() => {
+                    gateway ! RemoteLogoutRequest()
                     doExit
                 }
-
                 case any: Any =>
                     trace("Unknown message received %s", any)
             }
@@ -89,8 +86,11 @@ class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory)
     }
 
     private def doExit = {
-        gateway ! "exit"
         trace("Terminating")
+
+        gateway ! TerminateActor()
+        listener ! TerminateActor()
+        peer.disconnect
 
         exit
     }

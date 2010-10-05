@@ -1,8 +1,7 @@
 package ar.noxit.paralleleditor.gui
 
-
 /**
- * Mensajes que se envian entre el GUI Actor y el Remote Server Proxy
+ * Mensajes que se envian entre la GUI y el GUI Actor
  */
 
 /**
@@ -14,3 +13,9 @@ case class Login(val username: String)
  * Le pide al kernel que lo desloguee
  */
 case class Logout()
+
+/**
+ * Mensajes entre elg GuiActor y el RemoteServerProxy
+ */
+case class FromKernel(val msg: Any)
+case class ToKernel(val msg: Any)

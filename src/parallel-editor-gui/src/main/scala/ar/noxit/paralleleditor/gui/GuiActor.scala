@@ -4,14 +4,17 @@ import remotes.LocalClientActorFactory
 import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
+import ar.noxit.paralleleditor.common.remote.TerminateActor
 
 class GuiActorFactory(private val doc: ConcurrentDocument) extends LocalClientActorFactory {
+
     val guiActor = new GuiActor(doc)
 
     override def newLocalClientActor = guiActor
 }
 
 class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable {
+
     val timeout = 5000
     var remoteKernelActor: Actor = _
 
@@ -27,34 +30,34 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
             // TODO timeout
         }
 
-        var exit = false
-        loopWhile(!exit) {
+        loop {
             trace("Choosing")
 
             react {
                 case Login(username) => {
                     trace("Login request received")
-                    remoteKernelActor ! ("to_kernel", RemoteLoginRequest(username))
+                    remoteKernelActor ! ToKernel(RemoteLoginRequest(username))
                 }
 
                 case Logout() => {
                     trace("Logout request received")
-                    remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
-                    remoteKernelActor ! "exit"
-                    exit = true
+                    remoteKernelActor ! TerminateActor()
+                    doExit
                 }
 
-                case "exit" => {
-                    trace("Logout request received")
-                    remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
-                }
-
-                case addText: RemoteAddText => {
-                    remoteKernelActor ! ("to_kernel", addText)
-                }
-
-                case deleteText: RemoteDeleteText => {
-                    remoteKernelActor ! ("to_kernel", deleteText)
+                case o: RemoteOperation => {
+                    if (sender != remoteKernelActor)
+                        remoteKernelActor ! ToKernel(o)
+                    else
+                        o match {
+                            case addText: RemoteAddText => {
+                                doc.addText(addText.startPos, addText.text)
+                            }
+                            case deleteText: RemoteDeleteText => {
+                                doc.removeText(deleteText.startPos, deleteText.size)
+                            }
+                            case _ => warn("unkown remote operation")
+                        }
                 }
 
                 case RemoteLoginRefusedResponse(reason) => {
@@ -70,20 +73,14 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                     doc.initialContent(initialContent)
                 }
 
-                case ("from_kernel", addText: RemoteAddText) => {
-                    trace("received from kernel add text")
-                    doc.addText(addText.startPos, addText.text)
-                }
-
-                case ("from_kernel", deleteText: RemoteDeleteText) => {
-                    trace("received from kernel delete text")
-                    doc.removeText(deleteText.startPos, deleteText.size)
-                }
-
                 case any: Any => {
                     warn("Uknown message received [%s]", any)
                 }
             }
         }
+    }
+
+    private def doExit = {
+        exit
     }
 }
