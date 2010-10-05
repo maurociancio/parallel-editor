@@ -36,34 +36,32 @@ class DocumentArea extends SplitPane with ConcurrentDocument {
     }
 
     override def removeText(pos: Int, count: Int) = {
-        areaEdicion.disableFiringEvents
-        try {
+        doInGuard({
             val text = areaEdicion.text
             areaEdicion.text = text.substring(0, pos) + text.substring(pos + count)
-            areaEdicion.repaint
-        } finally {
-            areaEdicion.enableFiringEvents
-        }
+        })
     }
 
     override def addText(pos: Int, text: String) = {
-        areaEdicion.disableFiringEvents
-        try {
+        doInGuard({
             val original = areaEdicion.text
             areaEdicion.text = original.substring(0, pos) + text + original.substring(pos)
-            areaEdicion.repaint
-        } finally {
-            areaEdicion.enableFiringEvents
-        }
+        })
     }
 
     override def initialContent(content: String) = {
-        areaEdicion.disableFiringEvents
-        try {
+        doInGuard({
             areaEdicion.text = content
+        })
+    }
+
+    private def doInGuard(closure: => Unit) = {
+        try {
+            areaEdicion.disableFiringEvents
+            closure
             areaEdicion.repaint
-        } finally {
-            areaEdicion.enableFiringEvents
         }
+        finally
+            areaEdicion.enableFiringEvents
     }
 }
