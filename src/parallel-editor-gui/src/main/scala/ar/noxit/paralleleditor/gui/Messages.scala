@@ -1,5 +1,7 @@
 package ar.noxit.paralleleditor.gui
 
+import actors.Actor
+
 /**
  * Mensajes que se envian entre la GUI y el GUI Actor
  */
@@ -20,3 +22,4 @@ case class Logout()
  */
 case class FromKernel(val msg: Any)
 case class ToKernel(val msg: Any)
+case class RegisterRemoteActor(val remote: Actor)

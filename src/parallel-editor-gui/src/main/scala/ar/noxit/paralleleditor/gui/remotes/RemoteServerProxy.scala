@@ -6,7 +6,7 @@ import ar.noxit.paralleleditor.common.network._
 import concurrent.TIMEOUT
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, Peer, NetworkActors, BasePeerProxy}
 import ar.noxit.paralleleditor.common.messages.RemoteLogoutRequest
-import ar.noxit.paralleleditor.gui.{FromKernel, ToKernel}
+import ar.noxit.paralleleditor.gui.{RegisterRemoteActor, FromKernel, ToKernel}
 
 trait LocalClientActorFactory {
 
@@ -51,7 +51,7 @@ class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory,
         this.listener = listener
         this.gateway = gateway
 
-        localClientActor ! ("registration", this)
+        localClientActor ! RegisterRemoteActor(this)
 
         loop {
             react {

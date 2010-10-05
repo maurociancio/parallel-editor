@@ -1,10 +1,10 @@
 package ar.noxit.paralleleditor.gui
 
 import remotes.LocalClientActorFactory
-import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.remote.TerminateActor
+import actors.{TIMEOUT, Actor}
 
 class GuiActorFactory(private val doc: ConcurrentDocument) extends LocalClientActorFactory {
 
@@ -23,11 +23,11 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
 
         // espero registracion
         remoteKernelActor = receiveWithin(timeout) {
-            case ("registration", caller: Actor) => {
+            case RegisterRemoteActor(caller) => {
                 trace("Remote kernel actor received, registered ok")
                 caller
             }
-            // TODO timeout
+            case TIMEOUT => doTimeout
         }
 
         loop {
@@ -41,7 +41,6 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
 
                 case Logout() => {
                     trace("Logout request received")
-                    remoteKernelActor ! TerminateActor()
                     doExit
                 }
 
@@ -80,7 +79,14 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
         }
     }
 
+    private def doTimeout = {
+        trace("timeout")
+        doExit
+    }
+
     private def doExit = {
+        if (remoteKernelActor != null)
+            remoteKernelActor ! TerminateActor()
         exit
     }
 }
