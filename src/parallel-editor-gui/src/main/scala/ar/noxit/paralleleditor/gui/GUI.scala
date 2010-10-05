@@ -47,7 +47,7 @@ object GUI extends SimpleSwingApplication with Loggable {
                 new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
                 actor = factory.guiActor
-                actor ! ("login", connPanel user)
+                actor ! Login(connPanel user)
             }
 
             case DisconnectionRequest() => {

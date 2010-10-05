@@ -32,7 +32,7 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
             trace("Choosing")
 
             react {
-                case ("login", username: String) => {
+                case Login(username) => {
                     trace("Login request received")
                     remoteKernelActor ! ("to_kernel", RemoteLoginRequest(username))
                 }
