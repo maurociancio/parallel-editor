@@ -37,7 +37,7 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                     remoteKernelActor ! ("to_kernel", RemoteLoginRequest(username))
                 }
 
-                case "logout" => {
+                case Logout() => {
                     trace("Logout request received")
                     remoteKernelActor ! ("to_kernel", RemoteLogoutRequest())
                     remoteKernelActor ! "exit"

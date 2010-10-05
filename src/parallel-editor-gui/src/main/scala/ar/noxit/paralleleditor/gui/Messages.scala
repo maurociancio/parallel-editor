@@ -9,3 +9,8 @@ package ar.noxit.paralleleditor.gui
  * Le pide que se loguee contra el kernel
  */
 case class Login(val username: String)
+
+/**
+ * Le pide al kernel que lo desloguee
+ */
+case class Logout()

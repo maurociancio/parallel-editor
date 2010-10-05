@@ -51,7 +51,7 @@ object GUI extends SimpleSwingApplication with Loggable {
             }
 
             case DisconnectionRequest() => {
-                actor ! "logout"
+                actor ! Logout()
             }
 
             case InsertionEvent(pos, text) => {
@@ -72,6 +72,6 @@ object GUI extends SimpleSwingApplication with Loggable {
         //TODO ver bien como terminar de desloguearse y cerrar sockets
         //este metodo se llama antes de cerrar la ventana
         if (connected)
-            actor ! ("logout")
+            actor ! Logout()
     }
 }
