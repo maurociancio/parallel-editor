@@ -16,6 +16,7 @@ case class Logout()
 
 /**
  * Mensajes entre elg GuiActor y el RemoteServerProxy
+ * TODO a ser extraidos en el módulo cliente
  */
 case class FromKernel(val msg: Any)
 case class ToKernel(val msg: Any)
