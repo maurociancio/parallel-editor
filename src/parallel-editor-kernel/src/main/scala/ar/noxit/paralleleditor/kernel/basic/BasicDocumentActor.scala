@@ -24,7 +24,8 @@ class BasicDocumentActor(documentFactory: DocumentFactory) extends DocumentActor
                 case Subscribe(who) => {
                     trace("Subscribe requested")
                     val docSession = document subscribe who
-                    who notifyUpdate NewDocumentResponse(docSession)
+                    val content = document.data
+                    who notifyUpdate SubscriptionResponse(docSession, content)
                 }
                 case Unsubscribe(who) => {
                     trace("Unsubscribe requested")

@@ -12,6 +12,8 @@ trait ConcurrentDocument {
     def addText(pos: Int, text: String)
 
     def removeText(pos: Int, count: Int)
+
+    def initialContent(content: String)
 }
 
 object GUI extends SimpleSwingApplication with Loggable {

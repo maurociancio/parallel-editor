@@ -53,11 +53,11 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     kernel ! NewDocumentRequest(session, title)
                 }
 
-                case NewDocumentResponse(docSession) => {
+                case SubscriptionResponse(docSession, initialContent) => {
                     trace("Received Document Session")
 
                     docSessions = docSession :: docSessions
-                    gateway ! RemoteNewDocumentOkResponse() // MAL
+                    gateway ! RemoteDocumentSubscriptionResponse(initialContent)
                 }
 
                 case RemoteDocumentListRequest => {

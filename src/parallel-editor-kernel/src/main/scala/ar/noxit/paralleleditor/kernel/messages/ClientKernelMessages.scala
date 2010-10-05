@@ -14,7 +14,12 @@ case class LoginResponse(val session: Session) {
 }
 
 case class NewDocumentRequest(val session: Session, val title: String)
-case class NewDocumentResponse(val docSession: DocumentSession)
+
+/**
+ * Generado cuando la suscripción a un documento fue exitosa.
+ * Puede ser enviado tanto si es para un nuevo documento como para uno existente
+ */
+case class SubscriptionResponse(val docSession: DocumentSession, val initialContent: String)
 
 case class DocumentListRequest(val session: Session)
 case class DocumentListResponse(val documents: List[String])

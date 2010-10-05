@@ -56,4 +56,14 @@ class DocumentArea extends SplitPane with ConcurrentDocument {
             areaEdicion.enableFiringEvents
         }
     }
+
+    override def initialContent(content: String) = {
+        areaEdicion.disableFiringEvents
+        try {
+            areaEdicion.text = content
+            areaEdicion.repaint
+        } finally {
+            areaEdicion.enableFiringEvents
+        }
+    }
 }
