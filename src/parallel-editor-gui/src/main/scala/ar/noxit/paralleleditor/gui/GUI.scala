@@ -5,16 +5,8 @@ import scala.swing._
 import java.net.Socket
 import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.messages.{RemoteAddText, RemoteDeleteText}
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
-
-trait ConcurrentDocument {
-    def addText(pos: Int, text: String)
-
-    def removeText(pos: Int, count: Int)
-
-    def initialContent(content: String)
-}
+import ar.noxit.paralleleditor.common.messages.{RemoteDocumentListRequest, RemoteAddText, RemoteDeleteText}
 
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
@@ -22,7 +14,8 @@ object GUI extends SimpleSwingApplication with Loggable {
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"
-        menuBar = new HomeMenuBar
+        val homeMenuBar = new HomeMenuBar
+        menuBar = homeMenuBar
 
         val connPanel = new ConnectionPanel
         val editArea = new DocumentArea
@@ -36,6 +29,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
         listenTo(connPanel)
         listenTo(editArea)
+        listenTo(homeMenuBar)
 
         reactions += {
             case ConnectionRequest(host, port) => {
@@ -43,7 +37,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
                 val socket = new Socket(host, port.intValue)
                 connected = true
-                val factory = new GuiActorFactory(editArea)
+                val factory = new GuiActorFactory(new ConcurrentDocumentAdapter(editArea, homeMenuBar))
                 new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
                 actor = factory.guiActor
@@ -64,7 +58,11 @@ object GUI extends SimpleSwingApplication with Loggable {
                 if (connected)
                     actor ! RemoteDeleteText(pos, count)
             }
-
+            case DocumentListRequest() => {
+                if (connected) {
+                    actor ! RemoteDocumentListRequest()
+                }
+            }
         }
     }
 
@@ -74,4 +72,16 @@ object GUI extends SimpleSwingApplication with Loggable {
         if (connected)
             actor ! Logout()
     }
+}
+
+// TODO cambiar nombre
+class ConcurrentDocumentAdapter(private val textArea: ConcurrentDocument, private val menu: HomeMenuBar) extends Document {
+
+    def addText(pos: Int, text: String) = textArea.addText(pos, text)
+
+    def removeText(pos: Int, count: Int) = textArea.removeText(pos, count)
+
+    def initialContent(content: String) = textArea.initialContent(content)
+
+    def changeDocList(l: scala.List[String]) = menu.changeDocList(l)
 }

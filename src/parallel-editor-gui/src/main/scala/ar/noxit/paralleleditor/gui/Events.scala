@@ -8,6 +8,7 @@ import swing.event.Event
 
 case class ConnectionRequest(val host: String, val port: Int) extends Event
 case class DisconnectionRequest extends Event
+case class DocumentListRequest extends Event
 
 /**
  * Eventos publicados por

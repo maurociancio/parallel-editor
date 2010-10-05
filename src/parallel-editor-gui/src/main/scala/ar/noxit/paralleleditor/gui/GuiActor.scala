@@ -6,15 +6,29 @@ import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.remote.TerminateActor
 import actors.{TIMEOUT, Actor}
 
-class GuiActorFactory(private val doc: ConcurrentDocument) extends LocalClientActorFactory {
+trait ConcurrentDocument {
+    def addText(pos: Int, text: String)
 
+    def removeText(pos: Int, count: Int)
+
+    def initialContent(content: String)
+}
+
+// TODO cambiar nombre
+trait DocList {
+    def changeDocList(l: List[String])
+}
+
+// TODO cambiar nombre
+trait Document extends ConcurrentDocument with DocList
+
+class GuiActorFactory(private val doc: Document) extends LocalClientActorFactory {
     val guiActor = new GuiActor(doc)
 
     override def newLocalClientActor = guiActor
 }
 
-class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable {
-
+class GuiActor(private val doc: Document) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
 
@@ -70,6 +84,15 @@ class GuiActor(private val doc: ConcurrentDocument) extends Actor with Loggable 
                 case (RemoteDocumentSubscriptionResponse(initialContent)) => {
                     trace("RemoteDocumentSubscriptionResponse received")
                     doc.initialContent(initialContent)
+                }
+
+                case e: RemoteDocumentListRequest => {
+                    trace("RemoteDocumentListRequest")
+                    remoteKernelActor ! ToKernel(e)
+                }
+                case RemoteDocumentListResponse(l) => {
+                    trace("RemoteDocumentListResponse %s", l)
+                    doc.changeDocList(l)
                 }
 
                 case any: Any => {

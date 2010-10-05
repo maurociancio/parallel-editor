@@ -60,7 +60,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     gateway ! RemoteDocumentSubscriptionResponse(initialContent)
                 }
 
-                case RemoteDocumentListRequest => {
+                case RemoteDocumentListRequest() => {
                     trace("Document List Requested")
 
                     kernel ! DocumentListRequest(session)
