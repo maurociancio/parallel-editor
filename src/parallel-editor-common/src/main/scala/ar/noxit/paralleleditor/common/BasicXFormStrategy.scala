@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor.common
 
-import ar.noxit.paralleleditor.common.operation.{EditOperation, DeleteTextOperation, AddTextOperation}
+import operation.{CompositeOperation, EditOperation, DeleteTextOperation, AddTextOperation}
 
 class BasicXFormStrategy extends XFormStrategy {
     def xform(ops: (EditOperation, EditOperation)) = {
@@ -9,26 +9,51 @@ class BasicXFormStrategy extends XFormStrategy {
 
         ops match {
             case (c: AddTextOperation, s: AddTextOperation) => {
-                if (c.startPos == s.startPos) {
-                    (new AddTextOperation(c.text, c.startPos),
-                            new AddTextOperation(s.text, c.startPos + c.text.length))
-                } else if (c.startPos < s.startPos) {
-                    (c,
-                            new AddTextOperation(s.text, s.startPos + c.text.length))
+                if (c.startPos == s.startPos)
+                    (new AddTextOperation(c.text, c.startPos), new AddTextOperation(s.text, c.startPos + c.text.length))
+                else if (c.startPos < s.startPos)
+                    (c, new AddTextOperation(s.text, s.startPos + c.text.length))
+                else
+                    (new AddTextOperation(c.text, c.startPos + s.text.length), s)
+            }
+            case (c: DeleteTextOperation, s: AddTextOperation) => {
+                (null, null)
+            }
+            case (c: DeleteTextOperation, s: DeleteTextOperation) => {
+                val intersection = getRangeFor(c) intersect getRangeFor(s)
+
+                val min = if (c.startPos > s.startPos) s else c
+                val max = if (c.startPos <= s.startPos) s else c
+
+                if (intersection.isEmpty) {
+                    val dt = new DeleteTextOperation(max.startPos - min.size, max.size)
+                    if (min == c)
+                        (min, dt)
+                    else
+                        (dt, min)
                 } else {
-                    (new AddTextOperation(c.text,c.startPos + s.text.length),
-                            s)
+                    val noSuperpuestosDeMin = getRangeFor(min) diff intersection
+                    val noSuperpuestosDeMax = getRangeFor(max) diff intersection
+
+                    (new DeleteTextOperation(min.startPos, noSuperpuestosDeMin.size), new DeleteTextOperation(min.startPos, noSuperpuestosDeMax.size))
                 }
             }
-            case (o1: AddTextOperation, o2: DeleteTextOperation) => {
-                (null, null)
-            }
-            case (o1: DeleteTextOperation, o2: DeleteTextOperation) => {
-                (null, null)
-            }
-            case (o1: DeleteTextOperation, o2: AddTextOperation) => {
-                (null, null)
+            case (c: AddTextOperation, s: DeleteTextOperation) => {
+                val deletionRange = getRangeFor(s)
+                if (deletionRange contains c.startPos) {
+                    (new AddTextOperation(c.text, s.startPos),
+                            new CompositeOperation(
+                                new DeleteTextOperation(s.startPos, (c.startPos - s.startPos)),
+                                new DeleteTextOperation(s.startPos + c.text.length, s.startPos + s.size - c.startPos)))
+                } else {
+                    if (c.startPos < s.startPos)
+                        (c, new DeleteTextOperation(s.startPos + c.text.length, s.size))
+                    else
+                        (new AddTextOperation(c.text, c.startPos - s.size), s)
+                }
             }
         }
     }
+
+    private def getRangeFor(o: DeleteTextOperation) = o.startPos to (o.startPos + o.size)
 }
