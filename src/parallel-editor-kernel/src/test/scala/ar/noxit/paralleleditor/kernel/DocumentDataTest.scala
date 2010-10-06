@@ -5,7 +5,7 @@ import operations.{GetTextOperation}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import Assert._
-import ar.noxit.paralleleditor.common.operations.{DeleteTextOperation, AddTextOperation}
+import ar.noxit.paralleleditor.common.operation.{DeleteTextOperation, AddTextOperation}
 
 @Test
 class DocumentDataTest extends AssertionsForJUnit {

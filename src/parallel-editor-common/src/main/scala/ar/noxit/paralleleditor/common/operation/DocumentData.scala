@@ -1,4 +1,4 @@
-package ar.noxit.paralleleditor.common.operations
+package ar.noxit.paralleleditor.common.operation
 
 trait DocumentData {
     var data: String

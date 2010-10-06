@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor
 
-import common.{Message, JupiterSynchronizer}
+import ar.noxit.paralleleditor.common.{Message, JupiterSynchronizer}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 
