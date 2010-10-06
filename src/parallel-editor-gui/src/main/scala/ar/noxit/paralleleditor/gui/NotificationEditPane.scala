@@ -13,20 +13,28 @@ class NotificationEditPane extends TextArea {
 
         override def fireInsertUpdate(e: DocumentEvent) = if (fireEvents) super.fireInsertUpdate(e)
     }
+
     doc.addDocumentListener(new DocumentListener {
         def changedUpdate(e: DocumentEvent) {
         }
 
         def insertUpdate(e: DocumentEvent) {
             val newText = text.substring(e.getOffset, e.getOffset + e.getLength)
-            publish(WrappedEvent(InsertionEvent(e.getOffset, newText)))
+            val ie = InsertionEvent(e.getOffset, newText)
+
+            publicar(ie)
         }
 
         def removeUpdate(e: DocumentEvent) {
-            publish(WrappedEvent(DeletionEvent(e.getOffset, e.getLength)))
+            val de = DeletionEvent(e.getOffset, e.getLength)
+            publicar(de)
         }
     })
     peer.setDocument(doc)
+
+    protected def publicar(e: EditionEvent): Unit = {
+        publish(WrappedEvent(e))
+    }
 
     def disableFiringEvents {
         this.fireEvents = false;

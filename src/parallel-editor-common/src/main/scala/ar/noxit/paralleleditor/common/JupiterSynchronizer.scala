@@ -22,15 +22,17 @@ class JupiterSynchronizer extends Loggable {
     var outgoingMsgs = Map[Int, String]()
 
     def generateMsg(op: String) {
+        trace("Generating message")
         applyOp(op)
-        send((op, myMsgs, otherMsgs))
+
+        send(Message(op, myMsgs, otherMsgs))
 
         outgoingMsgs = outgoingMsgs.update(myMsgs, op)
         myMsgs = myMsgs + 1
     }
 
     def receiveMsg(message: Message) {
-        trace("recibido " + message)
+        trace("Message received " + message)
 
         // filtro mensajes anteriores al recibido (acknowledged messages)
         outgoingMsgs = outgoingMsgs filterKeys (_ >= message.otherMsgs)
@@ -51,15 +53,15 @@ class JupiterSynchronizer extends Loggable {
         otherMsgs = otherMsgs + 1
     }
 
-    def applyOp(op: String) {
-        println("Aplicando op " + op)
+    protected def applyOp(op: String) {
+        trace("applying operation " + op)
     }
 
-    def send(op: (String, Int, Int)) {
-        println("se envio " + op)
+    protected def send(message: Message) {
+        trace("sending message " + message)
     }
 
-    def xform(c: String, s: String) = {
+    protected def xform(c: String, s: String) = {
         (c + "'", s + "'")
     }
 }
