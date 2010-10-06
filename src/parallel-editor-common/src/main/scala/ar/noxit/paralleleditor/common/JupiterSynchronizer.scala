@@ -19,26 +19,32 @@ class JupiterSynchronizer {
     /**
      * lista de mensajes que se generaron y enviaron localmente
      */
-    var outgoingMsgs: List[(String,Int)] = List()
+    var outgoingMsgs: Map[Int,(String,Int)] = Map()
 
     def generateMsg(op:String){
-        
         applyOp(op)
-       // send((op,myMsgs,otherMsgs))
-        outgoingMsgs = (op,myMsgs) :: outgoingMsgs 
-
-       myMsgs = myMsgs + 1
+        send((op,myMsgs,otherMsgs))
+        println("adding msg" + op)
+        outgoingMsgs = outgoingMsgs.update(myMsgs,(op,myMsgs))
+        myMsgs = myMsgs + 1
     }
 
     def receiveMsg( msg:(String,Int,Int) ) {
 
-         // filtro mensajes anteriores al recibido (acknowledged messages)
-        outgoingMsgs =  outgoingMsgs.filter( _._2 >= msg._3)
+        println("recibido " + msg)
+        // filtro mensajes anteriores al recibido (acknowledged messages)
+        outgoingMsgs = outgoingMsgs filterKeys ( _ >= msg._3)
 
-        // assert msg.myMsgs == otherMsgs
-        outgoingMsgs.map( (msg:(String,Integer)) => _)
+        //calculo la transformada de la operacion a realizar
+        val finalOp = (msg._1 /: outgoingMsgs) {
+            (s, c) => {
+                val ot = xform(c._2._1,s)
+                outgoingMsgs = outgoingMsgs.update(c _1,(ot._1, c _1))
+                ot._2
+            }
+        }
 
-        applyOp(msg._1)
+        applyOp(finalOp)
         
         otherMsgs = otherMsgs + 1
     }
@@ -47,6 +53,11 @@ class JupiterSynchronizer {
         println("Aplicando op " + op)
     }
 
-    //def send()
+    def send(op:(String,Int,Int)){
+        println("se envio "+ op)
+    }
 
+    def xform(c:String,s:String) = {
+        (c+"'",s+"'")
+    }
 }
