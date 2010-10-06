@@ -1,10 +1,11 @@
 package ar.noxit.paralleleditor.kernel
 
 import basic.{BasicSession, BasicKernel}
-import operations.{DeleteTextOperation, GetTextOperation, AddTextOperation}
+import operations.{GetTextOperation}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import Assert._
+import ar.noxit.paralleleditor.common.operations.{DeleteTextOperation, AddTextOperation}
 
 @Test
 class DocumentDataTest extends AssertionsForJUnit {

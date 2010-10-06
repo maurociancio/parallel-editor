@@ -1,6 +1,6 @@
-package ar.noxit.paralleleditor.kernel.operations
+package ar.noxit.paralleleditor.common.operations
 
-import ar.noxit.paralleleditor.kernel.{DocumentData, EditOperation}
+import ar.noxit.paralleleditor.common.operation.EditOperation
 
 class AddTextOperation(val text: String, val startPos: Int) extends EditOperation {
 

@@ -1,6 +1,7 @@
 package ar.noxit.paralleleditor.kernel.operations
 
-import ar.noxit.paralleleditor.kernel.{Session, DocumentData, EditOperation}
+import ar.noxit.paralleleditor.common.operation.EditOperation
+import ar.noxit.paralleleditor.common.operations.DocumentData
 
 class GetTextOperation extends EditOperation {
 

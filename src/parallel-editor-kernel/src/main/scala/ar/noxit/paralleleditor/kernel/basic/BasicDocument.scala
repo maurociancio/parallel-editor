@@ -4,6 +4,8 @@ import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
 import scala.List
 import scala.actors.Actor
+import ar.noxit.paralleleditor.common.operation.EditOperation
+import ar.noxit.paralleleditor.common.operations.DocumentData
 
 class BasicDocument(val title: String, var data: String, val docActor: Actor) extends Document with DocumentData {
     private var subscribers: List[Session] = List()

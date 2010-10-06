@@ -1,6 +1,7 @@
 package ar.noxit.paralleleditor.kernel.messages
 
-import ar.noxit.paralleleditor.kernel.{EditOperation, Session}
+import ar.noxit.paralleleditor.kernel.Session
+import ar.noxit.paralleleditor.common.operation.EditOperation
 
 /**
  * Mensajes que se envian entre el actor del documento y el kernel.

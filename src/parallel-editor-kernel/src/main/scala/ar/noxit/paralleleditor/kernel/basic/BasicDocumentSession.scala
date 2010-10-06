@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.kernel
 
 import messages.{ProcessOperation, Unsubscribe}
 import scala.actors.Actor
+import ar.noxit.paralleleditor.common.operation.EditOperation
 
 class BasicDocumentSession(val session: Session, val documentActor: Actor) extends DocumentSession {
 

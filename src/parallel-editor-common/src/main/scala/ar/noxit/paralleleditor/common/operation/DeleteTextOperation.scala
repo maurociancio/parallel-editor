@@ -1,6 +1,6 @@
-package ar.noxit.paralleleditor.kernel.operations
+package ar.noxit.paralleleditor.common.operations
 
-import ar.noxit.paralleleditor.kernel.{Session, DocumentData, EditOperation}
+import ar.noxit.paralleleditor.common.operation.EditOperation
 
 class DeleteTextOperation(val startPos: Int, val size: Int) extends EditOperation {
 
