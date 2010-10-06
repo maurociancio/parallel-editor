@@ -2,20 +2,18 @@ package ar.noxit.paralleleditor.gui
 
 import scala.swing._
 
-class ScrollableTextArea extends SplitPane with ConcurrentDocument {
+class DocumentArea extends SplitPane with ConcurrentDocument {
     val areaEdicion = new NotificationEditPane {
         text = ""
     }
 
     val scrollAreaEdicion = new ScrollPane(areaEdicion)
-
     scrollAreaEdicion preferredSize = new Dimension(320, 240)
 
     val debugConsole = new TextArea {
         text = "-- debug console --\n"
         editable = false
     }
-
     val scrollDebugConsole = new ScrollPane(debugConsole)
 
     orientation = Orientation.Horizontal
@@ -26,14 +24,9 @@ class ScrollableTextArea extends SplitPane with ConcurrentDocument {
     listenTo(areaEdicion)
 
     reactions += {
-        case TextAdded(initPos, length) => {
-            val newText = areaEdicion.text.substring(initPos, initPos + length)
-            addEntry("text added '%s' at pos: %d - size: %d".format(newText, initPos, length))
-            publish(InsertionEvent(initPos, newText))
-        }
-        case TextRemoved(initPos, length) => {
-            addEntry("text removed at pos: %d - size: %d".format(initPos, length))
-            publish(DeletionEvent(initPos, length))
+        case WrappedEvent(e) => {
+            addEntry("event received %s".format(e))
+            publish(e)
         }
     }
 
@@ -43,24 +36,32 @@ class ScrollableTextArea extends SplitPane with ConcurrentDocument {
     }
 
     override def removeText(pos: Int, count: Int) = {
-        areaEdicion.disableFiringEvents
-        try {
+        doInGuard({
             val text = areaEdicion.text
             areaEdicion.text = text.substring(0, pos) + text.substring(pos + count)
-            areaEdicion.repaint
-        } finally {
-            areaEdicion.enableFiringEvents
-        }
+        })
     }
 
     override def addText(pos: Int, text: String) = {
-        areaEdicion.disableFiringEvents
-        try {
+        doInGuard({
             val original = areaEdicion.text
             areaEdicion.text = original.substring(0, pos) + text + original.substring(pos)
+        })
+    }
+
+    override def initialContent(content: String) = {
+        doInGuard({
+            areaEdicion.text = content
+        })
+    }
+
+    private def doInGuard(closure: => Unit) = {
+        try {
+            areaEdicion.disableFiringEvents
+            closure
             areaEdicion.repaint
-        } finally {
-            areaEdicion.enableFiringEvents
         }
+        finally
+            areaEdicion.enableFiringEvents
     }
 }

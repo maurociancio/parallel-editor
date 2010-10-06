@@ -15,6 +15,7 @@ class BaseKernelService(private val port: Int) extends SocketKernelService(port)
 
 object RunKernelServer {
     def main(args: Array[String]) {
+        System.setProperty("actors.corePoolSize", "50")
         new BaseKernelService(5000).start
     }
 }

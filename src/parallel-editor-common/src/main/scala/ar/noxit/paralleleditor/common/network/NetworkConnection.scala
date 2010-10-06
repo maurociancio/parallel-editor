@@ -1,4 +1,4 @@
-package ar.noxit.paralleleditor.kernel.network
+package ar.noxit.paralleleditor.common.network
 
 trait Closeable {
     def close

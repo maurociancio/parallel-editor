@@ -1,20 +1,20 @@
-package ar.noxit.paralleleditor.kernel.remote
+package ar.noxit.paralleleditor.common.network
 
-import ar.noxit.paralleleditor.kernel.network.{MessageInput, MessageOutput}
 import actors.{Actor, TIMEOUT}
 import ar.noxit.paralleleditor.common.logger.Loggable
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, SetPeerActor}
 
 abstract class BaseNetworkActor extends Actor with Loggable {
-    protected var client: Actor = _
+    protected var peer: Actor = _
     protected val timeout = 5000
 
     override def act = {
-        client = receiveClient
+        peer = receiveClient
     }
 
     private def receiveClient = {
         receiveWithin(timeout) {
-            case SetClientActor(client) => {
+            case SetPeerActor(client) => {
                 trace("client actor received")
                 client
             }
@@ -24,8 +24,8 @@ abstract class BaseNetworkActor extends Actor with Loggable {
     }
 
     protected def doExit = {
-        if (client != null)
-            client ! TerminateActor()
+        if (peer != null)
+            peer ! TerminateActor()
         exit
     }
 }
@@ -52,8 +52,12 @@ class NetworkListenerActor(private val input: MessageInput) extends BaseNetworkA
             val inputMessage: Any = input.readMessage
             trace("Message received %s", inputMessage)
 
-            client ! inputMessage
+            onNewMessage(inputMessage)
         }
+    }
+
+    protected def onNewMessage(inputMessage: Any) {
+        peer ! inputMessage
     }
 }
 
@@ -73,7 +77,7 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
                 case message: Any => {
                     trace("writing message to client [%s]", message)
                     try {
-                        output writeMessage message
+                        onNewMessage(message)
                     }
                     catch {
                         case e: Exception => {
@@ -84,5 +88,9 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
                 }
             }
         }
+    }
+
+    protected def onNewMessage(message: Any) {
+        output writeMessage message
     }
 }

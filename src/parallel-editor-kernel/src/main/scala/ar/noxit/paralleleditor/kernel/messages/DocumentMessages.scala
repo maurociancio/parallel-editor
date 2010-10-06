@@ -2,8 +2,13 @@ package ar.noxit.paralleleditor.kernel.messages
 
 import ar.noxit.paralleleditor.kernel.{EditOperation, Session}
 
-case class ProcessOperation(who: Session, operation: EditOperation)
-case class SilentUnsubscribe(session: Session)
-case class Subscribe(who: Session)
+/**
+ * Mensajes que se envian entre el actor del documento y el kernel.
+ */
+
+case class ProcessOperation(val who: Session, val operation: EditOperation)
+
 case class SubscriberCount
-case class Unsubscribe(who: Session)
+case class Subscribe(val who: Session)
+case class Unsubscribe(val who: Session)
+case class SilentUnsubscribe(val session: Session)

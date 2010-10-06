@@ -15,6 +15,7 @@ class BasicKernel extends Kernel with Loggable {
         val newSession = new BasicSession(username, this)
         sessions = newSession :: sessions
 
+        trace("new session")
         newSession
     }
 

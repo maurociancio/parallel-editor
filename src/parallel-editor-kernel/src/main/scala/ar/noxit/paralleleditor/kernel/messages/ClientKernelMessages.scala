@@ -1,7 +1,10 @@
 package ar.noxit.paralleleditor.kernel.messages
 
-import scala.actors.Actor
 import ar.noxit.paralleleditor.kernel.{DocumentSession, Session}
+
+/**
+ * Mensajes entre el actor Kernel y el actor del proxy del Cliente remoto
+ */
 
 case class LoginRequest(val username: String)
 
@@ -11,9 +14,14 @@ case class LoginResponse(val session: Session) {
 }
 
 case class NewDocumentRequest(val session: Session, val title: String)
-case class NewDocumentResponse(val docSession: DocumentSession)
+
+/**
+ * Generado cuando la suscripción a un documento fue exitosa.
+ * Puede ser enviado tanto si es para un nuevo documento como para uno existente
+ */
+case class SubscriptionResponse(val docSession: DocumentSession, val initialContent: String)
 
 case class DocumentListRequest(val session: Session)
 case class DocumentListResponse(val documents: List[String])
 
-case class SubscribeToDocument(val session: Session, val title: String)
+case class SubscribeToDocumentRequest(val session: Session, val title: String)

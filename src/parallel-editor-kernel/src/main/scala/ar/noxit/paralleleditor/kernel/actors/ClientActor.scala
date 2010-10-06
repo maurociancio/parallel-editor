@@ -7,9 +7,9 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{EditOperation, Session, DocumentSession}
 import ar.noxit.paralleleditor.kernel.operations._
-import ar.noxit.paralleleditor.kernel.remote.{TerminateActor, NetworkActors, Client}
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
 
-class ClientActor(private val kernel: Actor, private val client: Client) extends Actor with Loggable {
+class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
     private val timeout = 5000
 
@@ -39,7 +39,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         installCallback()
 
         // TODO
-        kernel ! SubscribeToDocument(session, "new_document")
+        kernel ! SubscribeToDocumentRequest(session, "new_document")
 
         processMessages()
     }
@@ -53,14 +53,14 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     kernel ! NewDocumentRequest(session, title)
                 }
 
-                case NewDocumentResponse(docSession) => {
+                case SubscriptionResponse(docSession, initialContent) => {
                     trace("Received Document Session")
 
                     docSessions = docSession :: docSessions
-                    gateway ! RemoteNewDocumentOkResponse() // MAL
+                    gateway ! RemoteDocumentSubscriptionResponse(initialContent)
                 }
 
-                case RemoteDocumentList => {
+                case RemoteDocumentListRequest() => {
                     trace("Document List Requested")
 
                     kernel ! DocumentListRequest(session)
@@ -72,13 +72,13 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                     gateway ! RemoteDocumentListResponse(docList)
                 }
 
-                case DeleteText(startPos, count) => {
+                case RemoteDeleteText(startPos, count) => {
                     trace("delete text received")
 
                     docSessions.foreach(session => session applyChange (new DeleteTextOperation(startPos, count)))
                 }
 
-                case AddText(text, startPos) => {
+                case RemoteAddText(text, startPos) => {
                     trace("addtext text received")
                     docSessions.foreach(session => session applyChange (new AddTextOperation(text, startPos)))
                 }
@@ -89,9 +89,9 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
 
                     e match {
                         case o: AddTextOperation =>
-                            gateway ! AddText(o.text, o.startPos)
+                            gateway ! RemoteAddText(o.text, o.startPos)
                         case o: DeleteTextOperation =>
-                            gateway ! DeleteText(o.startPos, o.size)
+                            gateway ! RemoteDeleteText(o.startPos, o.size)
                     }
                 }
 
@@ -120,7 +120,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                 trace("network actors received")
                 (gateway, listener)
             }
-            case TIMEOUT => doExit
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -128,11 +128,11 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         trace("Waiting for username")
 
         receiveWithin(timeout) {
-            case RemoteLogin(username) => {
+            case RemoteLoginRequest(username) => {
                 trace("Username received=[%s]", username)
                 username
             }
-            case TIMEOUT => doExit
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -152,7 +152,7 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
                 trace("Session received")
                 session
             }
-            case TIMEOUT => doExit
+            case TIMEOUT => doTimeout
         }
     }
 
@@ -166,8 +166,13 @@ class ClientActor(private val kernel: Actor, private val client: Client) extends
         session.installOnUpdateCallback(new ActorCallback(this))
     }
 
+    private def doTimeout = {
+        trace("timeout")
+        doExit
+    }
+
     private def doExit = {
-        warn("Timeout waiting for a message")
+        warn("Client actor exiting")
 
         if (gateway != null)
             gateway ! TerminateActor()
