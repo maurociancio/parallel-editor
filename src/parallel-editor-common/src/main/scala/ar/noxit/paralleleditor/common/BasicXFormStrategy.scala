@@ -17,7 +17,8 @@ class BasicXFormStrategy extends XFormStrategy {
                     (new AddTextOperation(c.text, c.startPos + s.text.length), s)
             }
             case (c: DeleteTextOperation, s: AddTextOperation) => {
-                (null, null)
+                val res = xform(s, c)
+                (res._2, res._1)
             }
             case (c: DeleteTextOperation, s: DeleteTextOperation) => {
                 val intersection = getRangeFor(c) intersect getRangeFor(s)

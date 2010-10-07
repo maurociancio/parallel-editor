@@ -177,6 +177,68 @@ class XFormTest extends AssertionsForJUnit {
         checkTransform(c, ctext, s, stext, "abghola")
     }
 
+    // delete add
+
+    @Test
+    def testAddTextDeleteTextDisjointInverse {
+        val (ctext, stext) = docFromText("abcdef")
+
+        val c = new DeleteTextOperation(startPos = 3, size = 2)
+        val s = new AddTextOperation(startPos = 1, text = "hola")
+
+        checkTransform(c, ctext, s, stext, "aholabcf")
+    }
+
+    @Test
+    def testAddTextDeleteTextDisjointInverse2 {
+        val (ctext, stext) = docFromText("abcdef")
+
+        val c = new DeleteTextOperation(startPos = 1, size = 2)
+        val s = new AddTextOperation(startPos = 5, text = "hola")
+
+        checkTransform(c, ctext, s, stext, "adeholaf")
+    }
+
+    @Test
+    def testAddTextDeleteTextInverse {
+        val (ctext, stext) = docFromText("abcdefg")
+
+        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new AddTextOperation(startPos = 4, text = "hola")
+
+        checkTransform(c, ctext, s, stext, "abholag")
+    }
+
+    @Test
+    def testAddTextDeleteTextInverse2 {
+        val (ctext, stext) = docFromText("abcdefg")
+
+        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new AddTextOperation(startPos = 5, text = "hola")
+
+        checkTransform(c, ctext, s, stext, "abholag")
+    }
+
+    @Test
+    def testAddTextDeleteTextInverse3 {
+        val (ctext, stext) = docFromText("abcdefg")
+
+        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new AddTextOperation(startPos = 6, text = "hola")
+
+        checkTransform(c, ctext, s, stext, "abholag")
+    }
+
+    @Test
+    def testAddTextDeleteTextInverse4 {
+        val (ctext, stext) = docFromText("abcdefg")
+
+        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new AddTextOperation(startPos = 7, text = "hola")
+
+        checkTransform(c, ctext, s, stext, "abghola")
+    }
+
     def checkTransform(c: EditOperation, ctext: DocumentData, s: EditOperation, stext: DocumentData, expected: String) {
         c.executeOn(ctext)
         s.executeOn(stext)
