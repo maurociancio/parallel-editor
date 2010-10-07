@@ -2,10 +2,13 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
+import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 
 class BasicDocumentActor(documentFactory: DocumentFactory) extends DocumentActor with Loggable {
     val document = documentFactory.newBasicDocument(this)
     val title = document.title
+    // TODO inyectar
+    val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
     def act = {
         var exit = false

@@ -36,7 +36,6 @@ class DocumentArea extends SplitPane with ConcurrentDocument {
         debugConsole.caret.position = debugConsole.text.size
     }
 
-
     def processOperation(o: EditOperation) = {
         doInGuard({
             val docData = new DocumentData{
