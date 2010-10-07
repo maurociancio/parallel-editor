@@ -24,6 +24,11 @@ case class RemoteAddText(val text: String, val startPos: Int) extends RemoteOper
 case class RemoteDeleteText(val startPos: Int, val size: Int) extends RemoteOperation
 
 /**
+ * Composite operation
+ */
+case class CompositeRemoteOperation(val ops: RemoteOperation*) extends RemoteOperation
+
+/**
  * Pide un nuevo documento
  */
 case class RemoteNewDocumentRequest(val title: String) extends BaseRemoteMessage
