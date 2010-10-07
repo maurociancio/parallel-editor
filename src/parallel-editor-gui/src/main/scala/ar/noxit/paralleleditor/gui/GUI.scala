@@ -7,6 +7,7 @@ import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages.{RemoteDocumentListRequest, RemoteAddText, RemoteDeleteText}
+import ar.noxit.paralleleditor.common.operation.EditOperation
 
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
@@ -76,10 +77,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
 // TODO cambiar nombre
 class ConcurrentDocumentAdapter(private val textArea: ConcurrentDocument, private val menu: HomeMenuBar) extends Document {
-
-    def addText(pos: Int, text: String) = textArea.addText(pos, text)
-
-    def removeText(pos: Int, count: Int) = textArea.removeText(pos, count)
+    def processOperation(o: EditOperation) = textArea.processOperation(o)
 
     def initialContent(content: String) = textArea.initialContent(content)
 

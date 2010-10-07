@@ -1,6 +1,7 @@
 package ar.noxit.paralleleditor.gui
 
 import scala.swing._
+import ar.noxit.paralleleditor.common.operation.{DocumentData, EditOperation}
 
 class DocumentArea extends SplitPane with ConcurrentDocument {
     val areaEdicion = new NotificationEditPane {
@@ -35,17 +36,14 @@ class DocumentArea extends SplitPane with ConcurrentDocument {
         debugConsole.caret.position = debugConsole.text.size
     }
 
-    override def removeText(pos: Int, count: Int) = {
-        doInGuard({
-            val text = areaEdicion.text
-            areaEdicion.text = text.substring(0, pos) + text.substring(pos + count)
-        })
-    }
 
-    override def addText(pos: Int, text: String) = {
+    def processOperation(o: EditOperation) = {
         doInGuard({
-            val original = areaEdicion.text
-            areaEdicion.text = original.substring(0, pos) + text + original.substring(pos)
+            val docData = new DocumentData{
+                var data = areaEdicion.text
+            }
+            o.executeOn(docData)
+            areaEdicion.text = docData.data
         })
     }
 

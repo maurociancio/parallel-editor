@@ -5,11 +5,11 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.remote.TerminateActor
 import actors.{TIMEOUT, Actor}
+import ar.noxit.paralleleditor.common.operation.EditOperation
+import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
 
 trait ConcurrentDocument {
-    def addText(pos: Int, text: String)
-
-    def removeText(pos: Int, count: Int)
+    def processOperation(o: EditOperation)
 
     def initialContent(content: String)
 }
@@ -31,6 +31,8 @@ class GuiActorFactory(private val doc: Document) extends LocalClientActorFactory
 class GuiActor(private val doc: Document) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
+    // TODO INYECTAR
+    val opConverter = new DefaultRemoteOperationConverter
 
     override def act = {
         trace("Waiting for remote kernel actor registration")
@@ -62,15 +64,7 @@ class GuiActor(private val doc: Document) extends Actor with Loggable {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else
-                        o match {
-                            case addText: RemoteAddText => {
-                                doc.addText(addText.startPos, addText.text)
-                            }
-                            case deleteText: RemoteDeleteText => {
-                                doc.removeText(deleteText.startPos, deleteText.size)
-                            }
-                            case _ => warn("unkown remote operation")
-                        }
+                        doc.processOperation(opConverter.convert(o))
                 }
 
                 case RemoteLoginRefusedResponse(reason) => {
