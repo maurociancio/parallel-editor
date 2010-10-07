@@ -88,12 +88,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 case e: EditOperation => {
                     trace("operation received from document")
 
-                    e match {
-                        case o: AddTextOperation =>
-                            gateway ! RemoteAddText(o.text, o.startPos)
-                        case o: DeleteTextOperation =>
-                            gateway ! RemoteDeleteText(o.startPos, o.size)
-                    }
+                    gateway ! opConverter.convert(e)
                 }
 
                 case TerminateActor() => {
