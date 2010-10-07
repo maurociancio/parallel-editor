@@ -9,6 +9,7 @@ import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
 import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.operation.{AddTextOperation, DeleteTextOperation}
+import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -17,6 +18,10 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private var listener: Actor = _
     private var gateway: Actor = _
     private var session: Session = _
+
+    // TODO inyectar
+    private val opConverter = new DefaultMessageConverter
+    private val msgConverter = new DefaultRemoteOperationConverter
 
     override def act = {
         trace("Starting")
@@ -73,15 +78,10 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     gateway ! RemoteDocumentListResponse(docList)
                 }
 
-                case RemoteDeleteText(startPos, count) => {
-                    trace("delete text received")
-
-                    docSessions.foreach(session => session applyChange (new DeleteTextOperation(startPos, count)))
-                }
-
-                case RemoteAddText(text, startPos) => {
-                    trace("addtext text received")
-                    docSessions.foreach(session => session applyChange (new AddTextOperation(text, startPos)))
+                case r: RemoteOperation => {
+                    trace("remove operation received")
+                    val op = msgConverter.convert(r)
+                    docSessions.foreach{session => session applyChange op}
                 }
 
                 // estos mensajes vienen de los documentos y se deben propagar al cliente
