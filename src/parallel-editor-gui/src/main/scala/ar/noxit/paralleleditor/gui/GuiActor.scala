@@ -9,8 +9,6 @@ import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
 
 trait ConcurrentDocument {
-    def initialContent(content: String)
-
     def processOperation(o: EditOperation)
 }
 
@@ -22,6 +20,8 @@ trait Documents {
     def byName(title: String): Option[ConcurrentDocument]
 
     def changeDocList(l: List[String])
+
+    def createDocument(title: String, content: String)
 }
 
 class GuiActorFactory(private val doc: Documents) extends LocalClientActorFactory {
@@ -77,9 +77,9 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     trace("login accepted from kernel.")
                 }
 
-                case (RemoteDocumentSubscriptionResponse(initialContent)) => {
+                case RemoteDocumentSubscriptionResponse(initialContent) => {
                     trace("RemoteDocumentSubscriptionResponse received")
-                    doc.byName("new_document").foreach {doc => doc.initialContent(initialContent)}
+                    doc.createDocument("new_document", initialContent)
                 }
 
                 case e: RemoteDocumentListRequest => {

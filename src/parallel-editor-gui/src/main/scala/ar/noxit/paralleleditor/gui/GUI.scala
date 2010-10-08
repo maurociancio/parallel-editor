@@ -8,11 +8,24 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages.{RemoteDocumentListRequest, RemoteAddText, RemoteDeleteText}
 
-class DocumentsAdapter(private val aDoc: ConcurrentDocument, private val menu: HomeMenuBar) extends Documents {
+class DocumentsAdapter(private val tabs: TabbedPane,
+                       private val menu: HomeMenuBar,
+                       private val gui: Reactor) extends Documents {
     override def changeDocList(l: List[String]) = menu changeDocList l
 
-    override def byName(title: String) = if (title == "new_document") Some(aDoc) else None
+    override def byName(title: String) = {
+        val page = tabs.pages.find {page => page.title == title}
+        page.map {page => page.asInstanceOf[DocumentPage].docArea}
+    }
+
+    def createDocument(title: String, content: String) {
+        val doc = new DocumentArea(content)
+        gui.listenTo(doc)
+        tabs.pages += new DocumentPage(title, doc)
+    }
 }
+
+class DocumentPage(private val tabTitle: String, val docArea: DocumentArea) extends TabbedPane.Page(null, tabTitle, docArea, null)
 
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
@@ -24,10 +37,7 @@ object GUI extends SimpleSwingApplication with Loggable {
         menuBar = homeMenuBar
 
         val connPanel = new ConnectionPanel
-        val editArea = new DocumentArea
-        val tabs = new TabbedPane {
-            pages += new TabbedPane.Page("Doc", editArea)
-        }
+        val tabs = new TabbedPane
 
         val panelGeneral = new BorderPanel()
 
@@ -37,16 +47,17 @@ object GUI extends SimpleSwingApplication with Loggable {
         contents = panelGeneral
 
         listenTo(connPanel)
-        listenTo(editArea)
         listenTo(homeMenuBar)
+
+        val documents = new DocumentsAdapter(tabs, homeMenuBar, this)
 
         reactions += {
             case ConnectionRequest(host, port) => {
                 trace("Connecting to %s %s", host, port)
 
-                val socket = new Socket(host, port.intValue)
                 connected = true
-                val factory = new GuiActorFactory(new DocumentsAdapter(editArea, homeMenuBar))
+                val socket = new Socket(host, port.intValue)
+                val factory = new GuiActorFactory(documents)
                 new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
                 actor = factory.guiActor
