@@ -9,26 +9,28 @@ import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
 
 trait ConcurrentDocument {
-    def processOperation(o: EditOperation)
-
     def initialContent(content: String)
+
+    def processOperation(o: EditOperation)
 }
 
-// TODO cambiar nombre
-trait DocList {
+trait DocumentList {
     def changeDocList(l: List[String])
 }
 
-// TODO cambiar nombre
-trait Document extends ConcurrentDocument with DocList
+trait Documents {
+    def byName(title: String): Option[ConcurrentDocument]
 
-class GuiActorFactory(private val doc: Document) extends LocalClientActorFactory {
+    def changeDocList(l: List[String])
+}
+
+class GuiActorFactory(private val doc: Documents) extends LocalClientActorFactory {
     val guiActor = new GuiActor(doc)
 
     override def newLocalClientActor = guiActor
 }
 
-class GuiActor(private val doc: Document) extends Actor with Loggable {
+class GuiActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
     // TODO INYECTAR
@@ -64,7 +66,7 @@ class GuiActor(private val doc: Document) extends Actor with Loggable {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else
-                        doc.processOperation(opConverter.convert(o))
+                        doc.byName("new_document").foreach {doc => doc processOperation (opConverter convert o)}
                 }
 
                 case RemoteLoginRefusedResponse(reason) => {
@@ -77,7 +79,7 @@ class GuiActor(private val doc: Document) extends Actor with Loggable {
 
                 case (RemoteDocumentSubscriptionResponse(initialContent)) => {
                     trace("RemoteDocumentSubscriptionResponse received")
-                    doc.initialContent(initialContent)
+                    doc.byName("new_document").foreach {doc => doc.initialContent(initialContent)}
                 }
 
                 case e: RemoteDocumentListRequest => {

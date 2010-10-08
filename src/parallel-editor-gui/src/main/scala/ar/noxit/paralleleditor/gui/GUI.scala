@@ -7,7 +7,12 @@ import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages.{RemoteDocumentListRequest, RemoteAddText, RemoteDeleteText}
-import ar.noxit.paralleleditor.common.operation.EditOperation
+
+class DocumentsAdapter(private val aDoc: ConcurrentDocument, private val menu: HomeMenuBar) extends Documents {
+    override def changeDocList(l: List[String]) = menu changeDocList l
+
+    override def byName(title: String) = if (title == "new_document") Some(aDoc) else None
+}
 
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
@@ -20,11 +25,14 @@ object GUI extends SimpleSwingApplication with Loggable {
 
         val connPanel = new ConnectionPanel
         val editArea = new DocumentArea
+        val tabs = new TabbedPane {
+            pages += new TabbedPane.Page("Doc", editArea)
+        }
 
         val panelGeneral = new BorderPanel()
 
         panelGeneral.layout(connPanel) = BorderPanel.Position.South
-        panelGeneral.layout(editArea) = BorderPanel.Position.Center
+        panelGeneral.layout(tabs) = BorderPanel.Position.Center
 
         contents = panelGeneral
 
@@ -38,7 +46,7 @@ object GUI extends SimpleSwingApplication with Loggable {
 
                 val socket = new Socket(host, port.intValue)
                 connected = true
-                val factory = new GuiActorFactory(new ConcurrentDocumentAdapter(editArea, homeMenuBar))
+                val factory = new GuiActorFactory(new DocumentsAdapter(editArea, homeMenuBar))
                 new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
                 actor = factory.guiActor
@@ -73,13 +81,4 @@ object GUI extends SimpleSwingApplication with Loggable {
         if (connected)
             actor ! Logout()
     }
-}
-
-// TODO cambiar nombre
-class ConcurrentDocumentAdapter(private val textArea: ConcurrentDocument, private val menu: HomeMenuBar) extends Document {
-    def processOperation(o: EditOperation) = textArea.processOperation(o)
-
-    def initialContent(content: String) = textArea.initialContent(content)
-
-    def changeDocList(l: scala.List[String]) = menu.changeDocList(l)
 }
