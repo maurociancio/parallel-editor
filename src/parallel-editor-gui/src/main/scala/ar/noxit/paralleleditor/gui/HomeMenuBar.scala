@@ -29,21 +29,23 @@ class HomeMenuBar extends MenuBar with Loggable {
 
     listenTo(docList)
     reactions += {
-        case c: ButtonClicked if c.source == docList => {
-            if (docListFrame == null) {
-                trace("frame created")
+        case c: ButtonClicked if c.source == docList && docListFrame == null => {
+            trace("frame created")
 
-                docListFrame = new DocumentListFrame
-                listenTo(docListFrame)
+            docListFrame = new DocumentListFrame
+            listenTo(docListFrame)
 
-                publish(DocumentListRequest())
-            }
+            publish(DocumentListRequest())
         }
         case w: WindowClosed if w.source == docListFrame => {
             trace("frame deleted")
 
             deafTo(docListFrame)
             docListFrame = null
+        }
+        case WrappedEvent(e: SubscribeToDocument) => {
+            trace("subscribe to document")
+            publish(e)
         }
     }
 
@@ -52,8 +54,9 @@ class HomeMenuBar extends MenuBar with Loggable {
     this.contents += verMenu
 
     def changeDocList(l: List[String]) {
-        trace("changeDocList %s",l)
-            docListFrame.changeDocList(l)
+        trace("changeDocList %s", l)
+
+        docListFrame.changeDocList(l)
     }
 }
 
@@ -61,18 +64,33 @@ class DocumentListFrame extends Frame with Loggable {
     title = "Listado de Documentos"
     visible = true
     size = new Dimension(320, 400)
-    val lv = new ListView(List[String]())
-    contents = new ScrollPane(lv)
+
+    val docs = new ListView(List[String]())
+    val scroll = new ScrollPane(docs)
+
+    val border = new BorderPanel
+    border.layout(scroll) = BorderPanel.Position.Center
+
+    val editar = new Button("editar")
+    border.layout(editar) = BorderPanel.Position.South
+
+    contents = border
+
+    listenTo(editar)
 
     reactions += {
         case w: WindowDeactivated => {
             this.dispose
         }
+        case ButtonClicked(source) if source == editar && docs.selection.indices.size >= 1 => {
+            val firstSelected = docs.selection.items.head
+            publish(WrappedEvent(SubscribeToDocument(firstSelected)))
+        }
     }
 
     def changeDocList(l: List[String]) {
         trace("with Loggable")
-        lv.listData = l
-        lv.repaint
+        docs.listData = l
+        docs.repaint
     }
 }

@@ -6,7 +6,7 @@ import java.net.Socket
 import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
-import ar.noxit.paralleleditor.common.messages.{RemoteDocumentListRequest, RemoteAddText, RemoteDeleteText}
+import ar.noxit.paralleleditor.common.messages._
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
@@ -15,7 +15,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
 
     override def byName(title: String) = {
         val page = tabs.pages.find {page => page.title == title}
-        page.map {page => page.asInstanceOf[DocumentPage].docArea}
+        page.map {p => p.asInstanceOf[DocumentPage].docArea}
     }
 
     def createDocument(title: String, content: String) {
@@ -81,6 +81,11 @@ object GUI extends SimpleSwingApplication with Loggable {
             case DocumentListRequest() => {
                 if (connected) {
                     actor ! RemoteDocumentListRequest()
+                }
+            }
+            case SubscribeToDocument(title) => {
+                if (connected) {
+                    actor ! RemoteSubscribeRequest(title)
                 }
             }
         }

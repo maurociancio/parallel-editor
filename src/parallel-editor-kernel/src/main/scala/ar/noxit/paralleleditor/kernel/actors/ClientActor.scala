@@ -8,7 +8,6 @@ import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import ar.noxit.paralleleditor.common.operation.{AddTextOperation, DeleteTextOperation}
 import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
@@ -45,7 +44,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
         installCallback()
 
         // TODO
-        kernel ! SubscribeToDocumentRequest(session, "new_document")
+        //        kernel ! SubscribeToDocumentRequest(session, "new_document")
 
         processMessages()
     }
@@ -78,10 +77,17 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     gateway ! RemoteDocumentListResponse(docList)
                 }
 
+                case RemoteSubscribeRequest(title) => {
+                    trace("RemoteSubscribeRequest")
+                    // FIX
+                    kernel ! SubscribeToDocumentRequest(session, title)
+                }
+
                 case r: RemoteOperation => {
                     trace("remove operation received")
                     val op = msgConverter.convert(r)
-                    docSessions.foreach{session => session applyChange op}
+                    // FIX
+                    docSessions.foreach {session => session applyChange op}
                 }
 
                 // estos mensajes vienen de los documentos y se deben propagar al cliente

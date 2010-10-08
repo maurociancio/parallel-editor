@@ -34,6 +34,11 @@ case class CompositeRemoteOperation(val ops: RemoteOperation*) extends RemoteOpe
 case class RemoteNewDocumentRequest(val title: String) extends BaseRemoteMessage
 
 /**
+ * Suscribirse a un doc existe
+ */
+case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage
+
+/**
  * Suscripcion aceptada
  */
 case class RemoteDocumentSubscriptionResponse(val initialContent: String) extends BaseRemoteMessage
@@ -47,6 +52,7 @@ case class RemoteDocumentListRequest extends BaseRemoteMessage
  * Respuesta de listado de documentos
  */
 case class RemoteDocumentListResponse(val docList: List[String]) extends BaseRemoteMessage
+
 
 /**
  * Pide login

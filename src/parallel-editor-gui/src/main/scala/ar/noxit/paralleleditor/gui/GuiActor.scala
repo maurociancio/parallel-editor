@@ -68,20 +68,16 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     else
                         doc.byName("new_document").foreach {doc => doc processOperation (opConverter convert o)}
                 }
-
                 case RemoteLoginRefusedResponse(reason) => {
                     trace("login refused from kernel. Reason: %s", reason)
                 }
-
                 case RemoteLoginOkResponse() => {
                     trace("login accepted from kernel.")
                 }
-
                 case RemoteDocumentSubscriptionResponse(initialContent) => {
                     trace("RemoteDocumentSubscriptionResponse received")
                     doc.createDocument("new_document", initialContent)
                 }
-
                 case e: RemoteDocumentListRequest => {
                     trace("RemoteDocumentListRequest")
                     remoteKernelActor ! ToKernel(e)
@@ -90,7 +86,10 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     trace("RemoteDocumentListResponse %s", l)
                     doc.changeDocList(l)
                 }
-
+                case s: RemoteSubscribeRequest => {
+                    trace("RemoteSubscribeRequest")
+                    remoteKernelActor ! ToKernel(s)
+                }
                 case any: Any => {
                     warn("Uknown message received [%s]", any)
                 }
