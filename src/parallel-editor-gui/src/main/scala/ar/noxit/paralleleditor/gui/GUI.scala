@@ -15,7 +15,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
 
     override def byName(title: String) = {
         val page = tabs.pages.find {page => page.title == title}
-        page.map {p => p.asInstanceOf[DocumentPage].docArea}
+        page.map {p => p.content.asInstanceOf[DocumentArea]}
     }
 
     def createDocument(title: String, content: String) {
