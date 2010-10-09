@@ -11,22 +11,22 @@ abstract case class BaseRemoteMessage
 /**
  * Clase base para las operaciones sobre documentos
  */
-abstract case class RemoteOperation extends BaseRemoteMessage
+abstract case class RemoteOperation(val docTitle: String) extends BaseRemoteMessage
 
 /**
  * Agregar texto
  */
-case class RemoteAddText(val text: String, val startPos: Int) extends RemoteOperation
+case class RemoteAddText(override val docTitle: String, val text: String, val startPos: Int) extends RemoteOperation(docTitle)
 
 /**
  * Borrar texto
  */
-case class RemoteDeleteText(val startPos: Int, val size: Int) extends RemoteOperation
+case class RemoteDeleteText(override val docTitle: String, val startPos: Int, val size: Int) extends RemoteOperation(docTitle)
 
 /**
  * Composite operation
  */
-case class CompositeRemoteOperation(val ops: RemoteOperation*) extends RemoteOperation
+case class CompositeRemoteOperation(override val docTitle: String, val ops: RemoteOperation*) extends RemoteOperation(docTitle)
 
 /**
  * Pide un nuevo documento

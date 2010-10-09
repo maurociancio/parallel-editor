@@ -3,8 +3,8 @@ package ar.noxit.paralleleditor.gui
 import scala.swing._
 import ar.noxit.paralleleditor.common.operation.{DocumentData, EditOperation}
 
-class DocumentArea(private val initialContent: String) extends SplitPane with ConcurrentDocument {
-    val areaEdicion = new NotificationEditPane {
+class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
+    val areaEdicion = new NotificationEditPane(docTitle) {
         text = initialContent
     }
 

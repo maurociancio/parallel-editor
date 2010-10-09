@@ -14,9 +14,9 @@ case class DocumentListRequest extends Event
  * Eventos publicados por
  */
 
-abstract class EditionEvent extends Event
+abstract class EditionEvent(val docTitle: String) extends Event
 case class WrappedEvent(val event: Event) extends Event
-case class InsertionEvent(val pos: Int, val text: String) extends EditionEvent
-case class DeletionEvent(val pos: Int, val count: Int) extends EditionEvent
+case class InsertionEvent(override val docTitle: String, val pos: Int, val text: String) extends EditionEvent(docTitle)
+case class DeletionEvent(override val docTitle: String, val pos: Int, val count: Int) extends EditionEvent(docTitle)
 
 case class SubscribeToDocument(val title: String) extends Event

@@ -19,7 +19,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
     }
 
     def createDocument(title: String, content: String) {
-        val doc = new DocumentArea(content)
+        val doc = new DocumentArea(title, content)
         gui.listenTo(doc)
         tabs.pages += new DocumentPage(title, doc)
     }
@@ -68,15 +68,15 @@ object GUI extends SimpleSwingApplication with Loggable {
                 actor ! Logout()
             }
 
-            case InsertionEvent(pos, text) => {
+            case InsertionEvent(title, pos, text) => {
                 trace("Insertion required " + text + pos)
                 if (connected)
-                    actor ! RemoteAddText(text, pos)
+                    actor ! RemoteAddText(title, text, pos)
             }
-            case DeletionEvent(pos, count) => {
+            case DeletionEvent(title, pos, count) => {
                 trace("Deletion required" + pos + "," + count)
                 if (connected)
-                    actor ! RemoteDeleteText(pos, count)
+                    actor ! RemoteDeleteText(title, pos, count)
             }
             case DocumentListRequest() => {
                 if (connected) {
