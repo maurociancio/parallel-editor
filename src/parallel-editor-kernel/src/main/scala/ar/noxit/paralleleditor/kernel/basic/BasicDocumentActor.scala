@@ -4,16 +4,16 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 
-class BasicDocumentActor(documentFactory: DocumentFactory) extends DocumentActor with Loggable {
-    val document = documentFactory.newBasicDocument(this)
-    val title = document.title
+class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with Loggable {
     // TODO inyectar
     val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
+    // TODO inyectar
+    private val timeout = 5000
+    val title = document.title
 
     def act = {
-        var exit = false
-
-        loopWhile(!exit) {
+        // TODO hacer que termine
+        loop {
             trace("Choosing")
             react {
                 case SilentUnsubscribe(session) => {

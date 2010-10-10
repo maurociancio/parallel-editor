@@ -4,11 +4,10 @@ import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
 import messages.PublishOperation
 import scala.List
-import scala.actors.Actor
 import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.operation.DocumentData
 
-class BasicDocument(val title: String, var data: String, val docActor: Actor) extends Document with DocumentData {
+class BasicDocument(val title: String, var data: String, private val docSessionFactory: DocumentSessionFactory) extends Document with DocumentData {
     private var subscribers: List[Session] = List()
 
     override def subscribe(session: Session) = {
@@ -19,8 +18,7 @@ class BasicDocument(val title: String, var data: String, val docActor: Actor) ex
             throw new DocumentSubscriptionAlreadyExistsException("the session is already suscribed to this document")
 
         subscribers = session :: subscribers
-        // TODO agregar factory acá para esconder el actor
-        new BasicDocumentSession(title, session, docActor)
+        docSessionFactory.newDocumentSession(this, session)
     }
 
     def unsubscribe(session: Session) = {

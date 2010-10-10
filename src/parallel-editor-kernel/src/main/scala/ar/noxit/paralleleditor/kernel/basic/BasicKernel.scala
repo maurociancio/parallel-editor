@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.kernel.basic
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
 import ar.noxit.paralleleditor.common.logger.Loggable
+import docsession.BasicDocumentSessionFactory
 import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
 
@@ -34,11 +35,17 @@ class BasicKernel extends Kernel with Loggable {
     }
 
     protected def newDocumentActor(title: String, initialContent: String): DocumentActor = {
-        // create new document factory
-        val docFactory = new BasicDocumentFactory(title, initialContent)
+        // session factory
+        val docSessionFactory = new BasicDocumentSessionFactory
+
+        // document
+        val doc = new BasicDocument(title, initialContent, docSessionFactory)
 
         // create a document actor
-        val actor = new BasicDocumentActor(docFactory)
+        val actor = new BasicDocumentActor(doc)
+
+        // set the document actor to the session factory
+        docSessionFactory.docActor = actor
 
         // start the actor
         actor.start
