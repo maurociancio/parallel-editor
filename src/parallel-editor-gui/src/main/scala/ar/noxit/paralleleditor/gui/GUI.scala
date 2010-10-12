@@ -7,6 +7,7 @@ import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages._
+import swing.TabbedPane.Page
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
@@ -21,11 +22,9 @@ class DocumentsAdapter(private val tabs: TabbedPane,
     def createDocument(title: String, content: String) {
         val doc = new DocumentArea(title, content)
         gui.listenTo(doc)
-        tabs.pages += new DocumentPage(title, doc)
+        tabs.pages += new Page(title, doc)
     }
 }
-
-class DocumentPage(private val tabTitle: String, val docArea: DocumentArea) extends TabbedPane.Page(null, tabTitle, docArea, null)
 
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
