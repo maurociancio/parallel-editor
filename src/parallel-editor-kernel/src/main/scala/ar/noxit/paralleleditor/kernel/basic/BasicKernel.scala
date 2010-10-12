@@ -81,15 +81,12 @@ class BasicKernel extends Kernel with Loggable {
     def documentByTitle(docTitle: String) = documents find {_.title == docTitle}
 
     def documentSubscriberCount(docTitle: String) = {
-        documentByTitle(docTitle) match {
-            case Some(doc) => {
-                trace("Sending Subscriber Count Request")
-                val future = doc !! (SubscriberCount(), {
-                    case count: Int => count
-                })
-                Some(future)
-            }
-            case _ => None
-        }
+        documentByTitle(docTitle).map(docActor => {
+            trace("Sending Subscriber Count Request")
+
+            docActor !! (SubscriberCount(), {
+                case count: Int => count
+            })
+        })
     }
 }
