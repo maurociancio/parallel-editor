@@ -4,13 +4,17 @@ import java.awt.Dimension
 import swing._
 import event.{WindowDeactivated, WindowClosed, ButtonClicked}
 import ar.noxit.paralleleditor.common.logger.Loggable
+import javax.swing.filechooser.FileNameExtensionFilter
+import io.Source
 
 class HomeMenuBar extends MenuBar with Loggable {
     val newDoc = new MenuItem("Nuevo")
+    val newDocFromFile = new MenuItem("Nuevo desde archivo")
     val closeCurrent = new MenuItem("Cerrar actual")
 
     val fileMenu = new Menu("Documento") {
         contents += newDoc
+        contents += newDocFromFile
         contents += closeCurrent
         //        contents += new MenuItem("Guardar")
         //        contents += new MenuItem("Guardar Como")
@@ -31,7 +35,7 @@ class HomeMenuBar extends MenuBar with Loggable {
 
     var docListFrame: DocumentListFrame = _
 
-    listenTo(docList, newDoc, closeCurrent)
+    listenTo(docList, newDoc, newDocFromFile, closeCurrent)
 
     reactions += {
         case c: ButtonClicked if c.source == docList && docListFrame == null => {
@@ -43,8 +47,22 @@ class HomeMenuBar extends MenuBar with Loggable {
             publish(DocumentListRequest())
         }
         case c: ButtonClicked if c.source == newDoc => {
-            val input = Dialog.showInput(message = "Ingrese el nombre del nuevo documento", initial = "Nuevo Documento")
-            input.foreach(newDoc => publish(NewDocumentRequest(newDoc)))
+            askAndPublishDocumentName {""}
+        }
+        case c: ButtonClicked if c.source == newDocFromFile => {
+            trace("clicked new doc from file")
+
+            val chooser = new FileChooser()
+            chooser.fileFilter = new FileNameExtensionFilter("Archivos de texto", "txt", "tex", "html", "htm")
+            chooser.showOpenDialog(this) match {
+                case FileChooser.Result.Approve => {
+                    val selectedFile = chooser.selectedFile
+                    askAndPublishDocumentName({
+                        Source.fromFile(selectedFile).getLines.mkString("\n")
+                    }, selectedFile.getName)
+                }
+                case _ => {}
+            }
         }
         case c: ButtonClicked if c.source == closeCurrent => {
             publish(CloseCurrentDocument())
@@ -69,6 +87,11 @@ class HomeMenuBar extends MenuBar with Loggable {
         trace("changeDocList %s", l)
 
         docListFrame.changeDocList(l)
+    }
+
+    def askAndPublishDocumentName(initialContent: => String = {""}, defaultName: String = "Nuevo Documento") = {
+        val input = Dialog.showInput(message = "Ingrese el nombre del nuevo documento", initial = defaultName)
+        input.foreach(newDoc => publish(NewDocumentRequest(newDoc, initialContent)))
     }
 }
 

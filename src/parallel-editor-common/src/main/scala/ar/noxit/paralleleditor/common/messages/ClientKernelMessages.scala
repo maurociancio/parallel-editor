@@ -31,7 +31,7 @@ case class CompositeRemoteOperation(override val docTitle: String, val ops: Remo
 /**
  * Pide un nuevo documento
  */
-case class RemoteNewDocumentRequest(val title: String) extends BaseRemoteMessage
+case class RemoteNewDocumentRequest(val title: String, val initialContent: String = "") extends BaseRemoteMessage
 
 /**
  * Suscribirse a un doc existe

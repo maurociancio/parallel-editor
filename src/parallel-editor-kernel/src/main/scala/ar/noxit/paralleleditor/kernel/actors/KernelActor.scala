@@ -37,10 +37,10 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                     kernel.subscribe(session, title)
                 }
 
-                case NewDocumentRequest(session, title) => {
+                case NewDocumentRequest(session, title, initialContent) => {
                     trace("New Document Requested [%s]", title)
 
-                    kernel.newDocument(session, title)
+                    kernel.newDocument(session, title, initialContent)
                 }
 
                 case msg: Any => {

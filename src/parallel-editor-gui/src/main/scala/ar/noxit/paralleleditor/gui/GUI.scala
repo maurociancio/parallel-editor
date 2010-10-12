@@ -94,9 +94,9 @@ object GUI extends SimpleSwingApplication with Loggable {
                     actor ! RemoteDocumentListRequest()
                 }
             }
-            case NewDocumentRequest(docTitle) => {
+            case NewDocumentRequest(docTitle, initialContent) => {
                 if (connected) {
-                    actor ! RemoteNewDocumentRequest(docTitle)
+                    actor ! RemoteNewDocumentRequest(docTitle, initialContent)
                 }
             }
             case SubscribeToDocument(title) => {

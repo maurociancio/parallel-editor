@@ -48,10 +48,10 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private def processMessages() {
         loop {
             react {
-                case RemoteNewDocumentRequest(title) => {
-                    trace("New Document Requested=[%s]", title)
+                case RemoteNewDocumentRequest(title, initialContent) => {
+                    trace("New Document Requested=[%s] content=[%s]", title, initialContent)
 
-                    kernel ! NewDocumentRequest(session, title)
+                    kernel ! NewDocumentRequest(session, title, initialContent)
                 }
 
                 case SubscriptionResponse(docSession, initialContent) => {

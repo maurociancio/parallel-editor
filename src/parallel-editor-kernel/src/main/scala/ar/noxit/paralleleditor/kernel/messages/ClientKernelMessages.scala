@@ -13,7 +13,7 @@ case class LoginResponse(val session: Session) {
         throw new IllegalArgumentException("session cannot be null")
 }
 
-case class NewDocumentRequest(val session: Session, val title: String)
+case class NewDocumentRequest(val session: Session, val title: String, val initialContent: String)
 
 /**
  * Generado cuando la suscripción a un documento fue exitosa.
