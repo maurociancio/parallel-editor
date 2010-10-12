@@ -68,6 +68,10 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     trace("RemoteNewDocumentRequest")
                     remoteKernelActor ! ToKernel(e)
                 }
+                case e: RemoteUnsubscribeRequest => {
+                    trace("RemoteUnsubscribeRequest")
+                    remoteKernelActor ! ToKernel(e)
+                }
 
                 case o: RemoteOperation => {
                     if (sender != remoteKernelActor)

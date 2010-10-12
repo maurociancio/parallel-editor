@@ -53,6 +53,10 @@ case class RemoteDocumentListRequest extends BaseRemoteMessage
  */
 case class RemoteDocumentListResponse(val docList: List[String]) extends BaseRemoteMessage
 
+/**
+ * Pide desuscriberse a un doc
+ */
+case class RemoteUnsubscribeRequest(val title: String) extends BaseRemoteMessage
 
 /**
  * Pide login

@@ -10,6 +10,7 @@ case class ConnectionRequest(val host: String, val port: Int) extends Event
 case class DisconnectionRequest extends Event
 case class DocumentListRequest extends Event
 case class NewDocumentRequest(val docTitle: String) extends Event
+case class CloseCurrentDocument() extends Event
 
 /**
  * Eventos publicados por el document area

@@ -25,3 +25,4 @@ case class DocumentListRequest(val session: Session)
 case class DocumentListResponse(val documents: List[String])
 
 case class SubscribeToDocumentRequest(val session: Session, val title: String)
+case class UnsubscribeToDocumentRequest(val session: Session, val title: String)

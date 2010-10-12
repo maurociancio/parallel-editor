@@ -7,8 +7,11 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 
 class HomeMenuBar extends MenuBar with Loggable {
     val newDoc = new MenuItem("Nuevo")
+    val closeCurrent = new MenuItem("Cerrar actual")
+
     val fileMenu = new Menu("Documento") {
         contents += newDoc
+        contents += closeCurrent
         //        contents += new MenuItem("Guardar")
         //        contents += new MenuItem("Guardar Como")
         //        contents += new MenuItem("Salir")
@@ -28,8 +31,8 @@ class HomeMenuBar extends MenuBar with Loggable {
 
     var docListFrame: DocumentListFrame = _
 
-    listenTo(docList)
-    listenTo(newDoc)
+    listenTo(docList, newDoc, closeCurrent)
+
     reactions += {
         case c: ButtonClicked if c.source == docList && docListFrame == null => {
             trace("frame created")
@@ -42,6 +45,9 @@ class HomeMenuBar extends MenuBar with Loggable {
         case c: ButtonClicked if c.source == newDoc => {
             val input = Dialog.showInput(message = "Ingrese el nombre del nuevo documento", initial = "Nuevo Documento")
             input.foreach(newDoc => publish(NewDocumentRequest(newDoc)))
+        }
+        case c: ButtonClicked if c.source == closeCurrent => {
+            publish(CloseCurrentDocument())
         }
         case w: WindowClosed if w.source == docListFrame => {
             trace("frame deleted")

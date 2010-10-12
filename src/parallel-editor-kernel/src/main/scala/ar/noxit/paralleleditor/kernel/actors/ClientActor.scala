@@ -75,8 +75,14 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
 
                 case RemoteSubscribeRequest(title) => {
                     trace("RemoteSubscribeRequest")
-                    // FIX
+
                     kernel ! SubscribeToDocumentRequest(session, title)
+                }
+                case RemoteUnsubscribeRequest(title) => {
+                    trace("RemoteUnsubscribeRequest")
+
+                    docSessions.find {s => s.title == title}.foreach {docSession => docSession.unsubscribe}
+                    docSessions = docSessions.filter {docSession => docSession.title != title}
                 }
 
                 case r: RemoteOperation => {

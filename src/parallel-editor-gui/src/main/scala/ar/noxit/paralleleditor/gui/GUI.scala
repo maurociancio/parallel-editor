@@ -22,6 +22,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
     def createDocument(title: String, content: String) {
         val doc = new DocumentArea(title, content)
         gui.listenTo(doc)
+
         tabs.pages += new Page(title, doc)
     }
 }
@@ -67,6 +68,15 @@ object GUI extends SimpleSwingApplication with Loggable {
                 if (connected)
                     actor ! Logout()
             }
+            case CloseCurrentDocument() => {
+                if (connected) {
+                    tabs.pages.headOption.map {page => page.title}.
+                            foreach {title => actor ! RemoteUnsubscribeRequest(title)}
+
+                    tabs.pages.indices.headOption.
+                            foreach {i => tabs.pages.remove(i)}
+                }
+            }
 
             case InsertionEvent(title, pos, text) => {
                 trace("Insertion required " + text + pos)
@@ -78,6 +88,7 @@ object GUI extends SimpleSwingApplication with Loggable {
                 if (connected)
                     actor ! RemoteDeleteText(title, pos, count)
             }
+
             case DocumentListRequest() => {
                 if (connected) {
                     actor ! RemoteDocumentListRequest()
