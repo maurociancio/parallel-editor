@@ -58,7 +58,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     trace("Received Document Session")
 
                     docSessions = docSession :: docSessions
-                    gateway ! RemoteDocumentSubscriptionResponse(initialContent)
+                    gateway ! RemoteDocumentSubscriptionResponse(docSession.title, initialContent)
                 }
 
                 case RemoteDocumentListRequest() => {

@@ -61,11 +61,12 @@ object GUI extends SimpleSwingApplication with Loggable {
                 new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
                 actor = factory.guiActor
-                actor ! Login(connPanel user)
+                actor ! RemoteLoginRequest(connPanel user)
             }
 
             case DisconnectionRequest() => {
-                actor ! Logout()
+                if (connected)
+                    actor ! Logout()
             }
 
             case InsertionEvent(title, pos, text) => {
@@ -81,6 +82,11 @@ object GUI extends SimpleSwingApplication with Loggable {
             case DocumentListRequest() => {
                 if (connected) {
                     actor ! RemoteDocumentListRequest()
+                }
+            }
+            case NewDocumentRequest(docTitle) => {
+                if (connected) {
+                    actor ! RemoteNewDocumentRequest(docTitle)
                 }
             }
             case SubscribeToDocument(title) => {

@@ -52,9 +52,44 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
             trace("Choosing")
 
             react {
-                case Login(username) => {
+                case r: RemoteLoginRequest => {
                     trace("Login request received")
-                    remoteKernelActor ! ToKernel(RemoteLoginRequest(username))
+                    remoteKernelActor ! ToKernel(r)
+                }
+                case s: RemoteSubscribeRequest => {
+                    trace("RemoteSubscribeRequest")
+                    remoteKernelActor ! ToKernel(s)
+                }
+                case e: RemoteDocumentListRequest => {
+                    trace("RemoteDocumentListRequest")
+                    remoteKernelActor ! ToKernel(e)
+                }
+                case e: RemoteNewDocumentRequest => {
+                    trace("RemoteNewDocumentRequest")
+                    remoteKernelActor ! ToKernel(e)
+                }
+
+                case o: RemoteOperation => {
+                    if (sender != remoteKernelActor)
+                        remoteKernelActor ! ToKernel(o)
+                    else
+                        doc.byName(o.docTitle).foreach {doc => doc processOperation (opConverter convert o)}
+                }
+
+                case RemoteDocumentSubscriptionResponse(docTitle, initialContent) => {
+                    trace("RemoteDocumentSubscriptionResponse received")
+                    doc.createDocument(docTitle, initialContent)
+                }
+                case RemoteDocumentListResponse(l) => {
+                    trace("RemoteDocumentListResponse %s", l)
+                    doc.changeDocList(l)
+                }
+
+                case RemoteLoginRefusedResponse(reason) => {
+                    trace("login refused from kernel. Reason: %s", reason)
+                }
+                case RemoteLoginOkResponse() => {
+                    trace("login accepted from kernel.")
                 }
 
                 case Logout() => {
@@ -62,34 +97,6 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     doExit
                 }
 
-                case o: RemoteOperation => {
-                    if (sender != remoteKernelActor)
-                        remoteKernelActor ! ToKernel(o)
-                    else
-                        doc.byName("new_document").foreach {doc => doc processOperation (opConverter convert o)}
-                }
-                case RemoteLoginRefusedResponse(reason) => {
-                    trace("login refused from kernel. Reason: %s", reason)
-                }
-                case RemoteLoginOkResponse() => {
-                    trace("login accepted from kernel.")
-                }
-                case RemoteDocumentSubscriptionResponse(initialContent) => {
-                    trace("RemoteDocumentSubscriptionResponse received")
-                    doc.createDocument("new_document", initialContent)
-                }
-                case e: RemoteDocumentListRequest => {
-                    trace("RemoteDocumentListRequest")
-                    remoteKernelActor ! ToKernel(e)
-                }
-                case RemoteDocumentListResponse(l) => {
-                    trace("RemoteDocumentListResponse %s", l)
-                    doc.changeDocList(l)
-                }
-                case s: RemoteSubscribeRequest => {
-                    trace("RemoteSubscribeRequest")
-                    remoteKernelActor ! ToKernel(s)
-                }
                 case any: Any => {
                     warn("Uknown message received [%s]", any)
                 }

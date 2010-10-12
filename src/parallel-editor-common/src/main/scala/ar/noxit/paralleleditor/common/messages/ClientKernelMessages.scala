@@ -41,7 +41,7 @@ case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage
 /**
  * Suscripcion aceptada
  */
-case class RemoteDocumentSubscriptionResponse(val initialContent: String) extends BaseRemoteMessage
+case class RemoteDocumentSubscriptionResponse(val docTitle: String, val initialContent: String) extends BaseRemoteMessage
 
 /**
  * Pide listado de documentos

@@ -26,6 +26,7 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
                 }
                 case Subscribe(who) => {
                     trace("Subscribe requested")
+                    // TODO catchear excepciones
                     val docSession = document subscribe who
                     val content = document.data
                     who notifyUpdate SubscriptionResponse(docSession, content)

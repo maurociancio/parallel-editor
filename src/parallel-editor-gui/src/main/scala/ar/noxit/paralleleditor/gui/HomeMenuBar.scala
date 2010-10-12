@@ -6,19 +6,20 @@ import event.{WindowDeactivated, WindowClosed, ButtonClicked}
 import ar.noxit.paralleleditor.common.logger.Loggable
 
 class HomeMenuBar extends MenuBar with Loggable {
-    val fileMenu = new Menu("Archivo") {
-        contents += new MenuItem("Abrir")
-        contents += new MenuItem("Guardar")
-        contents += new MenuItem("Guardar Como")
-        contents += new MenuItem("Salir")
+    val newDoc = new MenuItem("Nuevo")
+    val fileMenu = new Menu("Documento") {
+        contents += newDoc
+        //        contents += new MenuItem("Guardar")
+        //        contents += new MenuItem("Guardar Como")
+        //        contents += new MenuItem("Salir")
     }
 
-    val editMenu = new Menu("Edicion") {
-        contents += new MenuItem("Copiar")
-        contents += new MenuItem("Cortar")
-        contents += new MenuItem("Pegar")
-        contents += new MenuItem("Buscar...")
-    }
+    //    val editMenu = new Menu("Edicion") {
+    //        contents += new MenuItem("Copiar")
+    //        contents += new MenuItem("Cortar")
+    //        contents += new MenuItem("Pegar")
+    //        contents += new MenuItem("Buscar...")
+    //    }
 
     val docList = new MenuItem("Listado de documentos")
     val verMenu = new Menu("Ver") {
@@ -28,6 +29,7 @@ class HomeMenuBar extends MenuBar with Loggable {
     var docListFrame: DocumentListFrame = _
 
     listenTo(docList)
+    listenTo(newDoc)
     reactions += {
         case c: ButtonClicked if c.source == docList && docListFrame == null => {
             trace("frame created")
@@ -36,6 +38,10 @@ class HomeMenuBar extends MenuBar with Loggable {
             listenTo(docListFrame)
 
             publish(DocumentListRequest())
+        }
+        case c: ButtonClicked if c.source == newDoc => {
+            val input = Dialog.showInput(message = "Ingrese el nombre del nuevo documento", initial = "Nuevo Documento")
+            input.foreach(newDoc => publish(NewDocumentRequest(newDoc)))
         }
         case w: WindowClosed if w.source == docListFrame => {
             trace("frame deleted")
@@ -50,7 +56,7 @@ class HomeMenuBar extends MenuBar with Loggable {
     }
 
     this.contents += fileMenu
-    this.contents += editMenu
+    //    this.contents += editMenu
     this.contents += verMenu
 
     def changeDocList(l: List[String]) {
