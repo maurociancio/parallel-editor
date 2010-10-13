@@ -7,9 +7,10 @@ import ar.noxit.paralleleditor.common.remote.TerminateActor
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
+import ar.noxit.paralleleditor.common.Message
 
 trait ConcurrentDocument {
-    def processRemoteOperation(o: EditOperation)
+    def processRemoteOperation(m: Message[EditOperation])
 }
 
 trait DocumentList {
@@ -72,8 +73,10 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                 case o: RemoteOperation => {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
-                    else
-                        doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation (opConverter convert o)}
+                    else {
+                        val m = Message(opConverter convert o, o.syncStatus.myMsgs, o.syncStatus.otherMessages)
+                        doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation m}
+                    }
                 }
 
                 case RemoteDocumentSubscriptionResponse(docTitle, initialContent) => {

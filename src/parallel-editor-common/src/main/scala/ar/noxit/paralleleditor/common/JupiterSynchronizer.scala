@@ -21,11 +21,11 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
      */
     private var outgoingMsgs = Map[Int, Op]()
 
-    def generateMsg(op: Op, apply: Op => Unit = op => {}) {
+    /**
+     * La operación ya fue aplicada antes de llamarse a este método
+     */
+    def generateMsg(op: Op, send: Message[Op] => Unit) {
         trace("Generating message")
-
-        // aplicar operacion localmente
-        apply(op)
 
         // enviar mensaje a la otra parte
         send(Message(op, myMsgs, otherMsgs))
@@ -57,17 +57,10 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         otherMsgs = otherMsgs + 1
     }
 
-    protected def send(message: Message[Op])
-
     protected def xform(c: Op, s: Op): (Op, Op)
 }
 
 class EditOperationJupiterSynchronizer(private val xformStrategy: XFormStrategy) extends JupiterSynchronizer[EditOperation] {
-    override protected def xform(c: EditOperation, s: EditOperation) = {
-        xformStrategy.xform(c, s)
-    }
 
-    override protected def send(message: Message[EditOperation]) {
-        println("sending msg", message)
-    }
+    override protected def xform(c: EditOperation, s: EditOperation) = xformStrategy.xform(c, s)
 }

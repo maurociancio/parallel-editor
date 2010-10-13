@@ -8,6 +8,7 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages._
 import swing.TabbedPane.Page
+import ar.noxit.paralleleditor.common.operation.{DeleteTextOperation, AddTextOperation}
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
@@ -67,17 +68,14 @@ object GUI extends SimpleSwingApplication with Loggable {
                 if (connected)
                     actor ! Logout()
             }
+            case OperationEvent(title, msg) => {
+                if (connected)
+                    msg.op match {
+                        case at: AddTextOperation => actor ! RemoteAddText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.text, at.startPos)
+                        case at: DeleteTextOperation => actor ! RemoteDeleteText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.startPos, at.size)
+                    }
+            }
 
-            case InsertionEvent(title, pos, text) => {
-                trace("Insertion required " + text + pos)
-                if (connected)
-                    actor ! RemoteAddText(title, text, pos)
-            }
-            case DeletionEvent(title, pos, count) => {
-                trace("Deletion required" + pos + "," + count)
-                if (connected)
-                    actor ! RemoteDeleteText(title, pos, count)
-            }
             case DocumentListRequest() => {
                 if (connected) {
                     actor ! RemoteDocumentListRequest()

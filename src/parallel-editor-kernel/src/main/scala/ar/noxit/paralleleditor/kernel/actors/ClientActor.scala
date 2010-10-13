@@ -8,6 +8,7 @@ import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
 import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
+import ar.noxit.paralleleditor.common.Message
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -83,14 +84,14 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     trace("remove operation received")
                     val op = msgConverter.convert(r)
                     // FIX
-                    docSessions.find {s => s.title == r.docTitle}.foreach {session => session applyChange op}
+                    docSessions.find {s => s.title == r.docTitle}.foreach {docSession => docSession applyChange (Message(op, r.syncStatus.myMsgs, r.syncStatus.otherMessages))}
                 }
 
                 // estos mensajes vienen de los documentos y se deben propagar al cliente
-                case PublishOperation(title, e) => {
+                case PublishOperation(title, m) => {
                     trace("operation received from document")
 
-                    gateway ! opConverter.convert(title, e)
+                    gateway ! opConverter.convert(title, m.myMsgs, m.otherMsgs, m.op)
                 }
 
                 case TerminateActor() => {

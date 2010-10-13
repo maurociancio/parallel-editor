@@ -1,7 +1,6 @@
 package ar.noxit.paralleleditor.gui
 
 import javax.swing.event.{DocumentListener, DocumentEvent}
-import swing.event.Event
 import javax.swing.text.PlainDocument
 import swing.TextArea
 

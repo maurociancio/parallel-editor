@@ -45,8 +45,9 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
 
         subscribers.filter {s => s != session}.foreach {
             s =>
-                val op = PublishOperation(title, operation)
-                s notifyUpdate op
+            //FIXME
+//                val op = PublishOperation(title, operation)
+//                s notifyUpdate op
         }
     }
 

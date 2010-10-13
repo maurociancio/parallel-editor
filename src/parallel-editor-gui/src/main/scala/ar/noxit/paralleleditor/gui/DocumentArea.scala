@@ -4,11 +4,10 @@ import scala.swing._
 import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation._
+import ar.noxit.paralleleditor.common.messages.SyncStatus
 
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
-
     val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
-
 
     val areaEdicion = new NotificationEditPane(docTitle) {
         text = initialContent
@@ -35,15 +34,12 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
             addEntry("event received %s".format(e))
 
             println("LOCAL OPERATION PERFORMED")
-            var op:EditOperation = NullOperation
-            e match {
-                case InsertionEvent(title, pos, text) => op = new AddTextOperation(text,pos)
-                case DeletionEvent(title, pos, count) => op = new DeleteTextOperation(pos,count)
-                case _ => {}
+            val op = e match {
+                case InsertionEvent(title, pos, text) => new AddTextOperation(text, pos)
+                case DeletionEvent(title, pos, count) => new DeleteTextOperation(pos, count)
             }
 
-            sync.generateMsg(op,{op => } )
-            publish(e)
+            sync.generateMsg(op, {msg => publish(OperationEvent(docTitle, msg))})
         }
     }
 
@@ -52,15 +48,14 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         debugConsole.caret.position = debugConsole.text.size
     }
 
-    def processRemoteOperation(o:EditOperation){
+    def processRemoteOperation(m: Message[EditOperation]) {
         println("REMOTE OPERATION RECEIVED")
-        sync.receiveMsg(new Message(o,0,0),{op => })
-        processOperation(o)
+        sync.receiveMsg(m, {op => processOperation(op)})
     }
 
     def processOperation(o: EditOperation) = {
         doInGuard({
-            val docData = new DocumentData{
+            val docData = new DocumentData {
                 var data = areaEdicion.text
             }
             o.executeOn(docData)

@@ -1,6 +1,8 @@
 package ar.noxit.paralleleditor.gui
 
 import swing.event.Event
+import ar.noxit.paralleleditor.common.Message
+import ar.noxit.paralleleditor.common.operation.EditOperation
 
 /**
  * Eventos de la GUI, generados desde los controles hacia las reactions que estan en la GUI
@@ -26,6 +28,9 @@ case class DeletionEvent(override val docTitle: String, val pos: Int, val count:
  * Publicado por el frame de documentos
  */
 case class SubscribeToDocument(val title: String) extends Event
+
+
+case class OperationEvent(val title: String, val msg: Message[EditOperation]) extends Event
 
 /**
  * Wrapper de eventos para evitar bucles infinitos
