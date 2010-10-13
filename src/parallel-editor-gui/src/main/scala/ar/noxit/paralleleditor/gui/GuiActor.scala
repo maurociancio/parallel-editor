@@ -9,7 +9,7 @@ import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
 
 trait ConcurrentDocument {
-    def processOperation(o: EditOperation)
+    def processRemoteOperation(o: EditOperation)
 }
 
 trait DocumentList {
@@ -73,7 +73,7 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else
-                        doc.byName(o.docTitle).foreach {doc => doc processOperation (opConverter convert o)}
+                        doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation (opConverter convert o)}
                 }
 
                 case RemoteDocumentSubscriptionResponse(docTitle, initialContent) => {
