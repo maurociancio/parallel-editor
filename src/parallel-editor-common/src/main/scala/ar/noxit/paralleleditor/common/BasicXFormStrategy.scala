@@ -32,7 +32,7 @@ class BasicXFormStrategy extends XFormStrategy {
 
         if (cpos < spos || (cpos == spos && ctext < stext)) {
             (c, new AddTextOperation(stext, spos + ctext.length))
-        } else if (cpos > spos || (cpos == spos == ctext > stext)) {
+        } else if (cpos > spos || (cpos == spos && ctext > stext)) {
             (new AddTextOperation(ctext, cpos + stext.length), s)
         } else {
             (NullOperation, NullOperation)
