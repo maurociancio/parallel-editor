@@ -16,6 +16,8 @@ class BasicXFormStrategy extends XFormStrategy {
                 xform(c, s)
             case (c: DeleteTextOperation, s: AddTextOperation) =>
                 xform(s, c).swap
+            case (c: EditOperation, s: EditOperation) if c.isInstanceOf[NullOperation] || s.isInstanceOf[NullOperation] =>
+                (c, s)
         }
     }
 
@@ -33,7 +35,7 @@ class BasicXFormStrategy extends XFormStrategy {
         } else if (cpos > spos || (cpos == spos && ctext > stext)) {
             (new AddTextOperation(ctext, cpos + stext.length), s)
         } else {
-            (NullOperation, NullOperation)
+            (new NullOperation, new NullOperation)
         }
         //        if (c.startPos == s.startPos) {
         //            (new AddTextOperation(c.text, c.startPos), new AddTextOperation(s.text, c.startPos + c.text.length))
