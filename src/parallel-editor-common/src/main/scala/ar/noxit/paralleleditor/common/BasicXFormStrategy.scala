@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor.common
 
-import operation.{CompositeOperation, EditOperation, DeleteTextOperation, AddTextOperation}
+import operation._
 
 class BasicXFormStrategy extends XFormStrategy {
     override def xform(ops: (EditOperation, EditOperation)) = {
@@ -24,33 +24,45 @@ class BasicXFormStrategy extends XFormStrategy {
     /**
      * Caso agregar-agregar
      */
-    protected def xform(c: AddTextOperation, s: AddTextOperation): (AddTextOperation, AddTextOperation) = {
-        if (c.startPos == s.startPos) {
-            (new AddTextOperation(c.text, c.startPos), new AddTextOperation(s.text, c.startPos + c.text.length))
-            //            val clen = c.text.length
-            //            val slen = s.text.length
-            //            if (clen == slen) {
-            //                val res = c.text.compare(s.text)
-            //                if (res == 0) {
-            //                    (c, s)
-            //                } else {
-            //                    val min = if (res < 0) s else c
-            //                    val max = if (res > 0) s else c
-            //                    if (min == c)
-            //                        (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
-            //                    else
-            //                        (new AddTextOperation(max.text, min.startPos + min.text.length), new AddTextOperation(min.text, min.startPos))
-            //                }
-            //            } else {
-            //                val min = if (clen > slen) s else c
-            //                val max = if (clen > slen) c else s
-            //                (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
-            //            }
+    protected def xform(c: AddTextOperation, s: AddTextOperation): (EditOperation, EditOperation) = {
+        val cpos = c.startPos
+        val spos = s.startPos
+        val ctext = c.text
+        val stext = s.text
+
+        if (cpos < spos || (cpos == spos && ctext < stext)) {
+            (c, new AddTextOperation(stext, spos + ctext.length))
+        } else if (cpos > spos || (cpos == spos == ctext > stext)) {
+            (new AddTextOperation(ctext, cpos + stext.length), s)
+        } else {
+            (NullOperation, NullOperation)
         }
-        else if (c.startPos < s.startPos)
-            (c, new AddTextOperation(s.text, s.startPos + c.text.length))
-        else
-            (new AddTextOperation(c.text, c.startPos + s.text.length), s)
+        //        if (c.startPos == s.startPos) {
+        //            (new AddTextOperation(c.text, c.startPos), new AddTextOperation(s.text, c.startPos + c.text.length))
+        //            //            val clen = c.text.length
+        //            //            val slen = s.text.length
+        //            //            if (clen == slen) {
+        //            //                val res = c.text.compare(s.text)
+        //            //                if (res == 0) {
+        //            //                    (c, s)
+        //            //                } else {
+        //            //                    val min = if (res < 0) s else c
+        //            //                    val max = if (res > 0) s else c
+        //            //                    if (min == c)
+        //            //                        (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
+        //            //                    else
+        //            //                        (new AddTextOperation(max.text, min.startPos + min.text.length), new AddTextOperation(min.text, min.startPos))
+        //            //                }
+        //            //            } else {
+        //            //                val min = if (clen > slen) s else c
+        //            //                val max = if (clen > slen) c else s
+        //            //                (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
+        //            //            }
+        //        }
+        //        else if (c.startPos < s.startPos)
+        //            (c, new AddTextOperation(s.text, s.startPos + c.text.length))
+        //        else
+        //            (new AddTextOperation(c.text, c.startPos + s.text.length), s)
     }
 
     /**

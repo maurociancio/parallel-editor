@@ -62,15 +62,15 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 s1.generateMsg(op, {m => m2Server = m})
         })
 
-        Assert.assertEquals(serverDoc.data, "ba")
+        Assert.assertEquals(serverDoc.data, "ab")
 
         // server propaga al c1
         c1.receiveMsg(m2Server, {op => op.executeOn(c1Doc)})
-        Assert.assertEquals(c1Doc.data, "ba")
+        Assert.assertEquals(c1Doc.data, "ab")
 
         // server propaga al c2
         c2.receiveMsg(m1Server, {op => op.executeOn(c2Doc)})
-        Assert.assertEquals(c2Doc.data, "ba")
+        Assert.assertEquals(c2Doc.data, "ab")
     }
 
     def docFromText(text: String) = new DocumentData {var data = text}

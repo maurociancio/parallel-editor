@@ -42,7 +42,7 @@ class XFormTest extends AssertionsForJUnit {
         val c = new AddTextOperation("a", 0)
         val s = new AddTextOperation("b", 0)
 
-        val (cprima, sprima) = xf.xform(c ,s)
+        val (cprima, sprima) = xf.xform(c, s)
 
         // c y s' en cliente
         c.executeOn(ctext)
@@ -279,7 +279,7 @@ class XFormTest extends AssertionsForJUnit {
         to._1.executeOn(stext)
 
         assertEquals(ctext.data, stext.data)
-        assertEquals(ctext.data, expected)
+        assertEquals(expected, ctext.data)
     }
 
     def docFromText(text: String) = (new DocumentData {var data = text}, new DocumentData {var data = text})
