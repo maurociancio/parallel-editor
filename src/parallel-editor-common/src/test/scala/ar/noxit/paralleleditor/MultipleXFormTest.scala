@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor
 
-import common.operation.{EditOperation, DocumentData, AddTextOperation}
+import common.operation.{DeleteTextOperation, EditOperation, DocumentData, AddTextOperation}
 import common.{Message, EditOperationJupiterSynchronizer, BasicXFormStrategy}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
@@ -10,9 +10,14 @@ class MultipleSyncTest extends AssertionsForJUnit {
     private var c1: EditOperationJupiterSynchronizer = _
 
     private var s1: EditOperationJupiterSynchronizer = _
-    private var s2: EditOperationJupiterSynchronizer = _
 
     private var c2: EditOperationJupiterSynchronizer = _
+
+    private var s2: EditOperationJupiterSynchronizer = _
+
+    private var c3: EditOperationJupiterSynchronizer = _
+
+    private var s3: EditOperationJupiterSynchronizer = _
 
     @Before
     def before {
@@ -20,6 +25,8 @@ class MultipleSyncTest extends AssertionsForJUnit {
         s2 = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
         c1 = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
         c2 = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
+        c3 = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
+        s3 = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
     }
 
     @Test
@@ -71,6 +78,86 @@ class MultipleSyncTest extends AssertionsForJUnit {
         // server propaga al c2
         c2.receiveMsg(m1Server, {op => op.executeOn(c2Doc)})
         Assert.assertEquals(c2Doc.data, "ab")
+    }
+
+    /**
+     * Ver paper
+     * ftp://ftp.inria.fr/INRIA/publication/publi-pdf/RR/RR-5188.pdf
+     * Hoja nro 8 pto 3.1
+     */
+    @Test
+    def testCaseCoreToCoffe {
+        val c1Doc = docFromText("core")
+        val c2Doc = docFromText("core")
+        val c3Doc = docFromText("core")
+        val serverDoc = docFromText("core")
+
+        // client 1, agregar f despues de la r
+        val op1 = new AddTextOperation("f", 3)
+        op1.executeOn(c1Doc)
+        Assert.assertEquals("corfe", c1Doc.data)
+
+        // client 2, borrar r
+        val op2 = new DeleteTextOperation(startPos = 2, size = 1)
+        op2.executeOn(c2Doc)
+        Assert.assertEquals("coe", c2Doc.data)
+
+        // client 3, agregar f dsps de o
+        val op3 = new AddTextOperation("f", 2)
+        op3.executeOn(c3Doc)
+        Assert.assertEquals("cofre", c3Doc.data)
+
+        // hasta aqui, todas las operaciones aplicadas a sus respectivos documentos locales
+        // cada cliente empieza a broadcastear la operacion
+        var op1Transmitida: Message[EditOperation] = null
+        c1.generateMsg(op1, {m => op1Transmitida = m})
+
+        var op2Transmitida: Message[EditOperation] = null
+        c2.generateMsg(op2, {m => op2Transmitida = m})
+
+        var op3Transmitida: Message[EditOperation] = null
+        c3.generateMsg(op3, {m => op3Transmitida = m})
+
+        // las operaciones transmitidas estan viajando hacia el server
+
+        // primero se procesa la operacion 2 en el servidor
+        // el servidor la re transmite a los otros syncs
+
+        // retransmision hacia el cliente 1 de la operacion 2
+        var op2toClient1: Message[EditOperation] = null
+        // retransmision hacia el cliente 3 de la operacion 2
+        var op2toClient3: Message[EditOperation] = null
+        s2.receiveMsg(op2Transmitida, {
+            op => op.executeOn(serverDoc)
+            s1.generateMsg(op, {m => op2toClient1 = m})
+            s3.generateMsg(op, {m => op2toClient3 = m})
+        })
+        Assert.assertEquals("coe", serverDoc.data)
+
+        // cliente 3 recibe la operacion 2 retransmitida por su sync del lado del server
+        c3.receiveMsg(op2toClient3, {op => op.executeOn(c3Doc)})
+        Assert.assertEquals("cofe", c3Doc.data)
+
+        //
+        // el cliente 3 reciba la operacion 1 que fue retransmitida por su sync del lado del server
+        //
+
+        // retransmision del lado del server
+
+        // retransmision hacia el cliente 2 de la operacion 1
+        var op1toClient2: Message[EditOperation] = null
+        // retransmision hacia el cliente 3 de la operacion 1
+        var op1toClient3: Message[EditOperation] = null
+        s1.receiveMsg(op1Transmitida, {
+            op => op.executeOn(serverDoc)
+            s2.generateMsg(op, {m => op1toClient2 = m})
+            s3.generateMsg(op, {m => op1toClient3 = m})
+        })
+        Assert.assertEquals("cofe", serverDoc.data)
+
+        // el cliente 3 reciba la operacion 1 retransmitida por su sync del lado del server
+        c3.receiveMsg(op1toClient3, {op => op.executeOn(c3Doc)})
+        Assert.assertEquals("coffe", c3Doc.data)
     }
 
     def docFromText(text: String) = new DocumentData {var data = text}
