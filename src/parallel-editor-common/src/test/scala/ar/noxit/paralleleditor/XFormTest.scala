@@ -25,6 +25,36 @@ class XFormTest extends AssertionsForJUnit {
         checkTransform(c, ctext, s, stext, "xabcdefyz")
     }
 
+    @Test
+    def testAddTextEqualPosition3 {
+        val (ctext, stext) = docFromText("")
+
+        val c = new AddTextOperation("a", 0)
+        val s = new AddTextOperation("b", 0)
+
+        checkTransform(c, ctext, s, stext, "ab")
+    }
+
+    @Test
+    def testAddTextEqualPosition4 {
+        val (ctext, stext) = docFromText("")
+
+        val c = new AddTextOperation("a", 0)
+        val s = new AddTextOperation("b", 0)
+
+        val (cprima, sprima) = xf.xform(c ,s)
+
+        // c y s' en cliente
+        c.executeOn(ctext)
+        sprima.executeOn(ctext)
+
+        // s y c' en servidor
+        s.executeOn(stext)
+        cprima.executeOn(stext)
+
+        assertEquals(ctext.data, stext.data)
+    }
+
     // c.pos < s.pos
     @Test
     def testAddTextDifferentPosition1 {

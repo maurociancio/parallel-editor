@@ -77,6 +77,7 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
                 case message: Any => {
                     trace("writing message to client [%s]", message)
                     try {
+                        Thread.sleep(1000)
                         onNewMessage(message)
                     }
                     catch {

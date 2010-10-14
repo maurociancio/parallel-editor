@@ -25,8 +25,28 @@ class BasicXFormStrategy extends XFormStrategy {
      * Caso agregar-agregar
      */
     protected def xform(c: AddTextOperation, s: AddTextOperation): (AddTextOperation, AddTextOperation) = {
-        if (c.startPos == s.startPos)
+        if (c.startPos == s.startPos) {
             (new AddTextOperation(c.text, c.startPos), new AddTextOperation(s.text, c.startPos + c.text.length))
+            //            val clen = c.text.length
+            //            val slen = s.text.length
+            //            if (clen == slen) {
+            //                val res = c.text.compare(s.text)
+            //                if (res == 0) {
+            //                    (c, s)
+            //                } else {
+            //                    val min = if (res < 0) s else c
+            //                    val max = if (res > 0) s else c
+            //                    if (min == c)
+            //                        (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
+            //                    else
+            //                        (new AddTextOperation(max.text, min.startPos + min.text.length), new AddTextOperation(min.text, min.startPos))
+            //                }
+            //            } else {
+            //                val min = if (clen > slen) s else c
+            //                val max = if (clen > slen) c else s
+            //                (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
+            //            }
+        }
         else if (c.startPos < s.startPos)
             (c, new AddTextOperation(s.text, s.startPos + c.text.length))
         else

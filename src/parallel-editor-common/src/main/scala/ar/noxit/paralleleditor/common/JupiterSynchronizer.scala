@@ -32,6 +32,8 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
 
         outgoingMsgs = outgoingMsgs.update(myMsgs, op)
         myMsgs = myMsgs + 1
+
+        trace("estado actual %d %d", myMsgs, otherMsgs)
     }
 
     def receiveMsg(message: Message[Op], apply: Op => Unit) {
@@ -40,6 +42,7 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         // filtro mensajes anteriores al recibido (acknowledged messages)
         outgoingMsgs = outgoingMsgs filterKeys (_ >= message.otherMsgs)
 
+        trace("original op %s", message.op)
         // calculo la transformada de la operacion a realizar
         val finalOp = (message.op /: outgoingMsgs) {
             (transformedOp, currentListElement) => {
@@ -51,16 +54,16 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
                 transformatedOps _2
             }
         }
-
+        trace("fixed op %s", finalOp)
         apply(finalOp)
 
         otherMsgs = otherMsgs + 1
+        trace("estado actual %d %d", myMsgs, otherMsgs)
     }
 
     protected def xform(c: Op, s: Op): (Op, Op)
 }
 
 class EditOperationJupiterSynchronizer(private val xformStrategy: XFormStrategy) extends JupiterSynchronizer[EditOperation] {
-
     override protected def xform(c: EditOperation, s: EditOperation) = xformStrategy.xform(c, s)
 }
