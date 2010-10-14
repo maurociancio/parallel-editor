@@ -14,10 +14,8 @@ class BasicXFormStrategy extends XFormStrategy {
                 xform(c, s)
             case (c: AddTextOperation, s: DeleteTextOperation) =>
                 xform(c, s)
-            case (c: DeleteTextOperation, s: AddTextOperation) => {
-                val res = xform(s, c)
-                (res._2, res._1)
-            }
+            case (c: DeleteTextOperation, s: AddTextOperation) =>
+                xform(s, c).swap
         }
     }
 
