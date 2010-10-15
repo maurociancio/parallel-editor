@@ -9,17 +9,27 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
     /**
      * nº de  mensajes originados localmente
      */
-    private var myMsgs = 0
+    private var _myMsgs = 0
 
     /**
      * nº de  mensajes que llegaron del afuera
      */
-    private var otherMsgs = 0
+    private var _otherMsgs = 0
 
     /**
      * lista de mensajes que se generaron y enviaron localmente
      */
     private var outgoingMsgs = Map[Int, Op]()
+
+    /**
+     * Getter para testing
+     */
+    def myMsgs = _myMsgs
+
+    /**
+     * Getter para testing
+     */
+    def otherMsgs = _otherMsgs
 
     /**
      * La operación ya fue aplicada antes de llamarse a este método
@@ -28,12 +38,12 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         trace("Generating message")
 
         // enviar mensaje a la otra parte
-        send(Message(op, myMsgs, otherMsgs))
+        send(Message(op, _myMsgs, _otherMsgs))
 
-        outgoingMsgs = outgoingMsgs.update(myMsgs, op)
-        myMsgs = myMsgs + 1
+        outgoingMsgs = outgoingMsgs.update(_myMsgs, op)
+        _myMsgs = _myMsgs + 1
 
-        trace("estado actual %d %d", myMsgs, otherMsgs)
+        trace("estado actual %d %d", _myMsgs, _otherMsgs)
     }
 
     def receiveMsg(message: Message[Op], apply: Op => Unit) {
@@ -57,8 +67,8 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         trace("fixed op %s", finalOp)
         apply(finalOp)
 
-        otherMsgs = otherMsgs + 1
-        trace("estado actual %d %d", myMsgs, otherMsgs)
+        _otherMsgs = _otherMsgs + 1
+        trace("estado actual %d %d", _myMsgs, _otherMsgs)
     }
 
     protected def xform(c: Op, s: Op): (Op, Op)

@@ -111,12 +111,24 @@ class MultipleSyncTest extends AssertionsForJUnit {
         // cada cliente empieza a broadcastear la operacion
         var op1Transmitida: Message[EditOperation] = null
         c1.generateMsg(op1, {m => op1Transmitida = m})
+        Assert.assertEquals(0, op1Transmitida.myMsgs)
+        Assert.assertEquals(0, op1Transmitida.otherMsgs)
+        Assert.assertEquals(1, c1.myMsgs)
+        Assert.assertEquals(0, c1.otherMsgs)
 
         var op2Transmitida: Message[EditOperation] = null
         c2.generateMsg(op2, {m => op2Transmitida = m})
+        Assert.assertEquals(0, op2Transmitida.myMsgs)
+        Assert.assertEquals(0, op2Transmitida.otherMsgs)
+        Assert.assertEquals(1, c2.myMsgs)
+        Assert.assertEquals(0, c2.otherMsgs)
 
         var op3Transmitida: Message[EditOperation] = null
         c3.generateMsg(op3, {m => op3Transmitida = m})
+        Assert.assertEquals(0, op3Transmitida.myMsgs)
+        Assert.assertEquals(0, op3Transmitida.otherMsgs)
+        Assert.assertEquals(1, c3.myMsgs)
+        Assert.assertEquals(0, c3.otherMsgs)
 
         // las operaciones transmitidas estan viajando hacia el server
 
@@ -134,9 +146,24 @@ class MultipleSyncTest extends AssertionsForJUnit {
         })
         Assert.assertEquals("coe", serverDoc.data)
 
+        Assert.assertEquals(0, op2toClient1.myMsgs)
+        Assert.assertEquals(0, op2toClient1.otherMsgs)
+
+        Assert.assertEquals(0, op2toClient3.myMsgs)
+        Assert.assertEquals(0, op2toClient3.otherMsgs)
+
+        Assert.assertEquals(0, s2.myMsgs)
+        Assert.assertEquals(1, s2.otherMsgs)
+        Assert.assertEquals(1, s1.myMsgs)
+        Assert.assertEquals(0, s1.otherMsgs)
+        Assert.assertEquals(1, s3.myMsgs)
+        Assert.assertEquals(0, s3.otherMsgs)
+
         // cliente 3 recibe la operacion 2 retransmitida por su sync del lado del server
         c3.receiveMsg(op2toClient3, {op => op.executeOn(c3Doc)})
         Assert.assertEquals("cofe", c3Doc.data)
+        Assert.assertEquals(1, c3.myMsgs)
+        Assert.assertEquals(1, c3.otherMsgs)
 
         //
         // el cliente 3 reciba la operacion 1 que fue retransmitida por su sync del lado del server
@@ -154,6 +181,19 @@ class MultipleSyncTest extends AssertionsForJUnit {
             s3.generateMsg(op, {m => op1toClient3 = m})
         })
         Assert.assertEquals("cofe", serverDoc.data)
+
+        Assert.assertEquals(0, op1toClient2.myMsgs)
+        Assert.assertEquals(1, op1toClient2.otherMsgs)
+
+        Assert.assertEquals(1, op1toClient3.myMsgs)
+        Assert.assertEquals(0, op1toClient3.otherMsgs)
+
+        Assert.assertEquals(1, s1.myMsgs)
+        Assert.assertEquals(1, s1.otherMsgs)
+        Assert.assertEquals(1, s2.myMsgs)
+        Assert.assertEquals(1, s2.otherMsgs)
+        Assert.assertEquals(2, s3.myMsgs)
+        Assert.assertEquals(0, s3.otherMsgs)
 
         // el cliente 3 reciba la operacion 1 retransmitida por su sync del lado del server
         c3.receiveMsg(op1toClient3, {op => op.executeOn(c3Doc)})
