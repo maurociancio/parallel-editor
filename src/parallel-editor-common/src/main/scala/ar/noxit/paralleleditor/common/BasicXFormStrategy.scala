@@ -30,39 +30,24 @@ class BasicXFormStrategy extends XFormStrategy {
         val ctext = c.text
         val stext = s.text
 
-        if (cpos < spos || (cpos == spos && ctext < stext)) {
-            (c, new AddTextOperation(stext, spos + ctext.length))
-        } else if (cpos > spos || (cpos == spos && ctext > stext)) {
-            (new AddTextOperation(ctext, cpos + stext.length), s)
+        val alfa1 = pw(c)
+        val alfa2 = pw(s)
+
+        if (alfa1 < alfa2 || (alfa1 == alfa2 && ctext < stext)) {
+            (c, new AddTextOperation(stext, spos + ctext.length, s.pword))
+        } else if (alfa1 > alfa2 || (alfa1 == alfa2 && ctext > stext)) {
+            (new AddTextOperation(ctext, cpos + stext.length, cpos.toString + c.pword), s)
         } else {
             (new NullOperation, new NullOperation)
         }
-        //        if (c.startPos == s.startPos) {
-        //            (new AddTextOperation(c.text, c.startPos), new AddTextOperation(s.text, c.startPos + c.text.length))
-        //            //            val clen = c.text.length
-        //            //            val slen = s.text.length
-        //            //            if (clen == slen) {
-        //            //                val res = c.text.compare(s.text)
-        //            //                if (res == 0) {
-        //            //                    (c, s)
-        //            //                } else {
-        //            //                    val min = if (res < 0) s else c
-        //            //                    val max = if (res > 0) s else c
-        //            //                    if (min == c)
-        //            //                        (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
-        //            //                    else
-        //            //                        (new AddTextOperation(max.text, min.startPos + min.text.length), new AddTextOperation(min.text, min.startPos))
-        //            //                }
-        //            //            } else {
-        //            //                val min = if (clen > slen) s else c
-        //            //                val max = if (clen > slen) c else s
-        //            //                (new AddTextOperation(min.text, min.startPos), new AddTextOperation(max.text, min.startPos + min.text.length))
-        //            //            }
+
+        //        if (cpos < spos || (cpos == spos && ctext < stext)) {
+        //            (c, new AddTextOperation(stext, spos + ctext.length))
+        //        } else if (cpos > spos || (cpos == spos && ctext > stext)) {
+        //            (new AddTextOperation(ctext, cpos + stext.length), s)
+        //        } else {
+        //            (new NullOperation, new NullOperation)
         //        }
-        //        else if (c.startPos < s.startPos)
-        //            (c, new AddTextOperation(s.text, s.startPos + c.text.length))
-        //        else
-        //            (new AddTextOperation(c.text, c.startPos + s.text.length), s)
     }
 
     /**
@@ -94,7 +79,7 @@ class BasicXFormStrategy extends XFormStrategy {
     protected def xform(c: AddTextOperation, s: DeleteTextOperation): (AddTextOperation, EditOperation) = {
         val deletionRange = getRangeFor(s)
         if (deletionRange contains c.startPos) {
-            (new AddTextOperation(c.text, s.startPos),
+            (new AddTextOperation(c.text, s.startPos, c.startPos.toString + c.pword),
                     new CompositeOperation(
                         new DeleteTextOperation(s.startPos, (c.startPos - s.startPos)),
                         new DeleteTextOperation(s.startPos + c.text.length, s.startPos + s.size - c.startPos)))
@@ -102,8 +87,35 @@ class BasicXFormStrategy extends XFormStrategy {
             if (c.startPos < s.startPos)
                 (c, new DeleteTextOperation(s.startPos + c.text.length, s.size))
             else
-                (new AddTextOperation(c.text, c.startPos - s.size), s)
+                (new AddTextOperation(c.text, c.startPos - s.size, c.startPos.toString + c.pword), s)
         }
+    }
+
+    def pw(op: EditOperation) = {
+        op match {
+            case at: AddTextOperation => {
+                // primer caso si w == vacio, con w = pword
+                if (at.pword.isEmpty)
+                    at.startPos.toString
+                else {
+                    if (!at.pword.isEmpty && (math.abs(at.startPos - current(at.pword)) <= 1)) {
+                        at.startPos.toString + at.pword
+                    } else {
+                        ""
+                    }
+                }
+            }
+            case dt: DeleteTextOperation => {
+                dt.startPos.toString
+            }
+            case o: NullOperation =>
+                ""
+        }
+    }
+
+    def current(text: String) = {
+        val first = text.substring(0, 1)
+        first.toInt
     }
 
     private def getRangeFor(o: DeleteTextOperation) = o.startPos to (o.startPos + o.size)

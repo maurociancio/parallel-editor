@@ -10,7 +10,7 @@ trait RemoteOperationConverter {
 class DefaultRemoteOperationConverter extends RemoteOperationConverter {
     def convert(o: RemoteOperation): EditOperation = {
         o match {
-            case at: RemoteAddText => new AddTextOperation(at.text, at.startPos)
+            case at: RemoteAddText => new AddTextOperation(at.text, at.startPos, at.pword)
             case dt: RemoteDeleteText => new DeleteTextOperation(dt.startPos, dt.size)
             case c: CompositeRemoteOperation => new CompositeOperation(c.ops.map {convert _}: _*)
         }

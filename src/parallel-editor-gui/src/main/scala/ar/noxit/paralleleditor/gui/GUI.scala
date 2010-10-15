@@ -71,7 +71,7 @@ object GUI extends SimpleSwingApplication with Loggable {
             case OperationEvent(title, msg) => {
                 if (connected)
                     msg.op match {
-                        case at: AddTextOperation => actor ! RemoteAddText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.text, at.startPos)
+                        case at: AddTextOperation => actor ! RemoteAddText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.text, at.startPos, at.pword)
                         case at: DeleteTextOperation => actor ! RemoteDeleteText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.startPos, at.size)
                     }
             }

@@ -19,7 +19,7 @@ abstract case class RemoteOperation(val docTitle: String, val syncStatus: SyncSt
 /**
  * Agregar texto
  */
-case class RemoteAddText(override val docTitle: String, override val syncStatus: SyncStatus, val text: String, val startPos: Int)
+case class RemoteAddText(override val docTitle: String, override val syncStatus: SyncStatus, val text: String, val startPos: Int, val pword: String)
         extends RemoteOperation(docTitle, syncStatus)
 
 /**

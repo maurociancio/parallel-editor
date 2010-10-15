@@ -205,20 +205,20 @@ class MultipleSyncTest extends AssertionsForJUnit {
             case at: AddTextOperation => {
                 // primer caso si w == vacio, con w = pword
                 if (at.pword.isEmpty)
-                    Some(at.startPos.toString)
+                    at.startPos.toString
                 else {
-                    if (at.pword.isDefined && (math.abs(at.startPos - current(at.pword.get)) <= 1)) {
-                        Some(at.startPos.toString + at.pword.get)
+                    if (!at.pword.isEmpty && (math.abs(at.startPos - current(at.pword)) <= 1)) {
+                        at.startPos.toString + at.pword
                     } else {
-                        None
+                        ""
                     }
                 }
             }
             case dt: DeleteTextOperation => {
-                Some(dt.startPos)
+                dt.startPos.toString
             }
             case o: NullOperation =>
-                None
+                ""
         }
     }
 
@@ -229,10 +229,10 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
     @Test
     def testPword: Unit = {
-        Assert.assertEquals(Some("0"), pw(new AddTextOperation("hola", 0)))
-        Assert.assertEquals(Some("01"), pw(new AddTextOperation("hola", 0, Some("1"))))
-        Assert.assertEquals(None, pw(new AddTextOperation("hola", 0, Some("5"))))
-        Assert.assertEquals(Some(0), pw(new DeleteTextOperation(startPos = 0, size = 10)))
+        Assert.assertEquals("0", pw(new AddTextOperation("hola", 0)))
+        Assert.assertEquals("01", pw(new AddTextOperation("hola", 0, "1")))
+        Assert.assertEquals("", pw(new AddTextOperation("hola", 0, "5")))
+        Assert.assertEquals("0", pw(new DeleteTextOperation(startPos = 0, size = 10)))
     }
 
     def docFromText(text: String) = new DocumentData {var data = text}
