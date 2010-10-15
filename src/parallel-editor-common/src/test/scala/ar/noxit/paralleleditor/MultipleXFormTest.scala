@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor
 
-import common.operation.{DeleteTextOperation, EditOperation, DocumentData, AddTextOperation}
+import common.operation._
 import common.{Message, EditOperationJupiterSynchronizer, BasicXFormStrategy}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
@@ -198,6 +198,41 @@ class MultipleSyncTest extends AssertionsForJUnit {
         // el cliente 3 reciba la operacion 1 retransmitida por su sync del lado del server
         c3.receiveMsg(op1toClient3, {op => op.executeOn(c3Doc)})
         Assert.assertEquals("coffe", c3Doc.data)
+    }
+
+    def pw(op: EditOperation) = {
+        op match {
+            case at: AddTextOperation => {
+                // primer caso si w == vacio, con w = pword
+                if (at.pword.isEmpty)
+                    Some(at.startPos.toString)
+                else {
+                    if (at.pword.isDefined && (math.abs(at.startPos - current(at.pword.get)) <= 1)) {
+                        Some(at.startPos.toString + at.pword.get)
+                    } else {
+                        None
+                    }
+                }
+            }
+            case dt: DeleteTextOperation => {
+                Some(dt.startPos)
+            }
+            case o: NullOperation =>
+                None
+        }
+    }
+
+    def current(text: String) = {
+        val first = text.substring(0, 1)
+        first.toInt
+    }
+
+    @Test
+    def testPword: Unit = {
+        Assert.assertEquals(Some("0"), pw(new AddTextOperation("hola", 0)))
+        Assert.assertEquals(Some("01"), pw(new AddTextOperation("hola", 0, Some("1"))))
+        Assert.assertEquals(None, pw(new AddTextOperation("hola", 0, Some("5"))))
+        Assert.assertEquals(Some(0), pw(new DeleteTextOperation(startPos = 0, size = 10)))
     }
 
     def docFromText(text: String) = new DocumentData {var data = text}
