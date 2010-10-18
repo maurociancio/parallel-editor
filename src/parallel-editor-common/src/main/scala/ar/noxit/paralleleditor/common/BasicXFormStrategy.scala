@@ -66,7 +66,7 @@ class BasicXFormStrategy extends XFormStrategy {
         } else if (alfa1 > alfa2 || (alfa1 == alfa2 && c1 > c2)) {
             new AddTextOperation(c1, p1 + c2.length, p1.toString + w1)
         } else {
-            new NullOperation(c)
+            c
         }
     }
 
@@ -146,10 +146,7 @@ class BasicXFormStrategy extends XFormStrategy {
                 Some(p)
             }
             case o: NullOperation =>
-                if (o.operation != null)
-                    pw(o.operation)
-                else
-                    None
+                None
         }
     }
 
