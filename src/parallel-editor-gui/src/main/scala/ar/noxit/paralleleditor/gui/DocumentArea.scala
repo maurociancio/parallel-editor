@@ -4,8 +4,6 @@ import scala.swing._
 import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation._
-import ar.noxit.paralleleditor.common.messages.SyncStatus
-
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
     val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
@@ -50,7 +48,9 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
 
     def processRemoteOperation(m: Message[EditOperation]) {
         println("REMOTE OPERATION RECEIVED")
-        sync.receiveMsg(m, {op => processOperation(op)})
+        SwingUtil.invokeLater {
+            sync.receiveMsg(m, {op => processOperation(op)})
+        }
     }
 
     def processOperation(o: EditOperation) = {
