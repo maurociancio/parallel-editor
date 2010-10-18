@@ -25,6 +25,7 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
                     // TODO capturas excepciones
                     syncs(who).receiveMsg(m, op => {
                         op.executeOn(document)
+                        println("DOC: \n" + document.data)
 
                         syncs.keySet.filter {s => s != who}.foreach(s => {
                             syncs(s).generateMsg(op, m => {

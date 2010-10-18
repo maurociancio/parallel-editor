@@ -298,7 +298,9 @@ class MultipleSyncTest extends AssertionsForJUnit {
         // los sync del server comienzan a recibir los msgs
         (0 until List(colaC1.size, colaC2.size).min).foreach {
 
-            i => println(i)
+            i =>
+            println(i)
+            println(serverDoc.data)
 
             s1.receiveMsg(colaC1.dequeue, {
                 op => op.executeOn(serverDoc)
