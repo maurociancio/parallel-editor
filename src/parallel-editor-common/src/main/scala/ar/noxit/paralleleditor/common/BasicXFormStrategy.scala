@@ -25,33 +25,15 @@ class BasicXFormStrategy extends XFormStrategy {
      * Caso agregar-agregar
      */
     protected def xform(c: AddTextOperation, s: AddTextOperation): (EditOperation, EditOperation) = {
-        (xformAA(c, s), xformAA(s, c))
-        //        val cpos = c.startPos
-        //        val spos = s.startPos
-        //        val ctext = c.text
-        //        val stext = s.text
-        //
-        //        val alfa1 = pw(c)
-        //        val alfa2 = pw(s)
-        //
-        //        if (alfa1 < alfa2 || (alfa1 == alfa2 && ctext < stext)) {
-        //            (c, new AddTextOperation(stext, spos + ctext.length, spos.toString + s.pword))
-        //        } else if (alfa1 > alfa2 || (alfa1 == alfa2 && ctext > stext)) {
-        //            (new AddTextOperation(ctext, cpos + stext.length, cpos.toString + c.pword), s)
-        //        } else {
-        //            (new NullOperation, new NullOperation)
-        //        }
-
-        //                if (cpos < spos || (cpos == spos && ctext < stext)) {
-        //                    (c, new AddTextOperation(stext, spos + ctext.length))
-        //                } else if (cpos > spos || (cpos == spos && ctext > stext)) {
-        //                    (new AddTextOperation(ctext, cpos + stext.length), s)
-        //                } else {
-        //                    (new NullOperation, new NullOperation)
-        //                }
+        (simpleXForm(c, s), simpleXForm(s, c))
     }
 
-    protected def xformAA(c: AddTextOperation, s: AddTextOperation) = {
+    /**
+     * Implementación según paper
+     * Achieving Convergence with Operational
+     * Transformation in Distributed Groupware Systems
+     */
+    protected def simpleXForm(c: AddTextOperation, s: AddTextOperation) = {
         val p1 = c.startPos
         val p2 = s.startPos
         val c1 = c.text
@@ -69,21 +51,6 @@ class BasicXFormStrategy extends XFormStrategy {
             c
         }
     }
-
-    //    protected def xformAA(c: AddTextOperation, s: DeleteTextOperation) = {
-    //        val p1 = c.startPos
-    //        val p2 = s.startPos
-    //        val c1 = c.text
-    //        val w1 = c.pword
-    //
-    //        if (p1 > p2)
-    //            new AddTextOperation(c1, p1 - s.size, p1.toString + w1)
-    //        else if (p1 < p2) {
-    //            c
-    //        } else {
-    //            new AddTextOperation(c1, p1, p1.toString + w1)
-    //        }
-    //    }
 
     /**
      * Caso borrar-borrara
@@ -126,7 +93,7 @@ class BasicXFormStrategy extends XFormStrategy {
         }
     }
 
-    def pw(op: EditOperation): Option[Int] = {
+    protected def pw(op: EditOperation): Option[Int] = {
         op match {
             case at: AddTextOperation => {
                 // primer caso si w == vacio, con w = pword
@@ -150,7 +117,7 @@ class BasicXFormStrategy extends XFormStrategy {
         }
     }
 
-    def current(text: String) = {
+    protected def current(text: String) = {
         val first = text.substring(0, 1)
         first.toInt
     }
