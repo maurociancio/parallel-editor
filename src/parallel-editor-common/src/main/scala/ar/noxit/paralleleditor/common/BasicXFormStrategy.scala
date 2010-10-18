@@ -93,7 +93,10 @@ class BasicXFormStrategy extends XFormStrategy {
         }
     }
 
-    protected def pw(op: EditOperation): Option[Int] = {
+    /**
+     * público para testing
+     */
+    def pw(op: EditOperation): Option[Int] = {
         op match {
             case at: AddTextOperation => {
                 // primer caso si w == vacio, con w = pword

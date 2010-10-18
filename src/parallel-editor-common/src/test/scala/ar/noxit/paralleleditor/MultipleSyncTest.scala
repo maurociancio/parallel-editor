@@ -218,39 +218,13 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals("coffe", c2Doc.data)
     }
 
-    def pw(op: EditOperation) = {
-        op match {
-            case at: AddTextOperation => {
-                // primer caso si w == vacio, con w = pword
-                if (at.pword.isEmpty)
-                    at.startPos.toString
-                else {
-                    if (!at.pword.isEmpty && (math.abs(at.startPos - current(at.pword)) <= 1)) {
-                        at.startPos.toString + at.pword
-                    } else {
-                        ""
-                    }
-                }
-            }
-            case dt: DeleteTextOperation => {
-                dt.startPos.toString
-            }
-            case o: NullOperation =>
-                ""
-        }
-    }
-
-    def current(text: String) = {
-        val first = text.substring(0, 1)
-        first.toInt
-    }
-
     @Test
     def testPword: Unit = {
-        Assert.assertEquals("0", pw(new AddTextOperation("hola", 0)))
-        Assert.assertEquals("01", pw(new AddTextOperation("hola", 0, "1")))
-        Assert.assertEquals("", pw(new AddTextOperation("hola", 0, "5")))
-        Assert.assertEquals("0", pw(new DeleteTextOperation(startPos = 0, size = 10)))
+        val xf = new BasicXFormStrategy
+        Assert.assertEquals("0", xf.pw(new AddTextOperation("hola", 0)))
+        Assert.assertEquals("01", xf.pw(new AddTextOperation("hola", 0, "1")))
+        Assert.assertEquals("", xf.pw(new AddTextOperation("hola", 0, "5")))
+        Assert.assertEquals("0", xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
     }
 
     @Test
