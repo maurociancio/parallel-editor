@@ -4,6 +4,7 @@ import common.operation._
 import common.{Message, EditOperationJupiterSynchronizer, BasicXFormStrategy}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
+import collection.mutable.Queue
 
 @Test
 class MultipleSyncTest extends AssertionsForJUnit {
@@ -250,6 +251,67 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals("01", pw(new AddTextOperation("hola", 0, "1")))
         Assert.assertEquals("", pw(new AddTextOperation("hola", 0, "5")))
         Assert.assertEquals("0", pw(new DeleteTextOperation(startPos = 0, size = 10)))
+    }
+
+    @Test
+    def testEscribirTextoLineasDistintas: Unit = {
+        val c1Doc = docFromText("\n\n")
+        val c2Doc = docFromText("\n\n")
+        val serverDoc = docFromText("\n\n")
+
+        val textClient1 = "escribiendo en letras minusculas"
+        val textClient2 = "E STO ES UNA PRUEBA EN MAYUSCULA"
+
+        // usamos frases de misma longitud
+        Assert.assertEquals(textClient1.size, textClient2.size)
+
+        // el cliente 1 escribe "escri" en la ultima linea del documento
+        // los mensajes se guardan en la cola
+        val colaC1 = Queue[Message[EditOperation]]()
+        val startPosC1 = c1Doc.data.size
+        for (i <- 0 until 7) {
+            val c = textClient1.substring(i, i + 1)
+
+            val op = new AddTextOperation(c, startPosC1 + i)
+            op.executeOn(c1Doc)
+
+            c1.generateMsg(op, {msg => colaC1 += msg})
+        }
+
+        Assert.assertEquals("\n\nescribi", c1Doc.data)
+
+        // el cliente 2 escribe "E STO E" al inicio del doc
+        val colaC2 = Queue[Message[EditOperation]]()
+        val startPosC2 = 0
+        for (i <- 0 until 7) {
+            val c = textClient2.substring(i, i + 1)
+
+            val op = new AddTextOperation(c, startPosC2 + i)
+            op.executeOn(c2Doc)
+
+            c2.generateMsg(op, {msg => colaC2 += msg})
+        }
+
+        Assert.assertEquals("E STO E\n\n", c2Doc.data)
+
+
+        // los sync del server comienzan a recibir los msgs
+        (0 until List(colaC1.size, colaC2.size).min).foreach {
+
+            i => println(i)
+
+            s1.receiveMsg(colaC1.dequeue, {
+                op => op.executeOn(serverDoc)
+                s2.generateMsg(op, {msg =>})
+            })
+
+            s2.receiveMsg(colaC2.dequeue, {
+                op => op.executeOn(serverDoc)
+                s1.generateMsg(op, {msg =>})
+            })
+        }
+
+        Assert.assertEquals("E STO E\n\nescribi", serverDoc.data)
     }
 
     def docFromText(text: String) = new DocumentData {var data = text}
