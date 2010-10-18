@@ -98,7 +98,7 @@ class BasicXFormStrategy extends XFormStrategy {
                 if (at.pword.isEmpty)
                     at.startPos.toString
                 else {
-                    if (!at.pword.isEmpty && (math.abs(at.startPos - current(at.pword)) <= 1)) {
+                    if (!at.pword.isEmpty && (at.startPos - current(at.pword).abs <= 1)) {
                         at.startPos.toString + at.pword
                     } else {
                         ""

@@ -198,6 +198,23 @@ class MultipleSyncTest extends AssertionsForJUnit {
         // el cliente 3 reciba la operacion 1 retransmitida por su sync del lado del server
         c3.receiveMsg(op1toClient3, {op => op.executeOn(c3Doc)})
         Assert.assertEquals("coffe", c3Doc.data)
+
+
+        // el sync del cliente 3 del lado del server recibe la operación 3
+        var op3toClient2: Message[EditOperation] = null
+        s3.receiveMsg(op3Transmitida, {
+            op => op.executeOn(serverDoc)
+            s2.generateMsg(op, {m => op3toClient2 = m})
+        })
+        Assert.assertEquals("coffe", serverDoc.data)
+
+        // el cliente 2 recibe la operacion 3 transformada desde el server
+        c2.receiveMsg(op3toClient2, {op => op.executeOn(c2Doc)})
+        Assert.assertEquals("cofe", c2Doc.data)
+
+        // el cliente 2 recibe la operacion 1 transformada desde el server
+        c2.receiveMsg(op1toClient2, {op => op.executeOn(c2Doc)})
+        Assert.assertEquals("coffe", c2Doc.data)
     }
 
     def pw(op: EditOperation) = {
