@@ -1,6 +1,6 @@
 package ar.noxit.paralleleditor.common.operation
 
-class AddTextOperation(val text: String, val startPos: Int) extends EditOperation {
+class AddTextOperation(val text: String, val startPos: Int, val pword: String = "") extends EditOperation {
 
     def executeOn(documentData: DocumentData) = {
         val original = documentData.data

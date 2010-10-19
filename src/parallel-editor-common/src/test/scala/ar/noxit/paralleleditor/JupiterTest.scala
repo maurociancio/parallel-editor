@@ -8,6 +8,12 @@ import Assert._
 
 @Test
 class JupiterTest extends AssertionsForJUnit {
+
+    def applyAndGenerate(applyClient: (EditOperation) => Unit, o: EditOperation, js: EditOperationJupiterSynchronizer) {
+        applyClient(o)
+        js.generateMsg(o, op => {})
+    }
+
     @Test
     def testJupiter {
         val (ctext, stext) = docFromText("abcdefg")
@@ -15,7 +21,7 @@ class JupiterTest extends AssertionsForJUnit {
 
         val js = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-        js.generateMsg(new AddTextOperation("HOLA", 0), applyClient)
+        applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
         assertEquals(ctext.data, "HOLAabcdefg")
 
         js.receiveMsg(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
@@ -31,7 +37,7 @@ class JupiterTest extends AssertionsForJUnit {
 
         val js = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-        js.generateMsg(new AddTextOperation("HOLA", 0), applyClient)
+        applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
         assertEquals(ctext.data, "HOLAabcdefg")
 
         js.receiveMsg(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
@@ -47,7 +53,7 @@ class JupiterTest extends AssertionsForJUnit {
 
         val js = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-        js.generateMsg(new AddTextOperation("HOLA", 0), applyClient)
+        applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
         assertEquals(ctext.data, "HOLAabcdefg")
 
         js.receiveMsg(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)

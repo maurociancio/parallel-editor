@@ -1,18 +1,17 @@
 package ar.noxit.paralleleditor.common.converter
 
-import ar.noxit.paralleleditor.common.messages.{CompositeRemoteOperation, RemoteDeleteText, RemoteAddText, RemoteOperation}
-import ar.noxit.paralleleditor.common.operation.{CompositeOperation, DeleteTextOperation, AddTextOperation, EditOperation}
+import ar.noxit.paralleleditor.common.messages.{RemoteDeleteText, RemoteAddText, RemoteOperation}
+import ar.noxit.paralleleditor.common.operation.{DeleteTextOperation, AddTextOperation, EditOperation}
 
 trait RemoteOperationConverter {
     def convert(o: RemoteOperation): EditOperation
 }
 
 class DefaultRemoteOperationConverter extends RemoteOperationConverter {
-    def convert(o: RemoteOperation): EditOperation = {
+    def convert(o: RemoteOperation) = {
         o match {
-            case at: RemoteAddText => new AddTextOperation(at.text, at.startPos)
+            case at: RemoteAddText => new AddTextOperation(at.text, at.startPos, at.pword)
             case dt: RemoteDeleteText => new DeleteTextOperation(dt.startPos, dt.size)
-            case c: CompositeRemoteOperation => new CompositeOperation(c.ops.map {convert _}: _*)
         }
     }
 }

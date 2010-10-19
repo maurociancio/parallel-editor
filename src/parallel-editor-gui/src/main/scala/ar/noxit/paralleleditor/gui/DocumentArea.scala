@@ -1,10 +1,14 @@
 package ar.noxit.paralleleditor.gui
 
 import scala.swing._
-import ar.noxit.paralleleditor.common.operation.{DocumentData, EditOperation}
+import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
+import ar.noxit.paralleleditor.common.Message
+import ar.noxit.paralleleditor.common.operation._
 
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
-    val areaEdicion = new NotificationEditPane(docTitle) {
+    val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
+
+    val areaEdicion = new NotificationEditPane {
         text = initialContent
     }
 
@@ -27,7 +31,17 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
     reactions += {
         case WrappedEvent(e) => {
             addEntry("event received %s".format(e))
-            publish(e)
+
+            val op = e match {
+                case InsertionEvent(pos, text) => new AddTextOperation(text, pos)
+                case DeletionEvent(pos, count) => new DeleteTextOperation(pos, count)
+            }
+
+            sync.generateMsg(op, {
+                msg =>
+                    val docOp = new DocumentOperation(docTitle, msg)
+                    publish(OperationEvent(docOp))
+            })
         }
     }
 
@@ -36,9 +50,15 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         debugConsole.caret.position = debugConsole.text.size
     }
 
+    def processRemoteOperation(m: Message[EditOperation]) {
+        SwingUtil.invokeLater {
+            sync.receiveMsg(m, {op => processOperation(op)})
+        }
+    }
+
     def processOperation(o: EditOperation) = {
         doInGuard({
-            val docData = new DocumentData{
+            val docData = new DocumentData {
                 var data = areaEdicion.text
             }
             o.executeOn(docData)

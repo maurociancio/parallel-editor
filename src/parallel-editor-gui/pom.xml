@@ -7,6 +7,7 @@
     <inceptionYear>2008</inceptionYear>
     <properties>
         <scala.version>2.8.0</scala.version>
+        <spring.version>3.0.2.RELEASE</spring.version>
     </properties>
     <name>ParallelEditor-GUI</name>
 
@@ -19,11 +20,11 @@
     </repositories>
 
     <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
+        <!--<pluginRepository>-->
+            <!--<id>scala-tools.org</id>-->
+            <!--<name>Scala-Tools Maven2 Repository</name>-->
+            <!--<url>http://scala-tools.org/repo-releases</url>-->
+        <!--</pluginRepository>-->
     </pluginRepositories>
 
     <dependencies>
@@ -54,11 +55,40 @@
             <version>1.2.5</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+
+            <!-- exclude commons logging in order to use slf4j -->
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- LOGGING FOR SPRING -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
         <testSourceDirectory>src/test/scala</testSourceDirectory>
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                    <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.scala-tools</groupId>

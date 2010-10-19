@@ -7,7 +7,8 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
-import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
+import ar.noxit.paralleleditor.common.converter._
+import ar.noxit.paralleleditor.common.operation.DocumentOperation
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -16,10 +17,6 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private var listener: Actor = _
     private var gateway: Actor = _
     private var session: Session = _
-
-    // TODO inyectar
-    private val opConverter = new DefaultMessageConverter
-    private val msgConverter = new DefaultRemoteOperationConverter
 
     override def act = {
         trace("Starting")
@@ -85,18 +82,23 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     docSessions = docSessions.filter {docSession => docSession.title != title}
                 }
 
-                case r: RemoteOperation => {
+                case RemoteDocumentOperation(docTitle, payload) => {
                     trace("remove operation received")
-                    val op = msgConverter.convert(r)
-                    // FIX
-                    docSessions.find {s => s.title == r.docTitle}.foreach {session => session applyChange op}
+
+                    val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
+                    val message = converter.convert(payload)
+
+                    docSessions.find {s => s.title == docTitle}.foreach {ds => ds applyChange message}
                 }
 
                 // estos mensajes vienen de los documentos y se deben propagar al cliente
-                case PublishOperation(title, e) => {
+                case PublishOperation(title, m) => {
                     trace("operation received from document")
 
-                    gateway ! opConverter.convert(title, e)
+                    // inyectar TODO
+                    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+                    val converted = converter.convert(new DocumentOperation(title, m))
+                    gateway ! converted
                 }
 
                 case TerminateActor() => {

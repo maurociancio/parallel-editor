@@ -16,17 +16,7 @@ class HomeMenuBar extends MenuBar with Loggable {
         contents += newDoc
         contents += newDocFromFile
         contents += closeCurrent
-        //        contents += new MenuItem("Guardar")
-        //        contents += new MenuItem("Guardar Como")
-        //        contents += new MenuItem("Salir")
     }
-
-    //    val editMenu = new Menu("Edicion") {
-    //        contents += new MenuItem("Copiar")
-    //        contents += new MenuItem("Cortar")
-    //        contents += new MenuItem("Pegar")
-    //        contents += new MenuItem("Buscar...")
-    //    }
 
     val docList = new MenuItem("Listado de documentos")
     val verMenu = new Menu("Ver") {
@@ -80,13 +70,13 @@ class HomeMenuBar extends MenuBar with Loggable {
     }
 
     this.contents += fileMenu
-    //    this.contents += editMenu
     this.contents += verMenu
 
     def changeDocList(l: List[String]) {
         trace("changeDocList %s", l)
 
-        docListFrame.changeDocList(l)
+        if (docListFrame != null)
+            docListFrame.changeDocList(l)
     }
 
     def askAndPublishDocumentName(initialContent: => String = {""}, defaultName: String = "Nuevo Documento") = {
