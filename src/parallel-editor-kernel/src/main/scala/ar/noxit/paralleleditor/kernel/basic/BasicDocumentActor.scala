@@ -37,9 +37,9 @@ class BasicDocumentActor(val document: BasicDocument, val syncFactory: Synchroni
                         op.executeOn(document)
                         println("DOC: \n" + document.data)
 
-                        syncs.keySet.filter {s => s != who}.foreach(s => {
-                            syncs(s).generate(op, m => {
-                                s.notifyUpdate(PublishOperation(title, m))
+                        document.propagateToOthers(who, other => {
+                            syncs(other).generate(op, m => {
+                                other.notifyUpdate(PublishOperation(title, m))
                             })
                         })
                     })

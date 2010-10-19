@@ -2,9 +2,7 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
-import messages.PublishOperation
 import scala.List
-import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.operation.DocumentData
 
 class BasicDocument(val title: String, var data: String, private val docSessionFactory: DocumentSessionFactory) extends Document with DocumentData {
@@ -39,15 +37,12 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
         }
     }
 
-    def propagateOperation(session: Session, operation: EditOperation) = {
-        if (!subscribers.contains(session))
+    def propagateToOthers(who: Session, what: Session => Unit) = {
+        if (!subscribers.contains(who))
             throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
 
-        subscribers.filter {s => s != session}.foreach {
-            s =>
-            //FIXME
-//                val op = PublishOperation(title, operation)
-//                s notifyUpdate op
+        subscribers.filter {s => s != who}.foreach {
+            s => what(s)
         }
     }
 
