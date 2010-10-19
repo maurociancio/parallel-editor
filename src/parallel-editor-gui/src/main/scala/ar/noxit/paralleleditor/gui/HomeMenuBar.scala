@@ -62,7 +62,8 @@ class HomeMenuBar extends MenuBar with Loggable {
     def changeDocList(l: List[String]) {
         trace("changeDocList %s", l)
 
-        docListFrame.changeDocList(l)
+        if (docListFrame != null)
+            docListFrame.changeDocList(l)
     }
 }
 
