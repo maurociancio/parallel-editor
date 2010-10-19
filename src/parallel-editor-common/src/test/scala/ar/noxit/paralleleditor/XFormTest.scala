@@ -174,7 +174,7 @@ class XFormTest extends AssertionsForJUnit {
         val c = new AddTextOperation(startPos = 4, text = "hola")
         val s = new DeleteTextOperation(startPos = 2, size = 4)
 
-        checkTransform(c, ctext, s, stext, "abholag")
+        checkTransform(c, ctext, s, stext, "abg")
     }
 
     @Test
@@ -184,7 +184,7 @@ class XFormTest extends AssertionsForJUnit {
         val c = new AddTextOperation(startPos = 5, text = "hola")
         val s = new DeleteTextOperation(startPos = 2, size = 4)
 
-        checkTransform(c, ctext, s, stext, "abholag")
+        checkTransform(c, ctext, s, stext, "abg")
     }
 
     @Test
@@ -207,6 +207,15 @@ class XFormTest extends AssertionsForJUnit {
         checkTransform(c, ctext, s, stext, "abghola")
     }
 
+    @Test
+    def testAddTextDeleteText5 {
+        val (ctext, stext) = docFromText("abcd")
+
+        val c = new AddTextOperation(startPos = 2, text = "hola")
+        val s = new DeleteTextOperation(startPos = 2, size = 2)
+
+        checkTransform(c, ctext, s, stext, "abhola")
+    }
     // delete add
 
     @Test
@@ -236,7 +245,7 @@ class XFormTest extends AssertionsForJUnit {
         val c = new DeleteTextOperation(startPos = 2, size = 4)
         val s = new AddTextOperation(startPos = 4, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "abholag")
+        checkTransform(c, ctext, s, stext, "abg")
     }
 
     @Test
@@ -246,7 +255,7 @@ class XFormTest extends AssertionsForJUnit {
         val c = new DeleteTextOperation(startPos = 2, size = 4)
         val s = new AddTextOperation(startPos = 5, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "abholag")
+        checkTransform(c, ctext, s, stext, "abg")
     }
 
     @Test
