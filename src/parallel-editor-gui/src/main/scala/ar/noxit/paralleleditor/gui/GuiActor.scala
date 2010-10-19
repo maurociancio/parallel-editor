@@ -6,8 +6,8 @@ import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.remote.TerminateActor
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
 import ar.noxit.paralleleditor.common.Message
+import ar.noxit.paralleleditor.common.converter._
 
 trait ConcurrentDocument {
     def processRemoteOperation(m: Message[EditOperation])
@@ -34,8 +34,6 @@ class GuiActorFactory(private val doc: Documents) extends LocalClientActorFactor
 class GuiActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
-    // TODO INYECTAR
-    val opConverter = new DefaultRemoteOperationConverter
 
     override def act = {
         trace("Waiting for remote kernel actor registration")
@@ -70,12 +68,13 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     remoteKernelActor ! ToKernel(e)
                 }
 
-                case o: DocumentOperation => {
+                case o: RemoteDocumentOperation => {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else {
-                        // TODO factory
-                        val m = Message(opConverter.convert(o.payload.payload), o.payload.syncSatus.myMsgs, o.payload.syncSatus.otherMessages)
+                        // TODO inyectar
+                        val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
+                        val m = converter.convert(o.payload)
                         doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation m}
                     }
                 }

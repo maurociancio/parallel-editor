@@ -7,8 +7,8 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
-import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
-import ar.noxit.paralleleditor.common.Message
+import ar.noxit.paralleleditor.common.converter._
+import ar.noxit.paralleleditor.common.operation.DocumentOperation
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -17,10 +17,6 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private var listener: Actor = _
     private var gateway: Actor = _
     private var session: Session = _
-
-    // TODO inyectar
-    private val opConverter = new DefaultMessageConverter
-    private val msgConverter = new DefaultRemoteOperationConverter
 
     override def act = {
         trace("Starting")
@@ -80,14 +76,11 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     kernel ! SubscribeToDocumentRequest(session, title)
                 }
 
-                case DocumentOperation(docTitle, payload) => {
+                case RemoteDocumentOperation(docTitle, payload) => {
                     trace("remove operation received")
 
-                    // TODO extraer en factory
-                    val syncStatus = payload.syncSatus
-                    val remoteOp = payload.payload
-                    val op = msgConverter.convert(remoteOp)
-                    val message = Message(op, syncStatus.myMsgs, syncStatus.otherMessages)
+                    val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
+                    val message = converter.convert(payload)
 
                     docSessions.find {s => s.title == docTitle}.foreach {ds => ds applyChange message}
                 }
@@ -96,9 +89,10 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 case PublishOperation(title, m) => {
                     trace("operation received from document")
 
-                    // TODO FACTORY
-                    val converted = opConverter.convert(m.op)
-                    gateway ! DocumentOperation(title, SyncOperation(SyncStatus(m.myMsgs, m.otherMsgs), converted))
+                    // inyectar TODO
+                    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+                    val converted = converter.convert(new DocumentOperation(title, m))
+                    gateway ! converted
                 }
 
                 case TerminateActor() => {

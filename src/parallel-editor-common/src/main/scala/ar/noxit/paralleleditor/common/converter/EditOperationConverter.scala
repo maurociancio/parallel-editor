@@ -7,7 +7,7 @@ trait EditOperationConverter {
     def convert(e: EditOperation): RemoteOperation
 }
 
-class DefaultMessageConverter extends EditOperationConverter {
+class DefaultEditOperationConverter extends EditOperationConverter {
     override def convert(e: EditOperation) = {
         e match {
             case at: AddTextOperation => RemoteAddText(at.text, at.startPos, at.pword)

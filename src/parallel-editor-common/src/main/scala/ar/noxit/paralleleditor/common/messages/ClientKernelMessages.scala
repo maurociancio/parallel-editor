@@ -49,7 +49,7 @@ case class SyncOperation(val syncSatus: SyncStatus, val payload: RemoteOperation
 /**
  * Operacion sobre un determinado documento
  */
-case class DocumentOperation(val docTitle: String, val payload: SyncOperation) extends BaseRemoteMessage
+case class RemoteDocumentOperation(val docTitle: String, val payload: SyncOperation) extends BaseRemoteMessage
 
 
 
