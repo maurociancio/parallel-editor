@@ -38,7 +38,6 @@ class ConnectionPanel extends FlowPanel {
     }
 
     private def desconectar() {
-        //trace("disconnection requested")
         publish(DisconnectionRequest())
         enableControls(true)
     }

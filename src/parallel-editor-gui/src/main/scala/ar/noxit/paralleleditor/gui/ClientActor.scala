@@ -25,13 +25,13 @@ trait Documents {
     def createDocument(title: String, content: String)
 }
 
-class GuiActorFactory(private val doc: Documents) extends LocalClientActorFactory {
-    val guiActor = new GuiActor(doc)
+class InternalClientActorFactory(private val doc: Documents) extends LocalClientActorFactory {
+    val clientActor = new ClientActor(doc)
 
-    override def newLocalClientActor = guiActor
+    override def newLocalClientActor = clientActor
 }
 
-class GuiActor(private val doc: Documents) extends Actor with Loggable {
+class ClientActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
     // TODO inyectar

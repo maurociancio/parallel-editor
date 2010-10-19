@@ -7,11 +7,11 @@ import remotes.RemoteServerProxy
 class DefaultClientActorFactory extends ClientActorFactory {
     def newActor(host: String, port: Int, docs: Documents) = {
         val socket = new Socket(host, port)
-        val factory = new GuiActorFactory(docs)
+        val factory = new InternalClientActorFactory(docs)
 
         // TODO resolver el tema de la conexión, que se cierra on disconnect
         new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
-        factory.guiActor
+        factory.clientActor
     }
 }
