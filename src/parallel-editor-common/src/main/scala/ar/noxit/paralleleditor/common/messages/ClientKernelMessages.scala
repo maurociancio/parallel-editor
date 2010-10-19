@@ -28,6 +28,11 @@ case class RemoteAddText(val text: String, val startPos: Int, val pword: String)
 case class RemoteDeleteText(val startPos: Int, val size: Int) extends RemoteOperation
 
 /**
+ * Null operation
+ */
+case class RemoteNullOpText extends RemoteOperation
+
+/**
  * A nivel Sincronismo
  */
 
