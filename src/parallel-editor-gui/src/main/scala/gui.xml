@@ -4,6 +4,38 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <!--SPRING MAIN CLASS -->
     <bean class="ar.noxit.paralleleditor.gui.spring.SpringMain" scope="singleton">
+        <property name="mainWindow" ref="mainWindow"/>
     </bean>
+
+    <!--MAIN WINDOW-->
+    <bean id="mainWindow" class="ar.noxit.paralleleditor.gui.GUI">
+        <property name="remoteDocOpConverter" ref="remoteDocumentOperationConverter"/>
+        <property name="clientActorFactory" ref="clientActorFactory"/>
+    </bean>
+
+    <!--CLIENT ACTOR FACTORY-->
+    <bean id="clientActorFactory" class="ar.noxit.paralleleditor.gui.DefaultClientActorFactory"/>
+
+    <!--CONVERSORES-->
+    <bean id="editOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter"/>
+
+    <bean id="syncOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter">
+        <constructor-arg ref="editOperationConverter"/>
+    </bean>
+
+    <bean id="remoteDocumentOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationConverter">
+        <constructor-arg ref="syncOperationConverter"/>
+    </bean>
+
+    <bean id="messageConverter" class="ar.noxit.paralleleditor.common.converter.DefaultMessageConverter">
+        <constructor-arg ref="remoteOperationConverter"/>
+    </bean>
+
+    <bean id="remoteOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter"/>
 </beans>

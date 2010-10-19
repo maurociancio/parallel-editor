@@ -4,22 +4,22 @@ import scala.swing._
 import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
-import swing.TabbedPane.Page
 import ar.noxit.paralleleditor.common.converter._
+import reflect.BeanProperty
 
 trait ClientActorFactory {
     def newActor(host: String, port: Int, docs: Documents): Actor
 }
 
-object GUI extends SimpleSwingApplication with Loggable {
+class GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
     var connected = false
 
-    // TODO INYECTAR
-    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+    @BeanProperty
+    var remoteDocOpConverter: RemoteDocumentOperationConverter = _
 
-    // TODO inyectar
-    val clientActorFactory = new DefaultClientActorFactory
+    @BeanProperty
+    val clientActorFactory: ClientActorFactory = null
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"
@@ -56,7 +56,7 @@ object GUI extends SimpleSwingApplication with Loggable {
             }
             case OperationEvent(docOp) => {
                 if (connected) {
-                    actor ! converter.convert(docOp)
+                    actor ! remoteDocOpConverter.convert(docOp)
                 }
             }
 
