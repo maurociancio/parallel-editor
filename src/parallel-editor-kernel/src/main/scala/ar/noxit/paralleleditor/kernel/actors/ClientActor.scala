@@ -9,6 +9,7 @@ import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
 import ar.noxit.paralleleditor.common.converter._
 import ar.noxit.paralleleditor.common.operation.DocumentOperation
+import reflect.BeanProperty
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
@@ -17,6 +18,9 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private var listener: Actor = _
     private var gateway: Actor = _
     private var session: Session = _
+
+    @BeanProperty
+    var converter: RemoteDocumentOperationConverter = _
 
     override def act = {
         trace("Starting")
@@ -95,8 +99,6 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 case PublishOperation(title, m) => {
                     trace("operation received from document")
 
-                    // inyectar TODO
-                    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
                     val converted = converter.convert(new DocumentOperation(title, m))
                     gateway ! converted
                 }

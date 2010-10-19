@@ -10,6 +10,7 @@ import ar.noxit.paralleleditor.common.messages._
 import Assert._
 import ar.noxit.paralleleditor.common.remote.{NetworkActors, Peer}
 import scala.actors.{Future, Actor}
+import ar.noxit.paralleleditor.common.converter.{DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
 
 object NullPeer extends Peer {
     def disconnect = {}
@@ -18,9 +19,10 @@ object NullPeer extends Peer {
 @Test
 class KernelConnectionTest extends AssertionsForJUnit {
     var kernel: BasicKernel = _
-    var client: Actor = _
+    var client: ClientActor = _
     var ka: Actor = _
     var remoteEchoClient: Actor = _
+    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
 
     @Before
     def setUp: Unit = {
@@ -33,7 +35,9 @@ class KernelConnectionTest extends AssertionsForJUnit {
         }
         kernel = new BasicKernel
         ka = new KernelActor(kernel).start
-        client = new ClientActor(ka, NullPeer).start
+        client = new ClientActor(ka, NullPeer)
+        client.converter = converter
+        client.start
         client ! NetworkActors(remoteEchoClient, remoteEchoClient)
     }
 
@@ -68,7 +72,9 @@ class KernelConnectionTest extends AssertionsForJUnit {
 
     @Test
     def test2Clients: Unit = {
-        val client2 = new ClientActor(ka, NullPeer).start
+        val client2 = new ClientActor(ka, NullPeer)
+        client2.converter = converter
+        client2.start
 
         var docList: List[String] = null
 

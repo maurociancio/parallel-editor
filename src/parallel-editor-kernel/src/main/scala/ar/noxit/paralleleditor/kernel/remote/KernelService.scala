@@ -8,6 +8,7 @@ import ar.noxit.paralleleditor.kernel.Kernel
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.actors.{ClientActor, KernelActor}
 import ar.noxit.paralleleditor.common.remote.{Peer, PeerActorFactory}
+import ar.noxit.paralleleditor.common.converter.{DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
 
 /**
  * Actor que se encarga de escuchar conexiones entrantes y crear una representacion del cliente remoto
@@ -70,7 +71,14 @@ abstract class KernelService extends DaemonActor with Loggable {
 }
 
 class BasicClientActorFactory(private val kernel: Actor) extends PeerActorFactory {
-    override def newClientActor(client: Peer) = new ClientActor(kernel, client)
+    // TODO inyectar
+    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+
+    override def newClientActor(client: Peer) = {
+        val actor = new ClientActor(kernel, client)
+        actor.converter = converter
+        actor
+    }
 }
 
 class SocketKernelService(private val port: Int) extends KernelService {
