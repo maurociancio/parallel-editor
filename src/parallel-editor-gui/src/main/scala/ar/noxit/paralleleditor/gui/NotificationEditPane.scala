@@ -4,7 +4,7 @@ import javax.swing.event.{DocumentListener, DocumentEvent}
 import javax.swing.text.PlainDocument
 import swing.TextArea
 
-class NotificationEditPane(private val docTitle: String) extends TextArea {
+class NotificationEditPane extends TextArea {
     private var fireEvents = true
 
     private val doc = new PlainDocument {
@@ -19,13 +19,13 @@ class NotificationEditPane(private val docTitle: String) extends TextArea {
 
         def insertUpdate(e: DocumentEvent) {
             val newText = text.substring(e.getOffset, e.getOffset + e.getLength)
-            val ie = InsertionEvent(docTitle, e.getOffset, newText)
+            val ie = InsertionEvent(e.getOffset, newText)
 
             publicar(ie)
         }
 
         def removeUpdate(e: DocumentEvent) {
-            val de = DeletionEvent(docTitle, e.getOffset, e.getLength)
+            val de = DeletionEvent(e.getOffset, e.getLength)
             publicar(de)
         }
     })

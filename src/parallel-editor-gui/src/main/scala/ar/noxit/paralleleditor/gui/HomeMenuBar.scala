@@ -9,17 +9,7 @@ class HomeMenuBar extends MenuBar with Loggable {
     val newDoc = new MenuItem("Nuevo")
     val fileMenu = new Menu("Documento") {
         contents += newDoc
-        //        contents += new MenuItem("Guardar")
-        //        contents += new MenuItem("Guardar Como")
-        //        contents += new MenuItem("Salir")
     }
-
-    //    val editMenu = new Menu("Edicion") {
-    //        contents += new MenuItem("Copiar")
-    //        contents += new MenuItem("Cortar")
-    //        contents += new MenuItem("Pegar")
-    //        contents += new MenuItem("Buscar...")
-    //    }
 
     val docList = new MenuItem("Listado de documentos")
     val verMenu = new Menu("Ver") {
@@ -56,13 +46,13 @@ class HomeMenuBar extends MenuBar with Loggable {
     }
 
     this.contents += fileMenu
-    //    this.contents += editMenu
     this.contents += verMenu
 
     def changeDocList(l: List[String]) {
         trace("changeDocList %s", l)
 
-        docListFrame.changeDocList(l)
+        if (docListFrame != null)
+            docListFrame.changeDocList(l)
     }
 }
 

@@ -1,13 +1,13 @@
 package ar.noxit.paralleleditor.gui
 
-import remotes.LocalClientActorFactory
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.remote.TerminateActor
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter
 import ar.noxit.paralleleditor.common.Message
+import ar.noxit.paralleleditor.common.converter._
+import reflect.BeanProperty
 
 trait ConcurrentDocument {
     def processRemoteOperation(m: Message[EditOperation])
@@ -25,17 +25,12 @@ trait Documents {
     def createDocument(title: String, content: String)
 }
 
-class GuiActorFactory(private val doc: Documents) extends LocalClientActorFactory {
-    val guiActor = new GuiActor(doc)
-
-    override def newLocalClientActor = guiActor
-}
-
-class GuiActor(private val doc: Documents) extends Actor with Loggable {
+class ClientActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
-    // TODO INYECTAR
-    val opConverter = new DefaultRemoteOperationConverter
+
+    @BeanProperty
+    var converter: MessageConverter = _
 
     override def act = {
         trace("Waiting for remote kernel actor registration")
@@ -70,11 +65,11 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     remoteKernelActor ! ToKernel(e)
                 }
 
-                case o: RemoteOperation => {
+                case o: RemoteDocumentOperation => {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else {
-                        val m = Message(opConverter convert o, o.syncStatus.myMsgs, o.syncStatus.otherMessages)
+                        val m = converter.convert(o.payload)
                         doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation m}
                     }
                 }

@@ -22,7 +22,7 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
                 case ProcessOperation(who, m) => {
                     trace("Operation Received %s", m)
 
-                    // TODO capturas excepciones
+                    // TODO capturar excepciones
                     syncs(who).receiveMsg(m, op => {
                         op.executeOn(document)
                         println("DOC: \n" + document.data)

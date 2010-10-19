@@ -66,9 +66,12 @@ abstract class BasePeerProxy(private val networkConnection: NetworkConnection,
     protected def newClient(): Actor
 
     override def disconnect = {
-        clientActor ! TerminateActor()
-        gateway ! TerminateActor()
-        networkListener ! TerminateActor()
+        if (clientActor != null)
+            clientActor ! TerminateActor()
+        if (gateway != null)
+            gateway ! TerminateActor()
+        if (networkListener != null)
+            networkListener ! TerminateActor()
 
         networkConnection.close
         disconnectCallback.disconnect(this)
