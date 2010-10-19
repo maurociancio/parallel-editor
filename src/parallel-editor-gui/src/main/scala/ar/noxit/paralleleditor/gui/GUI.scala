@@ -8,7 +8,6 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages._
 import swing.TabbedPane.Page
-import ar.noxit.paralleleditor.common.operation.DocumentOperation
 import ar.noxit.paralleleditor.common.converter._
 
 class DocumentsAdapter(private val tabs: TabbedPane,
@@ -31,6 +30,9 @@ class DocumentsAdapter(private val tabs: TabbedPane,
 object GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
     var connected = false
+
+    // TODO INYECTAR
+    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"
@@ -69,12 +71,9 @@ object GUI extends SimpleSwingApplication with Loggable {
                 if (connected)
                     actor ! Logout()
             }
-            case OperationEvent(title, msg) => {
+            case OperationEvent(docOp) => {
                 if (connected) {
-                    // TODO inyectar convertidor
-                    // TODO recibir un DocOp
-                    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
-                    actor ! converter.convert(new DocumentOperation(title, msg))
+                    actor ! converter.convert(docOp)
                 }
             }
 

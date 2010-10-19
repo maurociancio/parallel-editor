@@ -34,6 +34,8 @@ class GuiActorFactory(private val doc: Documents) extends LocalClientActorFactor
 class GuiActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
+    // TODO inyectar
+    val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
 
     override def act = {
         trace("Waiting for remote kernel actor registration")
@@ -72,8 +74,6 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else {
-                        // TODO inyectar
-                        val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
                         val m = converter.convert(o.payload)
                         doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation m}
                     }
