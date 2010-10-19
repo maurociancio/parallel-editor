@@ -11,6 +11,7 @@ import ar.noxit.paralleleditor.gui.{RegisterRemoteActor, FromKernel, ToKernel}
 trait LocalClientActorFactory {
 
     def newLocalClientActor: Actor
+    var clientActor: Actor
 }
 
 object NullDisconnectablePeer extends DisconnectablePeer {

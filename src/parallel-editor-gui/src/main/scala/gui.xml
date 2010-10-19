@@ -18,6 +18,15 @@
     <!--CLIENT ACTOR FACTORY-->
     <bean id="clientActorFactory" class="ar.noxit.paralleleditor.gui.DefaultClientActorFactory"/>
 
+    <!--INTERNAL CLIENT ACTOR FACTORY-->
+    <bean id="internalClientActorFactory" class="ar.noxit.paralleleditor.gui.internal.InternalClientActorFactory"
+          scope="prototype"/>
+
+    <!--CLIENT ACTOR-->
+    <bean id="clientActor" class="ar.noxit.paralleleditor.gui.ClientActor" scope="prototype">
+        <property name="converter" ref="messageConverter"/>
+    </bean>
+
     <!--CONVERSORES-->
     <bean id="editOperationConverter"
           class="ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter"/>

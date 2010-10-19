@@ -19,7 +19,7 @@ class GUI extends SimpleSwingApplication with Loggable {
     var remoteDocOpConverter: RemoteDocumentOperationConverter = _
 
     @BeanProperty
-    val clientActorFactory: ClientActorFactory = null
+    var clientActorFactory: ClientActorFactory = null
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"

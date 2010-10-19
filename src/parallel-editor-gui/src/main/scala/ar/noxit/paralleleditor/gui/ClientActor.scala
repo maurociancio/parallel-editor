@@ -1,6 +1,5 @@
 package ar.noxit.paralleleditor.gui
 
-import remotes.LocalClientActorFactory
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.remote.TerminateActor
@@ -8,6 +7,7 @@ import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.operation.EditOperation
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.converter._
+import reflect.BeanProperty
 
 trait ConcurrentDocument {
     def processRemoteOperation(m: Message[EditOperation])
@@ -25,17 +25,12 @@ trait Documents {
     def createDocument(title: String, content: String)
 }
 
-class InternalClientActorFactory(private val doc: Documents) extends LocalClientActorFactory {
-    val clientActor = new ClientActor(doc)
-
-    override def newLocalClientActor = clientActor
-}
-
 class ClientActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
     var remoteKernelActor: Actor = _
-    // TODO inyectar
-    val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
+
+    @BeanProperty
+    var converter: MessageConverter = _
 
     override def act = {
         trace("Waiting for remote kernel actor registration")
