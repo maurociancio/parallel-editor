@@ -7,10 +7,10 @@ import scala.actors.Actor
 
 class KernelActor(val kernel: Kernel) extends Actor with Loggable {
     def act = {
-        var exit = false
         info("Started")
 
-        loopWhile(!exit) {
+        // TODO hacer que salga
+        loop {
             trace("Choosing")
             react {
                 case LoginRequest(username) => {
