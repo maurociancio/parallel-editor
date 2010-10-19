@@ -3,16 +3,20 @@ package ar.noxit.paralleleditor.kernel.basic
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.kernel.Session
-import ar.noxit.paralleleditor.common.{Message, BasicXFormStrategy, EditOperationJupiterSynchronizer}
+import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import sync.SynchronizerAdapter
 
 trait Synchronizer {
     def generate(op: EditOperation, send: Message[EditOperation] => Unit)
+
     def receive(message: Message[EditOperation], apply: EditOperation => Unit)
 }
 
-class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with Loggable {
+trait SynchronizerFactory {
+    def newSynchronizer: Synchronizer
+}
+
+class BasicDocumentActor(val document: BasicDocument, val syncFactory: SynchronizerFactory) extends DocumentActor with Loggable {
     var syncs = Map[Session, Synchronizer]()
 
     // TODO inyectar
@@ -72,8 +76,7 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
         }
     }
 
-    protected def newSynchronizer: Synchronizer =
-        new SynchronizerAdapter(new EditOperationJupiterSynchronizer(new BasicXFormStrategy))
+    protected def newSynchronizer: Synchronizer = syncFactory.newSynchronizer
 
     protected def removeSession(who: Session) {
         syncs = syncs - who

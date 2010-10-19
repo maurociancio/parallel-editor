@@ -6,6 +6,7 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import docsession.BasicDocumentSessionFactory
 import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
+import sync.SynchronizerAdapterFactory
 
 class BasicKernel extends Kernel with Loggable {
     val timeout = 5000
@@ -42,7 +43,7 @@ class BasicKernel extends Kernel with Loggable {
         val doc = new BasicDocument(title, initialContent, docSessionFactory)
 
         // create a document actor
-        val actor = new BasicDocumentActor(doc)
+        val actor = new BasicDocumentActor(doc, newSyncFactory)
 
         // set the document actor to the session factory
         docSessionFactory.docActor = actor
@@ -52,6 +53,8 @@ class BasicKernel extends Kernel with Loggable {
 
         actor
     }
+
+    protected def newSyncFactory: SynchronizerFactory = new SynchronizerAdapterFactory
 
     override def documentList = documents.map {_.title}
 

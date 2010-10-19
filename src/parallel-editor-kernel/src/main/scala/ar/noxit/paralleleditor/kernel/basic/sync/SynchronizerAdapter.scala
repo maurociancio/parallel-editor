@@ -1,8 +1,13 @@
 package ar.noxit.paralleleditor.kernel.basic.sync
 
-import ar.noxit.paralleleditor.kernel.basic.Synchronizer
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import ar.noxit.paralleleditor.common.{JupiterSynchronizer, Message}
+import ar.noxit.paralleleditor.common.{EditOperationJupiterSynchronizer, BasicXFormStrategy, JupiterSynchronizer, Message}
+import ar.noxit.paralleleditor.kernel.basic.{SynchronizerFactory, Synchronizer}
+
+class SynchronizerAdapterFactory extends SynchronizerFactory {
+    def newSynchronizer: Synchronizer =
+        new SynchronizerAdapter(new EditOperationJupiterSynchronizer(new BasicXFormStrategy))
+}
 
 class SynchronizerAdapter(val sync: JupiterSynchronizer[EditOperation]) extends Synchronizer {
     def receive(message: Message[EditOperation], apply: (EditOperation) => Unit) =
