@@ -3,11 +3,17 @@ package ar.noxit.paralleleditor.kernel.basic
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.kernel.Session
-import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
+import ar.noxit.paralleleditor.common.{Message, BasicXFormStrategy, EditOperationJupiterSynchronizer}
+import ar.noxit.paralleleditor.common.operation.EditOperation
+import sync.SynchronizerAdapter
+
+trait Synchronizer {
+    def generate(op: EditOperation, send: Message[EditOperation] => Unit)
+    def receive(message: Message[EditOperation], apply: EditOperation => Unit)
+}
 
 class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with Loggable {
-    // TODO inyectar
-    var syncs = Map[Session, EditOperationJupiterSynchronizer]()
+    var syncs = Map[Session, Synchronizer]()
 
     // TODO inyectar
     private val timeout = 5000
@@ -46,7 +52,7 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
                     val docSession = document subscribe who
                     val content = document.data
 
-                    syncs = syncs + ((who, new EditOperationJupiterSynchronizer(new BasicXFormStrategy)))
+                    syncs = syncs + ((who, newSynchronizer))
 
                     who notifyUpdate SubscriptionResponse(docSession, content)
                 }
@@ -65,6 +71,9 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
             }
         }
     }
+
+    protected def newSynchronizer: Synchronizer =
+        new SynchronizerAdapter(new EditOperationJupiterSynchronizer(new BasicXFormStrategy))
 
     protected def removeSession(who: Session) {
         syncs = syncs - who
