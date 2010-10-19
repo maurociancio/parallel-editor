@@ -23,12 +23,12 @@ class BasicDocumentActor(val document: BasicDocument) extends DocumentActor with
                     trace("Operation Received %s", m)
 
                     // TODO capturar excepciones
-                    syncs(who).receiveMsg(m, op => {
+                    syncs(who).receive(m, op => {
                         op.executeOn(document)
                         println("DOC: \n" + document.data)
 
                         syncs.keySet.filter {s => s != who}.foreach(s => {
-                            syncs(s).generateMsg(op, m => {
+                            syncs(s).generate(op, m => {
                                 s.notifyUpdate(PublishOperation(title, m))
                             })
                         })

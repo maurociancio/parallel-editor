@@ -34,7 +34,7 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
     /**
      * La operación ya fue aplicada antes de llamarse a este método
      */
-    def generateMsg(op: Op, send: Message[Op] => Unit) {
+    def generate(op: Op, send: Message[Op] => Unit) {
         trace("Generating message")
 
         // enviar mensaje a la otra parte
@@ -46,7 +46,7 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         trace("estado actual %d %d", _myMsgs, _otherMsgs)
     }
 
-    def receiveMsg(message: Message[Op], apply: Op => Unit) {
+    def receive(message: Message[Op], apply: Op => Unit) {
         trace("Message received " + message)
 
         // filtro mensajes anteriores al recibido (acknowledged messages)

@@ -37,7 +37,7 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
                 case DeletionEvent(pos, count) => new DeleteTextOperation(pos, count)
             }
 
-            sync.generateMsg(op, {
+            sync.generate(op, {
                 msg =>
                     val docOp = new DocumentOperation(docTitle, msg)
                     publish(OperationEvent(docOp))
@@ -52,7 +52,7 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
 
     def processRemoteOperation(m: Message[EditOperation]) {
         SwingUtil.invokeLater {
-            sync.receiveMsg(m, {op => processOperation(op)})
+            sync.receive(m, {op => processOperation(op)})
         }
     }
 

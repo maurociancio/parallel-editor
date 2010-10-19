@@ -11,7 +11,7 @@ class JupiterTest extends AssertionsForJUnit {
 
     def applyAndGenerate(applyClient: (EditOperation) => Unit, o: EditOperation, js: EditOperationJupiterSynchronizer) {
         applyClient(o)
-        js.generateMsg(o, op => {})
+        js.generate(o, op => {})
     }
 
     @Test
@@ -24,9 +24,9 @@ class JupiterTest extends AssertionsForJUnit {
         applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
         assertEquals(ctext.data, "HOLAabcdefg")
 
-        js.receiveMsg(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
+        js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
-        js.receiveMsg(Message(new AddTextOperation("CAT", 10), 1, 0), applyClient)
+        js.receive(Message(new AddTextOperation("CAT", 10), 1, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefgCAT")
     }
 
@@ -40,9 +40,9 @@ class JupiterTest extends AssertionsForJUnit {
         applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
         assertEquals(ctext.data, "HOLAabcdefg")
 
-        js.receiveMsg(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
+        js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
-        js.receiveMsg(Message(new DeleteTextOperation(7, 3), 1, 0), applyClient)
+        js.receive(Message(new DeleteTextOperation(7, 3), 1, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcd")
     }
 
@@ -56,9 +56,9 @@ class JupiterTest extends AssertionsForJUnit {
         applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
         assertEquals(ctext.data, "HOLAabcdefg")
 
-        js.receiveMsg(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
+        js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
-        js.receiveMsg(Message(new DeleteTextOperation(0, 10), 1, 0), applyClient)
+        js.receive(Message(new DeleteTextOperation(0, 10), 1, 0), applyClient)
         assertEquals(ctext.data, "HOLA")
     }
 

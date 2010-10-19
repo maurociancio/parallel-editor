@@ -40,7 +40,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
         var m1: Message[EditOperation] = null
         val c1o1 = new AddTextOperation("a", 0)
         c1o1.executeOn(c1Doc)
-        c1.generateMsg(c1o1, {m => m1 = m})
+        c1.generate(c1o1, {m => m1 = m})
 
         Assert.assertEquals(c1Doc.data, "a")
 
@@ -48,36 +48,36 @@ class MultipleSyncTest extends AssertionsForJUnit {
         var m2: Message[EditOperation] = null
         val c2o1 = new AddTextOperation("b", 0)
         c2o1.executeOn(c2Doc)
-        c2.generateMsg(c2o1, {m => m2 = m})
+        c2.generate(c2o1, {m => m2 = m})
 
         Assert.assertEquals(c2Doc.data, "b")
 
         // server recibe de c1
         var m1Server: Message[EditOperation] = null
-        s1.receiveMsg(m1, {
+        s1.receive(m1, {
             op =>
                 op.executeOn(serverDoc)
-                s2.generateMsg(op, {m => m1Server = m})
+                s2.generate(op, {m => m1Server = m})
         })
 
         Assert.assertEquals(serverDoc.data, "a")
 
         // server recibe de c2
         var m2Server: Message[EditOperation] = null
-        s2.receiveMsg(m2, {
+        s2.receive(m2, {
             op =>
                 op.executeOn(serverDoc)
-                s1.generateMsg(op, {m => m2Server = m})
+                s1.generate(op, {m => m2Server = m})
         })
 
         Assert.assertEquals(serverDoc.data, "ab")
 
         // server propaga al c1
-        c1.receiveMsg(m2Server, {op => op.executeOn(c1Doc)})
+        c1.receive(m2Server, {op => op.executeOn(c1Doc)})
         Assert.assertEquals(c1Doc.data, "ab")
 
         // server propaga al c2
-        c2.receiveMsg(m1Server, {op => op.executeOn(c2Doc)})
+        c2.receive(m1Server, {op => op.executeOn(c2Doc)})
         Assert.assertEquals(c2Doc.data, "ab")
     }
 
@@ -111,21 +111,21 @@ class MultipleSyncTest extends AssertionsForJUnit {
         // hasta aqui, todas las operaciones aplicadas a sus respectivos documentos locales
         // cada cliente empieza a broadcastear la operacion
         var op1Transmitida: Message[EditOperation] = null
-        c1.generateMsg(op1, {m => op1Transmitida = m})
+        c1.generate(op1, {m => op1Transmitida = m})
         Assert.assertEquals(0, op1Transmitida.myMsgs)
         Assert.assertEquals(0, op1Transmitida.otherMsgs)
         Assert.assertEquals(1, c1.myMsgs)
         Assert.assertEquals(0, c1.otherMsgs)
 
         var op2Transmitida: Message[EditOperation] = null
-        c2.generateMsg(op2, {m => op2Transmitida = m})
+        c2.generate(op2, {m => op2Transmitida = m})
         Assert.assertEquals(0, op2Transmitida.myMsgs)
         Assert.assertEquals(0, op2Transmitida.otherMsgs)
         Assert.assertEquals(1, c2.myMsgs)
         Assert.assertEquals(0, c2.otherMsgs)
 
         var op3Transmitida: Message[EditOperation] = null
-        c3.generateMsg(op3, {m => op3Transmitida = m})
+        c3.generate(op3, {m => op3Transmitida = m})
         Assert.assertEquals(0, op3Transmitida.myMsgs)
         Assert.assertEquals(0, op3Transmitida.otherMsgs)
         Assert.assertEquals(1, c3.myMsgs)
@@ -140,10 +140,10 @@ class MultipleSyncTest extends AssertionsForJUnit {
         var op2toClient1: Message[EditOperation] = null
         // retransmision hacia el cliente 3 de la operacion 2
         var op2toClient3: Message[EditOperation] = null
-        s2.receiveMsg(op2Transmitida, {
+        s2.receive(op2Transmitida, {
             op => op.executeOn(serverDoc)
-            s1.generateMsg(op, {m => op2toClient1 = m})
-            s3.generateMsg(op, {m => op2toClient3 = m})
+            s1.generate(op, {m => op2toClient1 = m})
+            s3.generate(op, {m => op2toClient3 = m})
         })
         Assert.assertEquals("coe", serverDoc.data)
 
@@ -161,7 +161,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals(0, s3.otherMsgs)
 
         // cliente 3 recibe la operacion 2 retransmitida por su sync del lado del server
-        c3.receiveMsg(op2toClient3, {op => op.executeOn(c3Doc)})
+        c3.receive(op2toClient3, {op => op.executeOn(c3Doc)})
         Assert.assertEquals("cofe", c3Doc.data)
         Assert.assertEquals(1, c3.myMsgs)
         Assert.assertEquals(1, c3.otherMsgs)
@@ -176,10 +176,10 @@ class MultipleSyncTest extends AssertionsForJUnit {
         var op1toClient2: Message[EditOperation] = null
         // retransmision hacia el cliente 3 de la operacion 1
         var op1toClient3: Message[EditOperation] = null
-        s1.receiveMsg(op1Transmitida, {
+        s1.receive(op1Transmitida, {
             op => op.executeOn(serverDoc)
-            s2.generateMsg(op, {m => op1toClient2 = m})
-            s3.generateMsg(op, {m => op1toClient3 = m})
+            s2.generate(op, {m => op1toClient2 = m})
+            s3.generate(op, {m => op1toClient3 = m})
         })
         Assert.assertEquals("cofe", serverDoc.data)
 
@@ -197,24 +197,24 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals(0, s3.otherMsgs)
 
         // el cliente 3 reciba la operacion 1 retransmitida por su sync del lado del server
-        c3.receiveMsg(op1toClient3, {op => op.executeOn(c3Doc)})
+        c3.receive(op1toClient3, {op => op.executeOn(c3Doc)})
         Assert.assertEquals("coffe", c3Doc.data)
 
 
         // el sync del cliente 3 del lado del server recibe la operación 3
         var op3toClient2: Message[EditOperation] = null
-        s3.receiveMsg(op3Transmitida, {
+        s3.receive(op3Transmitida, {
             op => op.executeOn(serverDoc)
-            s2.generateMsg(op, {m => op3toClient2 = m})
+            s2.generate(op, {m => op3toClient2 = m})
         })
         Assert.assertEquals("coffe", serverDoc.data)
 
         // el cliente 2 recibe la operacion 3 transformada desde el server
-        c2.receiveMsg(op3toClient2, {op => op.executeOn(c2Doc)})
+        c2.receive(op3toClient2, {op => op.executeOn(c2Doc)})
         Assert.assertEquals("cofe", c2Doc.data)
 
         // el cliente 2 recibe la operacion 1 transformada desde el server
-        c2.receiveMsg(op1toClient2, {op => op.executeOn(c2Doc)})
+        c2.receive(op1toClient2, {op => op.executeOn(c2Doc)})
         Assert.assertEquals("coffe", c2Doc.data)
     }
 
@@ -249,7 +249,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC1 + i)
             op.executeOn(c1Doc)
 
-            c1.generateMsg(op, {msg => colaC1 += msg})
+            c1.generate(op, {msg => colaC1 += msg})
         }
 
         Assert.assertEquals("\n\nescribi", c1Doc.data)
@@ -263,7 +263,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC2 + i)
             op.executeOn(c2Doc)
 
-            c2.generateMsg(op, {msg => colaC2 += msg})
+            c2.generate(op, {msg => colaC2 += msg})
         }
 
         Assert.assertEquals("E STO E\n\n", c2Doc.data)
@@ -276,14 +276,14 @@ class MultipleSyncTest extends AssertionsForJUnit {
             println(i)
             println(serverDoc.data)
 
-            s1.receiveMsg(colaC1.dequeue, {
+            s1.receive(colaC1.dequeue, {
                 op => op.executeOn(serverDoc)
-                s2.generateMsg(op, {msg =>})
+                s2.generate(op, {msg =>})
             })
 
-            s2.receiveMsg(colaC2.dequeue, {
+            s2.receive(colaC2.dequeue, {
                 op => op.executeOn(serverDoc)
-                s1.generateMsg(op, {msg =>})
+                s1.generate(op, {msg =>})
             })
         }
 
