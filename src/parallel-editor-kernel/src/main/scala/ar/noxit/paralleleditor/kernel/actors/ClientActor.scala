@@ -80,18 +80,25 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     kernel ! SubscribeToDocumentRequest(session, title)
                 }
 
-                case r: RemoteOperation => {
+                case DocumentOperation(docTitle, payload) => {
                     trace("remove operation received")
-                    val op = msgConverter.convert(r)
-                    // FIX
-                    docSessions.find {s => s.title == r.docTitle}.foreach {docSession => docSession applyChange (Message(op, r.syncStatus.myMsgs, r.syncStatus.otherMessages))}
+
+                    // TODO extraer en factory
+                    val syncStatus = payload.syncSatus
+                    val remoteOp = payload.payload
+                    val op = msgConverter.convert(remoteOp)
+                    val message = Message(op, syncStatus.myMsgs, syncStatus.otherMessages)
+
+                    docSessions.find {s => s.title == docTitle}.foreach {ds => ds applyChange message}
                 }
 
                 // estos mensajes vienen de los documentos y se deben propagar al cliente
                 case PublishOperation(title, m) => {
                     trace("operation received from document")
 
-                    gateway ! opConverter.convert(title, m.myMsgs, m.otherMsgs, m.op)
+                    // TODO FACTORY
+                    val converted = opConverter.convert(m.op)
+                    gateway ! DocumentOperation(title, SyncOperation(SyncStatus(m.myMsgs, m.otherMsgs), converted))
                 }
 
                 case TerminateActor() => {

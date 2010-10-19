@@ -9,6 +9,7 @@ import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.messages._
 import swing.TabbedPane.Page
 import ar.noxit.paralleleditor.common.operation.{DeleteTextOperation, AddTextOperation}
+import ar.noxit.paralleleditor.common.converter.DefaultMessageConverter
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
@@ -69,11 +70,13 @@ object GUI extends SimpleSwingApplication with Loggable {
                     actor ! Logout()
             }
             case OperationEvent(title, msg) => {
-                if (connected)
-                    msg.op match {
-                        case at: AddTextOperation => actor ! RemoteAddText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.text, at.startPos, at.pword)
-                        case at: DeleteTextOperation => actor ! RemoteDeleteText(title, SyncStatus(msg.myMsgs, msg.otherMsgs), at.startPos, at.size)
-                    }
+                if (connected){
+                    // TODO factory
+                    
+                    val converter = new DefaultMessageConverter
+                    val op = converter.convert(msg.op)
+                    actor ! DocumentOperation(title, SyncOperation(SyncStatus(msg.myMsgs, msg.otherMsgs), op))
+                }
             }
 
             case DocumentListRequest() => {

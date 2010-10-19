@@ -8,31 +8,50 @@ import scala.serializable
 @serializable
 abstract case class BaseRemoteMessage
 
-@serializable
-case class SyncStatus(val myMsgs: Int, val otherMessages: Int)
+/**
+ * Nivel documento
+ */
 
 /**
  * Clase base para las operaciones sobre documentos
  */
-abstract case class RemoteOperation(val docTitle: String, val syncStatus: SyncStatus) extends BaseRemoteMessage
+abstract case class RemoteOperation extends BaseRemoteMessage
 
 /**
  * Agregar texto
  */
-case class RemoteAddText(override val docTitle: String, override val syncStatus: SyncStatus, val text: String, val startPos: Int, val pword: String)
-        extends RemoteOperation(docTitle, syncStatus)
+case class RemoteAddText(val text: String, val startPos: Int, val pword: String) extends RemoteOperation
 
 /**
  * Borrar texto
  */
-case class RemoteDeleteText(override val docTitle: String, override val syncStatus: SyncStatus, val startPos: Int, val size: Int)
-        extends RemoteOperation(docTitle, syncStatus)
+case class RemoteDeleteText(val startPos: Int, val size: Int) extends RemoteOperation
 
 /**
- * Composite operation
+ * A nivel Sincronismo
  */
-case class CompositeRemoteOperation(override val docTitle: String, override val syncStatus: SyncStatus, val ops: RemoteOperation*)
-        extends RemoteOperation(docTitle, syncStatus)
+
+/**
+ * información de sincronización del documento
+ */
+@serializable
+case class SyncStatus(val myMsgs: Int, val otherMessages: Int)
+
+/**
+ * Sincronizar operaciones
+ */
+case class SyncOperation(val syncSatus: SyncStatus, val payload: RemoteOperation) extends BaseRemoteMessage
+
+/**
+ * A nivel kernel
+ */
+
+/**
+ * Operacion sobre un determinado documento
+ */
+case class DocumentOperation(val docTitle: String, val payload: SyncOperation) extends BaseRemoteMessage
+
+
 
 /**
  * Pide un nuevo documento

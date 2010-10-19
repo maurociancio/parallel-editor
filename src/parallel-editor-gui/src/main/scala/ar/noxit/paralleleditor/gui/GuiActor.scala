@@ -70,11 +70,12 @@ class GuiActor(private val doc: Documents) extends Actor with Loggable {
                     remoteKernelActor ! ToKernel(e)
                 }
 
-                case o: RemoteOperation => {
+                case o: DocumentOperation => {
                     if (sender != remoteKernelActor)
                         remoteKernelActor ! ToKernel(o)
                     else {
-                        val m = Message(opConverter convert o, o.syncStatus.myMsgs, o.syncStatus.otherMessages)
+                        // TODO factory
+                        val m = Message(opConverter.convert(o.payload.payload), o.payload.syncSatus.myMsgs, o.payload.syncSatus.otherMessages)
                         doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation m}
                     }
                 }
