@@ -275,12 +275,12 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
     @Test
     def testEscribirTextoLineasDistintas: Unit = {
-        val c1Doc = docFromText("\n\n")
-        val c2Doc = docFromText("\n\n")
-        val serverDoc = docFromText("\n\n")
+        val c1Doc = docFromText("--")
+        val c2Doc = docFromText("--")
+        val serverDoc = docFromText("--")
 
         val textClient1 = "escribiendo en letras minusculas"
-        val textClient2 = "E STO ES UNA PRUEBA EN MAYUSCULA"
+        val textClient2 = "ABCDEFGS UNA PRUEBA EN MAYUSCULA"
 
         // usamos frases de misma longitud
         Assert.assertEquals(textClient1.size, textClient2.size)
@@ -300,9 +300,9 @@ class MultipleSyncTest extends AssertionsForJUnit {
             })
         }
 
-        Assert.assertEquals("\n\nescribi", c1Doc.data)
+        Assert.assertEquals("--escribi", c1Doc.data)
 
-        // el cliente 2 escribe "E STO E" al inicio del doc
+        // el cliente 2 escribe "ABCDEFG" al inicio del doc
         val colaC2 = Queue[Message[EditOperation]]()
         val startPosC2 = 0
         for (i <- 0 until 7) {
@@ -316,8 +316,11 @@ class MultipleSyncTest extends AssertionsForJUnit {
             })
         }
 
-        Assert.assertEquals("E STO E\n\n", c2Doc.data)
+        Assert.assertEquals("ABCDEFG--", c2Doc.data)
 
+
+        val colaACliente1 = Queue[Message[EditOperation]]()
+        val colaACliente2 = Queue[Message[EditOperation]]()
 
         // los sync del server comienzan a recibir los msgs
         (0 until List(colaC1.size, colaC2.size).min).foreach {
@@ -329,19 +332,33 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 s1.receiveMsg(colaC1.dequeue, {
                     op => op.executeOn(serverDoc)
                     s2.generateMsg(op, {
-                        msg =>
+                        msg => colaACliente2 += msg
                     })
                 })
 
                 s2.receiveMsg(colaC2.dequeue, {
                     op => op.executeOn(serverDoc)
                     s1.generateMsg(op, {
-                        msg =>
+                        msg => colaACliente1 += msg
                     })
                 })
         }
 
-        Assert.assertEquals("E STO E\n\nescribi", serverDoc.data)
+        Assert.assertEquals("ABCDEFG--escribi", serverDoc.data)
+
+        colaACliente1.foreach {
+            m => c1.receiveMsg(m, {
+                op => op.executeOn(c1Doc)
+            })
+        }
+        colaACliente2.foreach {
+            m => c2.receiveMsg(m, {
+                op => op.executeOn(c2Doc)
+            })
+        }
+
+        Assert.assertEquals("ABCDEFG--escribi", c1Doc.data)
+        Assert.assertEquals("ABCDEFG--escribi", c2Doc.data)
     }
 
     @Test
