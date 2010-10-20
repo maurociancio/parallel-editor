@@ -319,6 +319,9 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals("E STO E\n\n", c2Doc.data)
 
 
+        val colaACliente1 = Queue[Message[EditOperation]]()
+        val colaACliente2 = Queue[Message[EditOperation]]()
+
         // los sync del server comienzan a recibir los msgs
         (0 until List(colaC1.size, colaC2.size).min).foreach {
 
@@ -329,19 +332,33 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 s1.receiveMsg(colaC1.dequeue, {
                     op => op.executeOn(serverDoc)
                     s2.generateMsg(op, {
-                        msg =>
+                        msg => colaACliente2 += msg
                     })
                 })
 
                 s2.receiveMsg(colaC2.dequeue, {
                     op => op.executeOn(serverDoc)
                     s1.generateMsg(op, {
-                        msg =>
+                        msg => colaACliente1 += msg
                     })
                 })
         }
 
         Assert.assertEquals("E STO E\n\nescribi", serverDoc.data)
+
+        colaACliente1.foreach {
+            m => c1.receiveMsg(m, {
+                op => op.executeOn(c1Doc)
+            })
+        }
+        colaACliente2.foreach {
+            m => c2.receiveMsg(m, {
+                op => op.executeOn(c2Doc)
+            })
+        }
+
+        Assert.assertEquals("E STO E\n\nescribi", c1Doc.data)
+        Assert.assertEquals("E STO E\n\nescribi", c2Doc.data)
     }
 
     @Test
