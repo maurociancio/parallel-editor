@@ -80,13 +80,11 @@ class BasicXFormStrategy extends XFormStrategy {
     protected def xform(c: AddTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
         val deletionRange = getRangeFor(s)
         val exclusiveDeletionRange = (deletionRange slice (1, deletionRange.size - 1))
-        val insertionRange = c.startPos to (c.startPos + c.text.length)
 
         if (exclusiveDeletionRange contains c.startPos) {
             // el rango de borrado incluye a la posicion de insercion
-            val endPos = s.startPos + s.size + insertionRange.size - 1
-
-            (new NullOperation(), new DeleteTextOperation(s.startPos, endPos - s.startPos))
+            val count =  s.size + c.text.length
+            (new NullOperation(), new DeleteTextOperation(s.startPos, count))
         } else {
             //  el punto de insercion no esta dentro del rango de borrado
             if (c.startPos <= s.startPos)
