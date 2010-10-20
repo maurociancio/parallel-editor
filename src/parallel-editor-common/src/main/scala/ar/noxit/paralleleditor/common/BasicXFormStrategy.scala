@@ -40,13 +40,13 @@ class BasicXFormStrategy extends XFormStrategy {
         val c2 = s.text
         val w1 = c.pword
 
-        val alfa1 = pw(c).getOrElse(p1)
-        val alfa2 = pw(s).getOrElse(p2)
+        val alfa1:String = pw(c).getOrElse(p1.toString)
+        val alfa2:String = pw(s).getOrElse(p2.toString)
 
         if (alfa1 < alfa2 || (alfa1 == alfa2 && c1 < c2)) {
             c
         } else if (alfa1 > alfa2 || (alfa1 == alfa2 && c1 > c2)) {
-            new AddTextOperation(c1, p1 + c2.length, p1.toString + w1)
+            new AddTextOperation(c1, p1 + c2.length, trimPrefix(p1.toString,"0") + w1)
         } else {
             c
         }
@@ -94,14 +94,14 @@ class BasicXFormStrategy extends XFormStrategy {
             if (c.startPos <= s.startPos)
                 (c, new DeleteTextOperation(s.startPos + c.text.length, s.size))
             else
-                (new AddTextOperation(c.text, c.startPos - s.size, c.startPos.toString + c.pword), s)
+                (new AddTextOperation(c.text, c.startPos - s.size,trimPrefix( c.startPos.toString,"0") + c.pword), s)
         }
     }
 
     /**
      * público para testing
      */
-    def pw(op: EditOperation): Option[Int] = {
+    def pw(op: EditOperation): Option[String] = {
         op match {
             case at: AddTextOperation => {
                 // primer caso si w == vacio, con w = pword
@@ -109,16 +109,16 @@ class BasicXFormStrategy extends XFormStrategy {
                 val w = at.pword
 
                 if (w.isEmpty)
-                    Some(p)
+                    Some(p.toString)
                 else if (!w.isEmpty && (p - current(w)).abs <= 1) {
-                    Some((p.toString + w).toInt)
+                    Some(trimPrefix(p.toString,"0") + w)
                 } else {
                     None
                 }
             }
             case dt: DeleteTextOperation => {
                 val p = dt.startPos
-                Some(p)
+                Some(p.toString)
             }
             case o: NullOperation =>
                 None
@@ -131,4 +131,6 @@ class BasicXFormStrategy extends XFormStrategy {
     }
 
     private def getRangeFor(o: DeleteTextOperation) = o.startPos to (o.startPos + o.size)
+
+    private def trimPrefix(s:String,p:String):String = if (s startsWith p) trimPrefix(s substring p.length, p) else s
 }

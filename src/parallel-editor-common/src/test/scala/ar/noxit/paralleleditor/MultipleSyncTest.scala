@@ -221,10 +221,10 @@ class MultipleSyncTest extends AssertionsForJUnit {
     @Test
     def testPword: Unit = {
         val xf = new BasicXFormStrategy
-        Assert.assertEquals(Some(0), xf.pw(new AddTextOperation("hola", 0)))
-        Assert.assertEquals(Some(1), xf.pw(new AddTextOperation("hola", 0, "1")))
+        Assert.assertEquals(Some("0"), xf.pw(new AddTextOperation("hola", 0)))
+        Assert.assertEquals(Some("1"), xf.pw(new AddTextOperation("hola", 0, "1")))
         Assert.assertEquals(None, xf.pw(new AddTextOperation("hola", 0, "5")))
-        Assert.assertEquals(Some(0), xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
+        Assert.assertEquals(Some("0"), xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
     }
 
     @Test
