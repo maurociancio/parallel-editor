@@ -221,10 +221,56 @@ class MultipleSyncTest extends AssertionsForJUnit {
     @Test
     def testPword: Unit = {
         val xf = new BasicXFormStrategy
-        Assert.assertEquals(Some("0"), xf.pw(new AddTextOperation("hola", 0)))
-        Assert.assertEquals(Some("1"), xf.pw(new AddTextOperation("hola", 0, "1")))
-        Assert.assertEquals(None, xf.pw(new AddTextOperation("hola", 0, "5")))
-        Assert.assertEquals(Some("0"), xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
+        Assert.assertEquals(List(0), xf.pw(new AddTextOperation("hola", 0)))
+        Assert.assertEquals(List(0, 1), xf.pw(new AddTextOperation("hola", 0, List(1))))
+        Assert.assertEquals(List(), xf.pw(new AddTextOperation("hola", 0, List(5))))
+        Assert.assertEquals(List(0), xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
+    }
+
+    @Test
+    def testMenorPword: Unit = {
+        val xf = new BasicXFormStrategy
+        val p1 = List(1, 2, 3)
+        val p2 = List(1, 2, 4)
+
+        Assert.assertEquals(true, xf.igual(p1, p1))
+
+        Assert.assertEquals(false, xf.menor(p1, p1))
+        Assert.assertEquals(false, xf.mayor(p1, p1))
+
+        Assert.assertEquals(true, xf.menor(p1, p2))
+        Assert.assertEquals(false, xf.mayor(p1, p2))
+    }
+
+    @Test
+    def testMenorPword2: Unit = {
+        val xf = new BasicXFormStrategy
+        val p1 = List(1, 2, 3, 4)
+        val p2 = List(1, 2, 3)
+
+        Assert.assertEquals(false, xf.menor(p1, p2))
+        Assert.assertEquals(true, xf.mayor(p1, p2))
+
+        Assert.assertEquals(false, xf.igual(p1, p2))
+    }
+
+    @Test
+    def testMenorPword3: Unit = {
+        val xf = new BasicXFormStrategy
+        val p1 = List(1, 2, 3, 4)
+        val p2 = List(5, 2, 3)
+
+        Assert.assertEquals(true, xf.menor(p1, p2))
+        Assert.assertEquals(false, xf.mayor(p1, p2))
+
+        Assert.assertEquals(false, xf.menor(List(), List()))
+        Assert.assertEquals(false, xf.mayor(List(), List()))
+
+        Assert.assertEquals(false, xf.menor(List(2), List()))
+        Assert.assertEquals(true, xf.mayor(List(2), List()))
+
+        Assert.assertEquals(true, xf.menor(List(), List(2)))
+        Assert.assertEquals(false, xf.mayor(List(), List(2)))
     }
 
     @Test
@@ -249,7 +295,9 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC1 + i)
             op.executeOn(c1Doc)
 
-            c1.generateMsg(op, {msg => colaC1 += msg})
+            c1.generateMsg(op, {
+                msg => colaC1 += msg
+            })
         }
 
         Assert.assertEquals("\n\nescribi", c1Doc.data)
@@ -263,7 +311,9 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC2 + i)
             op.executeOn(c2Doc)
 
-            c2.generateMsg(op, {msg => colaC2 += msg})
+            c2.generateMsg(op, {
+                msg => colaC2 += msg
+            })
         }
 
         Assert.assertEquals("E STO E\n\n", c2Doc.data)
@@ -273,22 +323,28 @@ class MultipleSyncTest extends AssertionsForJUnit {
         (0 until List(colaC1.size, colaC2.size).min).foreach {
 
             i =>
-            println(i)
-            println(serverDoc.data)
+                println(i)
+                println(serverDoc.data)
 
-            s1.receiveMsg(colaC1.dequeue, {
-                op => op.executeOn(serverDoc)
-                s2.generateMsg(op, {msg =>})
-            })
+                s1.receiveMsg(colaC1.dequeue, {
+                    op => op.executeOn(serverDoc)
+                    s2.generateMsg(op, {
+                        msg =>
+                    })
+                })
 
-            s2.receiveMsg(colaC2.dequeue, {
-                op => op.executeOn(serverDoc)
-                s1.generateMsg(op, {msg =>})
-            })
+                s2.receiveMsg(colaC2.dequeue, {
+                    op => op.executeOn(serverDoc)
+                    s1.generateMsg(op, {
+                        msg =>
+                    })
+                })
         }
 
         Assert.assertEquals("E STO E\n\nescribi", serverDoc.data)
     }
 
-    def docFromText(text: String) = new DocumentData {var data = text}
+    def docFromText(text: String) = new DocumentData {
+        var data = text
+    }
 }
