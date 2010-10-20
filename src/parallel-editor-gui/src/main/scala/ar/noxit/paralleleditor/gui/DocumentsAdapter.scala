@@ -1,7 +1,7 @@
 package ar.noxit.paralleleditor.gui
 
 import swing.TabbedPane.Page
-import swing.{TabbedPane, Reactor}
+import swing.{Reactor, MainFrame, Dialog, TabbedPane}
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
@@ -13,9 +13,15 @@ class DocumentsAdapter(private val tabs: TabbedPane,
         page.map {p => p.content.asInstanceOf[DocumentArea]}
     }
 
-    def createDocument(title: String, content: String) {
+    override def createDocument(title: String, content: String) {
         val doc = new DocumentArea(title, content)
         gui.listenTo(doc)
         tabs.pages += new Page(title, doc)
+    }
+
+    override def usernameTaken = {
+        SwingUtil.invokeLater {
+            Dialog.showMessage(parent = menu, message = "Nombre de usuario ya existe, intente con otro")
+        }
     }
 }

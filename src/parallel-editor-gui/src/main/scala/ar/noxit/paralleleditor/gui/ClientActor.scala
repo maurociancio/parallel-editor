@@ -23,6 +23,8 @@ trait Documents {
     def changeDocList(l: List[String])
 
     def createDocument(title: String, content: String)
+
+    def usernameTaken
 }
 
 class ClientActor(private val doc: Documents) extends Actor with Loggable {
@@ -93,6 +95,7 @@ class ClientActor(private val doc: Documents) extends Actor with Loggable {
                     r match {
                         case UsernameAlreadyExistsRemoteResponse() => {
                             trace("username already exists")
+                            doc.usernameTaken
                         }
                     }
                 }
