@@ -101,7 +101,12 @@ case class RemoteLoginOkResponse extends BaseRemoteMessage
 /**
  * Rta de Login Erroneo
  */
-case class RemoteLoginRefusedResponse(val reason: String) extends BaseRemoteMessage
+abstract case class RemoteLoginRefusedRemoteResponse extends BaseRemoteMessage
+
+/**
+ * Nombre de usuario tomado
+ */
+case class UsernameAlreadyExistsRemoteResponse extends RemoteLoginRefusedRemoteResponse
 
 /**
  * Pedido de logout

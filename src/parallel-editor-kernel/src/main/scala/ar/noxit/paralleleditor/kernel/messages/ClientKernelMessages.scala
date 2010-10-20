@@ -13,6 +13,9 @@ case class LoginResponse(val session: Session) {
         throw new IllegalArgumentException("session cannot be null")
 }
 
+abstract case class LoginFailedResponse
+case class UsernameAlreadyExists extends LoginFailedResponse
+
 case class NewDocumentRequest(val session: Session, val title: String, val initialContent: String)
 
 /**

@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.kernel.actors
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.logger.Loggable
+import exceptions.UsernameAlreadyExistsException
 import scala.actors.Actor
 
 class KernelActor(val kernel: Kernel) extends Actor with Loggable {
@@ -16,12 +17,16 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                 case LoginRequest(username) => {
                     trace("Login Requested by=[%s]", username)
 
-                    // TODO catch user already login exception and send it to
-                    // the caller, so he could pick a new name
-                    val newSession = kernel.login(username)
+                    try {
+                        val newSession = kernel.login(username)
 
-                    trace("Sending Login Response")
-                    sender ! LoginResponse(newSession)
+                        trace("Sending Login Response")
+                        sender ! LoginResponse(newSession)
+                    }
+                    catch {
+                        case e: UsernameAlreadyExistsException =>
+                            sender ! UsernameAlreadyExists()
+                    }
                 }
 
                 case DocumentListRequest(session) => {

@@ -6,7 +6,7 @@ import scala.List
 import ar.noxit.paralleleditor.common.operation.DocumentData
 
 class BasicDocument(val title: String, var data: String, private val docSessionFactory: DocumentSessionFactory) extends Document with DocumentData {
-    private var subscribers: List[Session] = List()
+    private var subscribers = List[Session]()
 
     override def subscribe(session: Session) = {
         if (session == null)

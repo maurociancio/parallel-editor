@@ -14,6 +14,7 @@ import reflect.BeanProperty
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     private var docSessions: List[DocumentSession] = List()
     private val timeout = 5000
+    private val maxLoginTries = 5
 
     private var listener: Actor = _
     private var gateway: Actor = _
@@ -30,23 +31,14 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
         this.listener = listener
         this.gateway = gateway
 
-        // receive username
-        val username = receiveUsername
+        // wait for session
+        session = this.receiveSession(loginTries = 0)
 
-        // login to kernel and wait for response
-        loginToKernel(username)
-        session = receiveSession
-
-        // notify client logged in
-        notifyClientLoginOk
-
-        // install callback
-        installCallback
-
+        // process messages
         processMessages
     }
 
-    private def processMessages() {
+    protected def processMessages() {
         loop {
             react {
                 case RemoteNewDocumentRequest(title, initialContent) => {
@@ -132,44 +124,54 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
         }
     }
 
-    private def receiveUsername = {
+    private def receiveSession(loginTries: Int = 0): Session = {
         trace("Waiting for username")
 
-        receiveWithin(timeout) {
+        if (loginTries >= maxLoginTries) {
+            warn("max login tries reached")
+            doTimeout
+        }
+
+        // receive username
+        val username = receiveWithin(timeout) {
             case RemoteLoginRequest(username) => {
                 trace("Username received=[%s]", username)
                 username
             }
             case TIMEOUT => doTimeout
         }
-    }
 
-    private def loginToKernel(username: String) = {
+        // login to kernel and wait for response
         trace("Sending login request")
 
         // logging into the kernel
         kernel ! LoginRequest(username)
-    }
 
-    private def receiveSession = {
         trace("Waiting for session")
 
         // we expect a session in order to continue
         receiveWithin(timeout) {
             case LoginResponse(session) => {
                 trace("Session received")
+                // notify client logged in
+                gateway ! RemoteLoginOkResponse()
+
+                // install callback
+                installCallback(session)
+
                 session
+            }
+            case UsernameAlreadyExists() => {
+                trace("username already exists")
+
+                gateway ! UsernameAlreadyExistsRemoteResponse()
+                receiveSession(loginTries + 1)
             }
             case TIMEOUT => doTimeout
         }
     }
 
-    private def notifyClientLoginOk {
-        // notify the remote target
-        gateway ! RemoteLoginOkResponse()
-    }
-
-    private def installCallback() {
+    protected def installCallback(session: Session) {
         // install callback
         session.installOnUpdateCallback(new ActorCallback(this))
     }

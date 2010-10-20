@@ -1,9 +1,9 @@
 package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel._
-import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
 import ar.noxit.paralleleditor.common.logger.Loggable
 import docsession.BasicDocumentSessionFactory
+import exceptions.{UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
 import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
 import sync.SynchronizerAdapterFactory
@@ -14,6 +14,12 @@ class BasicKernel extends Kernel with Loggable {
     var documents = List[DocumentActor]()
 
     override def login(username: String) = {
+        if (username == null)
+            throw new IllegalArgumentException("username cannot be null")
+
+        if (sessions.exists {s => s.username == username})
+            throw new UsernameAlreadyExistsException("username already logged in")
+
         val newSession = new BasicSession(username, this)
         sessions = newSession :: sessions
 
