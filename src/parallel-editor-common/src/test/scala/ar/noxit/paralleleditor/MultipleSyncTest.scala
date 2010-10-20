@@ -279,8 +279,8 @@ class MultipleSyncTest extends AssertionsForJUnit {
         val c2Doc = docFromText("--")
         val serverDoc = docFromText("--")
 
-        val textClient1 = "escribiendo en letras minusculas"
-        val textClient2 = "ABCDEFGS UNA PRUEBA EN MAYUSCULA"
+        val textClient1 = "escribi"
+        val textClient2 = "ABCDEFG"
 
         // usamos frases de misma longitud
         Assert.assertEquals(textClient1.size, textClient2.size)
@@ -323,7 +323,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
         val colaACliente2 = Queue[Message[EditOperation]]()
 
         // los sync del server comienzan a recibir los msgs
-        (0 until List(colaC1.size, colaC2.size).min).foreach {
+        (0 until 7).foreach {
 
             i =>
                 println(i)
