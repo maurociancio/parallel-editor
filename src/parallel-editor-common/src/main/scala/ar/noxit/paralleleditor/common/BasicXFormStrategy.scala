@@ -42,10 +42,11 @@ class BasicXFormStrategy extends XFormStrategy {
 
         val alfa1:String = pw(c).getOrElse(p1.toString)
         val alfa2:String = pw(s).getOrElse(p2.toString)
+        
 
-        if (alfa1 < alfa2 || (alfa1 == alfa2 && c1 < c2)) {
+        if (mayor(alfa2,alfa1) || (alfa1 == alfa2 && c1 < c2)) {
             c
-        } else if (alfa1 > alfa2 || (alfa1 == alfa2 && c1 > c2)) {
+        } else if (mayor(alfa1,alfa2) || (alfa1==alfa2 && c1 > c2)) {
             new AddTextOperation(c1, p1 + c2.length, trimPrefix(p1.toString,"0") + w1)
         } else {
             c
@@ -133,4 +134,13 @@ class BasicXFormStrategy extends XFormStrategy {
     private def getRangeFor(o: DeleteTextOperation) = o.startPos to (o.startPos + o.size)
 
     private def trimPrefix(s:String,p:String):String = if (s startsWith p) trimPrefix(s substring p.length, p) else s
+
+    private def mayor(a:String,b:String)={
+        val s1 = trimPrefix(a,"0")
+        val s2 = trimPrefix(b,"0")
+        if(s1.length == s2.length)
+            s1 > s2
+        else if (s1.length > s2.length) true
+        else false
+    }
 }
