@@ -8,7 +8,8 @@ import ar.noxit.paralleleditor.kernel.Kernel
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.actors.{ClientActor, KernelActor}
 import ar.noxit.paralleleditor.common.remote.{Peer, PeerActorFactory}
-import ar.noxit.paralleleditor.common.converter.{DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
+import ar.noxit.paralleleditor.common.converter.{RemoteDocumentOperationConverter, DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
+import reflect.BeanProperty
 
 /**
  * Actor que se encarga de escuchar conexiones entrantes y crear una representacion del cliente remoto
@@ -67,12 +68,16 @@ abstract class KernelService extends DaemonActor with Loggable {
 
     protected def newKernelActor: Actor = new KernelActor(kernel).start
 
-    protected def newClientActorFactory: PeerActorFactory = new BasicClientActorFactory(ka)
+    protected def newClientActorFactory: PeerActorFactory = {
+        val factory = new BasicClientActorFactory(ka)
+        factory.converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+        factory
+    }
 }
 
 class BasicClientActorFactory(private val kernel: Actor) extends PeerActorFactory {
-    // TODO inyectar
-    val converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+    @BeanProperty
+    var converter: RemoteDocumentOperationConverter = _
 
     override def newClientActor(client: Peer) = {
         val actor = new ClientActor(kernel, client)
