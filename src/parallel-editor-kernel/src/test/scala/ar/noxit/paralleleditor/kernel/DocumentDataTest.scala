@@ -1,20 +1,25 @@
 package ar.noxit.paralleleditor.kernel
 
+import basic.sync.SynchronizerAdapterFactory
 import basic.{BasicSession, BasicKernel}
 import messages.SubscriptionResponse
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
+import ar.noxit.paralleleditor.common.BasicXFormStrategy
+
 @Test
 class DocumentDataTest extends AssertionsForJUnit {
-    var factory: BasicKernelFactory = _
     var kernel: BasicKernel = _
     var session: BasicSession = _
     var docSession: DocumentSession = _
 
     @Before
     def setUp = {
-        factory = new BasicKernelFactory
-        kernel = factory buildKernel;
+        kernel = new BasicKernel
+        val synchronizerAdapterFactory = new SynchronizerAdapterFactory
+        synchronizerAdapterFactory.strategy = new BasicXFormStrategy
+        kernel.sync = synchronizerAdapterFactory
+        kernel.timeout = 5000
         session = kernel.login("username")
 
         session.installOnUpdateCallback(new UpdateCallback {

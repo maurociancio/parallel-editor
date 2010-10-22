@@ -1,6 +1,8 @@
 package ar.noxit.paralleleditor.kernel
 
 import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
+import basic.sync.SynchronizerAdapterFactory
+import ar.noxit.paralleleditor.common.BasicXFormStrategy
 import basic.{BasicSession, BasicKernel}
 import messages.SubscriptionResponse
 import org.junit._
@@ -10,14 +12,16 @@ import scala.actors.Future
 
 @Test
 class KernelTest extends AssertionsForJUnit {
-    var factory: BasicKernelFactory = _
     var kernel: BasicKernel = _
     var docSession: DocumentSession = _
 
     @Before
     def setUp = {
-        factory = new BasicKernelFactory
-        kernel = factory buildKernel;
+        kernel = new BasicKernel;
+        val synchronizerAdapterFactory = new SynchronizerAdapterFactory
+        synchronizerAdapterFactory.strategy = new BasicXFormStrategy
+        kernel.sync = synchronizerAdapterFactory
+        kernel.timeout = 5000
         docSession = null
     }
 

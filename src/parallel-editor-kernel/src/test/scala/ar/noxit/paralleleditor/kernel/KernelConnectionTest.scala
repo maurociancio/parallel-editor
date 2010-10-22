@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.kernel
 import ar.noxit.paralleleditor.kernel.actors.ClientActor
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import ar.noxit.paralleleditor.kernel.actors.KernelActor
+import basic.sync.SynchronizerAdapterFactory
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import scala.actors.Actor._
@@ -11,6 +12,7 @@ import Assert._
 import ar.noxit.paralleleditor.common.remote.{NetworkActors, Peer}
 import scala.actors.{Future, Actor}
 import ar.noxit.paralleleditor.common.converter.{DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
+import ar.noxit.paralleleditor.common.BasicXFormStrategy
 
 object NullPeer extends Peer {
     def disconnect = {}
@@ -34,6 +36,10 @@ class KernelConnectionTest extends AssertionsForJUnit {
             }
         }
         kernel = new BasicKernel
+        val synchronizerAdapterFactory = new SynchronizerAdapterFactory
+        synchronizerAdapterFactory.strategy = new BasicXFormStrategy
+        kernel.sync = synchronizerAdapterFactory
+        kernel.timeout = 5000
         ka = new KernelActor(kernel).start
         client = new ClientActor(ka, NullPeer)
         client.converter = converter
