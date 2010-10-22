@@ -1,4 +1,4 @@
-package ar.noxit.paralleleditor.kernel.service
+package ar.noxit.paralleleditor.server
 
 import ar.noxit.paralleleditor.kernel.remote.SocketKernelService
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
