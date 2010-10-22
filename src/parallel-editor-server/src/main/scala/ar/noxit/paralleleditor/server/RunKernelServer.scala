@@ -1,9 +1,11 @@
 package ar.noxit.paralleleditor.server
 
-import ar.noxit.paralleleditor.kernel.remote.SocketKernelService
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
+import org.springframework.beans.factory.InitializingBean
+import ar.noxit.paralleleditor.kernel.remote.{KernelService, SocketKernelService}
+import reflect.BeanProperty
 
-class BaseKernelService(private val port: Int) extends SocketKernelService(port) {
+class OneDefaultDocKernelService(private val port: Int) extends SocketKernelService(port) {
     override protected def newKernel = {
         val kernel = new BasicKernel
         val session = kernel.login("test")
@@ -13,9 +15,12 @@ class BaseKernelService(private val port: Int) extends SocketKernelService(port)
     }
 }
 
-object RunKernelServer {
-    def main(args: Array[String]) {
+class RunKernelServer extends InitializingBean {
+    @BeanProperty
+    var service: KernelService = _
+
+    def afterPropertiesSet = {
         System.setProperty("actors.corePoolSize", "50")
-        new BaseKernelService(5000).start
+        service.startService
     }
 }

@@ -11,11 +11,18 @@ import ar.noxit.paralleleditor.common.remote.{Peer, PeerActorFactory}
 import ar.noxit.paralleleditor.common.converter.{RemoteDocumentOperationConverter, DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
 import reflect.BeanProperty
 
+trait KernelService {
+    def startService
+}
+
 /**
  * Actor que se encarga de escuchar conexiones entrantes y crear una representacion del cliente remoto
  * a partir de la conexión recibida.
  */
-abstract class KernelService extends DaemonActor with Loggable {
+abstract class BaseKernelService extends DaemonActor with Loggable with KernelService {
+    @BeanProperty
+    var converter: RemoteDocumentOperationConverter = _
+
     private var sExit = false
 
     protected var kernel: Kernel = _
@@ -23,6 +30,8 @@ abstract class KernelService extends DaemonActor with Loggable {
     protected var clientActorFactory: PeerActorFactory = _
     protected val clientList = new ClientListActor
     clientList.start
+
+    def startService = this.start
 
     protected def initialize = {
         kernel = newKernel
@@ -70,7 +79,7 @@ abstract class KernelService extends DaemonActor with Loggable {
 
     protected def newClientActorFactory: PeerActorFactory = {
         val factory = new BasicClientActorFactory(ka)
-        factory.converter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+        factory.converter = this.converter
         factory
     }
 }
@@ -86,7 +95,7 @@ class BasicClientActorFactory(private val kernel: Actor) extends PeerActorFactor
     }
 }
 
-class SocketKernelService(private val port: Int) extends KernelService {
+class SocketKernelService(private val port: Int) extends BaseKernelService {
     private val server = new ServerSocket(port)
 
     override protected def newNetworkConnection(): NetworkConnection = {

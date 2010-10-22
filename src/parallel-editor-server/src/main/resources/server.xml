@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!--SPRING MAIN CLASS -->
+    <bean class="ar.noxit.paralleleditor.server.RunKernelServer" scope="singleton">
+        <property name="service" ref="kernelService"/>
+    </bean>
+
+    <bean id="kernelService" class="ar.noxit.paralleleditor.server.OneDefaultDocKernelService" scope="singleton">
+        <constructor-arg value="5000"/>
+        <property name="converter" ref="remoteDocumentOperationConverter"/>
+    </bean>
+
+    <!--CONVERSORES-->
+    <bean id="editOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter"/>
+
+    <bean id="syncOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter">
+        <constructor-arg ref="editOperationConverter"/>
+    </bean>
+
+    <bean id="remoteDocumentOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationConverter">
+        <constructor-arg ref="syncOperationConverter"/>
+    </bean>
+
+    <bean id="messageConverter" class="ar.noxit.paralleleditor.common.converter.DefaultMessageConverter">
+        <constructor-arg ref="remoteOperationConverter"/>
+    </bean>
+
+    <bean id="remoteOperationConverter"
+          class="ar.noxit.paralleleditor.common.converter.DefaultRemoteOperationConverter"/>
+</beans>
