@@ -6,6 +6,8 @@ import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation._
 
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
+    dividerLocation = 150
+
     // TODO
     val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
