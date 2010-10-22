@@ -448,6 +448,90 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals("HOLAchau", c2Doc.data)
     }
 
+    @Test
+    def testEscribirTextoYBorrar: Unit = {
+
+        val c1Doc = docFromText("ABCD1234")
+        val c2Doc = docFromText("ABCD1234")
+        val serverDoc = docFromText("ABCD1234")
+
+        val textClient1 = "WXYZ"
+        val startPosC1 = 6
+        val colaC1 = Queue[Message[EditOperation]]()
+
+        (0 until textClient1.length).foreach{
+            i =>
+                val c = textClient1.substring(i, i + 1)
+
+                val op = new AddTextOperation(c, startPosC1 + i)
+                op.executeOn(c1Doc)
+
+                c1.generateMsg(op, {
+                    msg => colaC1 += msg
+            })
+        }
+
+        val startPosC2 = 4
+        val delSizeC2 = 4
+        val colaC2 = Queue[Message[EditOperation]]()
+
+        (1 to delSizeC2).foreach{
+            i =>
+                val op = new DeleteTextOperation(startPosC2,1)
+                op.executeOn(c2Doc)
+                 c2.generateMsg(op, {
+                        msg => colaC2 += msg
+                })
+        }
+
+        //el servidor recibe los mensajes intercalados
+
+        val colaACliente1 = Queue[Message[EditOperation]]()
+        val colaACliente2 = Queue[Message[EditOperation]]()
+
+        (0 until 4).foreach {
+            i =>
+                println(i)
+                println(serverDoc.data)
+
+                s1.receiveMsg(colaC1.dequeue, {
+                    op =>
+                        op.executeOn(serverDoc)
+
+                        s2.generateMsg(op, {
+                            msg => colaACliente2 += msg
+                        })
+                })
+
+                s2.receiveMsg(colaC2.dequeue, {
+                    op =>
+                        op.executeOn(serverDoc)
+
+                        s1.generateMsg(op, {
+                            msg => colaACliente1 += msg
+                        })
+                })
+        }
+
+        Assert.assertEquals("ABCDWXYZ",serverDoc.data)
+
+         (0 until 4).foreach {
+            i =>
+                c1.receiveMsg(colaACliente1.dequeue, {
+                    op => op.executeOn(c1Doc)
+                })
+
+                c2.receiveMsg(colaACliente2.dequeue, {
+                    op => op.executeOn(c2Doc)
+                })
+        }
+
+        Assert.assertEquals("ABCDWXYZ", c1Doc.data)
+        Assert.assertEquals("ABCDWXYZ", c2Doc.data)
+
+
+    }
+
     def docFromText(text: String) = new DocumentData {
         var data = text
     }
