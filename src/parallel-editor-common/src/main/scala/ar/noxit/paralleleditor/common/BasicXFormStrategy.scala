@@ -24,9 +24,8 @@ class BasicXFormStrategy extends XFormStrategy {
     /**
      * Caso agregar-agregar
      */
-    protected def xform(c: AddTextOperation, s: AddTextOperation): (EditOperation, EditOperation) = {
+    protected def xform(c: AddTextOperation, s: AddTextOperation): (EditOperation, EditOperation) =
         (simpleXForm(c, s), simpleXForm(s, c))
-    }
 
     /**
      * Implementación según paper
@@ -56,17 +55,17 @@ class BasicXFormStrategy extends XFormStrategy {
      * para operaciones de borrado de 1 caracter
      */
     protected def xform(c: DeleteTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
-        if((s.size!=1)||(c.size!=1)) throw new UnsopportedEditOperationException("Delete size must be 1")
+        if (s.size != 1 || c.size != 1) throw new UnsupportedEditOperationException("Delete size must be 1")
 
         val p1 = c.startPos
         val p2 = s.startPos
 
         if (p1 < p2)
-            (c,new DeleteTextOperation(p2-1,s.size))
+            (c, new DeleteTextOperation(p2 - 1, s.size))
         else if (p1 > p2)
-            (new DeleteTextOperation(p1-1,c.size),s)
+            (new DeleteTextOperation(p1 - 1, c.size), s)
         else
-            (new NullOperation,new NullOperation)
+            (new NullOperation, new NullOperation)
     }
 
     /**
@@ -75,8 +74,7 @@ class BasicXFormStrategy extends XFormStrategy {
      * de un caracter
      */
     protected def xform(c: AddTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
-
-        if(s.size!=1) throw new UnsopportedEditOperationException("Delete size must be 1")
+        if (s.size != 1) throw new UnsupportedEditOperationException("Delete size must be 1")
 
         val p1 = c.startPos
         val p2 = s.startPos
@@ -88,7 +86,6 @@ class BasicXFormStrategy extends XFormStrategy {
             (c, new DeleteTextOperation(p2 + c.text.length, s.size))
         else
             (new AddTextOperation(c.text, p1, p1 :: pw), new DeleteTextOperation(p2 + c.text.length, s.size))
-            
     }
 
     /**
