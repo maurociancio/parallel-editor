@@ -40,16 +40,15 @@ class BasicXFormStrategy extends XFormStrategy {
         val c2 = s.text
         val w1 = c.pword
 
-        val alfa1 = pw(c).getOrElse(p1)
-        val alfa2 = pw(s).getOrElse(p2)
+        val alfa1 = pw(c)
+        val alfa2 = pw(s)
 
-        if (alfa1 < alfa2 || (alfa1 == alfa2 && c1 < c2)) {
+        if (menor(alfa1, alfa2) || (igual(alfa1, alfa2) && c1 < c2))
             c
-        } else if (alfa1 > alfa2 || (alfa1 == alfa2 && c1 > c2)) {
-            new AddTextOperation(c1, p1 + c2.length, p1.toString + w1)
-        } else {
+        else if (mayor(alfa1, alfa2) || (igual(alfa1, alfa2) && c1 > c2))
+            new AddTextOperation(c1, p1 + c2.length, p1 :: w1)
+        else
             c
-        }
     }
 
     /**
@@ -80,28 +79,25 @@ class BasicXFormStrategy extends XFormStrategy {
      */
     protected def xform(c: AddTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
         val deletionRange = getRangeFor(s)
-        val exclusiveDeletionRange = (deletionRange slice (1,deletionRange.size -1))
-        val insertionRange = c.startPos to (c.startPos + c.text.length)
+        val exclusiveDeletionRange = (deletionRange slice (1, deletionRange.size - 1))
 
-        if ( exclusiveDeletionRange contains c.startPos) {
+        if (exclusiveDeletionRange contains c.startPos) {
             // el rango de borrado incluye a la posicion de insercion
-            val endPos = s.startPos + s.size + insertionRange.size -1
-
-           (new NullOperation(),new DeleteTextOperation(s.startPos,endPos-s.startPos))
-
+            val count =  s.size + c.text.length
+            (new NullOperation(), new DeleteTextOperation(s.startPos, count))
         } else {
             //  el punto de insercion no esta dentro del rango de borrado
             if (c.startPos <= s.startPos)
                 (c, new DeleteTextOperation(s.startPos + c.text.length, s.size))
             else
-                (new AddTextOperation(c.text, c.startPos - s.size, c.startPos.toString + c.pword), s)
+                (new AddTextOperation(c.text, c.startPos - s.size, c.startPos :: c.pword), s)
         }
     }
 
     /**
      * público para testing
      */
-    def pw(op: EditOperation): Option[Int] = {
+    def pw(op: EditOperation) = {
         op match {
             case at: AddTextOperation => {
                 // primer caso si w == vacio, con w = pword
@@ -109,26 +105,39 @@ class BasicXFormStrategy extends XFormStrategy {
                 val w = at.pword
 
                 if (w.isEmpty)
-                    Some(p)
-                else if (!w.isEmpty && (p - current(w)).abs <= 1) {
-                    Some((p.toString + w).toInt)
-                } else {
-                    None
-                }
+                    List(p)
+                else if (!w.isEmpty && (p == current(w) || (p - current(w)).abs == 1))
+                    p :: w
+                else
+                    List()
             }
             case dt: DeleteTextOperation => {
                 val p = dt.startPos
-                Some(p)
+                List(p)
             }
-            case o: NullOperation =>
-                None
+            case o: NullOperation => List()
         }
     }
 
-    protected def current(text: String) = {
-        val first = text.substring(0, 1)
-        first.toInt
-    }
+    protected def current(pword: List[Int]) = pword.head
 
     private def getRangeFor(o: DeleteTextOperation) = o.startPos to (o.startPos + o.size)
+
+    def menor(a: List[Int], b: List[Int]) = comparar(a, b, {(v1, v2) => v1 < v2})
+
+    def mayor(a: List[Int], b: List[Int]) = comparar(a, b, {(v1, v2) => v1 > v2})
+
+    def igual(a: List[Int], b: List[Int]) = comparar(a, b, {(v1, v2) => v1 == v2})
+
+    private def comparar(a: List[Int], b: List[Int], comp: (Int, Int) => Boolean) = {
+        val tuples = a zip b
+        val result = tuples.dropWhile {t => t._1 == t._2}
+        if (result isEmpty)
+        // aca una es mas larga q la otra
+            comp(a.size, b.size)
+        else {
+            val head = result.head
+            comp(head._1, head._2)
+        }
+    }
 }

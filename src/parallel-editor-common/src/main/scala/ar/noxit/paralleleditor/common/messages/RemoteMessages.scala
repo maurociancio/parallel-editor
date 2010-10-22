@@ -20,7 +20,7 @@ abstract case class RemoteOperation extends BaseRemoteMessage
 /**
  * Agregar texto
  */
-case class RemoteAddText(val text: String, val startPos: Int, val pword: String) extends RemoteOperation
+case class RemoteAddText(val text: String, val startPos: Int, val pword: List[Int]) extends RemoteOperation
 
 /**
  * Borrar texto

@@ -221,20 +221,66 @@ class MultipleSyncTest extends AssertionsForJUnit {
     @Test
     def testPword: Unit = {
         val xf = new BasicXFormStrategy
-        Assert.assertEquals(Some(0), xf.pw(new AddTextOperation("hola", 0)))
-        Assert.assertEquals(Some(1), xf.pw(new AddTextOperation("hola", 0, "1")))
-        Assert.assertEquals(None, xf.pw(new AddTextOperation("hola", 0, "5")))
-        Assert.assertEquals(Some(0), xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
+        Assert.assertEquals(List(0), xf.pw(new AddTextOperation("hola", 0)))
+        Assert.assertEquals(List(0, 1), xf.pw(new AddTextOperation("hola", 0, List(1))))
+        Assert.assertEquals(List(), xf.pw(new AddTextOperation("hola", 0, List(5))))
+        Assert.assertEquals(List(0), xf.pw(new DeleteTextOperation(startPos = 0, size = 10)))
+    }
+
+    @Test
+    def testMenorPword: Unit = {
+        val xf = new BasicXFormStrategy
+        val p1 = List(1, 2, 3)
+        val p2 = List(1, 2, 4)
+
+        Assert.assertEquals(true, xf.igual(p1, p1))
+
+        Assert.assertEquals(false, xf.menor(p1, p1))
+        Assert.assertEquals(false, xf.mayor(p1, p1))
+
+        Assert.assertEquals(true, xf.menor(p1, p2))
+        Assert.assertEquals(false, xf.mayor(p1, p2))
+    }
+
+    @Test
+    def testMenorPword2: Unit = {
+        val xf = new BasicXFormStrategy
+        val p1 = List(1, 2, 3, 4)
+        val p2 = List(1, 2, 3)
+
+        Assert.assertEquals(false, xf.menor(p1, p2))
+        Assert.assertEquals(true, xf.mayor(p1, p2))
+
+        Assert.assertEquals(false, xf.igual(p1, p2))
+    }
+
+    @Test
+    def testMenorPword3: Unit = {
+        val xf = new BasicXFormStrategy
+        val p1 = List(1, 2, 3, 4)
+        val p2 = List(5, 2, 3)
+
+        Assert.assertEquals(true, xf.menor(p1, p2))
+        Assert.assertEquals(false, xf.mayor(p1, p2))
+
+        Assert.assertEquals(false, xf.menor(List(), List()))
+        Assert.assertEquals(false, xf.mayor(List(), List()))
+
+        Assert.assertEquals(false, xf.menor(List(2), List()))
+        Assert.assertEquals(true, xf.mayor(List(2), List()))
+
+        Assert.assertEquals(true, xf.menor(List(), List(2)))
+        Assert.assertEquals(false, xf.mayor(List(), List(2)))
     }
 
     @Test
     def testEscribirTextoLineasDistintas: Unit = {
-        val c1Doc = docFromText("\n\n")
-        val c2Doc = docFromText("\n\n")
-        val serverDoc = docFromText("\n\n")
+        val c1Doc = docFromText("--")
+        val c2Doc = docFromText("--")
+        val serverDoc = docFromText("--")
 
-        val textClient1 = "escribiendo en letras minusculas"
-        val textClient2 = "E STO ES UNA PRUEBA EN MAYUSCULA"
+        val textClient1 = "escribi"
+        val textClient2 = "ABCDEFG"
 
         // usamos frases de misma longitud
         Assert.assertEquals(textClient1.size, textClient2.size)
@@ -249,12 +295,14 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC1 + i)
             op.executeOn(c1Doc)
 
-            c1.generate(op, {msg => colaC1 += msg})
+            c1.generateMsg(op, {
+                msg => colaC1 += msg
+            })
         }
 
-        Assert.assertEquals("\n\nescribi", c1Doc.data)
+        Assert.assertEquals("--escribi", c1Doc.data)
 
-        // el cliente 2 escribe "E STO E" al inicio del doc
+        // el cliente 2 escribe "ABCDEFG" al inicio del doc
         val colaC2 = Queue[Message[EditOperation]]()
         val startPosC2 = 0
         for (i <- 0 until 7) {
@@ -263,32 +311,144 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC2 + i)
             op.executeOn(c2Doc)
 
-            c2.generate(op, {msg => colaC2 += msg})
+            c2.generateMsg(op, {
+                msg => colaC2 += msg
+            })
         }
 
-        Assert.assertEquals("E STO E\n\n", c2Doc.data)
+        Assert.assertEquals("ABCDEFG--", c2Doc.data)
 
+
+        val colaACliente1 = Queue[Message[EditOperation]]()
+        val colaACliente2 = Queue[Message[EditOperation]]()
 
         // los sync del server comienzan a recibir los msgs
-        (0 until List(colaC1.size, colaC2.size).min).foreach {
+        (0 until 7).foreach {
 
             i =>
-            println(i)
-            println(serverDoc.data)
+                println(i)
+                println(serverDoc.data)
 
-            s1.receive(colaC1.dequeue, {
-                op => op.executeOn(serverDoc)
-                s2.generate(op, {msg =>})
+                s1.receiveMsg(colaC1.dequeue, {
+                    op => op.executeOn(serverDoc)
+                    s2.generateMsg(op, {
+                        msg => colaACliente2 += msg
+                    })
+                })
+
+                s2.receiveMsg(colaC2.dequeue, {
+                    op => op.executeOn(serverDoc)
+                    s1.generateMsg(op, {
+                        msg => colaACliente1 += msg
+                    })
+                })
+        }
+
+        Assert.assertEquals("ABCDEFG--escribi", serverDoc.data)
+
+        colaACliente1.foreach {
+            m => c1.receiveMsg(m, {
+                op => op.executeOn(c1Doc)
             })
-
-            s2.receive(colaC2.dequeue, {
-                op => op.executeOn(serverDoc)
-                s1.generate(op, {msg =>})
+        }
+        colaACliente2.foreach {
+            m => c2.receiveMsg(m, {
+                op => op.executeOn(c2Doc)
             })
         }
 
-        Assert.assertEquals("E STO E\n\nescribi", serverDoc.data)
+        Assert.assertEquals("ABCDEFG--escribi", c1Doc.data)
+        Assert.assertEquals("ABCDEFG--escribi", c2Doc.data)
     }
 
-    def docFromText(text: String) = new DocumentData {var data = text}
+    @Test
+    def testEscribirTextoMismaLinea: Unit = {
+        val c1Doc = docFromText("")
+        val c2Doc = docFromText("")
+        val serverDoc = docFromText("")
+
+        val textClient1 = "HOLA"
+        val textClient2 = "chau"
+
+        // el cliente 1 escribe "HOLA" en la primer posicion del documento
+        // los mensajes se guardan en la cola
+        val colaC1 = Queue[Message[EditOperation]]()
+        val startPosC1 = 0
+        for (i <- 0 until 4) {
+            val c = textClient1.substring(i, i + 1)
+
+            val op = new AddTextOperation(c, startPosC1 + i)
+            op.executeOn(c1Doc)
+
+            c1.generateMsg(op, {
+                msg => colaC1 += msg
+            })
+        }
+
+        Assert.assertEquals("HOLA", c1Doc.data)
+
+        // el cliente 2 escribe "chau" al inicio del doc
+        val colaC2 = Queue[Message[EditOperation]]()
+        val startPosC2 = 0
+        for (i <- 0 until 4) {
+            val c = textClient2.substring(i, i + 1)
+
+            val op = new AddTextOperation(c, startPosC2 + i)
+            op.executeOn(c2Doc)
+
+            c2.generateMsg(op, {
+                msg => colaC2 += msg
+            })
+        }
+
+        Assert.assertEquals("chau", c2Doc.data)
+
+        val colaACliente1 = Queue[Message[EditOperation]]()
+        val colaACliente2 = Queue[Message[EditOperation]]()
+
+        // los sync del server comienzan a recibir los msgs
+        (0 until 4).foreach {
+            i =>
+                println(i)
+                println(serverDoc.data)
+
+                s1.receiveMsg(colaC1.dequeue, {
+                    op =>
+                        op.executeOn(serverDoc)
+
+                        s2.generateMsg(op, {
+                            msg => colaACliente2 += msg
+                        })
+                })
+
+                s2.receiveMsg(colaC2.dequeue, {
+                    op =>
+                        op.executeOn(serverDoc)
+
+                        s1.generateMsg(op, {
+                            msg => colaACliente1 += msg
+                        })
+                })
+        }
+
+        Assert.assertEquals("HOLAchau", serverDoc.data)
+
+        (0 until 4).foreach {
+            i =>
+                c1.receiveMsg(colaACliente1.dequeue, {
+                    op => op.executeOn(c1Doc)
+                })
+
+                c2.receiveMsg(colaACliente2.dequeue, {
+                    op => op.executeOn(c2Doc)
+                })
+        }
+
+        Assert.assertEquals("HOLAchau", c1Doc.data)
+        Assert.assertEquals("HOLAchau", c2Doc.data)
+    }
+
+    def docFromText(text: String) = new DocumentData {
+        var data = text
+    }
 }

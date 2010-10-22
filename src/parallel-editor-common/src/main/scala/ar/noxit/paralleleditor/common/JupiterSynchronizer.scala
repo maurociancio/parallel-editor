@@ -52,9 +52,11 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         // filtro mensajes anteriores al recibido (acknowledged messages)
         outgoingMsgs = outgoingMsgs filterKeys (_ >= message.otherMsgs)
 
+        val ordenedMsgs = outgoingMsgs.toArray.sortBy {_._1}
+
         trace("original op %s", message.op)
         // calculo la transformada de la operacion a realizar
-        val finalOp = (message.op /: outgoingMsgs) {
+        val finalOp = (message.op /: ordenedMsgs) {
             (transformedOp, currentListElement) => {
                 val currentOp = currentListElement _2
                 val transformatedOps = xform(currentOp, transformedOp)
