@@ -295,7 +295,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC1 + i)
             op.executeOn(c1Doc)
 
-            c1.generateMsg(op, {
+            c1.generate(op, {
                 msg => colaC1 += msg
             })
         }
@@ -311,7 +311,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC2 + i)
             op.executeOn(c2Doc)
 
-            c2.generateMsg(op, {
+            c2.generate(op, {
                 msg => colaC2 += msg
             })
         }
@@ -329,16 +329,16 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 println(i)
                 println(serverDoc.data)
 
-                s1.receiveMsg(colaC1.dequeue, {
+                s1.receive(colaC1.dequeue, {
                     op => op.executeOn(serverDoc)
-                    s2.generateMsg(op, {
+                    s2.generate(op, {
                         msg => colaACliente2 += msg
                     })
                 })
 
-                s2.receiveMsg(colaC2.dequeue, {
+                s2.receive(colaC2.dequeue, {
                     op => op.executeOn(serverDoc)
-                    s1.generateMsg(op, {
+                    s1.generate(op, {
                         msg => colaACliente1 += msg
                     })
                 })
@@ -347,12 +347,12 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals("ABCDEFG--escribi", serverDoc.data)
 
         colaACliente1.foreach {
-            m => c1.receiveMsg(m, {
+            m => c1.receive(m, {
                 op => op.executeOn(c1Doc)
             })
         }
         colaACliente2.foreach {
-            m => c2.receiveMsg(m, {
+            m => c2.receive(m, {
                 op => op.executeOn(c2Doc)
             })
         }
@@ -380,7 +380,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC1 + i)
             op.executeOn(c1Doc)
 
-            c1.generateMsg(op, {
+            c1.generate(op, {
                 msg => colaC1 += msg
             })
         }
@@ -396,7 +396,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             val op = new AddTextOperation(c, startPosC2 + i)
             op.executeOn(c2Doc)
 
-            c2.generateMsg(op, {
+            c2.generate(op, {
                 msg => colaC2 += msg
             })
         }
@@ -412,20 +412,20 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 println(i)
                 println(serverDoc.data)
 
-                s1.receiveMsg(colaC1.dequeue, {
+                s1.receive(colaC1.dequeue, {
                     op =>
                         op.executeOn(serverDoc)
 
-                        s2.generateMsg(op, {
+                        s2.generate(op, {
                             msg => colaACliente2 += msg
                         })
                 })
 
-                s2.receiveMsg(colaC2.dequeue, {
+                s2.receive(colaC2.dequeue, {
                     op =>
                         op.executeOn(serverDoc)
 
-                        s1.generateMsg(op, {
+                        s1.generate(op, {
                             msg => colaACliente1 += msg
                         })
                 })
@@ -435,11 +435,11 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
         (0 until 4).foreach {
             i =>
-                c1.receiveMsg(colaACliente1.dequeue, {
+                c1.receive(colaACliente1.dequeue, {
                     op => op.executeOn(c1Doc)
                 })
 
-                c2.receiveMsg(colaACliente2.dequeue, {
+                c2.receive(colaACliente2.dequeue, {
                     op => op.executeOn(c2Doc)
                 })
         }
@@ -450,7 +450,6 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
     @Test
     def testEscribirTextoYBorrar: Unit = {
-
         val c1Doc = docFromText("ABCD1234")
         val c2Doc = docFromText("ABCD1234")
         val serverDoc = docFromText("ABCD1234")
@@ -466,7 +465,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 val op = new AddTextOperation(c, startPosC1 + i)
                 op.executeOn(c1Doc)
 
-                c1.generateMsg(op, {
+                c1.generate(op, {
                     msg => colaC1 += msg
             })
         }
@@ -479,7 +478,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
             i =>
                 val op = new DeleteTextOperation(startPosC2,1)
                 op.executeOn(c2Doc)
-                 c2.generateMsg(op, {
+                 c2.generate(op, {
                         msg => colaC2 += msg
                 })
         }
@@ -494,20 +493,20 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 println(i)
                 println(serverDoc.data)
 
-                s1.receiveMsg(colaC1.dequeue, {
+                s1.receive(colaC1.dequeue, {
                     op =>
                         op.executeOn(serverDoc)
 
-                        s2.generateMsg(op, {
+                        s2.generate(op, {
                             msg => colaACliente2 += msg
                         })
                 })
 
-                s2.receiveMsg(colaC2.dequeue, {
+                s2.receive(colaC2.dequeue, {
                     op =>
                         op.executeOn(serverDoc)
 
-                        s1.generateMsg(op, {
+                        s1.generate(op, {
                             msg => colaACliente1 += msg
                         })
                 })
@@ -517,19 +516,17 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
          (0 until 4).foreach {
             i =>
-                c1.receiveMsg(colaACliente1.dequeue, {
+                c1.receive(colaACliente1.dequeue, {
                     op => op.executeOn(c1Doc)
                 })
 
-                c2.receiveMsg(colaACliente2.dequeue, {
+                c2.receive(colaACliente2.dequeue, {
                     op => op.executeOn(c2Doc)
                 })
         }
 
         Assert.assertEquals("ABCDWXYZ", c1Doc.data)
         Assert.assertEquals("ABCDWXYZ", c2Doc.data)
-
-
     }
 
     def docFromText(text: String) = new DocumentData {

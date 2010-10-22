@@ -43,7 +43,7 @@ class JupiterTest extends AssertionsForJUnit {
         js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
 
-        js.receiveMsg(Message(new DeleteTextOperation(7, 1), 1, 0), applyClient)
+        js.receive(Message(new DeleteTextOperation(7, 1), 1, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdfg")
     }
 
@@ -60,7 +60,7 @@ class JupiterTest extends AssertionsForJUnit {
         js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
 
-        js.receiveMsg(Message(new DeleteTextOperation(0, 1), 1, 0), applyClient)
+        js.receive(Message(new DeleteTextOperation(0, 1), 1, 0), applyClient)
         assertEquals(ctext.data, "HOLADOGbcdefg")
     }
 

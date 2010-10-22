@@ -46,7 +46,7 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
     }
 
     def generateOp(op: EditOperation) {
-        sync.generateMsg(op, {
+        sync.generate(op, {
             msg =>
                 val docOp = new DocumentOperation(docTitle, msg)
                 publish(OperationEvent(docOp))
