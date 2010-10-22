@@ -6,10 +6,14 @@ import docsession.BasicDocumentSessionFactory
 import exceptions.{UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
 import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
-import sync.SynchronizerAdapterFactory
+import reflect.BeanProperty
 
 class BasicKernel extends Kernel with Loggable {
-    val timeout = 5000
+    @BeanProperty
+    var timeout: Int = _
+    @BeanProperty
+    var sync: SynchronizerFactory = _
+
     var sessions = List[Session]()
     var documents = List[DocumentActor]()
 
@@ -50,6 +54,8 @@ class BasicKernel extends Kernel with Loggable {
 
         // create a document actor
         val actor = new BasicDocumentActor(doc, newSyncFactory)
+        // set the timeout
+        actor.timeout = this.timeout
 
         // set the document actor to the session factory
         docSessionFactory.docActor = actor
@@ -60,7 +66,7 @@ class BasicKernel extends Kernel with Loggable {
         actor
     }
 
-    protected def newSyncFactory: SynchronizerFactory = new SynchronizerAdapterFactory
+    protected def newSyncFactory: SynchronizerFactory = sync
 
     override def documentList = documents.map {_.title}
 

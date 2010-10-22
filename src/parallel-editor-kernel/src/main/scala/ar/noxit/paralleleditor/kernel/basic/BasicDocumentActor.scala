@@ -17,11 +17,10 @@ trait SynchronizerFactory {
 }
 
 class BasicDocumentActor(val document: BasicDocument, val syncFactory: SynchronizerFactory) extends DocumentActor with Loggable {
+    val title = document.title
     var syncs = Map[Session, Synchronizer]()
 
-    // TODO inyectar
-    private val timeout = 5000
-    val title = document.title
+    var timeout : Int = _
 
     def act = {
         // TODO hacer que termine

@@ -20,12 +20,13 @@ trait KernelService {
  * a partir de la conexión recibida.
  */
 abstract class BaseKernelService extends DaemonActor with Loggable with KernelService {
-    @BeanProperty
-    var converter: RemoteDocumentOperationConverter = _
-
     private var sExit = false
 
+    @BeanProperty
+    var converter: RemoteDocumentOperationConverter = _
+    @BeanProperty
     protected var kernel: Kernel = _
+
     protected var ka: Actor = _
     protected var clientActorFactory: PeerActorFactory = _
     protected val clientList = new ClientListActor
@@ -73,7 +74,7 @@ abstract class BaseKernelService extends DaemonActor with Loggable with KernelSe
 
     protected def newNetworkConnection(): NetworkConnection
 
-    protected def newKernel: Kernel = new BasicKernel
+    protected def newKernel: Kernel = kernel
 
     protected def newKernelActor: Actor = new KernelActor(kernel).start
 

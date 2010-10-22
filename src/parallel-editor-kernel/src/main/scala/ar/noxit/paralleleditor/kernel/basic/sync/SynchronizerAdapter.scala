@@ -1,12 +1,16 @@
 package ar.noxit.paralleleditor.kernel.basic.sync
 
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import ar.noxit.paralleleditor.common.{EditOperationJupiterSynchronizer, BasicXFormStrategy, JupiterSynchronizer, Message}
 import ar.noxit.paralleleditor.kernel.basic.{SynchronizerFactory, Synchronizer}
+import reflect.BeanProperty
+import ar.noxit.paralleleditor.common._
 
 class SynchronizerAdapterFactory extends SynchronizerFactory {
+    @BeanProperty
+    var strategy: XFormStrategy = _
+
     def newSynchronizer: Synchronizer =
-        new SynchronizerAdapter(new EditOperationJupiterSynchronizer(new BasicXFormStrategy))
+        new SynchronizerAdapter(new EditOperationJupiterSynchronizer(strategy))
 }
 
 class SynchronizerAdapter(val sync: JupiterSynchronizer[EditOperation]) extends Synchronizer {

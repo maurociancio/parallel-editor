@@ -12,7 +12,19 @@
     <bean id="kernelService" class="ar.noxit.paralleleditor.server.OneDefaultDocKernelService" scope="singleton">
         <constructor-arg value="5000"/>
         <property name="converter" ref="remoteDocumentOperationConverter"/>
+        <property name="kernel" ref="basicKernel"/>
     </bean>
+
+    <bean id="basicKernel" class="ar.noxit.paralleleditor.kernel.basic.BasicKernel">
+        <property name="timeout" value="5000"/>
+        <property name="sync" ref="syncFactory"/>
+    </bean>
+
+    <bean id="syncFactory" class="ar.noxit.paralleleditor.kernel.basic.sync.SynchronizerAdapterFactory">
+        <property name="strategy" ref="basicStrategy"/>
+    </bean>
+
+    <bean id="basicStrategy" class="ar.noxit.paralleleditor.common.BasicXFormStrategy"/>
 
     <!--CONVERSORES-->
     <bean id="editOperationConverter"
