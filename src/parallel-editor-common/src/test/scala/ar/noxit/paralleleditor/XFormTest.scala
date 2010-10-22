@@ -91,70 +91,45 @@ class XFormTest extends AssertionsForJUnit {
     def testDeleteTextEqualPosition2 {
         val (ctext, stext) = docFromText("abcde")
 
-        val c = new DeleteTextOperation(startPos = 1, size = 2)
+        val c = new DeleteTextOperation(startPos = 1, size = 1)
         val s = new DeleteTextOperation(startPos = 1, size = 1)
 
-        checkTransform(c, ctext, s, stext, "ade")
+        checkTransform(c, ctext, s, stext, "acde")
     }
 
-    @Test
-    def testDeleteTextEqualPosition3 {
-        val (ctext, stext) = docFromText("abcde")
 
-        val c = new DeleteTextOperation(startPos = 1, size = 1)
-        val s = new DeleteTextOperation(startPos = 1, size = 2)
 
-        checkTransform(c, ctext, s, stext, "ade")
-    }
 
-    @Test
-    def testDeleteTextEqualPosition4 {
-        val (ctext, stext) = docFromText("abcdefgh")
-
-        val c = new DeleteTextOperation(startPos = 1, size = 4)
-        val s = new DeleteTextOperation(startPos = 3, size = 3)
-
-        checkTransform(c, ctext, s, stext, "agh")
-    }
 
     @Test
     def testDeleteTextDisjoint {
         val (ctext, stext) = docFromText("abcdefgh")
 
-        val c = new DeleteTextOperation(startPos = 1, size = 2)
-        val s = new DeleteTextOperation(startPos = 4, size = 3)
+        val c = new DeleteTextOperation(startPos = 1, size = 1)
+        val s = new DeleteTextOperation(startPos = 4, size = 1)
 
-        checkTransform(c, ctext, s, stext, "adh")
-    }
-
-    @Test
-    def testDeleteTextDisjoint3 {
-        val (ctext, stext) = docFromText("abcdefgh")
-
-        val c = new DeleteTextOperation(startPos = 4, size = 3)
-        val s = new DeleteTextOperation(startPos = 1, size = 2)
-
-        checkTransform(c, ctext, s, stext, "adh")
+        checkTransform(c, ctext, s, stext, "acdfgh")
     }
 
     @Test
     def testDeleteTextDisjoint2 {
         val (ctext, stext) = docFromText("abcdefgh")
 
-        val c = new DeleteTextOperation(startPos = 4, size = 3)
-        val s = new DeleteTextOperation(startPos = 1, size = 2)
+        val c = new DeleteTextOperation(startPos = 4, size = 1)
+        val s = new DeleteTextOperation(startPos = 1, size = 1)
 
-        checkTransform(c, ctext, s, stext, "adh")
+        checkTransform(c, ctext, s, stext, "acdfgh")
     }
+
 
     @Test
     def testAddTextDeleteTextDisjoint {
         val (ctext, stext) = docFromText("abcdef")
 
         val c = new AddTextOperation(startPos = 1, text = "hola")
-        val s = new DeleteTextOperation(startPos = 3, size = 2)
+        val s = new DeleteTextOperation(startPos = 3, size = 1)
 
-        checkTransform(c, ctext, s, stext, "aholabcf")
+        checkTransform(c, ctext, s, stext, "aholabcef")
     }
 
     @Test
@@ -162,9 +137,9 @@ class XFormTest extends AssertionsForJUnit {
         val (ctext, stext) = docFromText("abcdef")
 
         val c = new AddTextOperation(startPos = 5, text = "hola")
-        val s = new DeleteTextOperation(startPos = 1, size = 2)
+        val s = new DeleteTextOperation(startPos = 1, size = 1)
 
-        checkTransform(c, ctext, s, stext, "adeholaf")
+        checkTransform(c, ctext, s, stext, "acdeholaf")
     }
 
     @Test
@@ -172,9 +147,9 @@ class XFormTest extends AssertionsForJUnit {
         val (ctext, stext) = docFromText("abcdefg")
 
         val c = new AddTextOperation(startPos = 4, text = "hola")
-        val s = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new DeleteTextOperation(startPos = 2, size = 1)
 
-        checkTransform(c, ctext, s, stext, "abg")
+        checkTransform(c, ctext, s, stext, "abdholaefg")
     }
 
     @Test
@@ -182,9 +157,9 @@ class XFormTest extends AssertionsForJUnit {
         val (ctext, stext) = docFromText("abcdefg")
 
         val c = new AddTextOperation(startPos = 5, text = "hola")
-        val s = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new DeleteTextOperation(startPos = 2, size = 1)
 
-        checkTransform(c, ctext, s, stext, "abg")
+        checkTransform(c, ctext, s, stext, "abdeholafg")
     }
 
     @Test
@@ -192,9 +167,9 @@ class XFormTest extends AssertionsForJUnit {
         val (ctext, stext) = docFromText("abcdefg")
 
         val c = new AddTextOperation(startPos = 6, text = "hola")
-        val s = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new DeleteTextOperation(startPos = 2, size = 1)
 
-        checkTransform(c, ctext, s, stext, "abholag")
+        checkTransform(c, ctext, s, stext, "abdefholag")
     }
 
     @Test
@@ -202,9 +177,9 @@ class XFormTest extends AssertionsForJUnit {
         val (ctext, stext) = docFromText("abcdefg")
 
         val c = new AddTextOperation(startPos = 7, text = "hola")
-        val s = new DeleteTextOperation(startPos = 2, size = 4)
+        val s = new DeleteTextOperation(startPos = 2, size = 1)
 
-        checkTransform(c, ctext, s, stext, "abghola")
+        checkTransform(c, ctext, s, stext, "abdefghola")
     }
 
     @Test
@@ -212,9 +187,9 @@ class XFormTest extends AssertionsForJUnit {
         val (ctext, stext) = docFromText("abcd")
 
         val c = new AddTextOperation(startPos = 2, text = "hola")
-        val s = new DeleteTextOperation(startPos = 2, size = 2)
+        val s = new DeleteTextOperation(startPos = 2, size = 1)
 
-        checkTransform(c, ctext, s, stext, "abhola")
+        checkTransform(c, ctext, s, stext, "abholad")
     }
     // delete add
 
@@ -222,60 +197,60 @@ class XFormTest extends AssertionsForJUnit {
     def testAddTextDeleteTextDisjointInverse {
         val (ctext, stext) = docFromText("abcdef")
 
-        val c = new DeleteTextOperation(startPos = 3, size = 2)
+        val c = new DeleteTextOperation(startPos = 3, size = 1)
         val s = new AddTextOperation(startPos = 1, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "aholabcf")
+        checkTransform(c, ctext, s, stext, "aholabcef")
     }
 
     @Test
     def testAddTextDeleteTextDisjointInverse2 {
         val (ctext, stext) = docFromText("abcdef")
 
-        val c = new DeleteTextOperation(startPos = 1, size = 2)
+        val c = new DeleteTextOperation(startPos = 1, size = 1)
         val s = new AddTextOperation(startPos = 5, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "adeholaf")
+        checkTransform(c, ctext, s, stext, "acdeholaf")
     }
 
     @Test
     def testAddTextDeleteTextInverse {
         val (ctext, stext) = docFromText("abcdefg")
 
-        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val c = new DeleteTextOperation(startPos = 2, size = 1)
         val s = new AddTextOperation(startPos = 4, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "abg")
+        checkTransform(c, ctext, s, stext, "abdholaefg")
     }
 
     @Test
     def testAddTextDeleteTextInverse2 {
         val (ctext, stext) = docFromText("abcdefg")
 
-        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val c = new DeleteTextOperation(startPos = 2, size = 1)
         val s = new AddTextOperation(startPos = 5, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "abg")
+        checkTransform(c, ctext, s, stext, "abdeholafg")
     }
 
     @Test
     def testAddTextDeleteTextInverse3 {
         val (ctext, stext) = docFromText("abcdefg")
 
-        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val c = new DeleteTextOperation(startPos = 2, size = 1)
         val s = new AddTextOperation(startPos = 6, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "abholag")
+        checkTransform(c, ctext, s, stext, "abdefholag")
     }
 
     @Test
     def testAddTextDeleteTextInverse4 {
         val (ctext, stext) = docFromText("abcdefg")
 
-        val c = new DeleteTextOperation(startPos = 2, size = 4)
+        val c = new DeleteTextOperation(startPos = 2, size = 1)
         val s = new AddTextOperation(startPos = 7, text = "hola")
 
-        checkTransform(c, ctext, s, stext, "abghola")
+        checkTransform(c, ctext, s, stext, "abdefghola")
     }
 
     def checkTransform(c: EditOperation, ctext: DocumentData, s: EditOperation, stext: DocumentData, expected: String) {

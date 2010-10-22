@@ -95,7 +95,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
         client2 ! RemoteLoginRequest("myUsername2")
         client2 ! RemoteDocumentListRequest()
 
-        Thread.sleep(600)
+        Thread.sleep(1000)
 
         assertEquals(docList, List("title"))
         assertEquals(kernel.sessionCount, 2)

@@ -42,8 +42,9 @@ class JupiterTest extends AssertionsForJUnit {
 
         js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
-        js.receive(Message(new DeleteTextOperation(7, 3), 1, 0), applyClient)
-        assertEquals(ctext.data, "HOLAaDOGbcd")
+
+        js.receiveMsg(Message(new DeleteTextOperation(7, 1), 1, 0), applyClient)
+        assertEquals(ctext.data, "HOLAaDOGbcdfg")
     }
 
     @Test
@@ -58,8 +59,9 @@ class JupiterTest extends AssertionsForJUnit {
 
         js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
         assertEquals(ctext.data, "HOLAaDOGbcdefg")
-        js.receive(Message(new DeleteTextOperation(0, 10), 1, 0), applyClient)
-        assertEquals(ctext.data, "HOLA")
+
+        js.receiveMsg(Message(new DeleteTextOperation(0, 1), 1, 0), applyClient)
+        assertEquals(ctext.data, "HOLADOGbcdefg")
     }
 
     def docFromText(text: String) = (new DocumentData {var data = text}, new DocumentData {var data = text})

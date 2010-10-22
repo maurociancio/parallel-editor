@@ -6,6 +6,8 @@ import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation._
 
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
+    dividerLocation = 150
+
     // TODO
     val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
@@ -34,16 +36,21 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
             addEntry("event received %s".format(e))
 
             val op = e match {
-                case InsertionEvent(pos, text) => new AddTextOperation(text, pos)
-                case DeletionEvent(pos, count) => new DeleteTextOperation(pos, count)
+                case InsertionEvent(pos, text) => generateOp(new AddTextOperation(text, pos))
+                case DeletionEvent(pos, count) => {
+                    //generar ops de borrado de a 1
+                    (1 to count).foreach {Int => generateOp(new DeleteTextOperation(pos, 1))}
+                }
             }
-
-            sync.generate(op, {
-                msg =>
-                    val docOp = new DocumentOperation(docTitle, msg)
-                    publish(OperationEvent(docOp))
-            })
         }
+    }
+
+    def generateOp(op: EditOperation) {
+        sync.generateMsg(op, {
+            msg =>
+                val docOp = new DocumentOperation(docTitle, msg)
+                publish(OperationEvent(docOp))
+        })
     }
 
     def addEntry(msg: String) {

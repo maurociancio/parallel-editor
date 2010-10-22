@@ -24,9 +24,8 @@ class BasicXFormStrategy extends XFormStrategy {
     /**
      * Caso agregar-agregar
      */
-    protected def xform(c: AddTextOperation, s: AddTextOperation): (EditOperation, EditOperation) = {
+    protected def xform(c: AddTextOperation, s: AddTextOperation): (EditOperation, EditOperation) =
         (simpleXForm(c, s), simpleXForm(s, c))
-    }
 
     /**
      * Implementación según paper
@@ -52,46 +51,41 @@ class BasicXFormStrategy extends XFormStrategy {
     }
 
     /**
-     * Caso borrar-borrara
+     * Caso borrar-borrar
+     * para operaciones de borrado de 1 caracter
      */
-    protected def xform(c: DeleteTextOperation, s: DeleteTextOperation): (DeleteTextOperation, DeleteTextOperation) = {
-        val intersection = getRangeFor(c) intersect getRangeFor(s)
+    protected def xform(c: DeleteTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
+        if (s.size != 1 || c.size != 1) throw new UnsupportedEditOperationException("Delete size must be 1")
 
-        val min = if (c.startPos > s.startPos) s else c
-        val max = if (c.startPos <= s.startPos) s else c
+        val p1 = c.startPos
+        val p2 = s.startPos
 
-        if (intersection.isEmpty) {
-            val dt = new DeleteTextOperation(max.startPos - min.size, max.size)
-            if (min == c)
-                (min, dt)
-            else
-                (dt, min)
-        } else {
-            val noSuperpuestosDeMin = getRangeFor(min) diff intersection
-            val noSuperpuestosDeMax = getRangeFor(max) diff intersection
-
-            (new DeleteTextOperation(min.startPos, noSuperpuestosDeMin.size), new DeleteTextOperation(min.startPos, noSuperpuestosDeMax.size))
-        }
+        if (p1 < p2)
+            (c, new DeleteTextOperation(p2 - 1, s.size))
+        else if (p1 > p2)
+            (new DeleteTextOperation(p1 - 1, c.size), s)
+        else
+            (new NullOperation, new NullOperation)
     }
 
     /**
      * Caso agregar-borrar
+     * la implementación contempla solo operaciones de borrado
+     * de un caracter
      */
     protected def xform(c: AddTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
-        val deletionRange = getRangeFor(s)
-        val exclusiveDeletionRange = (deletionRange slice (1, deletionRange.size - 1))
+        if (s.size != 1) throw new UnsupportedEditOperationException("Delete size must be 1")
 
-        if (exclusiveDeletionRange contains c.startPos) {
-            // el rango de borrado incluye a la posicion de insercion
-            val count =  s.size + c.text.length
-            (new NullOperation(), new DeleteTextOperation(s.startPos, count))
-        } else {
-            //  el punto de insercion no esta dentro del rango de borrado
-            if (c.startPos <= s.startPos)
-                (c, new DeleteTextOperation(s.startPos + c.text.length, s.size))
-            else
-                (new AddTextOperation(c.text, c.startPos - s.size, c.startPos :: c.pword), s)
-        }
+        val p1 = c.startPos
+        val p2 = s.startPos
+        val pw = c.pword
+
+        if (p1 > p2)
+            (new AddTextOperation(c.text, p1 - 1, p1 :: pw), s)
+        else if (p1 < p2)
+            (c, new DeleteTextOperation(p2 + c.text.length, s.size))
+        else
+            (new AddTextOperation(c.text, p1, p1 :: pw), new DeleteTextOperation(p2 + c.text.length, s.size))
     }
 
     /**

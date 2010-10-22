@@ -27,7 +27,9 @@ class GUI extends SimpleSwingApplication with Loggable {
         menuBar = homeMenuBar
 
         val connPanel = new ConnectionPanel
-        val tabs = new TabbedPane
+        val tabs = new TabbedPane {
+            preferredSize = new Dimension(300, 200)
+        }
 
         val panelGeneral = new BorderPanel()
 
