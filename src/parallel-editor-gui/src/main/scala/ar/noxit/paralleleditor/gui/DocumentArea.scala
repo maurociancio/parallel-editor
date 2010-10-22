@@ -39,14 +39,14 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
                 case InsertionEvent(pos, text) => generateOp(new AddTextOperation(text, pos))
                 case DeletionEvent(pos, count) => {
                     //generar ops de borrado de a 1
-                        (1 to count).foreach{Int => generateOp(new DeleteTextOperation(pos, 1))}
+                    (1 to count).foreach {Int => generateOp(new DeleteTextOperation(pos, 1))}
                 }
             }
 
         }
     }
 
-    def generateOp(op:EditOperation){
+    def generateOp(op: EditOperation) {
         sync.generateMsg(op, {
             msg =>
                 val docOp = new DocumentOperation(docTitle, msg)
