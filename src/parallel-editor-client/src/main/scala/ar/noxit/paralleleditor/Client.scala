@@ -1,7 +1,10 @@
+
 package ar.noxit.paralleleditor.client
 
 
 import actors.Actor
+import java.net.Socket
+import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 
 trait Documents {
     def byName(title: String): Option[ConcurrentDocument]
@@ -26,16 +29,16 @@ class InternalClientActorFactory(private val docs: Documents) extends LocalClien
 
 }
 
-object SynchronizationSessionFactory extends LocalClientActorFactory{
+object SynchronizationSessionFactory {
 
-    def getSyncServerSession(host:String, port: Int) {
+    def getSyncServerSession(host:String, port: Int, docs: Documents) {
 
         val socket = new Socket(host, port)
-     //   val factory = beanFactory.getBean("internalClientActorFactory", docs).asInstanceOf[LocalClientActorFactory]
+        val factory = new InternalClientActorFactory(docs)
         // TODO resolver el tema de la conexión, que se cierra on disconnect
-//        new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
+        new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
 
-        factory.clientActor
+        factory.newLocalClientActor
     }
 
 }
