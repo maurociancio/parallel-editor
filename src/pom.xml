@@ -13,5 +13,6 @@
         <module>parallel-editor-gui</module>
         <module>parallel-editor-common</module>
         <module>parallel-editor-server</module>
+        <module>parallel-editor-client</module>
     </modules>
 </project>
