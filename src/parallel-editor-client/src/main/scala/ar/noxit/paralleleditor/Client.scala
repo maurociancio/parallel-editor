@@ -29,9 +29,9 @@ class InternalClientActorFactory(private val docs: Documents) extends LocalClien
 
 }
 
-object SynchronizationSessionFactory {
+object SynchronizationSessionFactory  {
 
-    def getSyncServerSession(host:String, port: Int, docs: Documents) {
+    def getSyncServerSession(host:String, port: Int, docs: Documents):Actor = {
 
         val socket = new Socket(host, port)
         val factory = new InternalClientActorFactory(docs)

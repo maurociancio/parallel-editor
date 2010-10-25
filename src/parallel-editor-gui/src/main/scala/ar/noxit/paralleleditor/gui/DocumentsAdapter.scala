@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.gui
 
 import swing.TabbedPane.Page
 import swing.{Reactor, MainFrame, Dialog, TabbedPane}
+import ar.noxit.paralleleditor.client.Documents
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
