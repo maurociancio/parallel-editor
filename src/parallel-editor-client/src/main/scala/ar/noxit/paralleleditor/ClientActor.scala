@@ -1,15 +1,10 @@
 package ar.noxit.paralleleditor.client
 
 import ar.noxit.paralleleditor.common.remote.TerminateActor
-import ar.noxit.paralleleditor.common.converter.MessageConverter
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.converter.MessageConverter
-
-trait DocumentList {
-    def changeDocList(l: List[String])
-}
 
 class ClientActor(private val doc: Documents) extends Actor with Loggable {
     val timeout = 5000
