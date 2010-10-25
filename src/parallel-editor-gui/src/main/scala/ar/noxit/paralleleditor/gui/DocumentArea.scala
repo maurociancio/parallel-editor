@@ -59,7 +59,7 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         debugConsole.caret.position = debugConsole.text.size
     }
 
-    def processRemoteOperation(m: Message[EditOperation]) {
+    override def processRemoteOperation(m: Message[EditOperation]) {
         SwingUtil.invokeLater {
             sync.receive(m, {op => processOperation(op)})
         }

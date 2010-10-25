@@ -7,7 +7,6 @@ import ar.noxit.paralleleditor.common.messages._
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.converter.MessageConverter
 
-
 trait DocumentList {
     def changeDocList(l: List[String])
 }

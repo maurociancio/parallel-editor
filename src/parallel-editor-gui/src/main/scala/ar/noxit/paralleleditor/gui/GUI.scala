@@ -6,7 +6,7 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.converter._
 import reflect.BeanProperty
-import ar.noxit.paralleleditor.client.{Documents, Logout, SynchronizationSessionFactory}
+import ar.noxit.paralleleditor.client.{Logout, SynchronizationSessionFactory}
 
 class GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
@@ -14,7 +14,6 @@ class GUI extends SimpleSwingApplication with Loggable {
 
     @BeanProperty
     var remoteDocOpConverter: RemoteDocumentOperationConverter = _
-
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"
