@@ -8,3 +8,4 @@ src/parallel-editor-kernel/target/
 src/parallel-editor-gui/target/
 src/parallel-editor-common/target/
 src/parallel-editor-server/target/
+src/parallel-editor-client/target/
