@@ -42,8 +42,7 @@ class GUI extends SimpleSwingApplication with Loggable {
                 trace("Connecting to %s %s", host, port)
 
                 connected = true
-//                actor = clientActorFactory.newActor(host, port.intValue, documents)
-                actor = SynchronizationSessionFactory.getSyncServerSession(host,port.intValue,documents)
+                actor = SynchronizationSessionFactory.getSyncServerSession(host, port.intValue, documents)
                 actor ! RemoteLoginRequest(connPanel user)
             }
 
