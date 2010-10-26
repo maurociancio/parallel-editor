@@ -20,6 +20,8 @@ case class LoginResponse(val session: Session) {
 
 case class UsernameAlreadyExists
 
+case class DocumentTitleExists(val offenderTitle: String) extends ToRemote
+
 case class NewDocumentRequest(val session: Session, val title: String, val initialContent: String)
 
 /**

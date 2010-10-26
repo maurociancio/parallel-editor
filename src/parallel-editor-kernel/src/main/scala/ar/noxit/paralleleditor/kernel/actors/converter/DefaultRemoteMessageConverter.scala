@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.kernel.actors.converter
 
 import ar.noxit.paralleleditor.kernel.actors.RemoteMessageConverter
 import ar.noxit.paralleleditor.kernel.messages._
-import ar.noxit.paralleleditor.common.messages.{RemoteDocumentSubscriptionResponse, RemoteDocumentListResponse, RemoteDocumentSubscriptionNotExists, RemoteDocumentSubscriptionAlreadyExists}
+import ar.noxit.paralleleditor.common.messages._
 
 class DefaultRemoteMessageConverter extends RemoteMessageConverter {
     override def convert(remote: ToRemote) = {
@@ -18,6 +18,9 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case SubscriptionResponse(docSession, initialContent) =>
                 RemoteDocumentSubscriptionResponse(docSession.title, initialContent)
+
+            case DocumentTitleExists(offenderTitle) =>
+                RemoteDocumentTitleExists(offenderTitle)
         }
     }
 }

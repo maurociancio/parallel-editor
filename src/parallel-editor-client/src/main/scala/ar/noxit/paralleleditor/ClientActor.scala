@@ -78,6 +78,10 @@ class ClientActor(private val doc: Documents) extends Actor with Loggable {
                     trace("RemoteDocumentListResponse %s", l)
                     doc.process(DocumentListUpdate(l))
                 }
+                case RemoteDocumentTitleExists(offenderTitle) => {
+                    trace("RemoteDocumentTitleExists %s", offenderTitle)
+                    doc.process(DocumentTitleTaken(offenderTitle))
+                }
 
                 case r: RemoteLoginRefusedRemoteResponse => {
                     trace("login refused from kernel.")

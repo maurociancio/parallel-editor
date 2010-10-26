@@ -151,6 +151,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
         receiveWithin(timeout) {
             case LoginResponse(session) => {
                 trace("Session received")
+
                 // notify client logged in
                 gateway ! RemoteLoginOkResponse()
 

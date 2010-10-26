@@ -14,3 +14,5 @@ case class DocumentSubscriptionAlreadyExists(val offenderTitle: String)
 case class DocumentSubscriptionNotExists(val offenderTitle: String)
 
 case class UsernameTaken()
+
+case class DocumentTitleTaken(val offenderTitle: String)

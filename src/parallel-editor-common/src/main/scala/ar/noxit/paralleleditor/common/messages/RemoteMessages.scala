@@ -75,6 +75,11 @@ case class RemoteNewDocumentRequest(val title: String, val initialContent: Strin
 case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage with ToKernel
 
 /**
+ *
+ */
+case class RemoteDocumentTitleExists(val offenderTitle: String) extends BaseRemoteMessage
+
+/**
  * Suscripcion aceptada
  */
 case class RemoteDocumentSubscriptionResponse(val docTitle: String, val initialContent: String) extends BaseRemoteMessage

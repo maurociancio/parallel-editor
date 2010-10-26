@@ -31,6 +31,11 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                     Dialog.showMessage(parent = menu, message = "Nombre de usuario ya existe, intente con otro")
                 }
             }
+            case DocumentTitleTaken(offenderTitle) => {
+                SwingUtil.invokeLater {
+                    Dialog.showMessage(parent = menu, message = "Nombre de documento ya tomado")
+                }
+            }
             case DocumentSubscriptionAlreadyExists(offenderTitle) => {
                 SwingUtil.invokeLater {
                     Dialog.showMessage(parent = menu, message = "Ya estas suscripto al documento %s".format(offenderTitle))
