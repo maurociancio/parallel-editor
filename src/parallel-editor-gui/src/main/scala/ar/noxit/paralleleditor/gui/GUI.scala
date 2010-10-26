@@ -25,7 +25,7 @@ class GUI extends SimpleSwingApplication with Loggable {
             preferredSize = new Dimension(300, 200)
         }
 
-        val panelGeneral = new BorderPanel()
+        val panelGeneral = new BorderPanel
 
         panelGeneral.layout(connPanel) = BorderPanel.Position.South
         panelGeneral.layout(tabs) = BorderPanel.Position.Center
@@ -42,7 +42,7 @@ class GUI extends SimpleSwingApplication with Loggable {
                 trace("Connecting to %s %s", host, port)
 
                 connected = true
-                actor = SynchronizationSessionFactory.getSyncServerSession(host, port.intValue, documents)
+                actor = SynchronizationSessionFactory.getSyncServerSession(host, port, documents)
                 actor ! RemoteLoginRequest(connPanel user)
             }
 

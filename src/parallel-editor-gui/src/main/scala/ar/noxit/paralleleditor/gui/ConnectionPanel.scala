@@ -1,8 +1,7 @@
 package ar.noxit.paralleleditor.gui
 
-import swing.FlowPanel
-import swing.{Label, TextField, Button}
 import swing.event.ButtonClicked
+import swing._
 
 class ConnectionPanel extends FlowPanel {
     val connectTo = new Label("Connect to:")
@@ -30,11 +29,15 @@ class ConnectionPanel extends FlowPanel {
     }
 
     private def conectar() {
-        val host = ip text
-        val portNumber = port.text.toInt
-        ConnectionPanel.this.publish(ConnectionRequest(host, portNumber))
-
-        enableControls(false)
+        try {
+            val host = ip text
+            val portNumber = port.text.toInt
+            publish(ConnectionRequest(host, portNumber))
+            enableControls(false)
+        } catch {
+            case e: NumberFormatException =>
+                Dialog.showMessage(parent = this, message = "El puerto tiene que se un entero")
+        }
     }
 
     private def desconectar() {
