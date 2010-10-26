@@ -46,6 +46,8 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                     Dialog.showMessage(parent = menu, message = "No estas suscripto al documento %s".format(offenderTitle))
                 }
             }
+            case LoginOk() => {
+            }
         }
     }
 

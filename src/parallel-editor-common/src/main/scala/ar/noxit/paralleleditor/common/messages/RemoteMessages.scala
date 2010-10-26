@@ -9,10 +9,23 @@ import scala.serializable
 abstract case class BaseRemoteMessage
 
 /**
- * Mensajes que van hacia el kernel
+ * Mensajes que van hacia el kernel y que deben convertirse antes de ser enviados
  */
 @serializable
 trait ToKernel
+
+/**
+ * Mensajes enviados desde el cliente que tienen destino al kernel, son todos request
+ */
+
+@serializable
+trait Request
+
+/**
+ * Mensaje proveniente del kernel que son respuestas a mensajes
+ */
+@serializable
+trait Response
 
 /**
  * Nivel documento
@@ -67,67 +80,67 @@ case class RemoteDocumentOperation(val docTitle: String, val payload: SyncOperat
 /**
  * Pide un nuevo documento
  */
-case class RemoteNewDocumentRequest(val title: String, val initialContent: String = "") extends BaseRemoteMessage with ToKernel
+case class RemoteNewDocumentRequest(val title: String, val initialContent: String = "") extends BaseRemoteMessage with ToKernel with Request
 
 /**
  * Suscribirse a un doc existe
  */
-case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage with ToKernel
+case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage with ToKernel with Request
 
 /**
  *
  */
-case class RemoteDocumentTitleExists(val offenderTitle: String) extends BaseRemoteMessage
+case class RemoteDocumentTitleExists(val offenderTitle: String) extends BaseRemoteMessage with Response
 
 /**
  * Suscripcion aceptada
  */
-case class RemoteDocumentSubscriptionResponse(val docTitle: String, val initialContent: String) extends BaseRemoteMessage
+case class RemoteDocumentSubscriptionResponse(val docTitle: String, val initialContent: String) extends BaseRemoteMessage with Response
 
 /**
  * Ya existe subscripcion
  */
-case class RemoteDocumentSubscriptionAlreadyExists(val offenderTitle: String) extends BaseRemoteMessage
+case class RemoteDocumentSubscriptionAlreadyExists(val offenderTitle: String) extends BaseRemoteMessage with Response
 
 /**
  * No existe subscripcion
  */
-case class RemoteDocumentSubscriptionNotExists(val offenderTitle: String) extends BaseRemoteMessage
+case class RemoteDocumentSubscriptionNotExists(val offenderTitle: String) extends BaseRemoteMessage with Response
 
 /**
  * Pide listado de documentos
  */
-case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel
+case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel with Request
 
 /**
  * Respuesta de listado de documentos
  */
-case class RemoteDocumentListResponse(val docList: List[String]) extends BaseRemoteMessage
+case class RemoteDocumentListResponse(val docList: List[String]) extends BaseRemoteMessage with Response
 
 /**
  * Pide desuscriberse a un doc
  */
-case class RemoteUnsubscribeRequest(val title: String) extends BaseRemoteMessage
+case class RemoteUnsubscribeRequest(val title: String) extends BaseRemoteMessage with Request
 
 /**
  * Pide login
  */
-case class RemoteLoginRequest(val username: String) extends BaseRemoteMessage
+case class RemoteLoginRequest(val username: String) extends BaseRemoteMessage with Request
 
 /**
  * Rta de login OK
  */
-case class RemoteLoginOkResponse extends BaseRemoteMessage
+case class RemoteLoginOkResponse extends BaseRemoteMessage with Response
 
 /**
  * Rta de Login Erroneo
  */
-abstract case class RemoteLoginRefusedRemoteResponse extends BaseRemoteMessage
+abstract case class RemoteLoginRefusedRemoteResponse extends BaseRemoteMessage with Response
 
 /**
  * Nombre de usuario tomado
  */
-case class UsernameAlreadyExistsRemoteResponse extends RemoteLoginRefusedRemoteResponse
+case class UsernameAlreadyExistsRemoteResponse extends RemoteLoginRefusedRemoteResponse with Response
 
 /**
  * Pedido de logout
