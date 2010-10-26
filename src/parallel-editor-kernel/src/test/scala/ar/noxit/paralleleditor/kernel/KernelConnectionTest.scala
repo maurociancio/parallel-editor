@@ -1,5 +1,7 @@
 package ar.noxit.paralleleditor.kernel
 
+import actors.converter.{DefaultRemoteMessageConverter, DefaultToKernelConverter}
+import ar.noxit.paralleleditor.common.converter._
 import actors.{KernelActor, ClientActor}
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import basic.sync.SynchronizerAdapterFactory
@@ -10,7 +12,6 @@ import ar.noxit.paralleleditor.common.messages._
 import Assert._
 import ar.noxit.paralleleditor.common.remote.{NetworkActors, Peer}
 import scala.actors.{Future, Actor}
-import ar.noxit.paralleleditor.common.converter.{DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
 import ar.noxit.paralleleditor.common.BasicXFormStrategy
 
 object NullPeer extends Peer {
@@ -42,6 +43,9 @@ class KernelConnectionTest extends AssertionsForJUnit {
         ka = new KernelActor(kernel).start
         client = new ClientActor(ka, NullPeer)
         client.remoteDocOpconverter = converter
+        client.toKernelConverter = new DefaultToKernelConverter
+        client.remoteConverter = new DefaultRemoteMessageConverter
+        client.messageConverter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
         client.start
         client ! NetworkActors(remoteEchoClient, remoteEchoClient)
     }
@@ -79,6 +83,9 @@ class KernelConnectionTest extends AssertionsForJUnit {
     def test2Clients: Unit = {
         val client2 = new ClientActor(ka, NullPeer)
         client2.remoteDocOpconverter = converter
+        client2.toKernelConverter = new DefaultToKernelConverter
+        client2.remoteConverter = new DefaultRemoteMessageConverter
+        client2.messageConverter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
         client2.start
 
         var docList: List[String] = null
