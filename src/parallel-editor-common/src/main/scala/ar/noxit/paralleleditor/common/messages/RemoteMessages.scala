@@ -74,6 +74,16 @@ case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage
 case class RemoteDocumentSubscriptionResponse(val docTitle: String, val initialContent: String) extends BaseRemoteMessage
 
 /**
+ * Ya existe subscripcion
+ */
+case class RemoteDocumentSubscriptionAlreadyExists(val offenderTitle: String) extends BaseRemoteMessage
+
+/**
+ * No existe subscripcion
+ */
+case class RemoteDocumentSubscriptionNotExists(val offenderTitle: String) extends BaseRemoteMessage
+
+/**
  * Pide listado de documentos
  */
 case class RemoteDocumentListRequest extends BaseRemoteMessage

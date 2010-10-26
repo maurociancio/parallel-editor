@@ -5,6 +5,8 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.kernel.Session
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation.EditOperation
+import ar.noxit.paralleleditor.kernel.exceptions.{DocumentSubscriptionNotExistsException, DocumentSubscriptionAlreadyExistsException}
+import reflect.BeanProperty
 
 trait Synchronizer {
     def generate(op: EditOperation, send: Message[EditOperation] => Unit)
@@ -16,11 +18,12 @@ trait SynchronizerFactory {
     def newSynchronizer: Synchronizer
 }
 
-class BasicDocumentActor(val document: BasicDocument, val syncFactory: SynchronizerFactory) extends DocumentActor with Loggable {
+class BasicDocumentActor(private val document: BasicDocument, private val syncFactory: SynchronizerFactory) extends DocumentActor with Loggable {
     val title = document.title
-    var syncs = Map[Session, Synchronizer]()
+    private var syncs = Map[Session, Synchronizer]()
 
-    var timeout : Int = _
+    @BeanProperty
+    var timeout: Int = _
 
     def act = {
         // TODO hacer que termine
@@ -31,7 +34,6 @@ class BasicDocumentActor(val document: BasicDocument, val syncFactory: Synchroni
                 case ProcessOperation(who, m) => {
                     trace("Operation Received %s", m)
 
-                    // TODO capturar excepciones
                     syncs(who).receive(m, op => {
                         op.executeOn(document)
                         println("DOC: \n" + document.data)
@@ -51,20 +53,30 @@ class BasicDocumentActor(val document: BasicDocument, val syncFactory: Synchroni
                 // suscripcion
                 case Subscribe(who) => {
                     trace("Subscribe requested")
-                    // TODO catchear excepciones
-                    val docSession = document subscribe who
-                    val content = document.data
+                    try {
+                        val docSession = document subscribe who
+                        val content = document.data
 
-                    syncs = syncs + ((who, newSynchronizer))
-
-                    who notifyUpdate SubscriptionResponse(docSession, content)
+                        syncs = syncs + ((who, newSynchronizer))
+                        who notifyUpdate SubscriptionResponse(docSession, content)
+                    }
+                    catch {
+                        case e: DocumentSubscriptionAlreadyExistsException =>
+                            who notifyUpdate SubscriptionAlreadyExists(title)
+                    }
                 }
                 // desuscripcion
                 case Unsubscribe(who) => {
                     trace("Unsubscribe requested")
-                    document unsubscribe who
-                    removeSession(who)
+                    try {
+                        document unsubscribe who
+                        removeSession(who)
+                    } catch {
+                        case e: DocumentSubscriptionNotExistsException =>
+                            who notifyUpdate SubscriptionNotExists(title)
+                    }
                 }
+
                 case SilentUnsubscribe(session) => {
                     trace("Silent unsubscribe received")
                     document silentUnsubscribe session

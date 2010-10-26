@@ -12,16 +12,18 @@ import ar.noxit.paralleleditor.common.operation.DocumentOperation
 import reflect.BeanProperty
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
+    @BeanProperty
+    var timeout = 5000
+    @BeanProperty
+    var maxLoginTries = 5
+    @BeanProperty
+    var converter: RemoteDocumentOperationConverter = _
+
     private var docSessions: List[DocumentSession] = List()
-    private val timeout = 5000
-    private val maxLoginTries = 5
 
     private var listener: Actor = _
     private var gateway: Actor = _
     private var session: Session = _
-
-    @BeanProperty
-    var converter: RemoteDocumentOperationConverter = _
 
     override def act = {
         trace("Starting")
@@ -52,6 +54,15 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
 
                     docSessions = docSession :: docSessions
                     gateway ! RemoteDocumentSubscriptionResponse(docSession.title, initialContent)
+                }
+
+                case SubscriptionAlreadyExists(offenderTitle) => {
+                    trace("SubscriptionAlreadyExists")
+                    gateway ! RemoteDocumentSubscriptionAlreadyExists(offenderTitle)
+                }
+                case SubscriptionNotExists(offenderTitle) => {
+                    trace("SubscriptionNotExists")
+                    gateway ! RemoteDocumentSubscriptionNotExists(offenderTitle)
                 }
 
                 case RemoteDocumentListRequest() => {

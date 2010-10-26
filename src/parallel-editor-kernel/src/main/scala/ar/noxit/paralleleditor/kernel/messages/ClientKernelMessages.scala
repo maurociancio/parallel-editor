@@ -13,8 +13,7 @@ case class LoginResponse(val session: Session) {
         throw new IllegalArgumentException("session cannot be null")
 }
 
-abstract case class LoginFailedResponse
-case class UsernameAlreadyExists extends LoginFailedResponse
+case class UsernameAlreadyExists
 
 case class NewDocumentRequest(val session: Session, val title: String, val initialContent: String)
 
@@ -23,6 +22,16 @@ case class NewDocumentRequest(val session: Session, val title: String, val initi
  * Puede ser enviado tanto si es para un nuevo documento como para uno existente
  */
 case class SubscriptionResponse(val docSession: DocumentSession, val initialContent: String)
+
+/**
+ * Generado cuando una sesión ya está suscripta a un mensaje
+ */
+case class SubscriptionAlreadyExists(val offenderTitle: String)
+
+/**
+ * Generado cuando se solicita desuscripción a un documento no suscripto
+ */
+case class SubscriptionNotExists(val offenderTitle: String)
 
 case class DocumentListRequest(val session: Session)
 case class DocumentListResponse(val documents: List[String])

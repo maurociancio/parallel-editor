@@ -6,7 +6,7 @@ import ar.noxit.paralleleditor.common.messages._
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.converter.MessageConverter
 import reflect.BeanProperty
-import ar.noxit.paralleleditor.{UsernameTaken, DocumentListUpdate, DocumentSubscription, ProcessOperation}
+import ar.noxit.paralleleditor._
 
 class ClientActor(private val doc: Documents) extends Actor with Loggable {
     @BeanProperty
@@ -65,6 +65,14 @@ class ClientActor(private val doc: Documents) extends Actor with Loggable {
                 case RemoteDocumentSubscriptionResponse(docTitle, initialContent) => {
                     trace("RemoteDocumentSubscriptionResponse received")
                     doc.process(DocumentSubscription(docTitle, initialContent))
+                }
+                case RemoteDocumentSubscriptionAlreadyExists(offenderTitle) => {
+                    trace("RemoteDocumentSubscriptionAlreadyExists")
+                    doc.process(DocumentSubscriptionAlreadyExists(offenderTitle))
+                }
+                case RemoteDocumentSubscriptionNotExists(offenderTitle) => {
+                    trace("RemoteDocumentSubscriptionNotExists")
+                    doc.process(DocumentSubscriptionNotExists(offenderTitle))
                 }
                 case RemoteDocumentListResponse(l) => {
                     trace("RemoteDocumentListResponse %s", l)
