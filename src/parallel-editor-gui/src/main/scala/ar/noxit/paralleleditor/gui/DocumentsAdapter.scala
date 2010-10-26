@@ -4,6 +4,8 @@ import swing.TabbedPane.Page
 import swing.{Reactor, Dialog, TabbedPane}
 import ar.noxit.paralleleditor.client.Documents
 import ar.noxit.paralleleditor.{UsernameTaken, DocumentSubscription, DocumentListUpdate, ProcessOperation}
+import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
+import sync.SynchronizerAdapter
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
@@ -19,7 +21,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                 menu changeDocList docs
 
             case DocumentSubscription(title, initialContent) => {
-                val doc = new DocumentArea(title, initialContent)
+                val doc = newDocumentArea(title, initialContent)
                 gui.listenTo(doc)
                 tabs.pages += new Page(title, doc)
             }
@@ -30,5 +32,11 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                 }
             }
         }
+    }
+
+    protected def newDocumentArea(title: String, initialContent: String) = {
+        val doc = new DocumentArea(title, initialContent)
+        doc.sync = new SynchronizerAdapter(new EditOperationJupiterSynchronizer(new BasicXFormStrategy))
+        doc
     }
 }

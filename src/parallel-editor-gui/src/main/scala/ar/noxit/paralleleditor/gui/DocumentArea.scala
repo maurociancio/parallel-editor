@@ -1,17 +1,21 @@
 package ar.noxit.paralleleditor.gui
 
 import scala.swing._
-import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation._
 import reflect.BeanProperty
 
+trait Synchronizer {
+    def generate(op: EditOperation, send: Message[EditOperation] => Unit)
+
+    def receive(message: Message[EditOperation], apply: EditOperation => Unit)
+}
+
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane {
     dividerLocation = 150
 
-    // TODO
     @BeanProperty
-    var sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
+    var sync: Synchronizer = _
 
     private val areaEdicion = new NotificationEditPane {
         text = initialContent
