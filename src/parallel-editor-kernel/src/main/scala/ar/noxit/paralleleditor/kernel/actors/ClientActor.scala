@@ -1,6 +1,5 @@
 package ar.noxit.paralleleditor.kernel.actors
 
-import converter.{DefaultToKernelConverter, DefaultRemoteMessageConverter}
 import scala.actors._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
@@ -19,15 +18,12 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     var maxLoginTries = 5
     @BeanProperty
     var remoteDocOpconverter: RemoteDocumentOperationConverter = _
-    // TODO
     @BeanProperty
-    var messageConverter: MessageConverter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
-    // TODO
+    var messageConverter: MessageConverter = _
     @BeanProperty
-    var remoteConverter: RemoteMessageConverter = new DefaultRemoteMessageConverter
-    // TODO
+    var remoteConverter: RemoteMessageConverter = _
     @BeanProperty
-    var toKernelConverter: ToKernelConverter = new DefaultToKernelConverter
+    var toKernelConverter: ToKernelConverter = _
 
     private var docSessions: List[DocumentSession] = List()
 
@@ -53,18 +49,6 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     protected def processMessages() {
         loop {
             react {
-                // hacia gateway
-                case convertible: ToRemote => {
-                    trace("convertible %s", convertible)
-                    gateway ! remoteConverter.convert(convertible)
-                }
-
-                // hacia kernel
-                case tokernel: ToKernel => {
-                    trace("to kernel %s", tokernel)
-                    kernel ! toKernelConverter.convert(session, tokernel)
-                }
-
                 // suscripcion
                 case sr: SubscriptionResponse => {
                     trace("Received Document Session")
@@ -94,6 +78,18 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
 
                     val message = messageConverter.convert(payload)
                     docSessions.find {s => s.title == docTitle}.foreach {ds => ds applyChange message}
+                }
+
+                // hacia gateway
+                case convertible: ToRemote => {
+                    trace("convertible %s", convertible)
+                    gateway ! remoteConverter.convert(convertible)
+                }
+
+                // hacia kernel
+                case tokernel: ToKernel => {
+                    trace("to kernel %s", tokernel)
+                    kernel ! toKernelConverter.convert(session, tokernel)
                 }
 
                 // control del actor

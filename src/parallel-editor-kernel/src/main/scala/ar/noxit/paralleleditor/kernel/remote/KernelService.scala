@@ -1,15 +1,15 @@
 package ar.noxit.paralleleditor.kernel.remote
 
-import ar.noxit.paralleleditor.kernel.basic.BasicKernel
 import actors.{DaemonActor, Actor}
 import java.net.ServerSocket
 import ar.noxit.paralleleditor.common.network.{NetworkConnection, SocketNetworkConnection}
 import ar.noxit.paralleleditor.kernel.Kernel
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.kernel.actors.{ClientActor, KernelActor}
 import ar.noxit.paralleleditor.common.remote.{Peer, PeerActorFactory}
-import ar.noxit.paralleleditor.common.converter.{RemoteDocumentOperationConverter, DefaultRemoteDocumentOperationConverter, DefaultSyncOperationConverter, DefaultEditOperationConverter}
 import reflect.BeanProperty
+import ar.noxit.paralleleditor.common.converter._
+import ar.noxit.paralleleditor.kernel.actors.{RemoteMessageConverter, ToKernelConverter, ClientActor, KernelActor}
+import ar.noxit.paralleleditor.kernel.actors.converter.{DefaultToKernelConverter, DefaultRemoteMessageConverter}
 
 trait KernelService {
     def startService
@@ -22,8 +22,6 @@ trait KernelService {
 abstract class BaseKernelService extends DaemonActor with Loggable with KernelService {
     private var sExit = false
 
-    @BeanProperty
-    var converter: RemoteDocumentOperationConverter = _
     @BeanProperty
     protected var kernel: Kernel = _
 
@@ -78,20 +76,28 @@ abstract class BaseKernelService extends DaemonActor with Loggable with KernelSe
 
     protected def newKernelActor: Actor = new KernelActor(kernel).start
 
-    protected def newClientActorFactory: PeerActorFactory = {
-        val factory = new BasicClientActorFactory(ka)
-        factory.converter = this.converter
-        factory
-    }
+    protected def newClientActorFactory: PeerActorFactory =
+        new BasicClientActorFactory(ka)
 }
 
 class BasicClientActorFactory(private val kernel: Actor) extends PeerActorFactory {
+    // NO hay problema en inyectarlo por que son todas clases sin estado
+
     @BeanProperty
     var converter: RemoteDocumentOperationConverter = _
+    @BeanProperty
+    var messageConverter: MessageConverter = _
+    @BeanProperty
+    var remoteConverter: RemoteMessageConverter = _
+    @BeanProperty
+    var toKernelConverter: ToKernelConverter = _
 
     override def newClientActor(client: Peer) = {
         val actor = new ClientActor(kernel, client)
-        actor.remoteDocOpconverter = converter
+        actor.remoteDocOpconverter = new DefaultRemoteDocumentOperationConverter(new DefaultSyncOperationConverter(new DefaultEditOperationConverter))
+        actor.toKernelConverter = new DefaultToKernelConverter
+        actor.remoteConverter = new DefaultRemoteMessageConverter
+        actor.messageConverter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
         actor
     }
 }

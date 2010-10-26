@@ -26,7 +26,7 @@ case class NewDocumentRequest(val session: Session, val title: String, val initi
  * Generado cuando la suscripción a un documento fue exitosa.
  * Puede ser enviado tanto si es para un nuevo documento como para uno existente
  */
-case class SubscriptionResponse(val docSession: DocumentSession, val initialContent: String)
+case class SubscriptionResponse(val docSession: DocumentSession, val initialContent: String) extends ToRemote
 
 /**
  * Generado cuando una sesión ya está suscripta a un mensaje

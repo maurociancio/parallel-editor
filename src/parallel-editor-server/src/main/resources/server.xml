@@ -11,7 +11,6 @@
 
     <bean id="kernelService" class="ar.noxit.paralleleditor.server.OneDefaultDocKernelService" scope="singleton">
         <constructor-arg value="5000"/>
-        <property name="converter" ref="remoteDocumentOperationConverter"/>
         <property name="kernel" ref="basicKernel"/>
     </bean>
 
@@ -26,9 +25,19 @@
 
     <bean id="basicStrategy" class="ar.noxit.paralleleditor.common.BasicXFormStrategy"/>
 
+    <bean id="clientActorFactory" class="ar.noxit.paralleleditor.kernel.remote.BasicClientActorFactory" scope="prototype">
+        <property name="converter" ref="remoteDocumentOperationConverter"/>
+        <property name="messageConverter" ref="messageConverter"/>
+        <property name="remoteConverter" ref="toRemoteConverter"/>
+        <property name="toKernelConverter" ref="toKernelConverter"/>
+    </bean>
+
     <!--CONVERSORES-->
     <bean id="editOperationConverter"
           class="ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter"/>
+
+    <bean id="toRemoteConverter" class="ar.noxit.paralleleditor.kernel.actors.converter.DefaultRemoteMessageConverter"/>
+    <bean id="toKernelConverter" class="ar.noxit.paralleleditor.kernel.actors.converter.DefaultToKernelConverter"/>
 
     <bean id="syncOperationConverter"
           class="ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter">
