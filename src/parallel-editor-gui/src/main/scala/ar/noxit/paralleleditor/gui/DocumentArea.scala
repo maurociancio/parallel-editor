@@ -4,26 +4,27 @@ import scala.swing._
 import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation._
-import ar.noxit.paralleleditor.client.ConcurrentDocument
+import reflect.BeanProperty
 
-class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane with ConcurrentDocument {
+class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane {
     dividerLocation = 150
 
     // TODO
-    val sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
+    @BeanProperty
+    var sync = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-    val areaEdicion = new NotificationEditPane {
+    private val areaEdicion = new NotificationEditPane {
         text = initialContent
     }
 
-    val scrollAreaEdicion = new ScrollPane(areaEdicion)
+    private val scrollAreaEdicion = new ScrollPane(areaEdicion)
     scrollAreaEdicion preferredSize = new Dimension(320, 240)
 
-    val debugConsole = new TextArea {
+    private val debugConsole = new TextArea {
         text = "-- debug console --\n"
         editable = false
     }
-    val scrollDebugConsole = new ScrollPane(debugConsole)
+    private val scrollDebugConsole = new ScrollPane(debugConsole)
 
     orientation = Orientation.Horizontal
     leftComponent = scrollAreaEdicion
@@ -46,7 +47,13 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         }
     }
 
-    def generateOp(op: EditOperation) {
+    def processRemoteOperation(m: Message[EditOperation]) {
+        SwingUtil.invokeLater {
+            sync.receive(m, {op => processOperation(op)})
+        }
+    }
+
+    private def generateOp(op: EditOperation) {
         sync.generate(op, {
             msg =>
                 val docOp = new DocumentOperation(docTitle, msg)
@@ -54,18 +61,12 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         })
     }
 
-    def addEntry(msg: String) {
+    private def addEntry(msg: String) {
         debugConsole append (msg + '\n')
         debugConsole.caret.position = debugConsole.text.size
     }
 
-    override def processRemoteOperation(m: Message[EditOperation]) {
-        SwingUtil.invokeLater {
-            sync.receive(m, {op => processOperation(op)})
-        }
-    }
-
-    def processOperation(o: EditOperation) = {
+    private def processOperation(o: EditOperation) = {
         doInGuard({
             val docData = new DocumentData {
                 var data = areaEdicion.text

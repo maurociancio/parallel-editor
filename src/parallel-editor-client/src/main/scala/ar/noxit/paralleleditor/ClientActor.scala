@@ -5,12 +5,16 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.converter.MessageConverter
+import reflect.BeanProperty
+import ar.noxit.paralleleditor.{UsernameTaken, DocumentListUpdate, DocumentSubscription, ProcessOperation}
 
 class ClientActor(private val doc: Documents) extends Actor with Loggable {
-    val timeout = 5000
-    var remoteKernelActor: Actor = _
-
+    @BeanProperty
+    var timeout = 5000
+    @BeanProperty
     var converter: MessageConverter = _
+
+    private var remoteKernelActor: Actor = _
 
     override def act = {
         trace("Waiting for remote kernel actor registration")
@@ -54,26 +58,27 @@ class ClientActor(private val doc: Documents) extends Actor with Loggable {
                         remoteKernelActor ! ToKernel(o)
                     else {
                         val m = converter.convert(o.payload)
-                        doc.byName(o.docTitle).foreach {doc => doc processRemoteOperation m}
+                        doc.process(ProcessOperation(o.docTitle, m))
                     }
                 }
 
                 case RemoteDocumentSubscriptionResponse(docTitle, initialContent) => {
                     trace("RemoteDocumentSubscriptionResponse received")
-                    doc.createDocument(docTitle, initialContent)
+                    doc.process(DocumentSubscription(docTitle, initialContent))
                 }
                 case RemoteDocumentListResponse(l) => {
                     trace("RemoteDocumentListResponse %s", l)
-                    doc.changeDocList(l)
+                    doc.process(DocumentListUpdate(l))
                 }
 
                 case r: RemoteLoginRefusedRemoteResponse => {
                     trace("login refused from kernel.")
 
+                    // usar un converter
                     r match {
                         case UsernameAlreadyExistsRemoteResponse() => {
                             trace("username already exists")
-                            doc.usernameTaken
+                            doc.process(UsernameTaken())
                         }
                     }
                 }

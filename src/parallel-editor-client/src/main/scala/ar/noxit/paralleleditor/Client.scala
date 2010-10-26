@@ -5,13 +5,10 @@ import java.net.Socket
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 
 trait Documents {
-    def byName(title: String): Option[ConcurrentDocument]
-
-    def changeDocList(l: List[String])
-
-    def createDocument(title: String, content: String)
-
-    def usernameTaken
+    /**
+     * See ClientMessages.scala
+     */
+    def process(msg: Any)
 }
 
 trait LocalClientActorFactory {
