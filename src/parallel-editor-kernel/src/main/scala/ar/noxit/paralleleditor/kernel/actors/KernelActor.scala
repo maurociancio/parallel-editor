@@ -31,6 +31,7 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
 
                 case DocumentListRequest(session) => {
                     trace("Document List Requested")
+
                     // ask kernel for the document list
                     val documentList = kernel.documentList
 
@@ -39,6 +40,8 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                 }
                 case SubscribeToDocumentRequest(session, title) => {
                     trace("subscribe to document")
+
+                    // no lanza excepcion, se devuelve el mensaje por la callback
                     kernel.subscribe(session, title)
                 }
 
