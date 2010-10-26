@@ -53,11 +53,11 @@ class GUI extends SimpleSwingApplication with Loggable {
 
             case CloseCurrentDocument() => {
                 if (connected) {
-                    tabs.pages.headOption.map {page => page.title}.
-                            foreach {title => actor ! RemoteUnsubscribeRequest(title)}
-
-                    tabs.pages.indices.headOption.
-                            foreach {i => tabs.pages.remove(i)}
+                    val selected = tabs.selection.index
+                    if (selected != -1) {
+                        actor ! RemoteUnsubscribeRequest(tabs.pages(selected).title)
+                        tabs.pages.remove(selected)
+                    }
                 }
             }
 
