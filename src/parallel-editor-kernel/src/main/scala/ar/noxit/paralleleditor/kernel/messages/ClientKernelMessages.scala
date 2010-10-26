@@ -3,6 +3,11 @@ package ar.noxit.paralleleditor.kernel.messages
 import ar.noxit.paralleleditor.kernel.{DocumentSession, Session}
 
 /**
+ * Se aplica a los mensajes que son convertibles hacia mensajes remotos
+ */
+trait ToRemote
+
+/**
  * Mensajes entre el actor Kernel y el actor del proxy del Cliente remoto
  */
 
@@ -26,15 +31,15 @@ case class SubscriptionResponse(val docSession: DocumentSession, val initialCont
 /**
  * Generado cuando una sesión ya está suscripta a un mensaje
  */
-case class SubscriptionAlreadyExists(val offenderTitle: String)
+case class SubscriptionAlreadyExists(val offenderTitle: String) extends ToRemote
 
 /**
  * Generado cuando se solicita desuscripción a un documento no suscripto
  */
-case class SubscriptionNotExists(val offenderTitle: String)
+case class SubscriptionNotExists(val offenderTitle: String) extends ToRemote
 
 case class DocumentListRequest(val session: Session)
-case class DocumentListResponse(val documents: List[String])
+case class DocumentListResponse(val documents: List[String]) extends ToRemote
 
 case class SubscribeToDocumentRequest(val session: Session, val title: String)
 case class UnsubscribeToDocumentRequest(val session: Session, val title: String)

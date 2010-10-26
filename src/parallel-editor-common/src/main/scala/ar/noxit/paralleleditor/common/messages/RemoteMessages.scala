@@ -9,6 +9,12 @@ import scala.serializable
 abstract case class BaseRemoteMessage
 
 /**
+ * Mensajes que van hacia el kernel
+ */
+@serializable
+trait ToKernel
+
+/**
  * Nivel documento
  */
 
@@ -61,12 +67,12 @@ case class RemoteDocumentOperation(val docTitle: String, val payload: SyncOperat
 /**
  * Pide un nuevo documento
  */
-case class RemoteNewDocumentRequest(val title: String, val initialContent: String = "") extends BaseRemoteMessage
+case class RemoteNewDocumentRequest(val title: String, val initialContent: String = "") extends BaseRemoteMessage with ToKernel
 
 /**
  * Suscribirse a un doc existe
  */
-case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage
+case class RemoteSubscribeRequest(val title: String) extends BaseRemoteMessage with ToKernel
 
 /**
  * Suscripcion aceptada
@@ -86,7 +92,7 @@ case class RemoteDocumentSubscriptionNotExists(val offenderTitle: String) extend
 /**
  * Pide listado de documentos
  */
-case class RemoteDocumentListRequest extends BaseRemoteMessage
+case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel
 
 /**
  * Respuesta de listado de documentos

@@ -1,8 +1,7 @@
 package ar.noxit.paralleleditor.kernel
 
-import ar.noxit.paralleleditor.kernel.actors.ClientActor
+import actors.{KernelActor, ClientActor}
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel
-import ar.noxit.paralleleditor.kernel.actors.KernelActor
 import basic.sync.SynchronizerAdapterFactory
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
@@ -42,7 +41,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
         kernel.timeout = 5000
         ka = new KernelActor(kernel).start
         client = new ClientActor(ka, NullPeer)
-        client.converter = converter
+        client.remoteDocOpconverter = converter
         client.start
         client ! NetworkActors(remoteEchoClient, remoteEchoClient)
     }
@@ -79,7 +78,7 @@ class KernelConnectionTest extends AssertionsForJUnit {
     @Test
     def test2Clients: Unit = {
         val client2 = new ClientActor(ka, NullPeer)
-        client2.converter = converter
+        client2.remoteDocOpconverter = converter
         client2.start
 
         var docList: List[String] = null
@@ -88,10 +87,9 @@ class KernelConnectionTest extends AssertionsForJUnit {
             loop {
                 receive {
                     case RemoteDocumentListResponse(doc) => {
-                        println("OKKK")
                         docList = doc
                     }
-                    case a: Any => {println("aaaaa" + a)}
+                    case a: Any => {}
                 }
             }
         }, remoteEchoClient)
@@ -103,8 +101,8 @@ class KernelConnectionTest extends AssertionsForJUnit {
 
         Thread.sleep(1000)
 
-        assertEquals(docList, List("title"))
-        assertEquals(kernel.sessionCount, 2)
+        assertEquals(List("title"), docList)
+        assertEquals(2, kernel.sessionCount)
     }
 
     def calculateSubscriberCount(count: Option[Future[Int]]) = {

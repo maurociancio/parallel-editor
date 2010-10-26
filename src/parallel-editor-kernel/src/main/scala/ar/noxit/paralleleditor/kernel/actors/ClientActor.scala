@@ -1,15 +1,16 @@
 package ar.noxit.paralleleditor.kernel.actors
 
-import ar.noxit.paralleleditor.kernel.callback.ActorCallback
+import converter.{DefaultToKernelConverter, DefaultRemoteMessageConverter}
 import scala.actors._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.kernel.messages._
-import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.{Session, DocumentSession}
-import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
 import ar.noxit.paralleleditor.common.converter._
-import ar.noxit.paralleleditor.common.operation.DocumentOperation
 import reflect.BeanProperty
+import ar.noxit.paralleleditor.common.messages._
+import ar.noxit.paralleleditor.kernel.callback.ActorCallback
+import ar.noxit.paralleleditor.common.remote.{NetworkActors, TerminateActor, Peer}
+import ar.noxit.paralleleditor.common.operation.DocumentOperation
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     @BeanProperty
@@ -17,7 +18,16 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     @BeanProperty
     var maxLoginTries = 5
     @BeanProperty
-    var converter: RemoteDocumentOperationConverter = _
+    var remoteDocOpconverter: RemoteDocumentOperationConverter = _
+    // TODO
+    @BeanProperty
+    var messageConverter: MessageConverter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
+    // TODO
+    @BeanProperty
+    var remoteConverter: RemoteMessageConverter = new DefaultRemoteMessageConverter
+    // TODO
+    @BeanProperty
+    var toKernelConverter: ToKernelConverter = new DefaultToKernelConverter
 
     private var docSessions: List[DocumentSession] = List()
 
@@ -43,12 +53,19 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     protected def processMessages() {
         loop {
             react {
-                case RemoteNewDocumentRequest(title, initialContent) => {
-                    trace("New Document Requested=[%s] content=[%s]", title, initialContent)
-
-                    kernel ! NewDocumentRequest(session, title, initialContent)
+                // hacia gateway
+                case convertible: ToRemote => {
+                    trace("convertible %s", convertible)
+                    gateway ! remoteConverter.convert(convertible)
                 }
 
+                // hacia kernel
+                case tokernel: ToKernel => {
+                    trace("to kernel %s", tokernel)
+                    kernel ! toKernelConverter.convert(session, tokernel)
+                }
+
+                // suscripcion
                 case SubscriptionResponse(docSession, initialContent) => {
                     trace("Received Document Session")
 
@@ -56,32 +73,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     gateway ! RemoteDocumentSubscriptionResponse(docSession.title, initialContent)
                 }
 
-                case SubscriptionAlreadyExists(offenderTitle) => {
-                    trace("SubscriptionAlreadyExists")
-                    gateway ! RemoteDocumentSubscriptionAlreadyExists(offenderTitle)
-                }
-                case SubscriptionNotExists(offenderTitle) => {
-                    trace("SubscriptionNotExists")
-                    gateway ! RemoteDocumentSubscriptionNotExists(offenderTitle)
-                }
-
-                case RemoteDocumentListRequest() => {
-                    trace("Document List Requested")
-
-                    kernel ! DocumentListRequest(session)
-                }
-
-                case DocumentListResponse(docList) => {
-                    trace("Document List Response")
-
-                    gateway ! RemoteDocumentListResponse(docList)
-                }
-
-                case RemoteSubscribeRequest(title) => {
-                    trace("RemoteSubscribeRequest")
-
-                    kernel ! SubscribeToDocumentRequest(session, title)
-                }
+                // unsubscribe
                 case RemoteUnsubscribeRequest(title) => {
                     trace("RemoteUnsubscribeRequest")
 
@@ -89,23 +81,22 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     docSessions = docSessions.filter {docSession => docSession.title != title}
                 }
 
-                case RemoteDocumentOperation(docTitle, payload) => {
-                    trace("remove operation received")
-
-                    val converter = new DefaultMessageConverter(new DefaultRemoteOperationConverter)
-                    val message = converter.convert(payload)
-
-                    docSessions.find {s => s.title == docTitle}.foreach {ds => ds applyChange message}
-                }
-
                 // estos mensajes vienen de los documentos y se deben propagar al cliente
                 case PublishOperation(title, m) => {
                     trace("operation received from document")
 
-                    val converted = converter.convert(new DocumentOperation(title, m))
-                    gateway ! converted
+                    gateway ! remoteDocOpconverter.convert(new DocumentOperation(title, m))
                 }
 
+                // operaciones al documento
+                case RemoteDocumentOperation(docTitle, payload) => {
+                    trace("remove operation received")
+
+                    val message = messageConverter.convert(payload)
+                    docSessions.find {s => s.title == docTitle}.foreach {ds => ds applyChange message}
+                }
+
+                // control del actor
                 case TerminateActor() => {
                     trace("Exit received")
                     doExit

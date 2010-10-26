@@ -91,7 +91,7 @@ class BasicClientActorFactory(private val kernel: Actor) extends PeerActorFactor
 
     override def newClientActor(client: Peer) = {
         val actor = new ClientActor(kernel, client)
-        actor.converter = converter
+        actor.remoteDocOpconverter = converter
         actor
     }
 }
