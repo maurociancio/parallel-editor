@@ -66,11 +66,11 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 }
 
                 // suscripcion
-                case SubscriptionResponse(docSession, initialContent) => {
+                case sr: SubscriptionResponse => {
                     trace("Received Document Session")
 
-                    docSessions = docSession :: docSessions
-                    gateway ! RemoteDocumentSubscriptionResponse(docSession.title, initialContent)
+                    docSessions = sr.docSession :: docSessions
+                    gateway ! remoteConverter.convert(sr)
                 }
 
                 // unsubscribe
