@@ -1,9 +1,9 @@
 package ar.noxit.paralleleditor.kernel
 
-import ar.noxit.paralleleditor.kernel.exceptions.DocumentTitleAlreadyExitsException
 import basic.sync.SynchronizerAdapterFactory
 import ar.noxit.paralleleditor.common.BasicXFormStrategy
 import basic.{BasicSession, BasicKernel}
+import exceptions.{DocumentInUseException, DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException}
 import messages.SubscriptionResponse
 import org.junit._
 import Assert._
@@ -87,6 +87,40 @@ class KernelTest extends AssertionsForJUnit {
         intercept[NoSuchElementException] {
             (kernel documentByTitle "pirulo").get
         }
+    }
+
+    @Test
+    def testNonexistentDocumentDeletion: Unit = {
+        val session = kernel login "username"
+        intercept[DocumentDeleteUnexistantException] {
+            kernel.deleteDocument(session, "pirulo")
+        }
+    }
+
+    @Test
+    def testDocumentInUseException: Unit = {
+
+        val session = kernel login "username1"
+        assertEquals(kernel sessionCount, 1)
+
+        val session2 = kernel login "username2"
+        assertEquals(kernel sessionCount, 2)
+
+        kernel newDocument (session, "title")
+        Thread.sleep(300)
+        assertNotNull(docSession)
+        assertEquals(kernel documentCount, 1)
+        assertEquals(calculateSubscriberCount(kernel.documentSubscriberCount("title")), 1)
+
+        val docSession2 = kernel subscribe (session2, "title")
+        Thread.sleep(300)
+        assertNotNull(docSession2)
+        assertEquals(calculateSubscriberCount(kernel.documentSubscriberCount("title")), 2)
+
+        intercept[DocumentInUseException] {
+            kernel.deleteDocument(session,"pirulo")
+        }
+        
     }
 
     def calculateSubscriberCount(count: Option[Future[Int]]) = {
