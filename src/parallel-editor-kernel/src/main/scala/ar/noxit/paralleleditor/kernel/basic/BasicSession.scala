@@ -16,5 +16,10 @@ class BasicSession(val username: String, private val kernel: BasicKernel) extend
             updateCallback update message
     }
 
+    //TODO comparar tambien el kernel
+    override def equals(obj:Any) = {
+        obj.isInstanceOf[Session] && obj.asInstanceOf[Session].username == username 
+    }
+
     override def logout = kernel logout this
 }
