@@ -14,6 +14,7 @@ case class SubscriberCount
 case class Subscribe(val who: Session)
 case class Unsubscribe(val who: Session)
 case class SilentUnsubscribe(val session: Session)
+case class CloseDocument()
 
 /**
  * La envia el doc actor para que el client actor la retransmita al cliente remoto
