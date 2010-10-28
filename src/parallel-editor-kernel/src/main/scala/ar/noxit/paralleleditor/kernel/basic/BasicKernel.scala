@@ -4,7 +4,7 @@ import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import docsession.BasicDocumentSessionFactory
 import exceptions.{DocumentInUseException, DocumentDeleteUnexistantException, UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
-import messages.{Subscribe, SubscriberCount, SilentUnsubscribe}
+import messages.{CloseDocument, Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
 import reflect.BeanProperty
 
@@ -49,7 +49,7 @@ class BasicKernel extends Kernel with Loggable {
         if (sessions contains session){
             val doc = documentByTitle(title).getOrElse(
                 {
-                    throw new DocumentDeleteUnexistantException("document "+title+" does not exist")
+                    throw new DocumentDeleteUnexistantException("document "+ title +" does not exist")
                 })
             val userCount = documentSubscriberCount(title)
             Thread.sleep(300)//no me gusta nada
@@ -58,15 +58,12 @@ class BasicKernel extends Kernel with Loggable {
                 throw new DocumentInUseException("document is being used")
             else {
                 //eliminar doc
-                //envio msg a document actor
                 val doc = documentByTitle(title)
                 doc.get ! SilentUnsubscribe(session)
-                //doc ! delete
+                doc.get ! CloseDocument()
                 documents = documents.filter(_.title == title)
             }
-        } 
-
-
+        }
     }
 
     protected def newDocumentActor(title: String, initialContent: String): DocumentActor = {
