@@ -26,7 +26,7 @@ class BasicDocumentActor(private val document: BasicDocument, private val syncFa
     var timeout: Int = _
 
     def act = {
-        // TODO hacer que termine
+
         loop {
             trace("Choosing")
             react {
@@ -82,6 +82,10 @@ class BasicDocumentActor(private val document: BasicDocument, private val syncFa
                     document silentUnsubscribe session
                     removeSession(session)
                 }
+
+                //cerrar documento
+                case CloseDocument() => exit
+
                 case any: Any => warn("Unknown message received %s", any)
             }
         }
