@@ -100,12 +100,17 @@ class KernelTest extends AssertionsForJUnit {
     @Test
     def testDocumentInUseException: Unit = {
 
+        //logueo a dos usuarios
         val session = kernel login "username1"
         assertEquals(kernel sessionCount, 1)
 
         val session2 = kernel login "username2"
         assertEquals(kernel sessionCount, 2)
 
+        installMockCallback(session)
+        installMockCallback(session2)
+
+        //creo un documento que y suscribo a los dos usuarios
         kernel newDocument (session, "title")
         Thread.sleep(300)
         assertNotNull(docSession)
@@ -117,9 +122,17 @@ class KernelTest extends AssertionsForJUnit {
         assertNotNull(docSession2)
         assertEquals(calculateSubscriberCount(kernel.documentSubscriberCount("title")), 2)
 
+        //intento eliminar el doc que esta siendo usado por 2 usuarios
         intercept[DocumentInUseException] {
-            kernel.deleteDocument(session,"pirulo")
+            kernel.deleteDocument(session,"title")
         }
+
+        //deslogueo usuario 2
+        session2 logout
+
+        //intento eliminar el documento nuevamente
+        kernel.deleteDocument(session,"title")
+        assertEquals(kernel.documentCount,1)
         
     }
 
