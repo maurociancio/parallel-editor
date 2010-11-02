@@ -22,7 +22,11 @@ case class UsernameAlreadyExists
 
 case class DocumentTitleExists(val offenderTitle: String) extends ToRemote
 
+case class DocumentTitleNotExists(val offenderTitle: String) extends ToRemote
+
 case class NewDocumentRequest(val session: Session, val title: String, val initialContent: String)
+
+case class CloseDocument(val session: Session, val docTitle: String)
 
 /**
  * Generado cuando la suscripción a un documento fue exitosa.
@@ -39,6 +43,8 @@ case class SubscriptionAlreadyExists(val offenderTitle: String) extends ToRemote
  * Generado cuando se solicita desuscripción a un documento no suscripto
  */
 case class SubscriptionNotExists(val offenderTitle: String) extends ToRemote
+
+case class DocumentInUse(val docTitle: String) extends ToRemote
 
 case class DocumentListRequest(val session: Session)
 case class DocumentListResponse(val documents: List[String]) extends ToRemote

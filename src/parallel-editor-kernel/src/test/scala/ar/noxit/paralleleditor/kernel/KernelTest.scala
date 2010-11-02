@@ -3,8 +3,8 @@ package ar.noxit.paralleleditor.kernel
 import basic.sync.SynchronizerAdapterFactory
 import ar.noxit.paralleleditor.common.BasicXFormStrategy
 import basic.{BasicSession, BasicKernel}
-import exceptions.{DocumentInUseException, DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException}
-import messages.SubscriptionResponse
+import exceptions.{DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException}
+import messages.{DocumentDeleted, SubscriptionResponse}
 import org.junit._
 import Assert._
 import org.scalatest.junit.AssertionsForJUnit
@@ -123,17 +123,32 @@ class KernelTest extends AssertionsForJUnit {
         assertEquals(calculateSubscriberCount(kernel.documentSubscriberCount("title")), 2)
 
         //intento eliminar el doc que esta siendo usado por 2 usuarios
-        intercept[DocumentInUseException] {
-            kernel.deleteDocument(session,"title")
-        }
+
+        kernel.deleteDocument(session, "title")
+        assertEquals(calculateSubscriberCount(kernel.documentSubscriberCount("title")), 2)
 
         //deslogueo usuario 2
         session2 logout
 
+
+        var docDeleted = false
+        session.installOnUpdateCallback(new UpdateCallback {
+            override def update(message: AnyRef) = {
+                message match {
+                    case DocumentDeleted(title) => docDeleted = true
+                    case _ => {}
+                }
+            }
+        })
+
         //intento eliminar el documento nuevamente
-        kernel.deleteDocument(session,"title")
-        assertEquals(kernel.documentCount,1)
-        
+        kernel.deleteDocument(session, "title")
+        Thread.sleep(500)
+
+        if (docDeleted)
+            kernel.removeDeletedDocument("title")
+
+        assertEquals(kernel.documentCount, 0)
     }
 
     def calculateSubscriberCount(count: Option[Future[Int]]) = {

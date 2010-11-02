@@ -21,6 +21,9 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case DocumentTitleExists(offenderTitle) =>
                 RemoteDocumentTitleExists(offenderTitle)
+
+            case DocumentInUse(docTitle) =>
+                RemoteDocumentInUse(docTitle)
         }
     }
 }

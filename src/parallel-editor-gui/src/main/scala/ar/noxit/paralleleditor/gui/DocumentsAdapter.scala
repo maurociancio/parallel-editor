@@ -46,6 +46,11 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                     Dialog.showMessage(parent = menu, message = "No estas suscripto al documento %s".format(offenderTitle))
                 }
             }
+            case DocumentInUse(docTitle) => {
+                SwingUtil.invokeLater {
+                    Dialog.showMessage(parent = menu, message = "Documento en uso %s".format(docTitle))
+                }
+            }
             case LoginOk() => {
             }
         }

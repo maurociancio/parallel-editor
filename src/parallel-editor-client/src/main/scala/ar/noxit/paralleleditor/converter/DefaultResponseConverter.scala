@@ -19,6 +19,10 @@ class DefaultResponseConverter extends ResponseConverter with Loggable {
                 trace("RemoteDocumentSubscriptionNotExists")
                 DocumentSubscriptionNotExists(offenderTitle)
             }
+            case RemoteDocumentInUse(docTitle) => {
+                trace("RemoteDocumentInUse")
+                DocumentInUse(docTitle)
+            }
             case RemoteDocumentListResponse(l) => {
                 trace("RemoteDocumentListResponse %s", l)
                 DocumentListUpdate(l)

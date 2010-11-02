@@ -46,6 +46,16 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
         }
     }
 
+    def delete(who: Session) = {
+        if (!subscribers.contains(who))
+            throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
+
+        if (subscribers.size != 1)
+            throw new DocumentInUseException("document is being used")
+
+        subscribers = List()
+    }
+
     def subscriberCount = {
         subscribers size
     }

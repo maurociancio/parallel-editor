@@ -5,8 +5,8 @@ import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.kernel.Session
 import ar.noxit.paralleleditor.common.Message
 import ar.noxit.paralleleditor.common.operation.EditOperation
-import ar.noxit.paralleleditor.kernel.exceptions.{DocumentSubscriptionNotExistsException, DocumentSubscriptionAlreadyExistsException}
 import reflect.BeanProperty
+import ar.noxit.paralleleditor.kernel.exceptions.{DocumentInUseException, DocumentSubscriptionNotExistsException, DocumentSubscriptionAlreadyExistsException}
 
 trait Synchronizer {
     def generate(op: EditOperation, send: Message[EditOperation] => Unit)
@@ -83,8 +83,20 @@ class BasicDocumentActor(private val document: BasicDocument, private val syncFa
                     removeSession(session)
                 }
 
-                //cerrar documento
-                case CloseDocument() => exit
+                //cerrar documentow
+                case Close(who) => {
+                    try {
+                        document.delete(who)
+                        who notifyUpdate DocumentDeleted(title)
+                        exit
+                    }
+                    catch {
+                        case e: DocumentSubscriptionNotExistsException =>
+                            who notifyUpdate SubscriptionNotExists(title)
+                        case e: DocumentInUseException =>
+                            who notifyUpdate DocumentInUse(title)
+                    }
+                }
 
                 case any: Any => warn("Unknown message received %s", any)
             }

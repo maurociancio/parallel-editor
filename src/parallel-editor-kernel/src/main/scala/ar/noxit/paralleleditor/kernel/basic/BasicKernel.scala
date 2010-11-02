@@ -3,8 +3,8 @@ package ar.noxit.paralleleditor.kernel.basic
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import docsession.BasicDocumentSessionFactory
-import exceptions.{DocumentInUseException, DocumentDeleteUnexistantException, UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
-import messages.{CloseDocument, Subscribe, SubscriberCount, SilentUnsubscribe}
+import exceptions.{SessionNotExistsException, DocumentDeleteUnexistantException, UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
+import messages.{Close, Subscribe, SubscriberCount, SilentUnsubscribe}
 import scala.List
 import reflect.BeanProperty
 
@@ -45,25 +45,16 @@ class BasicKernel extends Kernel with Loggable {
         newDocActor ! Subscribe(owner)
     }
 
-    override def deleteDocument(session: Session, title: String){
-        if (sessions contains session){
-            val doc = documentByTitle(title).getOrElse(
-                {
-                    throw new DocumentDeleteUnexistantException("document "+ title +" does not exist")
-                })
-            val userCount = documentSubscriberCount(title)
-            Thread.sleep(300)//no me gusta nada
-            if (userCount.get.apply > 1)
-                // el documento esta siendo utilizado
-                throw new DocumentInUseException("document is being used")
-            else {
-                //eliminar doc
-                val doc = documentByTitle(title)
-                doc.get ! SilentUnsubscribe(session)
-                doc.get ! CloseDocument()
-                documents = documents.filter(_.title == title)
-            }
+    override def deleteDocument(session: Session, title: String) {
+        if (!sessions.contains(session))
+            throw new SessionNotExistsException("session not exists")
+
+        val doc = documentByTitle(title).getOrElse {
+            throw new DocumentDeleteUnexistantException("document " + title + " does not exist")
         }
+
+        // enviamos msg al documento
+        doc ! Close(session)
     }
 
     protected def newDocumentActor(title: String, initialContent: String): DocumentActor = {
@@ -87,12 +78,18 @@ class BasicKernel extends Kernel with Loggable {
         actor
     }
 
+    def removeDeletedDocument(title: String) {
+        documents = documents.filter{doc => doc.title != title}
+    }
+
     protected def newSyncFactory: SynchronizerFactory = sync
 
     override def documentList = documents.map {_.title}
 
     override def subscribe(session: Session, title: String) = {
         val doc = documentByTitle(title)
+
+        // TODO tirar excepcion si no existe el title
 
         if (doc.isDefined) {
             doc.get ! Subscribe(session)

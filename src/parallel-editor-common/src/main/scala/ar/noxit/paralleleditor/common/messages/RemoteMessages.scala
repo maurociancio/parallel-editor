@@ -108,6 +108,11 @@ case class RemoteDocumentSubscriptionAlreadyExists(val offenderTitle: String) ex
 case class RemoteDocumentSubscriptionNotExists(val offenderTitle: String) extends BaseRemoteMessage with Response
 
 /**
+ * No se puede borrar el documento, está en uso
+ */
+case class RemoteDocumentInUse(val docTitle: String) extends BaseRemoteMessage with Response
+
+/**
  * Pide listado de documentos
  */
 case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel with Request

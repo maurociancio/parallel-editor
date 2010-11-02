@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel.actors
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.logger.Loggable
-import exceptions.{DocumentTitleAlreadyExitsException, UsernameAlreadyExistsException}
+import exceptions.{DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException, UsernameAlreadyExistsException}
 import scala.actors.Actor
 
 class KernelActor(val kernel: Kernel) extends Actor with Loggable {
@@ -54,6 +54,21 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                         case e: DocumentTitleAlreadyExitsException =>
                             sender ! DocumentTitleExists(title)
                     }
+                }
+
+                case CloseDocument(session, docTitle) => {
+                    trace("delete document")
+                    try
+                        kernel.deleteDocument(session, docTitle)
+                    catch {
+                        case e: DocumentDeleteUnexistantException =>
+                            sender ! DocumentTitleNotExists(docTitle)
+                    }
+                }
+
+                case DocumentDeleted(title) => {
+                    trace("document deleted")
+                    kernel.removeDeletedDocument(title)
                 }
 
                 case msg: Any => {
