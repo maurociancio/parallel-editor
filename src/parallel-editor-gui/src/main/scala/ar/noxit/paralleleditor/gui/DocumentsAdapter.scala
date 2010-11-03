@@ -53,6 +53,11 @@ class DocumentsAdapter(private val tabs: TabbedPane,
             }
             case DocumentDeleted(docTitle) => {
                 SwingUtil.invokeLater {
+                    (0 until tabs.pages.size).zip(tabs.pages).find {tuple => tuple._2.title == docTitle}.foreach {
+                        tuple =>
+                            tabs.pages.remove(tuple._1)
+                    }
+
                     Dialog.showMessage(parent = menu, message = "Document borrado %s".format(docTitle))
                 }
             }

@@ -64,7 +64,6 @@ class GUI extends SimpleSwingApplication with Loggable {
                 if (connected) {
                     currentDocument.foreach {
                         selection =>
-                            tabs.pages(selection.index).enabled = false
                             actor ! RemoteDeleteDocumentRequest(selection.docTitle)
                     }
                 }
