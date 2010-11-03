@@ -28,7 +28,7 @@ class HomeMenuBar extends MenuBar with Loggable {
     listenTo(docList, newDoc, newDocFromFile, closeCurrent)
 
     reactions += {
-        case c: ButtonClicked if c.source == docList && docListFrame == null => {
+        case ButtonClicked(`docList`) if docListFrame == null => {
             trace("frame created")
 
             docListFrame = new DocumentListFrame
@@ -36,10 +36,10 @@ class HomeMenuBar extends MenuBar with Loggable {
 
             publish(DocumentListRequest())
         }
-        case c: ButtonClicked if c.source == newDoc => {
+        case ButtonClicked(`newDoc`) => {
             askAndPublishDocumentName {""}
         }
-        case c: ButtonClicked if c.source == newDocFromFile => {
+        case ButtonClicked(`newDocFromFile`) => {
             trace("clicked new doc from file")
 
             val chooser = new FileChooser()
@@ -54,10 +54,10 @@ class HomeMenuBar extends MenuBar with Loggable {
                 case _ => {}
             }
         }
-        case c: ButtonClicked if c.source == closeCurrent => {
+        case ButtonClicked(`closeCurrent`) => {
             publish(CloseCurrentDocument())
         }
-        case w: WindowClosed if w.source == docListFrame => {
+        case WindowClosed(`docListFrame`) => {
             trace("frame deleted")
 
             deafTo(docListFrame)
