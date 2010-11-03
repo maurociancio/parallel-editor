@@ -36,7 +36,6 @@ class BasicDocumentActor(val document: BasicDocument, private val syncFactory: S
 
                     syncs(who).receive(m, op => {
                         op.executeOn(document)
-                        println("DOC: \n" + document.data)
 
                         document.propagateToOthers(who, other => {
                             syncs(other).generate(op, m => {
