@@ -10,6 +10,7 @@ import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.kernel.callback.ActorCallback
 import ar.noxit.paralleleditor.common.remote.{NetworkActors, TerminateActor, Peer}
 import ar.noxit.paralleleditor.common.operation.DocumentOperation
+import ar.noxit.paralleleditor.common.network.SenderActor
 
 class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
     @BeanProperty
@@ -27,9 +28,9 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
 
     private var docSessions: List[DocumentSession] = List()
 
-    private var listener: Actor = _
-    private var gateway: Actor = _
-    private var session: Session = _
+    private var listener: SenderActor = _
+    private var gateway: SenderActor = _
+    private var _session: Session = _
 
     override def act = {
         trace("Starting")
@@ -40,7 +41,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
         this.gateway = gateway
 
         // wait for session
-        session = this.receiveSession(loginTries = 0)
+        _session = this.receiveSession(loginTries = 0)
 
         // process messages
         processMessages
@@ -89,7 +90,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 // hacia kernel
                 case tokernel: ToKernel => {
                     trace("to kernel %s", tokernel)
-                    kernel ! toKernelConverter.convert(session, tokernel)
+                    kernel ! toKernelConverter.convert(_session, tokernel)
                 }
 
                 case dd: DocumentDeleted => {
@@ -191,10 +192,12 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
             gateway ! TerminateActor()
         if (listener != null)
             listener ! TerminateActor()
-        if (session != null)
-            session.logout
+        if (_session != null)
+            _session.logout
 
         client.disconnect
         exit
     }
+
+    def session = _session
 }

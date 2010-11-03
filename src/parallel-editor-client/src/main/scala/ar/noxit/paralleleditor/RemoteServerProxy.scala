@@ -34,8 +34,8 @@ class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory,
     val localClientActor = clientActorFactory.newLocalClientActor.start
     val timeout = 5000
 
-    private var listener: Actor = _
-    private var gateway: Actor = _
+    private var listener: SenderActor = _
+    private var gateway: SenderActor = _
 
     override def act = {
         trace("Sending registration to local client")

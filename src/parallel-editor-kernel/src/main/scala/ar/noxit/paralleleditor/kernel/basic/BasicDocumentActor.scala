@@ -18,7 +18,7 @@ trait SynchronizerFactory {
     def newSynchronizer: Synchronizer
 }
 
-class BasicDocumentActor(private val document: BasicDocument, private val syncFactory: SynchronizerFactory) extends DocumentActor with Loggable {
+class BasicDocumentActor(val document: BasicDocument, private val syncFactory: SynchronizerFactory) extends DocumentActor with Loggable {
     val title = document.title
     private var syncs = Map[Session, Synchronizer]()
 
@@ -109,4 +109,7 @@ class BasicDocumentActor(private val document: BasicDocument, private val syncFa
     protected def removeSession(who: Session) {
         syncs = syncs - who
     }
+
+    def sessionExists(session: Session) =
+        syncs.contains(session)
 }

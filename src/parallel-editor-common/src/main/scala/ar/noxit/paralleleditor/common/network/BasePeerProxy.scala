@@ -1,7 +1,7 @@
 package ar.noxit.paralleleditor.common.remote
 
 import actors.Actor
-import ar.noxit.paralleleditor.common.network.{DisconnectablePeer, NetworkConnection, MessageOutput, MessageInput}
+import ar.noxit.paralleleditor.common.network._
 
 trait Peer {
     def disconnect
@@ -14,7 +14,7 @@ trait PeerActorFactory {
 /**
  * Mensaje que transporta los actores gateway y listener hacia el actor peer
  */
-case class NetworkActors(val gateway: Actor, val listener: Actor)
+case class NetworkActors(val gateway: SenderActor, val listener: SenderActor)
 
 /**
  * Setea el actor peer a los actores listener y gateway
