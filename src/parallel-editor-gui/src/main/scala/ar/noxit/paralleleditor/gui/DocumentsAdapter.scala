@@ -51,6 +51,16 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                     Dialog.showMessage(parent = menu, message = "Documento en uso %s".format(docTitle))
                 }
             }
+            case DocumentDeleted(docTitle) => {
+                SwingUtil.invokeLater {
+                    Dialog.showMessage(parent = menu, message = "Document borrado %s".format(docTitle))
+                }
+            }
+            case DocumentDeletionTitleNotExists(docTitle) => {
+                SwingUtil.invokeLater {
+                    Dialog.showMessage(parent = menu, message = "El Document %s no existe".format(docTitle))
+                }
+            }
             case LoginOk() => {
             }
         }

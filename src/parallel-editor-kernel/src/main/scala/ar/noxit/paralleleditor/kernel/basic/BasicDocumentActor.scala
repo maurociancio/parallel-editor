@@ -88,6 +88,7 @@ class BasicDocumentActor(private val document: BasicDocument, private val syncFa
                     try {
                         document.delete(who)
                         who notifyUpdate DocumentDeleted(title)
+                        who notifyUpdate DocumentDeletedOk(title)
                         exit
                     }
                     catch {

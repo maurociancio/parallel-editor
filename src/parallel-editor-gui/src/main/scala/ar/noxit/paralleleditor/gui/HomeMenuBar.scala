@@ -11,11 +11,13 @@ class HomeMenuBar extends MenuBar with Loggable {
     val newDoc = new MenuItem("Nuevo")
     val newDocFromFile = new MenuItem("Nuevo desde archivo")
     val closeCurrent = new MenuItem("Cerrar actual")
+    val deleteCurrent = new MenuItem("Borrar actual")
 
     val fileMenu = new Menu("Documento") {
         contents += newDoc
         contents += newDocFromFile
         contents += closeCurrent
+        contents += deleteCurrent
     }
 
     val docList = new MenuItem("Listado de documentos")
@@ -25,7 +27,7 @@ class HomeMenuBar extends MenuBar with Loggable {
 
     var docListFrame: DocumentListFrame = _
 
-    listenTo(docList, newDoc, newDocFromFile, closeCurrent)
+    listenTo(docList, newDoc, newDocFromFile, closeCurrent, deleteCurrent)
 
     reactions += {
         case ButtonClicked(`docList`) if docListFrame == null => {
@@ -57,7 +59,10 @@ class HomeMenuBar extends MenuBar with Loggable {
         case ButtonClicked(`closeCurrent`) => {
             publish(CloseCurrentDocument())
         }
-        case WindowClosed(`docListFrame`) => {
+        case ButtonClicked(`deleteCurrent`) => {
+            publish(DeleteCurrentDocument())
+        }
+        case wc: WindowClosed if wc.source == docListFrame => {
             trace("frame deleted")
 
             deafTo(docListFrame)

@@ -76,7 +76,6 @@ case class SyncOperation(val syncSatus: SyncStatus, val payload: RemoteOperation
 case class RemoteDocumentOperation(val docTitle: String, val payload: SyncOperation) extends BaseRemoteMessage
 
 
-
 /**
  * Pide un nuevo documento
  */
@@ -113,6 +112,16 @@ case class RemoteDocumentSubscriptionNotExists(val offenderTitle: String) extend
 case class RemoteDocumentInUse(val docTitle: String) extends BaseRemoteMessage with Response
 
 /**
+ * El doc se borró ok
+ */
+case class RemoteDocumentDeletedOk(val docTitle: String) extends BaseRemoteMessage with Response
+
+/**
+ * El titulo no existe
+ */
+case class RemoteDocumentDeletionTitleNotExists(val docTitle: String) extends BaseRemoteMessage with Response
+
+/**
  * Pide listado de documentos
  */
 case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel with Request
@@ -126,6 +135,11 @@ case class RemoteDocumentListResponse(val docList: List[String]) extends BaseRem
  * Pide desuscriberse a un doc
  */
 case class RemoteUnsubscribeRequest(val title: String) extends BaseRemoteMessage with Request
+
+/**
+ * Pide al kernel que borre un documento
+ */
+case class RemoteDeleteDocumentRequest(val docTitle: String) extends BaseRemoteMessage with Request with ToKernel
 
 /**
  * Pide login

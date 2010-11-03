@@ -17,6 +17,10 @@ case class DocumentInUse(val docTitle: String)
 
 case class UsernameTaken()
 
+case class DocumentDeleted(val docTitle: String)
+
+case class DocumentDeletionTitleNotExists(val docTitle: String)
+
 case class DocumentTitleTaken(val offenderTitle: String)
 
 case class LoginOk

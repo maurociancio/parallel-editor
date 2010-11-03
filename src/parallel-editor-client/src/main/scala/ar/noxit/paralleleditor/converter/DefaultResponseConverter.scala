@@ -43,6 +43,15 @@ class DefaultResponseConverter extends ResponseConverter with Loggable {
                 }
             }
 
+            case RemoteDocumentDeletedOk(docTitle) => {
+                trace("RemoteDocumentDeletedOk")
+                DocumentDeleted(docTitle)
+            }
+            case RemoteDocumentDeletionTitleNotExists(docTitle) => {
+                trace("RemoteDocumentDeletionTitleNotExists")
+                DocumentDeletionTitleNotExists(docTitle)
+            }
+
             case RemoteLoginOkResponse() => {
                 trace("login accepted from kernel.")
                 LoginOk()

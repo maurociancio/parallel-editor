@@ -24,6 +24,12 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case DocumentInUse(docTitle) =>
                 RemoteDocumentInUse(docTitle)
+
+            case DocumentDeletedOk(docTitle) =>
+                RemoteDocumentDeletedOk(docTitle)
+
+            case DocumentDeletionTitleNotExists(docTitle) =>
+                RemoteDocumentDeletionTitleNotExists(docTitle)
         }
     }
 }

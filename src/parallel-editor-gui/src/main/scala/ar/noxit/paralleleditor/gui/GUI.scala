@@ -53,10 +53,19 @@ class GUI extends SimpleSwingApplication with Loggable {
 
             case CloseCurrentDocument() => {
                 if (connected) {
-                    val selected = tabs.selection.index
-                    if (selected != -1) {
-                        actor ! RemoteUnsubscribeRequest(tabs.pages(selected).title)
-                        tabs.pages.remove(selected)
+                    currentDocument.foreach {
+                        selection =>
+                            actor ! RemoteUnsubscribeRequest(selection.docTitle)
+                            tabs.pages.remove(selection.index)
+                    }
+                }
+            }
+            case DeleteCurrentDocument() => {
+                if (connected) {
+                    currentDocument.foreach {
+                        selection =>
+                            tabs.pages(selection.index).enabled = false
+                            actor ! RemoteDeleteDocumentRequest(selection.docTitle)
                     }
                 }
             }
@@ -83,6 +92,14 @@ class GUI extends SimpleSwingApplication with Loggable {
                 }
             }
         }
+
+        private def currentDocument = {
+            val selected = tabs.selection.index
+            if (selected != -1)
+                Some(SelectedDocument(selected, tabs.pages(selected).title))
+            else
+                None
+        }
     }
 
     override def shutdown() {
@@ -92,3 +109,5 @@ class GUI extends SimpleSwingApplication with Loggable {
             actor ! Logout()
     }
 }
+
+case class SelectedDocument(val index: Int, val docTitle: String)

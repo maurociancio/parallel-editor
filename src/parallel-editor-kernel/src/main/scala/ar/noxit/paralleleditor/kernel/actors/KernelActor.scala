@@ -62,7 +62,7 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                         kernel.deleteDocument(session, docTitle)
                     catch {
                         case e: DocumentDeleteUnexistantException =>
-                            sender ! DocumentTitleNotExists(docTitle)
+                            sender ! DocumentDeletionTitleNotExists(docTitle)
                     }
                 }
 

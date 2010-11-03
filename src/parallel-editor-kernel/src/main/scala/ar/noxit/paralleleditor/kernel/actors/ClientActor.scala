@@ -92,6 +92,10 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                     kernel ! toKernelConverter.convert(session, tokernel)
                 }
 
+                case dd: DocumentDeleted => {
+                    kernel ! dd
+                }
+
                 // control del actor
                 case TerminateActor() => {
                     trace("Exit received")
