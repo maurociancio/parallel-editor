@@ -14,8 +14,20 @@ import ar.noxit.paralleleditor.common.remote.{NetworkActors, Peer}
 
 @Test
 class ConnectedUsersList extends AssertionsForJUnit {
+
+    var k: BasicKernel = _
+    var ka: KernelActor = _
+
     @Before
     def setUp = {
+        k = new BasicKernel
+        k.timeout = 5
+
+        val synchronizerAdapterFactory = new SynchronizerAdapterFactory
+        synchronizerAdapterFactory.strategy = new BasicXFormStrategy
+        k.sync = synchronizerAdapterFactory
+
+        ka = new KernelActor(k)
     }
 
     object NullPeer extends Peer {
@@ -24,14 +36,6 @@ class ConnectedUsersList extends AssertionsForJUnit {
 
     @Test
     def testConnectedUser: Unit = {
-        val k = new BasicKernel
-        k.timeout = 5
-
-        val synchronizerAdapterFactory = new SynchronizerAdapterFactory
-        synchronizerAdapterFactory.strategy = new BasicXFormStrategy
-        k.sync = synchronizerAdapterFactory
-
-        val ka = new KernelActor(k)
         ka.start
 
         val gateway = EasyMock.createStrictMock(classOf[SenderActor])
@@ -57,14 +61,6 @@ class ConnectedUsersList extends AssertionsForJUnit {
 
     @Test
     def testConnected2User: Unit = {
-        val k = new BasicKernel
-        k.timeout = 5
-
-        val synchronizerAdapterFactory = new SynchronizerAdapterFactory
-        synchronizerAdapterFactory.strategy = new BasicXFormStrategy
-        k.sync = synchronizerAdapterFactory
-
-        val ka = new KernelActor(k)
         ka.start
 
         // cliente 1
