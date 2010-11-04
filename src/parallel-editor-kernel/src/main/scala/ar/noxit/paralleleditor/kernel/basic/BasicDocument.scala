@@ -56,7 +56,9 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
         subscribers = List()
     }
 
-    def subscriberCount = {
+    def subscriberCount =
         subscribers size
-    }
+
+    def subscribersNames =
+        subscribers.map {s => s.username}
 }

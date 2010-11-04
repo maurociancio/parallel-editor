@@ -28,6 +28,10 @@ case class NewDocumentRequest(val session: Session, val title: String, val initi
 
 case class CloseDocument(val session: Session, val docTitle: String)
 
+case class UserListRequest(val session: Session)
+
+case class UserListResponse(val usernames: Map[String, List[String]]) extends ToRemote
+
 /**
  * Generado cuando la suscripción a un documento fue exitosa.
  * Puede ser enviado tanto si es para un nuevo documento como para uno existente

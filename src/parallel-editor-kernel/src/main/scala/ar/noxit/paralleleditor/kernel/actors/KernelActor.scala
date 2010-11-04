@@ -56,6 +56,11 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                     }
                 }
 
+                case UserListRequest(session) => {
+                    trace("UserListRequest")
+                    kernel.userList(session)
+                }
+
                 case CloseDocument(session, docTitle) => {
                     trace("delete document")
                     try

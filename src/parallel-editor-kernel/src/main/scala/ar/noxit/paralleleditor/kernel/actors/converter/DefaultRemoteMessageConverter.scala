@@ -30,6 +30,9 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case DocumentDeletionTitleNotExists(docTitle) =>
                 RemoteDocumentDeletionTitleNotExists(docTitle)
+
+            case UserListResponse(usernames) =>
+                RemoteUserListResponse(usernames)
         }
     }
 }

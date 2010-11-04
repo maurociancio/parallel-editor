@@ -17,6 +17,10 @@ case class SilentUnsubscribe(val session: Session)
 case class Close(val session: Session)
 case class DocumentDeleted(val docTitle: String)
 
+case class DocumentUserListRequest()
+
+case class DocumentUserListResponse(val docTitle: String, val users: List[String])
+
 /**
  * La envia el doc actor para que el client actor la retransmita al cliente remoto
  */

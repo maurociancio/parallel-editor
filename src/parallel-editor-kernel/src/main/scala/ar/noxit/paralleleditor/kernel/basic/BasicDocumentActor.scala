@@ -26,7 +26,6 @@ class BasicDocumentActor(val document: BasicDocument, private val syncFactory: S
     var timeout: Int = _
 
     def act = {
-
         loop {
             trace("Choosing")
             react {
@@ -80,6 +79,10 @@ class BasicDocumentActor(val document: BasicDocument, private val syncFactory: S
                     trace("Silent unsubscribe received")
                     document silentUnsubscribe session
                     removeSession(session)
+                }
+
+                case DocumentUserListRequest() => {
+                    reply(DocumentUserListResponse(title, document.subscribersNames))
                 }
 
                 //cerrar documentow

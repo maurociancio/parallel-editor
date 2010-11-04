@@ -122,9 +122,19 @@ case class RemoteDocumentDeletedOk(val docTitle: String) extends BaseRemoteMessa
 case class RemoteDocumentDeletionTitleNotExists(val docTitle: String) extends BaseRemoteMessage with Response
 
 /**
+ * Pide listado de usuarios
+ */
+case class RemoteUserListRequest extends BaseRemoteMessage with Request with ToKernel
+
+/**
  * Pide listado de documentos
  */
 case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel with Request
+
+/**
+ * Respuesta listado de usuarios
+ */
+case class RemoteUserListResponse(val usernames: Map[String, List[String]]) extends BaseRemoteMessage with Response
 
 /**
  * Respuesta de listado de documentos

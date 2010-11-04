@@ -4,9 +4,11 @@ import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import docsession.BasicDocumentSessionFactory
 import exceptions.{SessionNotExistsException, DocumentDeleteUnexistantException, UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
-import messages.{Close, Subscribe, SubscriberCount, SilentUnsubscribe}
+import messages._
 import scala.List
 import reflect.BeanProperty
+import scala.actors.TIMEOUT
+import scala.actors.Actor.{actor, loopWhile, receiveWithin}
 
 class BasicKernel extends Kernel with Loggable {
     @BeanProperty
@@ -79,7 +81,7 @@ class BasicKernel extends Kernel with Loggable {
     }
 
     def removeDeletedDocument(title: String) {
-        documents = documents.filter{doc => doc.title != title}
+        documents = documents.filter {doc => doc.title != title}
     }
 
     protected def newSyncFactory: SynchronizerFactory = sync
@@ -90,7 +92,6 @@ class BasicKernel extends Kernel with Loggable {
         val doc = documentByTitle(title)
 
         // TODO tirar excepcion si no existe el title
-
         if (doc.isDefined) {
             doc.get ! Subscribe(session)
         } else {
@@ -106,11 +107,44 @@ class BasicKernel extends Kernel with Loggable {
         documents foreach {doc => doc ! SilentUnsubscribe(session)}
     }
 
+    override def userList(session: Session) = {
+        var usernames = sessions.map {s => (s.username, List[String]())}.toMap
+        val docs = documents
+
+        actor {
+            trace("counter actor started")
+            docs.foreach {doc => doc ! DocumentUserListRequest()}
+
+            var received = 0
+            val total = docs.size
+
+            val notifySession = {
+                session notifyUpdate UserListResponse(usernames)
+            }
+
+            loopWhile(received < total) {
+                receiveWithin(timeout) {
+                    case DocumentUserListResponse(docTitle, users) => {
+                        users.foreach {
+                            username => usernames = usernames.updated(username, docTitle :: usernames(username))
+                        }
+                        received = received + 1
+                        if (received == total)
+                            notifySession
+                    }
+                    case TIMEOUT => {
+                        warn("document did not respond to user list req")
+                        notifySession
+                    }
+                }
+            }
+        }
+    }
+
     def documentCount = documents size
 
     def sessionCount = sessions size
 
-    // TODO change this method to private
     def documentByTitle(docTitle: String) = documents find {_.title == docTitle}
 
     def documentSubscriberCount(docTitle: String) = {

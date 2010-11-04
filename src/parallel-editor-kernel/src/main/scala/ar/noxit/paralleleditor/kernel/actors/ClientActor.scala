@@ -109,7 +109,7 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
                 }
 
                 case message: Any => {
-                    trace("unkown message received %s", message)
+                    warn("unkown message received %s", message)
                 }
             }
         }
