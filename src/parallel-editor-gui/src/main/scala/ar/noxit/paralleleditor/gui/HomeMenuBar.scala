@@ -119,7 +119,7 @@ class DocumentListFrame extends Frame with Loggable {
     }
 
     def changeDocList(l: List[String]) {
-        trace("with Loggable")
+        trace("change doc list")
         docs.listData = l
         docs.repaint
     }
