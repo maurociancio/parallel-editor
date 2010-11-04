@@ -8,7 +8,7 @@ import messages._
 import scala.List
 import reflect.BeanProperty
 import scala.actors.TIMEOUT
-import scala.actors.Actor.{actor, loopWhile, receiveWithin}
+import scala.actors.Actor.{actor, receiveWithin}
 
 class BasicKernel extends Kernel with Loggable {
     @BeanProperty
@@ -118,26 +118,26 @@ class BasicKernel extends Kernel with Loggable {
             var received = 0
             val total = docs.size
 
-            val notifySession = {
-                session notifyUpdate UserListResponse(usernames)
-            }
-
-            loopWhile(received < total) {
+            var finished = false
+            while (!finished) {
+                trace("waiting messages from docs")
                 receiveWithin(timeout) {
                     case DocumentUserListResponse(docTitle, users) => {
                         users.foreach {
                             username => usernames = usernames.updated(username, docTitle :: usernames(username))
                         }
                         received = received + 1
-                        if (received == total)
-                            notifySession
+                        finished = received == total
                     }
                     case TIMEOUT => {
                         warn("document did not respond to user list req")
-                        notifySession
+                        finished = true
                     }
                 }
             }
+
+            trace("notifying user list to client")
+            session notifyUpdate UserListResponse(usernames)
         }
     }
 
