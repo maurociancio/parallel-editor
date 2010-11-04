@@ -17,6 +17,11 @@
     <bean id="basicKernel" class="ar.noxit.paralleleditor.kernel.basic.BasicKernel">
         <property name="timeout" value="5000"/>
         <property name="sync" ref="syncFactory"/>
+        <property name="userListMerger" ref="merger"/>
+    </bean>
+
+    <bean id="merger" class="ar.noxit.paralleleditor.kernel.basic.userlist.DefaultUserListMerger">
+        <property name="timeout" value="5000"/>
     </bean>
 
     <bean id="syncFactory" class="ar.noxit.paralleleditor.kernel.basic.sync.SynchronizerAdapterFactory">

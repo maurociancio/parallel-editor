@@ -23,9 +23,9 @@ class ConnectedUsersList extends AssertionsForJUnit {
     def setUp = {
         k = new BasicKernel
         val merger = new DefaultUserListMerger
-        merger.timeout = 5
+        merger.timeout = 5000
         k.userListMerger = merger
-        k.timeout = 5
+        k.timeout = 5000
 
         val synchronizerAdapterFactory = new SynchronizerAdapterFactory
         synchronizerAdapterFactory.strategy = new BasicXFormStrategy
