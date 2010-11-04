@@ -7,14 +7,14 @@ import exceptions.{SessionNotExistsException, DocumentDeleteUnexistantException,
 import messages._
 import scala.List
 import reflect.BeanProperty
-import scala.actors.TIMEOUT
-import scala.actors.Actor.{actor, receiveWithin}
 
 class BasicKernel extends Kernel with Loggable {
     @BeanProperty
     var timeout: Int = _
     @BeanProperty
     var sync: SynchronizerFactory = _
+    @BeanProperty
+    var userListMerger: UserListMerger = _
 
     var sessions = List[Session]()
     var documents = List[DocumentActor]()
@@ -107,39 +107,8 @@ class BasicKernel extends Kernel with Loggable {
         documents foreach {doc => doc ! SilentUnsubscribe(session)}
     }
 
-    override def userList(session: Session) = {
-        var usernames = sessions.map {s => (s.username, List[String]())}.toMap
-        val docs = documents
-
-        actor {
-            trace("counter actor started")
-            docs.foreach {doc => doc ! DocumentUserListRequest()}
-
-            var received = 0
-            val total = docs.size
-
-            var finished = false
-            while (!finished) {
-                trace("waiting messages from docs")
-                receiveWithin(timeout) {
-                    case DocumentUserListResponse(docTitle, users) => {
-                        users.foreach {
-                            username => usernames = usernames.updated(username, docTitle :: usernames(username))
-                        }
-                        received = received + 1
-                        finished = received == total
-                    }
-                    case TIMEOUT => {
-                        warn("document did not respond to user list req")
-                        finished = true
-                    }
-                }
-            }
-
-            trace("notifying user list to client")
-            session notifyUpdate UserListResponse(usernames)
-        }
-    }
+    override def userList(session: Session) =
+        userListMerger.notifyUserList(session, sessions, documents)
 
     def documentCount = documents size
 

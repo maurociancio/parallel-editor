@@ -4,6 +4,7 @@ import actors.converter.{DefaultRemoteMessageConverter, DefaultToKernelConverter
 import actors.{KernelActor, ClientActor}
 import basic.sync.SynchronizerAdapterFactory
 import basic.BasicKernel
+import basic.userlist.DefaultUserListMerger
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import org.easymock.EasyMock
@@ -21,6 +22,9 @@ class ConnectedUsersList extends AssertionsForJUnit {
     @Before
     def setUp = {
         k = new BasicKernel
+        val merger = new DefaultUserListMerger
+        merger.timeout = 5
+        k.userListMerger = merger
         k.timeout = 5
 
         val synchronizerAdapterFactory = new SynchronizerAdapterFactory
