@@ -10,6 +10,7 @@ import ar.noxit.paralleleditor.common.operation.DocumentOperation
 case class ConnectionRequest(val host: String, val port: Int) extends Event
 case class DisconnectionRequest extends Event
 case class DocumentListRequest extends Event
+case class UserListRequest extends Event
 case class NewDocumentRequest(val docTitle: String, val initialContent: String = "") extends Event
 case class CloseCurrentDocument extends Event
 case class DeleteCurrentDocument extends Event

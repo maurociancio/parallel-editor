@@ -75,11 +75,19 @@ class GUI extends SimpleSwingApplication with Loggable {
                 }
             }
 
+            // listado de documentos
             case DocumentListRequest() => {
                 if (connected) {
                     actor ! RemoteDocumentListRequest()
                 }
             }
+            // listado de usuarios
+            case UserListRequest() => {
+                if (connected) {
+                    actor ! RemoteUserListRequest()
+                }
+            }
+
             case NewDocumentRequest(docTitle, initialContent) => {
                 if (connected) {
                     actor ! RemoteNewDocumentRequest(docTitle, initialContent)

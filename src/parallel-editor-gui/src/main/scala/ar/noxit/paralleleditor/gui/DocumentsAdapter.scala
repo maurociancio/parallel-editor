@@ -20,6 +20,9 @@ class DocumentsAdapter(private val tabs: TabbedPane,
             case DocumentListUpdate(docs) =>
                 menu changeDocList docs
 
+            case UserListUpdate(usernames) =>
+                menu changeUserList usernames
+
             case DocumentSubscription(title, initialContent) => {
                 val doc = newDocumentArea(title, initialContent)
                 gui.listenTo(doc)

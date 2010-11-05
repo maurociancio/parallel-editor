@@ -21,15 +21,20 @@ class HomeMenuBar extends MenuBar with Loggable {
     }
 
     val docList = new MenuItem("Listado de documentos")
+    val userList = new MenuItem("Listado de usuarios")
+
     val verMenu = new Menu("Ver") {
         contents += docList
+        contents += userList
     }
 
     var docListFrame: DocumentListFrame = _
+    var userListFrame: UserListFrame = _
 
-    listenTo(docList, newDoc, newDocFromFile, closeCurrent, deleteCurrent)
+    listenTo(docList, newDoc, newDocFromFile, closeCurrent, deleteCurrent, userList)
 
     reactions += {
+        // listado de documentos
         case ButtonClicked(`docList`) if docListFrame == null => {
             trace("frame created")
 
@@ -38,6 +43,30 @@ class HomeMenuBar extends MenuBar with Loggable {
 
             publish(DocumentListRequest())
         }
+        case wc: WindowClosed if wc.source == docListFrame => {
+            trace("frame deleted")
+
+            deafTo(docListFrame)
+            docListFrame = null
+        }
+
+        // listado de usuarios
+        case ButtonClicked(`userList`) if userListFrame == null => {
+            trace("user list created")
+
+            userListFrame = new UserListFrame
+            listenTo(userListFrame)
+
+            publish(UserListRequest())
+        }
+        case wc: WindowClosed if wc.source == userListFrame => {
+            trace("user list closed")
+
+            deafTo(userListFrame)
+            userListFrame = null
+        }
+
+        // nuevo documento
         case ButtonClicked(`newDoc`) => {
             askAndPublishDocumentName {""}
         }
@@ -56,18 +85,18 @@ class HomeMenuBar extends MenuBar with Loggable {
                 case _ => {}
             }
         }
+
+        // cerrar documento
         case ButtonClicked(`closeCurrent`) => {
             publish(CloseCurrentDocument())
         }
+
+        // borrar documento
         case ButtonClicked(`deleteCurrent`) => {
             publish(DeleteCurrentDocument())
         }
-        case wc: WindowClosed if wc.source == docListFrame => {
-            trace("frame deleted")
 
-            deafTo(docListFrame)
-            docListFrame = null
-        }
+        // suscribir a documento
         case WrappedEvent(e: SubscribeToDocument) => {
             trace("subscribe to document")
             publish(e)
@@ -84,7 +113,14 @@ class HomeMenuBar extends MenuBar with Loggable {
             docListFrame.changeDocList(l)
     }
 
-    def askAndPublishDocumentName(initialContent: => String = {""}, defaultName: String = "Nuevo Documento") = {
+    def changeUserList(usernames: Map[String, List[String]]) {
+        trace("changeUserList %s", usernames)
+
+        if (userListFrame != null)
+            userListFrame.changeUserList(usernames)
+    }
+
+    protected def askAndPublishDocumentName(initialContent: => String = {""}, defaultName: String = "Nuevo Documento") = {
         val input = Dialog.showInput(message = "Ingrese el nombre del nuevo documento", initial = defaultName)
         input.foreach(newDoc => publish(NewDocumentRequest(newDoc, initialContent)))
     }
@@ -109,9 +145,7 @@ class DocumentListFrame extends Frame with Loggable {
     listenTo(editar)
 
     reactions += {
-        case w: WindowDeactivated => {
-            this.dispose
-        }
+        case w: WindowDeactivated => this.dispose
         case ButtonClicked(source) if source == editar && docs.selection.indices.size >= 1 => {
             val firstSelected = docs.selection.items.head
             publish(WrappedEvent(SubscribeToDocument(firstSelected)))
@@ -121,6 +155,29 @@ class DocumentListFrame extends Frame with Loggable {
     def changeDocList(l: List[String]) {
         trace("change doc list")
         docs.listData = l
+        docs.repaint
+    }
+}
+
+class UserListFrame extends Frame with Loggable {
+    title = "Listado de Usuarios"
+    visible = true
+    size = new Dimension(320, 400)
+
+    val docs = new ListView(List[String]())
+    val scroll = new ScrollPane(docs)
+
+    val border = new BorderPanel
+    border.layout(scroll) = BorderPanel.Position.Center
+
+    contents = border
+
+    reactions += {
+        case w: WindowDeactivated => this.dispose
+    }
+
+    def changeUserList(usernames: Map[String, List[String]]) {
+        docs.listData = usernames.toList.map {k => k._1 + ": " + k._2.mkString(",")}
         docs.repaint
     }
 }
