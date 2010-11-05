@@ -57,3 +57,13 @@ case class DocumentListResponse(val documents: List[String]) extends ToRemote
 
 case class SubscribeToDocumentRequest(val session: Session, val title: String)
 case class UnsubscribeToDocumentRequest(val session: Session, val title: String)
+
+/**
+ * Generado cuando un usuario se loguea al kernel
+ */
+case class NewUserLoggedIn(val username: String) extends ToRemote
+
+/**
+ * Generado cuando un usuario se desloguea
+ */
+case class UserLoggedOut(val username: String) extends ToRemote

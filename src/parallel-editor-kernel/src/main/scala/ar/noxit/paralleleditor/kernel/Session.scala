@@ -4,6 +4,6 @@ trait Session {
 
     val username: String
     def installOnUpdateCallback(callback: UpdateCallback)
-    def notifyUpdate(message: AnyRef)
+    def notifyUpdate(message: Any)
     def logout
 }

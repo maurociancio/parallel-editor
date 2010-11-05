@@ -16,8 +16,8 @@ class BasicKernel extends Kernel with Loggable {
     @BeanProperty
     var userListMerger: UserListMerger = _
 
-    var sessions = List[Session]()
-    var documents = List[DocumentActor]()
+    private var sessions = List[Session]()
+    private var documents = List[DocumentActor]()
 
     override def login(username: String) = {
         if (username == null)
@@ -26,7 +26,13 @@ class BasicKernel extends Kernel with Loggable {
         if (sessions.exists {s => s.username == username})
             throw new UsernameAlreadyExistsException("username already logged in")
 
+        // create the new session
         val newSession = new BasicSession(username, this)
+
+        // notify the login
+        sessions.foreach {session => session notifyUpdate NewUserLoggedIn(username)}
+
+        // add the new session
         sessions = newSession :: sessions
 
         trace("new session")
@@ -105,6 +111,9 @@ class BasicKernel extends Kernel with Loggable {
 
         sessions = sessions filter {_ != session}
         documents foreach {doc => doc ! SilentUnsubscribe(session)}
+
+        // notify the logout
+        sessions.foreach {each => each notifyUpdate UserLoggedOut(session.username)}
     }
 
     override def userList(session: Session) =
