@@ -133,7 +133,7 @@ class KernelTest extends AssertionsForJUnit {
 
         var docDeleted = false
         session.installOnUpdateCallback(new UpdateCallback {
-            override def update(message: AnyRef) = {
+            override def update(message: Any) = {
                 message match {
                     case DocumentDeleted(title) => docDeleted = true
                     case _ => {}
@@ -158,7 +158,7 @@ class KernelTest extends AssertionsForJUnit {
 
     def installMockCallback(session: BasicSession) = {
         session.installOnUpdateCallback(new UpdateCallback {
-            override def update(message: AnyRef) = {
+            override def update(message: Any) = {
                 message match {
                     case SubscriptionResponse(ds, content) => docSession = ds
                     case _ => {}
