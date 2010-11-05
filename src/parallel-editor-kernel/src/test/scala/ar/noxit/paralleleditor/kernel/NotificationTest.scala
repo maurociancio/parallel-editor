@@ -8,8 +8,8 @@ import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import org.easymock.EasyMock._
 import ar.noxit.paralleleditor.common.network.SenderActor
-import ar.noxit.paralleleditor.common.remote.{NetworkActors, Peer}
-import ar.noxit.paralleleditor.common.messages.{RemoteNewUserLoggedIn, RemoteLoginOkResponse, RemoteLoginRequest}
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, Peer}
+import ar.noxit.paralleleditor.common.messages._
 
 @Test
 class NotificationTest extends AssertionsForJUnit {
@@ -88,6 +88,7 @@ class NotificationTest extends AssertionsForJUnit {
         val gateway1 = createStrictMock(classOf[SenderActor])
         gateway1 ! RemoteLoginOkResponse()
         gateway1 ! RemoteNewUserLoggedIn("username2")
+        gateway1 ! RemoteUserLoggedOut("username2")
         replay(gateway1)
 
         val client1 = new ClientActor(ka, NullPeer)
@@ -100,6 +101,7 @@ class NotificationTest extends AssertionsForJUnit {
         // cliente 2
         val gateway2 = createStrictMock(classOf[SenderActor])
         gateway2 ! RemoteLoginOkResponse()
+        gateway2 ! TerminateActor()
         replay(gateway2)
 
         Thread.sleep(1000)
@@ -109,6 +111,7 @@ class NotificationTest extends AssertionsForJUnit {
 
         client2 ! NetworkActors(gateway2, null)
         client2 ! RemoteLoginRequest("username2")
+        client2 ! RemoteLogoutRequest()
 
         Thread.sleep(1000)
         verify(gateway1, gateway2)

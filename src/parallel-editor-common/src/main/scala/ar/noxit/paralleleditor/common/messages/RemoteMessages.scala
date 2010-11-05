@@ -181,4 +181,9 @@ case class RemoteLogoutRequest extends BaseRemoteMessage
  */
 case class RemoteNewUserLoggedIn(val username: String) extends BaseRemoteMessage
 
+/**
+ * Sesión cerrada
+ */
+case class RemoteUserLoggedOut(val username: String) extends BaseRemoteMessage
+
 

@@ -188,12 +188,12 @@ class ClientActor(private val kernel: Actor, private val client: Peer) extends A
     private def doExit = {
         warn("Client actor exiting")
 
+        if (_session != null)
+            _session.logout
         if (gateway != null)
             gateway ! TerminateActor()
         if (listener != null)
             listener ! TerminateActor()
-        if (_session != null)
-            _session.logout
 
         client.disconnect
         exit

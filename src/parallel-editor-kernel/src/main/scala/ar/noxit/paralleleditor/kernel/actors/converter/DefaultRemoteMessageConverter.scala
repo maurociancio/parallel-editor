@@ -36,6 +36,9 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case NewUserLoggedIn(username) =>
                 RemoteNewUserLoggedIn(username)
+
+            case UserLoggedOut(username) =>
+                RemoteUserLoggedOut(username)
         }
     }
 }
