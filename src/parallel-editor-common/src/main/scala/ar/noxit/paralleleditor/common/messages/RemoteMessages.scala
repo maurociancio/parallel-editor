@@ -176,7 +176,9 @@ case class UsernameAlreadyExistsRemoteResponse extends RemoteLoginRefusedRemoteR
  */
 case class RemoteLogoutRequest extends BaseRemoteMessage
 
-
-
+/**
+ * Nueva sesión iniciada
+ */
+case class RemoteNewUserLoggedIn(val username: String) extends BaseRemoteMessage
 
 

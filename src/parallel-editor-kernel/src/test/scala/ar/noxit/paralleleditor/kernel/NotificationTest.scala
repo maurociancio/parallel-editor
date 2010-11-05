@@ -1,10 +1,15 @@
 package ar.noxit.paralleleditor.kernel
 
+import actors.converter.DefaultRemoteMessageConverter
+import actors.{ClientActor, KernelActor}
 import basic.BasicKernel
 import messages.{UserLoggedOut, NewUserLoggedIn}
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import org.easymock.EasyMock._
+import ar.noxit.paralleleditor.common.network.SenderActor
+import ar.noxit.paralleleditor.common.remote.{NetworkActors, Peer}
+import ar.noxit.paralleleditor.common.messages.{RemoteNewUserLoggedIn, RemoteLoginOkResponse, RemoteLoginRequest}
 
 @Test
 class NotificationTest extends AssertionsForJUnit {
@@ -68,5 +73,44 @@ class NotificationTest extends AssertionsForJUnit {
         session4.logout
 
         verify(callback1)
+    }
+
+    object NullPeer extends Peer {
+        def disconnect = {}
+    }
+
+    @Test
+    def testNotificationWithActors: Unit = {
+        val ka = new KernelActor(kernel)
+        ka.start
+
+        // cliente 1
+        val gateway1 = createStrictMock(classOf[SenderActor])
+        gateway1 ! RemoteLoginOkResponse()
+        gateway1 ! RemoteNewUserLoggedIn("username2")
+        replay(gateway1)
+
+        val client1 = new ClientActor(ka, NullPeer)
+        client1.remoteConverter = new DefaultRemoteMessageConverter
+        client1.start
+
+        client1 ! NetworkActors(gateway1, null)
+        client1 ! RemoteLoginRequest("username1")
+
+        // cliente 2
+        val gateway2 = createStrictMock(classOf[SenderActor])
+        gateway2 ! RemoteLoginOkResponse()
+        replay(gateway2)
+
+        Thread.sleep(1000)
+        val client2 = new ClientActor(ka, NullPeer)
+        client2.remoteConverter = new DefaultRemoteMessageConverter
+        client2.start
+
+        client2 ! NetworkActors(gateway2, null)
+        client2 ! RemoteLoginRequest("username2")
+
+        Thread.sleep(1000)
+        verify(gateway1, gateway2)
     }
 }
