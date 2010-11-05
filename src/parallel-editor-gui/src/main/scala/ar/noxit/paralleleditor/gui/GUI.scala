@@ -38,6 +38,7 @@ class GUI extends SimpleSwingApplication with Loggable {
         val documents = new DocumentsAdapter(tabs, homeMenuBar, this)
 
         reactions += {
+            // conectar
             case ConnectionRequest(host, port) => {
                 trace("Connecting to %s %s", host, port)
 
@@ -46,56 +47,48 @@ class GUI extends SimpleSwingApplication with Loggable {
                 actor ! RemoteLoginRequest(connPanel user)
             }
 
-            case DisconnectionRequest() => {
-                if (connected)
-                    actor ! Logout()
-            }
+            case message: Any if connected => {
+                message match {
+                // nuevo documento
+                    case NewDocumentRequest(docTitle, initialContent) =>
+                        actor ! RemoteNewDocumentRequest(docTitle, initialContent)
 
-            case CloseCurrentDocument() => {
-                if (connected) {
-                    currentDocument.foreach {
-                        selection =>
-                            actor ! RemoteUnsubscribeRequest(selection.docTitle)
-                            tabs.pages.remove(selection.index)
-                    }
-                }
-            }
-            case DeleteCurrentDocument() => {
-                if (connected) {
-                    currentDocument.foreach {
-                        selection =>
-                            actor ! RemoteDeleteDocumentRequest(selection.docTitle)
-                    }
-                }
-            }
+                    // operaciones
+                    case OperationEvent(docOp) =>
+                        actor ! remoteDocOpConverter.convert(docOp)
 
-            case OperationEvent(docOp) => {
-                if (connected) {
-                    actor ! remoteDocOpConverter.convert(docOp)
-                }
-            }
+                    // suscribirse
+                    case SubscribeToDocument(title) =>
+                        actor ! RemoteSubscribeRequest(title)
 
-            // listado de documentos
-            case DocumentListRequest() => {
-                if (connected) {
-                    actor ! RemoteDocumentListRequest()
-                }
-            }
-            // listado de usuarios
-            case UserListRequest() => {
-                if (connected) {
-                    actor ! RemoteUserListRequest()
-                }
-            }
+                    // cerrar documento actual
+                    case CloseCurrentDocument() =>
+                        currentDocument.foreach {
+                            selection =>
+                                actor ! RemoteUnsubscribeRequest(selection.docTitle)
+                                tabs.pages.remove(selection.index)
+                        }
 
-            case NewDocumentRequest(docTitle, initialContent) => {
-                if (connected) {
-                    actor ! RemoteNewDocumentRequest(docTitle, initialContent)
-                }
-            }
-            case SubscribeToDocument(title) => {
-                if (connected) {
-                    actor ! RemoteSubscribeRequest(title)
+                    // borrar documento actual
+                    case DeleteCurrentDocument() =>
+                        currentDocument.foreach {
+                            selection => actor ! RemoteDeleteDocumentRequest(selection.docTitle)
+                        }
+
+                    // listado de documentos
+                    case DocumentListRequest() =>
+                        actor ! RemoteDocumentListRequest()
+
+                    // listado de usuarios
+                    case UserListRequest() =>
+                        actor ! RemoteUserListRequest()
+
+                    // desconectar
+                    case DisconnectionRequest() =>
+                        actor ! Logout()
+
+                    // otros
+                    case other: Any => {}
                 }
             }
         }
