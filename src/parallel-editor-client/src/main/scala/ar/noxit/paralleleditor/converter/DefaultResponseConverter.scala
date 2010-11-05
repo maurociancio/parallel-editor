@@ -61,6 +61,12 @@ class DefaultResponseConverter extends ResponseConverter with Loggable {
                 trace("login accepted from kernel.")
                 LoginOk()
             }
+
+            case RemoteNewUserLoggedIn(username) =>
+                NewUserLoggedIn(username)
+
+            case RemoteUserLoggedOut(username) =>
+                UserLoggedOut(username)
         }
     }
 }
