@@ -14,6 +14,8 @@ case class UserListRequest extends Event
 case class NewDocumentRequest(val docTitle: String, val initialContent: String = "") extends Event
 case class CloseCurrentDocument extends Event
 case class DeleteCurrentDocument extends Event
+case class ExitRequested extends Event
+case class SaveCurrentDocumentRequest extends Event
 
 /**
  * Eventos publicados por el document area
