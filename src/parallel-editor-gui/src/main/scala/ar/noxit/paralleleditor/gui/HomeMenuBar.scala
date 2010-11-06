@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.gui
 
 import java.awt.Dimension
 import swing._
-import event.{WindowDeactivated, WindowClosed, ButtonClicked}
+import event.{WindowClosed, ButtonClicked}
 import ar.noxit.paralleleditor.common.logger.Loggable
 import javax.swing.filechooser.FileNameExtensionFilter
 import io.Source
@@ -10,14 +10,22 @@ import io.Source
 class HomeMenuBar extends MenuBar with Loggable {
     val newDoc = new MenuItem("Nuevo")
     val newDocFromFile = new MenuItem("Nuevo desde archivo")
+    val saveCurrentDocToFile = new MenuItem("Guardar actual")
     val closeCurrent = new MenuItem("Cerrar actual")
     val deleteCurrent = new MenuItem("Borrar actual")
+    val separator = new Separator
+    val separator2 = new Separator
+    val exit = new MenuItem("Salir")
 
     val fileMenu = new Menu("Documento") {
         contents += newDoc
         contents += newDocFromFile
+        contents += saveCurrentDocToFile
+        contents += separator
         contents += closeCurrent
         contents += deleteCurrent
+        contents += separator2
+        contents += exit
     }
 
     val docList = new MenuItem("Listado de documentos")
@@ -31,7 +39,7 @@ class HomeMenuBar extends MenuBar with Loggable {
     var docListFrame: DocumentListFrame = _
     var userListFrame: UserListFrame = _
 
-    listenTo(docList, newDoc, newDocFromFile, closeCurrent, deleteCurrent, userList)
+    listenTo(docList, newDoc, newDocFromFile, saveCurrentDocToFile, closeCurrent, deleteCurrent, userList, exit)
 
     reactions += {
         // listado de documentos
@@ -66,6 +74,11 @@ class HomeMenuBar extends MenuBar with Loggable {
             userListFrame = null
         }
 
+        case ButtonClicked(`exit`) => {
+            trace("exit requested")
+            publish(ExitRequested())
+        }
+
         // nuevo documento
         case ButtonClicked(`newDoc`) => {
             askAndPublishDocumentName {""}
@@ -84,6 +97,11 @@ class HomeMenuBar extends MenuBar with Loggable {
                 }
                 case _ => {}
             }
+        }
+
+        case ButtonClicked(`saveCurrentDocToFile`) => {
+            trace("clicked save doc from file")
+            publish(SaveCurrentDocumentRequest())
         }
 
         // cerrar documento
@@ -145,7 +163,7 @@ class DocumentListFrame extends Frame with Loggable {
     listenTo(editar)
 
     reactions += {
-        case w: WindowDeactivated => this.dispose
+        case w: WindowClosed => this.dispose
         case ButtonClicked(source) if source == editar && docs.selection.indices.size >= 1 => {
             val firstSelected = docs.selection.items.head
             publish(WrappedEvent(SubscribeToDocument(firstSelected)))
@@ -164,6 +182,8 @@ class UserListFrame extends Frame with Loggable {
     visible = true
     size = new Dimension(320, 400)
 
+
+
     val docs = new ListView(List[String]())
     val scroll = new ScrollPane(docs)
 
@@ -173,7 +193,7 @@ class UserListFrame extends Frame with Loggable {
     contents = border
 
     reactions += {
-        case w: WindowDeactivated => this.dispose
+        case w: WindowClosed => this.dispose
     }
 
     def changeUserList(usernames: Map[String, List[String]]) {

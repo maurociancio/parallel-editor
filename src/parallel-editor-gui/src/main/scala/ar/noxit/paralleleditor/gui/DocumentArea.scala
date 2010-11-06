@@ -89,4 +89,6 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         finally
             areaEdicion.enableFiringEvents
     }
+
+    def text = areaEdicion text
 }
