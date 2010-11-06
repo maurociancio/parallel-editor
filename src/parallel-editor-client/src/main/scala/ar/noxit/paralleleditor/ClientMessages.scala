@@ -26,3 +26,7 @@ case class DocumentDeletionTitleNotExists(val docTitle: String)
 case class DocumentTitleTaken(val offenderTitle: String)
 
 case class LoginOk
+
+case class NewUserLoggedIn(val username: String)
+
+case class UserLoggedOut(val username: String)

@@ -11,14 +11,14 @@ class BasicSession(val username: String, private val kernel: BasicKernel) extend
 
     override def installOnUpdateCallback(callback: UpdateCallback) = this updateCallback = callback
 
-    override def notifyUpdate(message: AnyRef) = {
+    override def notifyUpdate(message: Any) = {
         if (updateCallback != null)
             updateCallback update message
     }
 
     //TODO comparar tambien el kernel
-    override def equals(obj:Any) = {
-        obj.isInstanceOf[Session] && obj.asInstanceOf[Session].username == username 
+    override def equals(obj: Any) = {
+        obj.isInstanceOf[Session] && obj.asInstanceOf[Session].username == username
     }
 
     override def logout = kernel logout this

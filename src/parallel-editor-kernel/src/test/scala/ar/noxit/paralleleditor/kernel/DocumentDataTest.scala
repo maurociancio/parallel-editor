@@ -23,7 +23,7 @@ class DocumentDataTest extends AssertionsForJUnit {
         session = kernel.login("username")
 
         session.installOnUpdateCallback(new UpdateCallback {
-            override def update(message: AnyRef) = {
+            override def update(message: Any) = {
                 message match {
                     case SubscriptionResponse(ds, content) => docSession = ds
                     case _ => {}

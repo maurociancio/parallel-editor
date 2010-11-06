@@ -61,7 +61,7 @@ class ClientActor(private val doc: Documents) extends Actor with Loggable {
                 }
 
                 case any: Any => {
-                    warn("Uknown message received [%s]", any)
+                    warn("Uknown message received [%s] [caller=%s]", any, sender)
                 }
             }
         }

@@ -57,8 +57,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
             case DocumentDeleted(docTitle) => {
                 SwingUtil.invokeLater {
                     (0 until tabs.pages.size).zip(tabs.pages).find {tuple => tuple._2.title == docTitle}.foreach {
-                        tuple =>
-                            tabs.pages.remove(tuple._1)
+                        tuple => tabs.pages.remove(tuple._1)
                     }
 
                     Dialog.showMessage(parent = menu, message = "Document borrado %s".format(docTitle))
@@ -69,6 +68,20 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                     Dialog.showMessage(parent = menu, message = "El Document %s no existe".format(docTitle))
                 }
             }
+
+            case NewUserLoggedIn(username) => {
+                SwingUtil.invokeLater {
+                    // TODO AVISAR EN LA GUI
+                    println("El usuario %s se ha logueado".format(username))
+                }
+            }
+            case UserLoggedOut(username) => {
+                SwingUtil.invokeLater {
+                    // TODO avisar en la gui
+                    println("El usuario %s se ha deslogueado".format(username))
+                }
+            }
+
             case LoginOk() => {
             }
         }
