@@ -40,7 +40,7 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
         // enviar mensaje a la otra parte
         send(Message(op, _myMsgs, _otherMsgs))
 
-        outgoingMsgs = outgoingMsgs.update(_myMsgs, op)
+        outgoingMsgs = outgoingMsgs.updated(_myMsgs, op)
         _myMsgs = _myMsgs + 1
 
         trace("estado actual %d %d", _myMsgs, _otherMsgs)
@@ -61,7 +61,7 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
                 val currentOp = currentListElement _2
                 val transformatedOps = xform(currentOp, transformedOp)
 
-                outgoingMsgs = outgoingMsgs.update(currentListElement _1, transformatedOps _1)
+                outgoingMsgs = outgoingMsgs.updated(currentListElement _1, transformatedOps _1)
 
                 transformatedOps _2
             }
