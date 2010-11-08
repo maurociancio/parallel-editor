@@ -24,7 +24,7 @@ class DefaultUserListMerger extends UserListMerger with Loggable {
             val total = docs.size
 
             var finished = false
-            while (!finished) {
+            while (received < total && !finished) {
                 trace("waiting messages from docs")
 
                 receiveWithin(timeout) {
@@ -33,7 +33,6 @@ class DefaultUserListMerger extends UserListMerger with Loggable {
                             username => usernames = usernames.updated(username, docTitle :: usernames(username))
                         }
                         received = received + 1
-                        finished = received == total
                     }
                     case TIMEOUT => {
                         warn("document did not respond to user list req")
