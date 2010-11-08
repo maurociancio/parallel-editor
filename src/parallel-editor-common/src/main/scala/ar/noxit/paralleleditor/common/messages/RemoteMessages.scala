@@ -6,7 +6,7 @@ import scala.serializable
  * Clase base de los mensajes remotos
  */
 @serializable
-abstract case class BaseRemoteMessage
+abstract case class BaseRemoteMessage()
 
 /**
  * Mensajes que van hacia el kernel y que deben convertirse antes de ser enviados
@@ -34,7 +34,7 @@ trait Response
 /**
  * Clase base para las operaciones sobre documentos
  */
-abstract case class RemoteOperation extends BaseRemoteMessage
+abstract case class RemoteOperation() extends BaseRemoteMessage
 
 /**
  * Agregar texto
@@ -49,7 +49,7 @@ case class RemoteDeleteText(val startPos: Int, val size: Int) extends RemoteOper
 /**
  * Null operation
  */
-case class RemoteNullOpText extends RemoteOperation
+case class RemoteNullOpText() extends RemoteOperation
 
 /**
  * A nivel Sincronismo
@@ -124,12 +124,12 @@ case class RemoteDocumentDeletionTitleNotExists(val docTitle: String) extends Ba
 /**
  * Pide listado de usuarios
  */
-case class RemoteUserListRequest extends BaseRemoteMessage with Request with ToKernel
+case class RemoteUserListRequest() extends BaseRemoteMessage with Request with ToKernel
 
 /**
  * Pide listado de documentos
  */
-case class RemoteDocumentListRequest extends BaseRemoteMessage with ToKernel with Request
+case class RemoteDocumentListRequest() extends BaseRemoteMessage with ToKernel with Request
 
 /**
  * Respuesta listado de usuarios
@@ -159,22 +159,22 @@ case class RemoteLoginRequest(val username: String) extends BaseRemoteMessage wi
 /**
  * Rta de login OK
  */
-case class RemoteLoginOkResponse extends BaseRemoteMessage with Response
+case class RemoteLoginOkResponse() extends BaseRemoteMessage with Response
 
 /**
  * Rta de Login Erroneo
  */
-abstract case class RemoteLoginRefusedRemoteResponse extends BaseRemoteMessage with Response
+abstract case class RemoteLoginRefusedRemoteResponse() extends BaseRemoteMessage with Response
 
 /**
  * Nombre de usuario tomado
  */
-case class UsernameAlreadyExistsRemoteResponse extends RemoteLoginRefusedRemoteResponse with Response
+case class UsernameAlreadyExistsRemoteResponse() extends RemoteLoginRefusedRemoteResponse with Response
 
 /**
  * Pedido de logout
  */
-case class RemoteLogoutRequest extends BaseRemoteMessage
+case class RemoteLogoutRequest() extends BaseRemoteMessage
 
 /**
  * Nueva sesión iniciada

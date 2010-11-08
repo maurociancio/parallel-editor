@@ -24,7 +24,7 @@ case class SetPeerActor(val peer: Actor)
 /**
  * Indica al actor que debe terminar su procesamiento. Enviado a los actores peer, gateway y listener
  */
-case class TerminateActor
+case class TerminateActor()
 
 /**
  * Esta clase encapsula la referencia a un cliente remoto proveyendo una interfaz para definir el destinatario
