@@ -3,34 +3,39 @@ package ar.noxit.paralleleditor
 import common.Message
 import common.operation.EditOperation
 
-case class ProcessOperation(val title: String, val msg: Message[EditOperation])
+/**
+ * Comando desde el kernel
+ */
+sealed trait FromKernel
 
-case class DocumentListUpdate(val docs: List[String])
+case class ProcessOperation(val title: String, val msg: Message[EditOperation]) extends FromKernel
 
-case class UserListUpdate(val usernames: Map[String, List[String]])
+case class DocumentListUpdate(val docs: List[String]) extends FromKernel
 
-case class DocumentSubscription(val title: String, val initialContent: String)
+case class UserListUpdate(val usernames: Map[String, List[String]]) extends FromKernel
 
-case class DocumentSubscriptionAlreadyExists(val offenderTitle: String)
+case class DocumentSubscription(val title: String, val initialContent: String) extends FromKernel
 
-case class DocumentSubscriptionNotExists(val offenderTitle: String)
+case class DocumentSubscriptionAlreadyExists(val offenderTitle: String) extends FromKernel
 
-case class DocumentInUse(val docTitle: String)
+case class DocumentSubscriptionNotExists(val offenderTitle: String) extends FromKernel
 
-case class UsernameTaken()
+case class DocumentInUse(val docTitle: String) extends FromKernel
 
-case class DocumentDeleted(val docTitle: String)
+case class UsernameTaken() extends FromKernel
 
-case class DocumentDeletionTitleNotExists(val docTitle: String)
+case class DocumentDeleted(val docTitle: String) extends FromKernel
 
-case class DocumentTitleTaken(val offenderTitle: String)
+case class DocumentDeletionTitleNotExists(val docTitle: String) extends FromKernel
 
-case class LoginOk()
+case class DocumentTitleTaken(val offenderTitle: String) extends FromKernel
 
-case class NewUserLoggedIn(val username: String)
+case class LoginOk() extends FromKernel
 
-case class UserLoggedOut(val username: String)
+case class NewUserLoggedIn(val username: String) extends FromKernel
 
-case class NewSubscriberToDocument(val username: String, val docTitle: String)
+case class UserLoggedOut(val username: String) extends FromKernel
 
-case class SubscriberLeftDocument(val username: String, val docTitle: String)
+case class NewSubscriberToDocument(val username: String, val docTitle: String) extends FromKernel
+
+case class SubscriberLeftDocument(val username: String, val docTitle: String) extends FromKernel
