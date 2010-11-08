@@ -10,7 +10,7 @@ import ar.noxit.paralleleditor.common.Message
 
 case class ProcessOperation(val who: Session, val m: Message[EditOperation])
 
-case class SubscriberCount
+case class SubscriberCount()
 case class Subscribe(val who: Session)
 case class Unsubscribe(val who: Session)
 case class SilentUnsubscribe(val session: Session)

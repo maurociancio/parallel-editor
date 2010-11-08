@@ -22,7 +22,7 @@ case class RemoveClient(val client: Peer)
 /**
  * Pide al actor ClientList que termine la conexión con todos los peer
  */
-case class RemoveAllClients
+case class RemoveAllClients()
 
 /**
  * Actor que mantiene la lista de peers conectados al kernel.

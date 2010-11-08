@@ -8,14 +8,14 @@ import ar.noxit.paralleleditor.common.operation.DocumentOperation
  */
 
 case class ConnectionRequest(val host: String, val port: Int) extends Event
-case class DisconnectionRequest extends Event
-case class DocumentListRequest extends Event
-case class UserListRequest extends Event
+case class DisconnectionRequest() extends Event
+case class DocumentListRequest() extends Event
+case class UserListRequest() extends Event
 case class NewDocumentRequest(val docTitle: String, val initialContent: String = "") extends Event
-case class CloseCurrentDocument extends Event
-case class DeleteCurrentDocument extends Event
-case class ExitRequested extends Event
-case class SaveCurrentDocumentRequest extends Event
+case class CloseCurrentDocument() extends Event
+case class DeleteCurrentDocument() extends Event
+case class ExitRequested() extends Event
+case class SaveCurrentDocumentRequest() extends Event
 
 /**
  * Eventos publicados por el document area
@@ -24,7 +24,7 @@ case class SaveCurrentDocumentRequest extends Event
 /**
  * Operacion de edicion sobre un documento
  */
-abstract class EditionEvent extends Event
+trait EditionEvent extends Event
 case class InsertionEvent(val pos: Int, val text: String) extends EditionEvent
 case class DeletionEvent(val pos: Int, val count: Int) extends EditionEvent
 
