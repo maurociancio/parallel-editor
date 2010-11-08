@@ -1,7 +1,8 @@
-package ar.noxit.paralleleditor.converter
+package ar.noxit.paralleleditor.client.converter
 
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor._
+import client._
 import common.logger.Loggable
 
 class DefaultResponseConverter extends ResponseConverter with Loggable {

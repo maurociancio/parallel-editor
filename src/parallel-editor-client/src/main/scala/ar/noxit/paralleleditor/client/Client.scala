@@ -1,16 +1,17 @@
 package ar.noxit.paralleleditor.client
 
 import actors.Actor
+import converter.DefaultResponseConverter
+import remote.RemoteServerProxy
 import java.net.Socket
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
-import ar.noxit.paralleleditor.converter.DefaultResponseConverter
 import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
 
 trait Documents {
     /**
      * See ClientMessages.scala
      */
-    def process(msg: FromKernel)
+    def process(msg: CommandFromKernel)
 }
 
 trait LocalClientActorFactory {

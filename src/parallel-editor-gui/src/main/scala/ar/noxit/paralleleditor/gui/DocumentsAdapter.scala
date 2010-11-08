@@ -2,15 +2,14 @@ package ar.noxit.paralleleditor.gui
 
 import swing.TabbedPane.Page
 import swing.{Reactor, Dialog, TabbedPane}
-import ar.noxit.paralleleditor.client.Documents
 import ar.noxit.paralleleditor.common.{BasicXFormStrategy, EditOperationJupiterSynchronizer}
 import sync.SynchronizerAdapter
-import ar.noxit.paralleleditor._
+import ar.noxit.paralleleditor.client._
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
                        private val gui: Reactor) extends Documents {
-    override def process(msg: FromKernel) = {
+    override def process(msg: CommandFromKernel) = {
         msg match {
             case ProcessOperation(title, msg) => {
                 val page = tabs.pages.find {page => page.title == title}

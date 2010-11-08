@@ -1,10 +1,11 @@
-package ar.noxit.paralleleditor.client
+package ar.noxit.paralleleditor.client.remote
 
+import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network._
-import ar.noxit.paralleleditor.common.remote.{TerminateActor, Peer, NetworkActors, BasePeerProxy}
+import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, BasePeerProxy, Peer}
+import ar.noxit.paralleleditor.client.{ToKernel, RegisterRemoteActor, FromKernel, LocalClientActorFactory}
 import ar.noxit.paralleleditor.common.messages.RemoteLogoutRequest
-import actors.{TIMEOUT, Actor}
 
 object NullDisconnectablePeer extends DisconnectablePeer {
 

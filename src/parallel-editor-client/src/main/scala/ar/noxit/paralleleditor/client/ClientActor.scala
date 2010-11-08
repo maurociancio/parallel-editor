@@ -5,6 +5,7 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.converter.MessageConverter
+import converter.ResponseConverter
 import reflect.BeanProperty
 import ar.noxit.paralleleditor._
 

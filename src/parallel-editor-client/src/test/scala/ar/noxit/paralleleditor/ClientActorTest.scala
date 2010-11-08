@@ -1,11 +1,11 @@
 package ar.noxit.paralleleditor
 
+import client._
+import client.converter.DefaultResponseConverter
 import common.messages.{RemoteUserLoggedOut, RemoteNewUserLoggedIn}
-import converter.DefaultResponseConverter
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import org.easymock.EasyMock._
-import ar.noxit.paralleleditor.client.{RegisterRemoteActor, Documents, ClientActor}
 
 @Test
 class ClientActorTest extends AssertionsForJUnit {
