@@ -6,26 +6,26 @@ import scala.serializable
  * Clase base de los mensajes remotos
  */
 @serializable
-trait BaseRemoteMessage
+sealed trait BaseRemoteMessage
 
 /**
  * Mensajes que van hacia el kernel y que deben convertirse antes de ser enviados
  */
 @serializable
-trait ToKernel
+sealed trait ToKernel
 
 /**
  * Mensajes enviados desde el cliente que tienen destino al kernel, son todos request
  */
 
 @serializable
-trait Request
+sealed trait Request
 
 /**
  * Mensaje proveniente del kernel que son respuestas a mensajes
  */
 @serializable
-trait Response
+sealed trait Response
 
 /**
  * Nivel documento
@@ -34,7 +34,7 @@ trait Response
 /**
  * Clase base para las operaciones sobre documentos
  */
-trait RemoteOperation extends BaseRemoteMessage
+sealed trait RemoteOperation extends BaseRemoteMessage
 
 /**
  * Agregar texto
