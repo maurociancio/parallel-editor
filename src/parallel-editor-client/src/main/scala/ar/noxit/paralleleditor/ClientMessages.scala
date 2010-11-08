@@ -30,3 +30,7 @@ case class LoginOk()
 case class NewUserLoggedIn(val username: String)
 
 case class UserLoggedOut(val username: String)
+
+case class NewSubscriberToDocument(val username: String, val docTitle: String)
+
+case class SubscriberLeftDocument(val username: String, val docTitle: String)

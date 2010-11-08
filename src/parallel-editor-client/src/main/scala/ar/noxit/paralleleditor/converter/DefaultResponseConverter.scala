@@ -67,6 +67,12 @@ class DefaultResponseConverter extends ResponseConverter with Loggable {
 
             case RemoteUserLoggedOut(username) =>
                 UserLoggedOut(username)
+
+            case RemoteNewSubscriberToDocument(username, docTitle) =>
+                NewSubscriberToDocument(username, docTitle)
+
+            case RemoteSubscriberLeftDocument(username, docTitle) =>
+                SubscriberLeftDocument(username, docTitle)
         }
     }
 }
