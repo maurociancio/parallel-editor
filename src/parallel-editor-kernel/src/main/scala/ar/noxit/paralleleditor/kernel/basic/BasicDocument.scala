@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
+import messages.{SubscriberLeftDocument, NewSubscriberToDocument}
 import scala.List
 import ar.noxit.paralleleditor.common.operation.DocumentData
 
@@ -15,7 +16,13 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
         if (subscribers contains session)
             throw new DocumentSubscriptionAlreadyExistsException("the session is already suscribed to this document")
 
+        // notify users
+        subscribers.foreach {target => target notifyUpdate NewSubscriberToDocument(session.username, title)}
+
+        // add the new session
         subscribers = session :: subscribers
+
+        // new doc session
         docSessionFactory.newDocumentSession(this, session)
     }
 
@@ -27,6 +34,9 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
             throw new DocumentSubscriptionNotExistsException("the session is not suscribed to this document")
 
         subscribers = subscribers filter {_ != session}
+
+        // notify the subscribers
+        subscribers.foreach {target => target notifyUpdate SubscriberLeftDocument(session.username, title)}
     }
 
     def silentUnsubscribe(session: Session) = {

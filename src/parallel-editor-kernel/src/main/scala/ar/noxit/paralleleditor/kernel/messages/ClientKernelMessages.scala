@@ -18,7 +18,7 @@ case class LoginResponse(val session: Session) {
         throw new IllegalArgumentException("session cannot be null")
 }
 
-case class UsernameAlreadyExists
+case class UsernameAlreadyExists()
 
 case class DocumentTitleExists(val offenderTitle: String) extends ToRemote
 
@@ -67,3 +67,13 @@ case class NewUserLoggedIn(val username: String) extends ToRemote
  * Generado cuando un usuario se desloguea
  */
 case class UserLoggedOut(val username: String) extends ToRemote
+
+/**
+ * Generado cuando un usuario se une a un documento
+ */
+case class NewSubscriberToDocument(val username: String, val docTitle: String) extends ToRemote
+
+/**
+ * Generado cuando un usuario deja la edición de un documento
+ */
+case class SubscriberLeftDocument(val username: String, val docTitle: String) extends ToRemote
