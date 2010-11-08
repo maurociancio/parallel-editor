@@ -10,7 +10,7 @@ import ar.noxit.paralleleditor._
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
                        private val gui: Reactor) extends Documents {
-    override def process(msg: Any) = {
+    override def process(msg: FromKernel) = {
         msg match {
             case ProcessOperation(title, msg) => {
                 val page = tabs.pages.find {page => page.title == title}

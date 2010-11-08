@@ -10,7 +10,7 @@ trait Documents {
     /**
      * See ClientMessages.scala
      */
-    def process(msg: Any)
+    def process(msg: FromKernel)
 }
 
 trait LocalClientActorFactory {
