@@ -6,7 +6,7 @@ import scala.serializable
  * Clase base de los mensajes remotos
  */
 @serializable
-abstract case class BaseRemoteMessage()
+trait BaseRemoteMessage
 
 /**
  * Mensajes que van hacia el kernel y que deben convertirse antes de ser enviados
@@ -34,7 +34,7 @@ trait Response
 /**
  * Clase base para las operaciones sobre documentos
  */
-abstract case class RemoteOperation() extends BaseRemoteMessage
+trait RemoteOperation extends BaseRemoteMessage
 
 /**
  * Agregar texto
@@ -164,7 +164,7 @@ case class RemoteLoginOkResponse() extends BaseRemoteMessage with Response
 /**
  * Rta de Login Erroneo
  */
-abstract case class RemoteLoginRefusedRemoteResponse() extends BaseRemoteMessage with Response
+trait RemoteLoginRefusedRemoteResponse extends BaseRemoteMessage with Response
 
 /**
  * Nombre de usuario tomado
