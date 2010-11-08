@@ -4,27 +4,27 @@ import java.awt.Dimension
 import swing._
 import event.{WindowClosed, ButtonClicked}
 import ar.noxit.paralleleditor.common.logger.Loggable
-import javax.swing.filechooser.FileNameExtensionFilter
-import io.Source
+import reflect.BeanProperty
 
 class HomeMenuBar extends MenuBar with Loggable {
+    @BeanProperty
+    var newDocumentDialog: NewDocumentDialog = _
+
     val newDoc = new MenuItem("Nuevo")
     val newDocFromFile = new MenuItem("Nuevo desde archivo")
     val saveCurrentDocToFile = new MenuItem("Guardar actual")
     val closeCurrent = new MenuItem("Cerrar actual")
     val deleteCurrent = new MenuItem("Borrar actual")
-    val separator = new Separator
-    val separator2 = new Separator
     val exit = new MenuItem("Salir")
 
     val fileMenu = new Menu("Documento") {
         contents += newDoc
         contents += newDocFromFile
         contents += saveCurrentDocToFile
-        contents += separator
+        contents += new Separator
         contents += closeCurrent
         contents += deleteCurrent
-        contents += separator2
+        contents += new Separator
         contents += exit
     }
 
@@ -81,22 +81,11 @@ class HomeMenuBar extends MenuBar with Loggable {
 
         // nuevo documento
         case ButtonClicked(`newDoc`) => {
-            askAndPublishDocumentName {""}
+            newDocumentDialog.askDocumentNameForEmptyFile(this).foreach {publish(_)}
         }
         case ButtonClicked(`newDocFromFile`) => {
             trace("clicked new doc from file")
-
-            val chooser = new FileChooser()
-            chooser.fileFilter = new FileNameExtensionFilter("Archivos de texto", "txt", "tex", "html", "htm")
-            chooser.showOpenDialog(this) match {
-                case FileChooser.Result.Approve => {
-                    val selectedFile = chooser.selectedFile
-                    askAndPublishDocumentName({
-                        Source.fromFile(selectedFile).getLines.mkString("\n")
-                    }, selectedFile.getName)
-                }
-                case _ => {}
-            }
+            newDocumentDialog.askDocumentNameFromFile(this).foreach {publish(_)}
         }
 
         case ButtonClicked(`saveCurrentDocToFile`) => {
@@ -137,11 +126,6 @@ class HomeMenuBar extends MenuBar with Loggable {
         if (userListFrame != null)
             userListFrame.changeUserList(usernames)
     }
-
-    protected def askAndPublishDocumentName(initialContent: => String = {""}, defaultName: String = "Nuevo Documento") = {
-        val input = Dialog.showInput(message = "Ingrese el nombre del nuevo documento", initial = defaultName)
-        input.foreach(newDoc => publish(NewDocumentRequest(newDoc, initialContent)))
-    }
 }
 
 class DocumentListFrame extends Frame with Loggable {
@@ -181,8 +165,6 @@ class UserListFrame extends Frame with Loggable {
     title = "Listado de Usuarios"
     visible = true
     size = new Dimension(320, 400)
-
-
 
     val docs = new ListView(List[String]())
     val scroll = new ScrollPane(docs)

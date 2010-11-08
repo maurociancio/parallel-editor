@@ -14,9 +14,14 @@
         <property name="remoteDocOpConverter" ref="remoteDocumentOperationConverter"/>
         <!--   <property name="clientActorFactory" ref="clientActorFactory"/>-->
         <property name="fileWriterDialog" ref="fileWriterDialog"/>
+        <property name="homeMenuBar" ref="homeMenuBar"/>
     </bean>
 
     <bean id="fileWriterDialog" class="ar.noxit.paralleleditor.gui.DefaultFileWriterDialog"/>
+    <bean id="homeMenuBar" class="ar.noxit.paralleleditor.gui.HomeMenuBar" scope="prototype">
+        <property name="newDocumentDialog" ref="newDocumentDialog"/>
+    </bean>
+    <bean id="newDocumentDialog" class="ar.noxit.paralleleditor.gui.DefaultNewDocumentDialog"/>
 
     <!--CLIENT ACTOR FACTORY-->
     <!-- <bean id="clientActorFactory" class="ar.noxit.paralleleditor.gui.DefaultClientActorFactory"/>

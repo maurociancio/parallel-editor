@@ -14,13 +14,13 @@ class GUI extends SimpleSwingApplication with Loggable {
 
     @BeanProperty
     var remoteDocOpConverter: RemoteDocumentOperationConverter = _
-
     @BeanProperty
     var fileWriterDialog: FileWriterDialog = _
+    @BeanProperty
+    var homeMenuBar: HomeMenuBar = _
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"
-        val homeMenuBar = new HomeMenuBar
         menuBar = homeMenuBar
 
         val connPanel = new ConnectionPanel
