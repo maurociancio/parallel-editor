@@ -81,6 +81,20 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                 }
             }
 
+            case NewSubscriberToDocument(username, docTitle) => {
+                SwingUtil.invokeLater {
+                    // TODO avisar en la gui
+                    println("nuevo usuario en documento")
+                }
+            }
+
+            case SubscriberLeftDocument(username, docTitle) => {
+                SwingUtil.invokeLater {
+                    // TODO avisar en la gui
+                    println("usuario dejo documento")
+                }
+            }
+
             case LoginOk() => {
             }
         }
