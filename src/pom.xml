@@ -78,6 +78,9 @@
                     <scalaVersion>${scala.version}</scalaVersion>
                     <args>
                         <arg>-target:jvm-1.5</arg>
+                        <arg>-explaintypes</arg>
+                        <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
                     </args>
                 </configuration>
             </plugin>
