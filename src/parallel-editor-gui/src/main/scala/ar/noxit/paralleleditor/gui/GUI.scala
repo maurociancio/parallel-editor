@@ -7,14 +7,16 @@ import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.converter._
 import reflect.BeanProperty
 import ar.noxit.paralleleditor.client.{Logout, SynchronizationSessionFactory}
-import java.io.{IOException, FileWriter}
 
 class GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
     var connected = false
-var writer:FileWriter = _
+
     @BeanProperty
     var remoteDocOpConverter: RemoteDocumentOperationConverter = _
+
+    @BeanProperty
+    var fileWriterDialog: FileWriterDialog = _
 
     def top = new MainFrame {
         title = "Parallel Editor GUI"
@@ -48,44 +50,10 @@ var writer:FileWriter = _
                 actor ! RemoteLoginRequest(connPanel user)
             }
 
-            case SaveCurrentDocumentRequest() => {
-                val chooser = new FileChooser()
-                chooser.showSaveDialog(menuBar) match {
-                    case FileChooser.Result.Approve => {
-                        val file = chooser.selectedFile
-                        /*askAndPublishDocumentName({
-                            Source.fromFile(selectedFile).getLines.mkString("\n")
-                        }, selectedFile.getName)*/
+            case SaveCurrentDocumentRequest() =>
+                currentDocument.foreach {doc => fileWriterDialog.askAndWriteFile(menuBar, {documentText(doc.index)})}
 
-
-                        try {
-                            writer = new FileWriter(file);
-                            val doc = currentDocument
-                            if(doc.isDefined){
-                                writer.write(documentText(doc.get.index))
-                            /*textComp.write(writer);*/
-                                trace("escribo: %s",documentText(doc.get.index))
-                            } else warn("No hay documentos abiertos")
-
-                        } catch {
-                            case e: IOException => warn("error al escribir")
-                            // JOptionPane.showMessageDialog(SimpleEditor.this,
-                            //     "File Not Saved", "ERROR", JOptionPane.ERROR_MESSAGE);
-                        } finally {
-                            if (writer != null) {
-                                try {
-                                    writer.close();
-                                } catch {
-                                    case e: IOException => warn("no se pudo cerrar el archivo")
-                                }
-                            }
-                        }
-                    }
-                    case _ => {}
-                }
-            }
-
-            case ExitRequested()=> quit()
+            case ExitRequested() => quit()
 
             case message: Any if connected => {
                 message match {
@@ -141,9 +109,8 @@ var writer:FileWriter = _
                 None
         }
 
-        private def documentText(index:Int) = {
-             (tabs.pages(index).content).asInstanceOf[DocumentArea].text
-        }
+        private def documentText(index: Int) =
+            tabs.pages(index).content.asInstanceOf[DocumentArea].text
     }
 
     override def shutdown() {

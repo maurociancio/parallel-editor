@@ -12,21 +12,24 @@
     <!--MAIN WINDOW-->
     <bean id="mainWindow" class="ar.noxit.paralleleditor.gui.GUI">
         <property name="remoteDocOpConverter" ref="remoteDocumentOperationConverter"/>
-     <!--   <property name="clientActorFactory" ref="clientActorFactory"/>-->
+        <!--   <property name="clientActorFactory" ref="clientActorFactory"/>-->
+        <property name="fileWriterDialog" ref="fileWriterDialog"/>
     </bean>
+
+    <bean id="fileWriterDialog" class="ar.noxit.paralleleditor.gui.DefaultFileWriterDialog"/>
 
     <!--CLIENT ACTOR FACTORY-->
-   <!-- <bean id="clientActorFactory" class="ar.noxit.paralleleditor.gui.DefaultClientActorFactory"/>
--->
+    <!-- <bean id="clientActorFactory" class="ar.noxit.paralleleditor.gui.DefaultClientActorFactory"/>
+    -->
     <!--INTERNAL CLIENT ACTOR FACTORY-->
- <!--   <bean id="internalClientActorFactory" class="ar.noxit.paralleleditor.gui.internal.InternalClientActorFactory"
-          scope="prototype"/>-->
+    <!--   <bean id="internalClientActorFactory" class="ar.noxit.paralleleditor.gui.internal.InternalClientActorFactory"
+    scope="prototype"/>-->
 
     <!--CLIENT ACTOR-->
-<!--    <bean id="clientActor" class="ar.noxit.paralleleditor.gui.ClientActor" scope="prototype">
-        <property name="converter" ref="messageConverter"/>
-    </bean>
--->
+    <!--    <bean id="clientActor" class="ar.noxit.paralleleditor.gui.ClientActor" scope="prototype">
+            <property name="converter" ref="messageConverter"/>
+        </bean>
+    -->
     <!--CONVERSORES-->
     <bean id="editOperationConverter"
           class="ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter"/>
