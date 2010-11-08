@@ -186,4 +186,12 @@ case class RemoteNewUserLoggedIn(val username: String) extends BaseRemoteMessage
  */
 case class RemoteUserLoggedOut(val username: String) extends BaseRemoteMessage with Response
 
+/**
+ * Nueva suscripcion a un documento
+ */
+case class RemoteNewSubscriberToDocument(val username: String, val docTitle: String) extends BaseRemoteMessage with Response
 
+/**
+ * Desuscripcion a un documento
+ */
+case class RemoteSubscriberLeftDocument(val username: String, val docTitle: String) extends BaseRemoteMessage with Response

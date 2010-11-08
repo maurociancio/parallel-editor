@@ -5,7 +5,7 @@ import ar.noxit.paralleleditor.kernel.{DocumentSession, Session}
 /**
  * Se aplica a los mensajes que son convertibles hacia mensajes remotos
  */
-trait ToRemote
+sealed trait ToRemote
 
 /**
  * Mensajes entre el actor Kernel y el actor del proxy del Cliente remoto

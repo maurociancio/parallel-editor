@@ -39,6 +39,12 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case UserLoggedOut(username) =>
                 RemoteUserLoggedOut(username)
+
+            case NewSubscriberToDocument(username, docTitle) =>
+                RemoteNewSubscriberToDocument(username, docTitle)
+
+            case SubscriberLeftDocument(username, docTitle) =>
+                RemoteSubscriberLeftDocument(username, docTitle)
         }
     }
 }
