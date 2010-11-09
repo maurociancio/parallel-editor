@@ -2,8 +2,8 @@ package ar.noxit.paralleleditor.gui
 
 import java.awt.Dimension
 import swing._
-import event.{WindowClosed, ButtonClicked}
 import ar.noxit.paralleleditor.common.logger.Loggable
+import event.{WindowClosing, WindowClosed, ButtonClicked}
 import reflect.BeanProperty
 
 class HomeMenuBar extends MenuBar with Loggable {
@@ -51,7 +51,7 @@ class HomeMenuBar extends MenuBar with Loggable {
 
             publish(DocumentListRequest())
         }
-        case wc: WindowClosed if wc.source == docListFrame => {
+        case wc: WindowClosing if wc.source == docListFrame => {
             trace("frame deleted")
 
             deafTo(docListFrame)
@@ -67,7 +67,7 @@ class HomeMenuBar extends MenuBar with Loggable {
 
             publish(UserListRequest())
         }
-        case wc: WindowClosed if wc.source == userListFrame => {
+        case wc: WindowClosing if wc.source == userListFrame => {
             trace("user list closed")
 
             deafTo(userListFrame)
@@ -147,7 +147,7 @@ class DocumentListFrame extends Frame with Loggable {
     listenTo(editar)
 
     reactions += {
-        case w: WindowClosed => this.dispose
+        case w: WindowClosed => this.close
         case ButtonClicked(source) if source == editar && docs.selection.indices.size >= 1 => {
             val firstSelected = docs.selection.items.head
             publish(WrappedEvent(SubscribeToDocument(firstSelected)))
@@ -175,7 +175,7 @@ class UserListFrame extends Frame with Loggable {
     contents = border
 
     reactions += {
-        case w: WindowClosed => this.dispose
+        case w: WindowClosed => this.close
     }
 
     def changeUserList(usernames: Map[String, List[String]]) {
