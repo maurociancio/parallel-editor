@@ -39,3 +39,5 @@ case class UserLoggedOut(val username: String) extends CommandFromKernel
 case class NewSubscriberToDocument(val username: String, val docTitle: String) extends CommandFromKernel
 
 case class SubscriberLeftDocument(val username: String, val docTitle: String) extends CommandFromKernel
+
+case class DocumentTitleNotExists(val offenderTitle: String) extends CommandFromKernel

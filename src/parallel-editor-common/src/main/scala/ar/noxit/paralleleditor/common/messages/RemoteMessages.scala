@@ -195,3 +195,8 @@ case class RemoteNewSubscriberToDocument(val username: String, val docTitle: Str
  * Desuscripcion a un documento
  */
 case class RemoteSubscriberLeftDocument(val username: String, val docTitle: String) extends BaseRemoteMessage with Response
+
+/**
+ * Cuando no existe documento en la suscripcion
+ */
+case class RemoteDocumentNotExists(val offenderTitle: String) extends BaseRemoteMessage with Response

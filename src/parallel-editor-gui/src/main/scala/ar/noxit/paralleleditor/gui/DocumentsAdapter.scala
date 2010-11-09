@@ -95,6 +95,13 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                 }
             }
 
+            case DocumentTitleNotExists(offenderTitle) => {
+                SwingUtil.invokeLater {
+                    // TODO avisar en la gui
+                    println("no existe titulo")
+                }
+            }
+
             case LoginOk() => {
             }
         }

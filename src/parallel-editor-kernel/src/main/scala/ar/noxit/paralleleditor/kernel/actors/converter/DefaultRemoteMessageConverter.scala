@@ -45,6 +45,9 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case SubscriberLeftDocument(username, docTitle) =>
                 RemoteSubscriberLeftDocument(username, docTitle)
+
+            case DocumentNotExists(offenderTitle) =>
+                RemoteDocumentNotExists(offenderTitle)
         }
     }
 }
