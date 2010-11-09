@@ -24,6 +24,8 @@ case class DocumentTitleExists(val offenderTitle: String) extends ToRemote
 
 case class DocumentDeletionTitleNotExists(val offenderTitle: String) extends ToRemote
 
+case class DocumentNotExists(val offenderTitle: String) extends ToRemote
+
 case class NewDocumentRequest(val session: Session, val title: String, val initialContent: String)
 
 case class CloseDocument(val session: Session, val docTitle: String)

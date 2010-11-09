@@ -1,3 +1,3 @@
 package ar.noxit.paralleleditor.kernel.exceptions
 
-class SessionNotExistsException(message: String) extends RuntimeException(message)
+class SessionNotExistsException(val message: String) extends RuntimeException(message)

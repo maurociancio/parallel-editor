@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel.basic
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import docsession.BasicDocumentSessionFactory
-import exceptions.{SessionNotExistsException, DocumentDeleteUnexistantException, UsernameAlreadyExistsException, DocumentTitleAlreadyExitsException}
+import exceptions._
 import messages._
 import scala.List
 import reflect.BeanProperty
@@ -95,14 +95,11 @@ class BasicKernel extends Kernel with Loggable {
     override def documentList = documents.map {_.title}
 
     override def subscribe(session: Session, title: String) = {
-        val doc = documentByTitle(title)
-
-        // TODO tirar excepcion si no existe el title
-        if (doc.isDefined) {
-            doc.get ! Subscribe(session)
-        } else {
+        val doc = documentByTitle(title).getOrElse {
             warn("title does not exists")
+            throw new DocumentTitleNotExistsException("no existe el documento")
         }
+        doc ! Subscribe(session)
     }
 
     def logout(session: Session) = {

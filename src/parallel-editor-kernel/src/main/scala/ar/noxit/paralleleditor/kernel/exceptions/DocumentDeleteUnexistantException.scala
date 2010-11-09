@@ -1,4 +1,3 @@
 package ar.noxit.paralleleditor.kernel.exceptions
 
-
-class DocumentDeleteUnexistantException(message: String) extends RuntimeException(message)
+class DocumentDeleteUnexistantException(val message: String) extends RuntimeException(message)

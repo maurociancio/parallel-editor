@@ -3,7 +3,7 @@ package ar.noxit.paralleleditor.kernel.actors
 import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.logger.Loggable
-import exceptions.{DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException, UsernameAlreadyExistsException}
+import exceptions.{DocumentTitleNotExistsException, DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException, UsernameAlreadyExistsException}
 import scala.actors.Actor
 
 class KernelActor(val kernel: Kernel) extends Actor with Loggable {
@@ -41,8 +41,12 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                 case SubscribeToDocumentRequest(session, title) => {
                     trace("subscribe to document")
 
-                    // no lanza excepcion, se devuelve el mensaje por la callback
-                    kernel.subscribe(session, title)
+                    try
+                        kernel.subscribe(session, title)
+                    catch {
+                        case e: DocumentTitleNotExistsException =>
+                            sender ! DocumentNotExists(title)
+                    }
                 }
 
                 case NewDocumentRequest(session, title, initialContent) => {
