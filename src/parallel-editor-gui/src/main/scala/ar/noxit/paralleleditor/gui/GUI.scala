@@ -23,22 +23,41 @@ class GUI extends SimpleSwingApplication with Loggable {
         title = "Parallel Editor GUI"
         menuBar = homeMenuBar
 
-        val connPanel = new ConnectionPanel
-        val tabs = new TabbedPane {
+        private val connPanel = new ConnectionPanel
+
+        private val tabs = new TabbedPane {
             preferredSize = new Dimension(300, 200)
+        }
+
+        private val debugConsole = new TextArea with GUILogger {
+            text = "-- debug console --\n"
+            editable = false
+            def trace(msg:String){
+              append (msg + '\n')
+              caret.position = text.size
+            }
+        }
+        private val scrollDebugConsole = new ScrollPane(debugConsole)
+
+        val split = new SplitPane{
+          orientation = Orientation.Horizontal
+          leftComponent = tabs
+          rightComponent = scrollDebugConsole
+          oneTouchExpandable = true
         }
 
         val panelGeneral = new BorderPanel
 
+
         panelGeneral.layout(connPanel) = BorderPanel.Position.South
-        panelGeneral.layout(tabs) = BorderPanel.Position.Center
+        panelGeneral.layout(split) = BorderPanel.Position.Center
 
         contents = panelGeneral
 
         listenTo(connPanel)
         listenTo(homeMenuBar)
 
-        val documents = new DocumentsAdapter(tabs, homeMenuBar, this)
+        val documents = new DocumentsAdapter(tabs, homeMenuBar, this,debugConsole)
 
         reactions += {
             // conectar
@@ -56,6 +75,7 @@ class GUI extends SimpleSwingApplication with Loggable {
             case ExitRequested() => quit()
 
             case message: Any if connected => {
+
                 message match {
                 // nuevo documento
                     case NewDocumentRequest(docTitle, initialContent) =>
@@ -111,6 +131,7 @@ class GUI extends SimpleSwingApplication with Loggable {
 
         private def documentText(index: Int) =
             tabs.pages(index).content.asInstanceOf[DocumentArea].text
+
     }
 
     override def shutdown() {
@@ -119,6 +140,10 @@ class GUI extends SimpleSwingApplication with Loggable {
         if (connected)
             actor ! Logout()
     }
+
+}
+trait GUILogger {
+  def trace(msg:String)
 }
 
 case class SelectedDocument(val index: Int, val docTitle: String)

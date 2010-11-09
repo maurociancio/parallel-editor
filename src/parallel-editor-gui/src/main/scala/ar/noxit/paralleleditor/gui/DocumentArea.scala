@@ -11,8 +11,7 @@ trait Synchronizer {
     def receive(message: Message[EditOperation], apply: EditOperation => Unit)
 }
 
-class DocumentArea(private val docTitle: String, private val initialContent: String) extends SplitPane {
-    dividerLocation = 150
+class DocumentArea(private val docTitle: String, private val initialContent: String) extends ScrollPane {
 
     @BeanProperty
     var sync: Synchronizer = _
@@ -22,25 +21,15 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
     }
 
     private val scrollAreaEdicion = new ScrollPane(areaEdicion)
+
     scrollAreaEdicion preferredSize = new Dimension(320, 240)
 
-    private val debugConsole = new TextArea {
-        text = "-- debug console --\n"
-        editable = false
-    }
-    private val scrollDebugConsole = new ScrollPane(debugConsole)
-
-    orientation = Orientation.Horizontal
-    leftComponent = scrollAreaEdicion
-    rightComponent = scrollDebugConsole
-    oneTouchExpandable = true
+    contents = scrollAreaEdicion
 
     listenTo(areaEdicion)
 
     reactions += {
         case WrappedEvent(e) => {
-            addEntry("event received %s".format(e))
-
             val op = e match {
                 case InsertionEvent(pos, text) => generateOp(new AddTextOperation(text, pos))
                 case DeletionEvent(pos, count) => {
@@ -63,11 +52,6 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
                 val docOp = new DocumentOperation(docTitle, msg)
                 publish(OperationEvent(docOp))
         })
-    }
-
-    private def addEntry(msg: String) {
-        debugConsole append (msg + '\n')
-        debugConsole.caret.position = debugConsole.text.size
     }
 
     private def processOperation(o: EditOperation) = {

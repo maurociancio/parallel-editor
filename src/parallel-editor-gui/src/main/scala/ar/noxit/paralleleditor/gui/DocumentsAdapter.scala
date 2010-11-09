@@ -8,7 +8,8 @@ import ar.noxit.paralleleditor.client._
 
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
-                       private val gui: Reactor) extends Documents {
+                       private val gui: Reactor,
+                       private val logger : GUILogger) extends Documents {
     override def process(msg: CommandFromKernel) = {
         msg match {
             case ProcessOperation(title, msg) => {
@@ -70,35 +71,31 @@ class DocumentsAdapter(private val tabs: TabbedPane,
 
             case NewUserLoggedIn(username) => {
                 SwingUtil.invokeLater {
-                    // TODO AVISAR EN LA GUI
-                    println("El usuario %s se ha logueado".format(username))
+
+                    logEvent("El usuario %s se ha logueado".format(username))
                 }
             }
             case UserLoggedOut(username) => {
                 SwingUtil.invokeLater {
-                    // TODO avisar en la gui
-                    println("El usuario %s se ha deslogueado".format(username))
+                    logEvent("El usuario %s se ha deslogueado".format(username))
                 }
             }
 
             case NewSubscriberToDocument(username, docTitle) => {
                 SwingUtil.invokeLater {
-                    // TODO avisar en la gui
-                    println("nuevo usuario en documento")
+                    logEvent("nuevo usuario en documento")
                 }
             }
 
             case SubscriberLeftDocument(username, docTitle) => {
                 SwingUtil.invokeLater {
-                    // TODO avisar en la gui
-                    println("usuario dejo documento")
+                    logEvent("usuario dejo documento")
                 }
             }
 
             case DocumentTitleNotExists(offenderTitle) => {
                 SwingUtil.invokeLater {
-                    // TODO avisar en la gui
-                    println("no existe titulo")
+                    logEvent("no existe titulo")
                 }
             }
 
@@ -112,4 +109,6 @@ class DocumentsAdapter(private val tabs: TabbedPane,
         doc.sync = new SynchronizerAdapter(new EditOperationJupiterSynchronizer(new BasicXFormStrategy))
         doc
     }
+
+    private def logEvent(msg:String) =  logger trace (msg)
 }
