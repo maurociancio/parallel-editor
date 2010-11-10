@@ -32,18 +32,18 @@ class GUI extends SimpleSwingApplication with Loggable {
         private val debugConsole = new TextArea with GUILogger {
             text = "-- debug console --\n"
             editable = false
-            def trace(msg:String){
-              append (msg + '\n')
-              caret.position = text.size
+            def trace(msg: String) {
+                append(msg + '\n')
+                caret.position = text.size
             }
         }
         private val scrollDebugConsole = new ScrollPane(debugConsole)
 
-        val split = new SplitPane{
-          orientation = Orientation.Horizontal
-          leftComponent = tabs
-          rightComponent = scrollDebugConsole
-          oneTouchExpandable = true
+        val split = new SplitPane {
+            orientation = Orientation.Horizontal
+            leftComponent = tabs
+            rightComponent = scrollDebugConsole
+            oneTouchExpandable = true
         }
 
         val panelGeneral = new BorderPanel
@@ -57,7 +57,7 @@ class GUI extends SimpleSwingApplication with Loggable {
         listenTo(connPanel)
         listenTo(homeMenuBar)
 
-        val documents = new DocumentsAdapter(tabs, homeMenuBar, this,debugConsole)
+        val documents = new DocumentsAdapter(tabs, homeMenuBar, this, debugConsole)
 
         reactions += {
             // conectar
@@ -143,7 +143,7 @@ class GUI extends SimpleSwingApplication with Loggable {
 
 }
 trait GUILogger {
-  def trace(msg:String)
+    def trace(msg: String)
 }
 
 case class SelectedDocument(val index: Int, val docTitle: String)
