@@ -5,7 +5,8 @@ Bundle-SymbolicName: ParallelEditor-Eclipse; singleton:=true
 Bundle-Version: 1.0
 Bundle-Activator: ar.noxit.paralleleditor.eclipse.Activator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench.texteditor
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: NoxIT
