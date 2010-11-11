@@ -5,6 +5,7 @@
     <groupId>ar.noxit</groupId>
     <artifactId>parallel-editor-client</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
 
     <parent>
         <groupId>ar.noxit</groupId>
