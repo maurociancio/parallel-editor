@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.eclipse.menu.actions;
 
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -15,6 +16,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public final class ShareDocumentAction extends Action {
 
 	private ITextEditorProvider textEditorProvider;
+	private ITextFileBufferManager manager = ITextFileBufferManager.DEFAULT;
 
 	public ShareDocumentAction(ITextEditorProvider textEditorProvider) {
 		Assert.isNotNull(textEditorProvider);
@@ -44,26 +46,28 @@ public final class ShareDocumentAction extends Action {
 	 * @throws CoreException
 	 */
 	protected void doRun(ITextEditor textEditor) throws CoreException {
-		// TODO hacer algo con texteditor
+		IFile file = (IFile) textEditor.getEditorInput().getAdapter(IFile.class);
 
-		ITextFileBufferManager manager = ITextFileBufferManager.DEFAULT;
+		if (file != null) {
+			IPath fullPath = file.getFullPath();
+			LocationKind locationKind = LocationKind.IFILE;
 
-		IPath location = manager.getFileBuffers()[0].getLocation();
-		LocationKind locationKind = LocationKind.IFILE;
+			manager.connect(fullPath, locationKind, new NullProgressMonitor());
+			IDocument document = manager.getTextFileBuffer(fullPath, locationKind).getDocument();
 
-		manager.connect(location, locationKind, new NullProgressMonitor());
+			document.addDocumentListener(new IDocumentListener() {
 
-		IDocument document = manager.getTextFileBuffer(location, locationKind).getDocument();
-		document.addDocumentListener(new IDocumentListener() {
+				@Override
+				public void documentChanged(DocumentEvent event) {
+					System.out.println("event fired " + event.fText + " " + event.fOffset + " " + event.fLength);
+				}
 
-			@Override
-			public void documentChanged(DocumentEvent event) {
-				System.out.println(event.fText + " " + event.fOffset + " " + event.fLength);
-			}
-
-			@Override
-			public void documentAboutToBeChanged(DocumentEvent event) {
-			}
-		});
+				@Override
+				public void documentAboutToBeChanged(DocumentEvent event) {
+				}
+			});
+		} else {
+			// TODO do something
+		}
 	}
 }

@@ -5,5 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.ui.workbench.texteditor"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.text"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.core.resources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
