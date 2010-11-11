@@ -33,6 +33,12 @@
             <version>1.2.14</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>4.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -47,25 +53,16 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2</version>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <instructions>
+                        <Export-Package>ar.noxit.paralleleditor.*</Export-Package>
+                        <Private-Package>*</Private-Package>
+                        <Bundle-Activator>ar.noxit.paralleleditor.client.Activator</Bundle-Activator>
+                    </instructions>
                 </configuration>
-                <executions>
-                    <execution>
-                        <!-- this is used for inheritance merges -->
-                        <id>make-assembly</id>
-                        <!-- append to the packaging phase. -->
-                        <phase>package</phase>
-                        <goals>
-                            <!-- goals == mojos -->
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
