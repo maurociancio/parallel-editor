@@ -16,7 +16,7 @@ public class MenuContributor extends CompoundContributionItem {
 	protected IContributionItem[] getContributionItems() {
 		MenuManager menuPE = new MenuManager("Share thru PE");
 
-		menuPE.add(new ActionContributionItem(new ShareDocumentAction(new TextEditorProvider())));
+		menuPE.add(new ActionContributionItem(new ShareDocumentAction(new TextEditorProvider(), null)));
 		menuPE.add(new ActionContributionItem(new ConnectToServerAction()));
 
 		return new IContributionItem[] { new Separator(), menuPE, new Separator() };

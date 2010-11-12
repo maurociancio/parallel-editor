@@ -1,26 +1,25 @@
 package ar.noxit.paralleleditor.eclipse.menu.actions;
 
-import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.text.DocumentEvent;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public final class ShareDocumentAction extends Action {
+public class ShareDocumentAction extends Action {
 
 	private ITextEditorProvider textEditorProvider;
-	private ITextFileBufferManager manager = ITextFileBufferManager.DEFAULT;
+	// private ITextFileBufferManager manager = ITextFileBufferManager.DEFAULT;
 
-	public ShareDocumentAction(ITextEditorProvider textEditorProvider) {
+	private IShareDocumentIntent shareDocumentIntent;
+
+	public ShareDocumentAction(ITextEditorProvider textEditorProvider, IShareDocumentIntent shareDocIntent) {
 		Assert.isNotNull(textEditorProvider);
+		Assert.isNotNull(shareDocIntent);
+
 		this.textEditorProvider = textEditorProvider;
+		this.shareDocumentIntent = shareDocIntent;
 
 		setText("Share this Doc");
 	}
@@ -28,13 +27,11 @@ public final class ShareDocumentAction extends Action {
 	@Override
 	public void run() {
 		ITextEditor textEditor = textEditorProvider.getTextEditor();
-		System.out.println(textEditor);
 
 		if (textEditor != null) {
-			try {
-				doRun(textEditor);
-			} catch (CoreException e) {
-			}
+			doRun(textEditor);
+		} else {
+			onNullTextEditor();
 		}
 	}
 
@@ -43,31 +40,41 @@ public final class ShareDocumentAction extends Action {
 	 * 
 	 * @param textEditor
 	 *            must not be null
-	 * @throws CoreException
 	 */
-	protected void doRun(ITextEditor textEditor) throws CoreException {
+	protected void doRun(ITextEditor textEditor) {
 		IFile file = (IFile) textEditor.getEditorInput().getAdapter(IFile.class);
 
 		if (file != null) {
 			IPath fullPath = file.getFullPath();
 			LocationKind locationKind = LocationKind.IFILE;
 
-			manager.connect(fullPath, locationKind, new NullProgressMonitor());
-			IDocument document = manager.getTextFileBuffer(fullPath, locationKind).getDocument();
+			shareDocumentIntent.shareDocument(fullPath, locationKind);
 
-			document.addDocumentListener(new IDocumentListener() {
+			// manager.connect(fullPath, locationKind, new
+			// NullProgressMonitor());
+			// IDocument document = manager.getTextFileBuffer(fullPath,
+			// locationKind).getDocument();
 
-				@Override
-				public void documentChanged(DocumentEvent event) {
-					System.out.println("event fired " + event.fText + " " + event.fOffset + " " + event.fLength);
-				}
-
-				@Override
-				public void documentAboutToBeChanged(DocumentEvent event) {
-				}
-			});
+			// document.addDocumentListener(new IDocumentListener() {
+			//
+			// @Override
+			// public void documentChanged(DocumentEvent event) {
+			// System.out.println("event fired " + event.fText + " " +
+			// event.fOffset + " " + event.fLength);
+			// }
+			//
+			// @Override
+			// public void documentAboutToBeChanged(DocumentEvent event) {
+			// }
+			// });
 		} else {
-			// TODO do something
+			onNullFile();
 		}
+	}
+
+	protected void onNullFile() {
+	}
+
+	protected void onNullTextEditor() {
 	}
 }
