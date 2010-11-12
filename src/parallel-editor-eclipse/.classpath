@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/parallel-editor-client.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/parallel-editor-kernel.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.ui.workbench.texteditor"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.text"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.core.resources"/>
-	<classpathentry kind="lib" path="libs/parallel-editor-client.jar"/>
-	<classpathentry kind="lib" path="libs/parallel-editor-kernel.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
