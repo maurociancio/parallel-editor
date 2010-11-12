@@ -8,6 +8,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 
+	public ShareDocumentIntent(IShareManager shareManager) {
+		super(shareManager);
+	}
+
 	protected ITextFileManager getTextFileBufferManager() {
 		return new ITextFileManager() {
 

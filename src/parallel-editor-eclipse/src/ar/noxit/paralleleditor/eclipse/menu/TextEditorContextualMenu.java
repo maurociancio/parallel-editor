@@ -8,6 +8,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.CompoundContributionItem;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.ShareDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.infrastructure.texteditor.TextEditorProvider;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ConnectToServerAction;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ShareDocumentAction;
@@ -29,6 +30,12 @@ public class TextEditorContextualMenu extends CompoundContributionItem {
 	}
 
 	protected IAction getShareDocumentAction() {
-		return new ShareDocumentAction(new TextEditorProvider(), new ShareDocumentIntent());
+		ShareManager shareManager = getShareManager();
+		return new ShareDocumentAction(new TextEditorProvider(), new ShareDocumentIntent(shareManager));
+	}
+
+	protected ShareManager getShareManager() {
+		ShareManager shareManager = new ShareManager();
+		return shareManager;
 	}
 }

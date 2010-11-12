@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.AbstractShareDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.ITextFileManager;
 
 @Test
@@ -31,7 +32,11 @@ public class ShareDocumentIntentTest {
 		fileBuffer.connect(EasyMock.eq(path), EasyMock.eq(LocationKind.IFILE), (IProgressMonitor) EasyMock.anyObject());
 		EasyMock.replay(fileBuffer);
 
-		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent() {
+		IShareManager shareManager = EasyMock.createMock(IShareManager.class);
+		shareManager.createShare("/");
+		EasyMock.replay(shareManager);
+
+		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent(shareManager) {
 			@Override
 			protected ITextFileManager getTextFileBufferManager() {
 				return fileBuffer;
@@ -39,7 +44,7 @@ public class ShareDocumentIntentTest {
 		};
 
 		shareDocumentIntent.shareDocument(path, LocationKind.IFILE);
-		EasyMock.verify(fileBuffer);
+		EasyMock.verify(fileBuffer, shareManager);
 	}
 
 	@Test
@@ -51,7 +56,10 @@ public class ShareDocumentIntentTest {
 		EasyMock.expectLastCall().andThrow(new CoreException(new Status(0, "data", "data")));
 		EasyMock.replay(fileBuffer);
 
-		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent() {
+		IShareManager shareManager = EasyMock.createMock(IShareManager.class);
+		EasyMock.replay(shareManager);
+
+		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent(shareManager) {
 			@Override
 			protected ITextFileManager getTextFileBufferManager() {
 				return fileBuffer;
@@ -64,7 +72,7 @@ public class ShareDocumentIntentTest {
 		};
 
 		shareDocumentIntent.shareDocument(path, LocationKind.IFILE);
-		EasyMock.verify(fileBuffer);
+		EasyMock.verify(fileBuffer, shareManager);
 		Assert.assertEquals(1, count);
 	}
 }
