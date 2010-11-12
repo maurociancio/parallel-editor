@@ -49,24 +49,6 @@ public class ShareDocumentAction extends Action {
 			LocationKind locationKind = LocationKind.IFILE;
 
 			shareDocumentIntent.shareDocument(fullPath, locationKind);
-
-			// manager.connect(fullPath, locationKind, new
-			// NullProgressMonitor());
-			// IDocument document = manager.getTextFileBuffer(fullPath,
-			// locationKind).getDocument();
-
-			// document.addDocumentListener(new IDocumentListener() {
-			//
-			// @Override
-			// public void documentChanged(DocumentEvent event) {
-			// System.out.println("event fired " + event.fText + " " +
-			// event.fOffset + " " + event.fLength);
-			// }
-			//
-			// @Override
-			// public void documentAboutToBeChanged(DocumentEvent event) {
-			// }
-			// });
 		} else {
 			onNullFile();
 		}
