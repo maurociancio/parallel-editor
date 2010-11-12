@@ -1,24 +1,34 @@
 package ar.noxit.paralleleditor.eclipse.menu;
 
 import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.CompoundContributionItem;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.ShareDocumentIntent;
 import ar.noxit.paralleleditor.eclipse.infrastructure.texteditor.TextEditorProvider;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ConnectToServerAction;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ShareDocumentAction;
 
-public class MenuContributor extends CompoundContributionItem {
+public class TextEditorContextualMenu extends CompoundContributionItem {
 
 	@Override
 	protected IContributionItem[] getContributionItems() {
 		MenuManager menuPE = new MenuManager("Share thru PE");
 
-		menuPE.add(new ActionContributionItem(new ShareDocumentAction(new TextEditorProvider(), null)));
-		menuPE.add(new ActionContributionItem(new ConnectToServerAction()));
+		menuPE.add(new ActionContributionItem(getShareDocumentAction()));
+		menuPE.add(new ActionContributionItem(getConnectToServerAction()));
 
 		return new IContributionItem[] { new Separator(), menuPE, new Separator() };
+	}
+
+	protected IAction getConnectToServerAction() {
+		return new ConnectToServerAction();
+	}
+
+	protected IAction getShareDocumentAction() {
+		return new ShareDocumentAction(new TextEditorProvider(), new ShareDocumentIntent());
 	}
 }
