@@ -6,7 +6,7 @@ import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.converter._
 import reflect.BeanProperty
-import ar.noxit.paralleleditor.client.{Logout, SynchronizationSessionFactory}
+import ar.noxit.paralleleditor.client.{Logout, SessionFactory}
 
 class GUI extends SimpleSwingApplication with Loggable {
     var actor: Actor = _
@@ -65,7 +65,7 @@ class GUI extends SimpleSwingApplication with Loggable {
                 trace("Connecting to %s %s", host, port)
 
                 connected = true
-                actor = SynchronizationSessionFactory.getSyncServerSession(host, port, documents)
+                actor = SessionFactory.newSession(host, port, documents)
                 actor ! RemoteLoginRequest(connPanel user)
             }
 

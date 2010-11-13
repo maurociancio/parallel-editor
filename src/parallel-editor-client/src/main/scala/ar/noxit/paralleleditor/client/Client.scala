@@ -26,10 +26,10 @@ class InternalClientActorFactory(private val docs: Documents) extends LocalClien
     override def newLocalClientActor = clientActor
 }
 
-object SynchronizationSessionFactory {
-    def getSyncServerSession(host: String, port: Int, docs: Documents): Actor = {
+object SessionFactory {
+    def newSession(host: String, port: Int, adapter: Documents): Actor = {
         val socket = new Socket(host, port)
-        val factory = new InternalClientActorFactory(docs)
+        val factory = new InternalClientActorFactory(adapter)
 
         // TODO resolver el tema de la conexión, que se cierra on disconnect
         new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
