@@ -1,15 +1,14 @@
 package ar.noxit.paralleleditor.gui
 
 import scala.swing._
-import scala.actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.messages._
 import ar.noxit.paralleleditor.common.converter._
 import reflect.BeanProperty
-import ar.noxit.paralleleditor.client.{Logout, SessionFactory}
+import ar.noxit.paralleleditor.client.{Session, Logout, SessionFactory}
 
 class GUI extends SimpleSwingApplication with Loggable {
-    var actor: Actor = _
+    var currentSession: Session = _
     var connected = false
 
     @BeanProperty
@@ -65,8 +64,8 @@ class GUI extends SimpleSwingApplication with Loggable {
                 trace("Connecting to %s %s", host, port)
 
                 connected = true
-                actor = SessionFactory.newSession(host, port, documents)
-                actor ! RemoteLoginRequest(connPanel user)
+                currentSession = SessionFactory.newSession(host, port, documents)
+                currentSession ! RemoteLoginRequest(connPanel user)
             }
 
             case SaveCurrentDocumentRequest() =>
@@ -75,45 +74,44 @@ class GUI extends SimpleSwingApplication with Loggable {
             case ExitRequested() => quit()
 
             case message: Any if connected => {
-
                 message match {
                 // nuevo documento
                     case NewDocumentRequest(docTitle, initialContent) =>
-                        actor ! RemoteNewDocumentRequest(docTitle, initialContent)
+                        currentSession ! RemoteNewDocumentRequest(docTitle, initialContent)
 
                     // operaciones
                     case OperationEvent(docOp) =>
-                        actor ! remoteDocOpConverter.convert(docOp)
+                        currentSession ! remoteDocOpConverter.convert(docOp)
 
                     // suscribirse
                     case SubscribeToDocument(title) =>
-                        actor ! RemoteSubscribeRequest(title)
+                        currentSession ! RemoteSubscribeRequest(title)
 
                     // cerrar documento actual
                     case CloseCurrentDocument() =>
                         currentDocument.foreach {
                             selection =>
-                                actor ! RemoteUnsubscribeRequest(selection.docTitle)
+                                currentSession ! RemoteUnsubscribeRequest(selection.docTitle)
                                 tabs.pages.remove(selection.index)
                         }
 
                     // borrar documento actual
                     case DeleteCurrentDocument() =>
                         currentDocument.foreach {
-                            selection => actor ! RemoteDeleteDocumentRequest(selection.docTitle)
+                            selection => currentSession ! RemoteDeleteDocumentRequest(selection.docTitle)
                         }
 
                     // listado de documentos
                     case DocumentListRequest() =>
-                        actor ! RemoteDocumentListRequest()
+                        currentSession ! RemoteDocumentListRequest()
 
                     // listado de usuarios
                     case UserListRequest() =>
-                        actor ! RemoteUserListRequest()
+                        currentSession ! RemoteUserListRequest()
 
                     // desconectar
                     case DisconnectionRequest() =>
-                        actor ! Logout()
+                        currentSession ! Logout()
 
                     // otros
                     case other: Any => {}
@@ -138,7 +136,7 @@ class GUI extends SimpleSwingApplication with Loggable {
         //TODO ver bien como terminar de desloguearse y cerrar sockets
         //este metodo se llama antes de cerrar la ventana
         if (connected)
-            actor ! Logout()
+            currentSession ! Logout()
     }
 
 }

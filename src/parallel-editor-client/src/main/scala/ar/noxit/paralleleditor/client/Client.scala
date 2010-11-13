@@ -7,6 +7,17 @@ import java.net.Socket
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
 
+trait Session {
+    def !(msg: Any)
+}
+
+object Session {
+    implicit def sessionActor2Session(actor: Actor): Session =
+        new Session {
+            def !(msg: Any) = actor ! msg
+        }
+}
+
 trait Documents {
     /**
      * See ClientMessages.scala
@@ -27,7 +38,7 @@ class InternalClientActorFactory(private val docs: Documents) extends LocalClien
 }
 
 object SessionFactory {
-    def newSession(host: String, port: Int, adapter: Documents): Actor = {
+    def newSession(host: String, port: Int, adapter: Documents): Session = {
         val socket = new Socket(host, port)
         val factory = new InternalClientActorFactory(adapter)
 
