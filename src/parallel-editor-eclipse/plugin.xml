@@ -22,15 +22,14 @@
          </action>
       </actionSet>
    </extension>
-   
-   
+
    <extension point="org.eclipse.ui.menus">
       <menuContribution locationURI="popup:#CompilationUnitEditorContext">
          <dynamic class="ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu" id="menu"/>
       </menuContribution>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
+
+   <extension point="org.eclipse.ui.views">
       <view
             category="ar.noxit.paralleleditor.eclipse"
             class="ar.noxit.paralelleditor.eclipse.views.ConnectionView"
