@@ -18,6 +18,17 @@ object Session {
         }
 }
 
+trait JSession {
+    def send(msg: Any)
+}
+
+object JSession {
+    implicit def session2JSession(session: Session): JSession =
+        new JSession {
+            def send(msg: Any) = session ! msg
+        }
+}
+
 trait Documents {
     /**
      * See ClientMessages.scala
@@ -46,4 +57,7 @@ object SessionFactory {
         new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
         factory.clientActor
     }
+
+    def newJSession(host: String, port: Int, adapter: Documents): JSession =
+        newSession(host, port, adapter)
 }
