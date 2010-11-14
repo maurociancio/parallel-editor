@@ -2,5 +2,5 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 public interface IShareManager {
 
-	void createShare(String docTitle, String initialContent, IOperationCallback operationCallback);
+	IDocumentSession createShare(String docTitle, String initialContent, IOperationCallback operationCallback);
 }

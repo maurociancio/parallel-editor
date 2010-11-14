@@ -12,6 +12,7 @@ import ar.noxit.paralleleditor.client.SessionFactory;
 import ar.noxit.paralleleditor.common.BasicXFormStrategy;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IOperationCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
 import ar.noxit.paralleleditor.kernel.Kernel;
@@ -32,30 +33,34 @@ public class ShareManager implements IShareManager {
 	private JSession currentSession;
 
 	@Override
-	public void createShare(final String docTitle, String initialContent, IOperationCallback operationCallback) {
+	public IDocumentSession createShare(final String docTitle, String initialContent, IOperationCallback operationCallback) {
 		Assert.isNotNull(docTitle);
 		Assert.isNotNull(initialContent);
 
 		createServiceIfNotCreated();
-
 		sessions.put(docTitle, operationCallback);
 
-		JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
+		if (currentSession == null) {
+			JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
 
-			@Override
-			public void process(CommandFromKernel command) {
-				System.out.println(command);
+				@Override
+				public void process(CommandFromKernel command) {
+					System.out.println(command);
 
-				if (command instanceof ProcessOperation) {
-					ProcessOperation processOperation = (ProcessOperation) command;
-					sessions.get(docTitle).processOperation(processOperation.m());
+					if (command instanceof ProcessOperation) {
+						ProcessOperation processOperation = (ProcessOperation) command;
+						sessions.get(docTitle).processOperation(processOperation.m());
+					}
 				}
-			}
-		});
-		this.currentSession = newSession;
+			});
+			newSession.send(new RemoteLoginRequest("becho"));
 
-		newSession.send(new RemoteLoginRequest("becho"));
-		newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
+			this.currentSession = newSession;
+		}
+
+		currentSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
+		return new IDocumentSession() {
+		};
 	}
 
 	protected void createServiceIfNotCreated() {

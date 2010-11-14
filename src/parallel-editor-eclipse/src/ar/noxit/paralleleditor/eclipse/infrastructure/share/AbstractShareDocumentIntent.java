@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.text.IDocumentListener;
 
 import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
@@ -33,34 +34,22 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 
 			textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
 
-			shareManager.createShare(fullPath.toString(), getContentFor(document), new IOperationCallback() {
+			IDocumentSession docSession = shareManager.createShare(fullPath.toString(), getContentFor(document),
+					new IOperationCallback() {
 
-				@Override
-				public void processOperation(Message<EditOperation> message) {
-					System.out.println(message);
-				}
-			});
+						@Override
+						public void processOperation(Message<EditOperation> message) {
+							System.out.println(message);
+						}
+					});
+
+			installCallback(document, new EclipseDocumentListener());
 		} catch (CoreException e) {
 			onException(e);
 		}
-
-		// IDocument document =
-		// textFileBufferManager.getTextFileBuffer(fullPath,
-		// locationKind).getDocument();
-		//
-		// document.addDocumentListener(new IDocumentListener() {
-		//
-		// @Override
-		// public void documentChanged(DocumentEvent event) {
-		// System.out.println("event fired " + event.fText + " " + event.fOffset
-		// + " " + event.fLength);
-		// }
-		//
-		// @Override
-		// public void documentAboutToBeChanged(DocumentEvent event) {
-		// }
-		// });
 	}
+
+	protected abstract void installCallback(IDocument document, IDocumentListener listener);
 
 	protected abstract String getContentFor(IDocument document);
 

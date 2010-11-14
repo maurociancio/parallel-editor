@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.text.IDocumentListener;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -21,10 +22,12 @@ import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
 public class ShareDocumentIntentTest {
 
 	private int count;
+	private int countListener;
 
 	@BeforeMethod
 	public void before() {
 		count = 0;
+		countListener = 0;
 	}
 
 	@Test
@@ -35,11 +38,10 @@ public class ShareDocumentIntentTest {
 		fileBuffer.connect(EasyMock.eq(path), EasyMock.eq(LocationKind.IFILE), (IProgressMonitor) EasyMock.anyObject());
 		EasyMock.replay(fileBuffer);
 
-		IOperationCallback opCallback = EasyMock.createMock(IOperationCallback.class);
-		EasyMock.replay(opCallback);
-
 		IShareManager shareManager = EasyMock.createMock(IShareManager.class);
-		shareManager.createShare("/", "initial", opCallback);
+		EasyMock.expect(
+				shareManager.createShare(EasyMock.eq("/"), EasyMock.eq("initial"),
+						(IOperationCallback) EasyMock.anyObject())).andReturn(null);
 		EasyMock.replay(shareManager);
 
 		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent(shareManager) {
@@ -52,10 +54,16 @@ public class ShareDocumentIntentTest {
 			protected String getContentFor(IDocument document) {
 				return "initial";
 			}
+
+			@Override
+			protected void installCallback(IDocument document, IDocumentListener listener) {
+				countListener = countListener + 1;
+			}
 		};
 
 		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE));
-		EasyMock.verify(fileBuffer, shareManager, opCallback);
+		EasyMock.verify(fileBuffer, shareManager);
+		Assert.assertEquals(1, countListener);
 	}
 
 	@Test
@@ -83,6 +91,11 @@ public class ShareDocumentIntentTest {
 
 			@Override
 			protected String getContentFor(IDocument document) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected void installCallback(IDocument document, IDocumentListener listener) {
 				throw new UnsupportedOperationException();
 			}
 		};
