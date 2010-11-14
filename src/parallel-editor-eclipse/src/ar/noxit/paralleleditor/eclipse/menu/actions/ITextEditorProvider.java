@@ -9,5 +9,5 @@ public interface ITextEditorProvider {
 	 * 
 	 * @return
 	 */
-	ITextEditor getTextEditor();
+	ITextEditor getCurrentTextEditor();
 }

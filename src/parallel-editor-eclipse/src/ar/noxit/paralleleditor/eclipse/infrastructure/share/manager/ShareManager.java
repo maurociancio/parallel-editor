@@ -1,5 +1,8 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.runtime.Assert;
 
 import ar.noxit.paralleleditor.client.CommandFromKernel;
@@ -22,29 +25,37 @@ public class ShareManager implements IShareManager {
 
 	private KernelService kernelService;
 
-	@Override
-	public void createShare(String docTitle) {
-		Assert.isNotNull(docTitle);
+	private Map<String, JSession> sessions = new HashMap<String, JSession>();
 
-		createOrGetKernelService();
-		JSession serverSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
+	@Override
+	public void createShare(String docTitle, String initialContent) {
+		Assert.isNotNull(docTitle);
+		Assert.isNotNull(initialContent);
+
+		createServiceIfNotCreated();
+
+		JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
 
 			@Override
 			public void process(CommandFromKernel command) {
 			}
 		});
-		serverSession.send(new RemoteLoginRequest("becho"));
+		newSession.send(new RemoteLoginRequest("becho"));
+
+		sessions.put(docTitle, newSession);
 	}
 
-	protected KernelService createOrGetKernelService() {
+	protected void createServiceIfNotCreated() {
 		if (this.kernelService == null) {
-			SocketKernelService kernelService = new SocketKernelService(5000);
-			kernelService.setKernel(newKernel());
-
-			this.kernelService = kernelService;
+			this.kernelService = newKernelService();
 			this.kernelService.startService();
 		}
-		return this.kernelService;
+	}
+
+	protected KernelService newKernelService() {
+		SocketKernelService kernelService = new SocketKernelService(5000);
+		kernelService.setKernel(newKernel());
+		return kernelService;
 	}
 
 	protected Kernel newKernel() {

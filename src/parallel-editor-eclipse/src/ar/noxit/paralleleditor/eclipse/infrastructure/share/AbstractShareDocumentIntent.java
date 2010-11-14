@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
 
 public abstract class AbstractShareDocumentIntent implements IShareDocumentIntent {
@@ -19,15 +20,18 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 	}
 
 	@Override
-	public void shareDocument(IPath fullPath, LocationKind locationKind) {
-		Assert.isNotNull(fullPath);
-		Assert.isNotNull(locationKind);
+	public void shareDocument(IDocument document) {
+		Assert.isNotNull(document);
 
 		try {
 			ITextFileManager textFileBufferManager = getTextFileBufferManager();
+
+			IPath fullPath = document.getFullPath();
+			LocationKind locationKind = document.getLocationKind();
+
 			textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
 
-			shareManager.createShare(fullPath.toString());
+			shareManager.createShare(fullPath.toString(), getContentFor(document));
 		} catch (CoreException e) {
 			onException(e);
 		}
@@ -49,6 +53,8 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 		// }
 		// });
 	}
+
+	protected abstract String getContentFor(IDocument document);
 
 	protected abstract ITextFileManager getTextFileBufferManager();
 

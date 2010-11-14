@@ -6,6 +6,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
+
 public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 
 	public ShareDocumentIntent(IShareManager shareManager) {
@@ -18,8 +20,20 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 			@Override
 			public void connect(IPath location, LocationKind locationKind, IProgressMonitor monitor)
 					throws CoreException {
-				ITextFileBufferManager.DEFAULT.connect(location, locationKind, monitor);
+				get().connect(location, locationKind, monitor);
 			}
 		};
+	}
+
+	@Override
+	protected String getContentFor(IDocument document) {
+		LocationKind locationKind = document.getLocationKind();
+		IPath fullPath = document.getFullPath();
+
+		return get().getTextFileBuffer(fullPath, locationKind).getDocument().get();
+	}
+
+	protected ITextFileBufferManager get() {
+		return ITextFileBufferManager.DEFAULT;
 	}
 }
