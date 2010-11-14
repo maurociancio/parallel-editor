@@ -7,4 +7,11 @@ class AddTextOperation(val text: String, val startPos: Int, val pword: List[Int]
     }
 
     override def toString = "AddTextOperation pos=%d t=%s p=%s".format(startPos, text, pword)
+
+    override def equals(obj: Any) =
+        obj match {
+            case other: AddTextOperation =>
+                text == other.text && startPos == other.startPos && pword == other.pword
+            case _ => false
+        }
 }
