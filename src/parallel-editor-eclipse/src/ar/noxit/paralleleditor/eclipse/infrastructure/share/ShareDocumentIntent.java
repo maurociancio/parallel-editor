@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocumentListener;
 
+import ar.noxit.paralleleditor.common.operation.DocumentData;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 
 public class ShareDocumentIntent extends AbstractShareDocumentIntent {
@@ -54,5 +55,24 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 
 	protected ITextFileBufferManager get() {
 		return ITextFileBufferManager.DEFAULT;
+	}
+
+	@Override
+	protected DocumentData getAdapterFor(final IDocument document) {
+		// TODO adaptar mejor, sin reemplazar todo
+		return new DocumentData() {
+
+			private org.eclipse.jface.text.IDocument adapted = getTextFileBuffer(document).getDocument();
+
+			@Override
+			public void data_$eq(String data) {
+				adapted.set(data);
+			}
+
+			@Override
+			public String data() {
+				return adapted.get();
+			}
+		};
 	}
 }

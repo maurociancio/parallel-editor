@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocumentListener;
 
+import ar.noxit.paralleleditor.common.operation.DocumentData;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
 
@@ -30,11 +31,12 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 
 			// callback from kernel
 			RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
+
 			// create the new document session
 			IDocumentSession docSession = shareManager.createShare(fullPath, getContentFor(document), remoteCallback);
 
 			// callback from editor
-			Synchronizer fromEditorCallback = new Synchronizer(docSession);
+			Synchronizer fromEditorCallback = new Synchronizer(docSession, getAdapterFor(document));
 
 			// adapt callbacks
 			remoteCallback.setAdapted(fromEditorCallback);
@@ -55,13 +57,15 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 		textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
 	}
 
-	protected abstract void installCallback(IDocument document, IDocumentListener listener);
-
-	protected abstract String getContentFor(IDocument document);
-
-	protected abstract ITextFileManager getTextFileBufferManager();
-
 	protected void onException(CoreException e) {
 		// TODO log
 	}
+
+	protected abstract DocumentData getAdapterFor(IDocument document);
+
+	protected abstract String getContentFor(IDocument document);
+
+	protected abstract void installCallback(IDocument document, IDocumentListener listener);
+
+	protected abstract ITextFileManager getTextFileBufferManager();
 }

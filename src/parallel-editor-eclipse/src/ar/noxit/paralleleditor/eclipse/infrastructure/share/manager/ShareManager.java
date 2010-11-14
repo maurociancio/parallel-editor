@@ -8,11 +8,16 @@ import org.eclipse.core.runtime.Assert;
 import ar.noxit.paralleleditor.client.CommandFromKernel;
 import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
+import ar.noxit.paralleleditor.client.ProcessOperation;
 import ar.noxit.paralleleditor.client.SessionFactory;
 import ar.noxit.paralleleditor.common.BasicXFormStrategy;
 import ar.noxit.paralleleditor.common.Message;
+import ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter;
+import ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationConverter;
+import ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
+import ar.noxit.paralleleditor.common.operation.DocumentOperation;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
@@ -23,16 +28,20 @@ import ar.noxit.paralleleditor.kernel.basic.SynchronizerFactory;
 import ar.noxit.paralleleditor.kernel.basic.UserListMerger;
 import ar.noxit.paralleleditor.kernel.basic.sync.SynchronizerAdapterFactory;
 import ar.noxit.paralleleditor.kernel.basic.userlist.DefaultUserListMerger;
-import ar.noxit.paralleleditor.kernel.messages.ProcessOperation;
 import ar.noxit.paralleleditor.kernel.remote.KernelService;
 import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
 public class ShareManager implements IShareManager {
 
-	private KernelService kernelService;
-
 	private Map<String, IRemoteMessageCallback> sessions = new HashMap<String, IRemoteMessageCallback>();
 	private JSession currentSession;
+
+	// kernel service
+	private KernelService kernelService;
+
+	// converter
+	private DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
+			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
 
 	@Override
 	public IDocumentSession createShare(final String docTitle, String initialContent,
@@ -52,7 +61,7 @@ public class ShareManager implements IShareManager {
 
 					if (command instanceof ProcessOperation) {
 						ProcessOperation processOperation = (ProcessOperation) command;
-						sessions.get(docTitle).onNewRemoteMessage(processOperation.m());
+						sessions.get(docTitle).onNewRemoteMessage(processOperation.msg());
 					}
 				}
 			});
@@ -66,7 +75,7 @@ public class ShareManager implements IShareManager {
 
 			@Override
 			public void onNewLocalMessage(Message<EditOperation> message) {
-				// TODO enviar al kernel
+				currentSession.send(converter.convert(new DocumentOperation(docTitle, message)));
 			}
 		};
 	}

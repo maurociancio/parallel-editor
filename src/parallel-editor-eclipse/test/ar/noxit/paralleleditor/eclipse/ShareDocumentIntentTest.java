@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import ar.noxit.paralleleditor.common.operation.DocumentData;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.AbstractShareDocumentIntent;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
@@ -48,6 +49,9 @@ public class ShareDocumentIntentTest {
 						andReturn(docSession);
 		EasyMock.replay(shareManager);
 
+		final DocumentData data = EasyMock.createMock(DocumentData.class);
+		EasyMock.replay(data);
+
 		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent(shareManager) {
 			@Override
 			protected ITextFileManager getTextFileBufferManager() {
@@ -63,10 +67,15 @@ public class ShareDocumentIntentTest {
 			protected void installCallback(IDocument document, IDocumentListener listener) {
 				countListener = countListener + 1;
 			}
+
+			@Override
+			protected DocumentData getAdapterFor(IDocument document) {
+				return data;
+			}
 		};
 
 		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE));
-		EasyMock.verify(fileBuffer, shareManager, docSession);
+		EasyMock.verify(fileBuffer, shareManager, docSession, data);
 		Assert.assertEquals(1, countListener);
 	}
 
@@ -101,6 +110,11 @@ public class ShareDocumentIntentTest {
 			@Override
 			protected void installCallback(IDocument document, IDocumentListener listener) {
 				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected DocumentData getAdapterFor(IDocument document) {
+				return null;
 			}
 		};
 
