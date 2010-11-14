@@ -1,6 +1,12 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -13,7 +19,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
+
 
 public class ConnectionView extends ViewPart {
 
@@ -45,10 +57,10 @@ public class ConnectionView extends ViewPart {
 
 
 		private boolean isConnected = false;
-		private final String STATUS_DISCONNECTED = "Disconnected";
-		private final String STATUS_CONNECTED = "Connected";
-		private final String STATUS_CONNECTING = "Connecting to server...";
-		private final String STATUS_DISCONNECTING = "Disconnecting...";
+		private static final String STATUS_DISCONNECTED = "Disconnected";
+		private static final String STATUS_CONNECTED = "Connected";
+		private static final String STATUS_CONNECTING = "Connecting to server...";
+		private static final String STATUS_DISCONNECTING = "Disconnecting...";
 		
 		
 		public ConnectionPanel(Composite parent, int style) {
@@ -107,6 +119,40 @@ public class ConnectionView extends ViewPart {
 						connectionStatus.setText(STATUS_DISCONNECTED);
 						isConnected=false;
 					}
+				}
+			});
+			
+			final Button prueba = new Button(this,SWT.PUSH);
+			prueba.setText("Editor");
+			prueba.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent event){
+					IWorkspace ws = ResourcesPlugin.getWorkspace();
+					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					IProject project =
+						ws.getRoot().getProject("Test");
+
+					if (!project.isOpen())
+						try {
+							project.open(null);
+						} catch (CoreException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					String path =
+					"src/Caca.java";
+					
+					IPath location = project.getProjectRelativePath().append(path);
+					IFile file = project.getFile(location);
+					project.get
+					IWorkbenchPage page = window.getActivePage();
+					if (page != null)
+						try {
+							IDE.openEditor(page, file, true);
+						} catch (PartInitException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				}
 			});
 			
