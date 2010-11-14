@@ -10,10 +10,12 @@ import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.client.SessionFactory;
 import ar.noxit.paralleleditor.common.BasicXFormStrategy;
+import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
+import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.IOperationCallback;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
 import ar.noxit.paralleleditor.kernel.Kernel;
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel;
@@ -29,11 +31,12 @@ public class ShareManager implements IShareManager {
 
 	private KernelService kernelService;
 
-	private Map<String, IOperationCallback> sessions = new HashMap<String, IOperationCallback>();
+	private Map<String, IRemoteMessageCallback> sessions = new HashMap<String, IRemoteMessageCallback>();
 	private JSession currentSession;
 
 	@Override
-	public IDocumentSession createShare(final String docTitle, String initialContent, IOperationCallback operationCallback) {
+	public IDocumentSession createShare(final String docTitle, String initialContent,
+			IRemoteMessageCallback operationCallback) {
 		Assert.isNotNull(docTitle);
 		Assert.isNotNull(initialContent);
 
@@ -49,7 +52,7 @@ public class ShareManager implements IShareManager {
 
 					if (command instanceof ProcessOperation) {
 						ProcessOperation processOperation = (ProcessOperation) command;
-						sessions.get(docTitle).processOperation(processOperation.m());
+						sessions.get(docTitle).onNewRemoteMessage(processOperation.m());
 					}
 				}
 			});
@@ -60,6 +63,11 @@ public class ShareManager implements IShareManager {
 
 		currentSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 		return new IDocumentSession() {
+
+			@Override
+			public void onNewLocalMessage(Message<EditOperation> message) {
+				// TODO enviar al kernel
+			}
 		};
 	}
 

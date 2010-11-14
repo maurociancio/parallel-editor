@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import ar.noxit.paralleleditor.common.operation.AddTextOperation;
 import ar.noxit.paralleleditor.common.operation.DeleteTextOperation;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.EclipseDocumentListener;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.BaseEclipseDocumentListener;
 
 @Test
 public class DocumentListenerTest {
@@ -38,7 +38,7 @@ public class DocumentListenerTest {
 		listener.documentChanged(new DocumentEvent(document, offset, replacedTextLength, substitutionText));
 
 		Assert.assertEquals(1, listener.editOperations.size());
-		Assert.assertEquals(new AddTextOperation("hola", 0, EclipseDocumentListener.getNilFromScala()),
+		Assert.assertEquals(new AddTextOperation("hola", 0, BaseEclipseDocumentListener.getNilFromScala()),
 				listener.editOperations.get(0));
 
 		verify(document);
@@ -76,13 +76,13 @@ public class DocumentListenerTest {
 
 		Assert.assertEquals(2, listener.editOperations.size());
 		Assert.assertEquals(new DeleteTextOperation(0, 10), listener.editOperations.get(0));
-		Assert.assertEquals(new AddTextOperation("hola", 0, EclipseDocumentListener.getNilFromScala()),
+		Assert.assertEquals(new AddTextOperation("hola", 0, BaseEclipseDocumentListener.getNilFromScala()),
 				listener.editOperations.get(1));
 
 		verify(document);
 	}
 
-	private final class SpyEclipseDocumentListener extends EclipseDocumentListener {
+	private final class SpyEclipseDocumentListener extends BaseEclipseDocumentListener {
 		private List<EditOperation> editOperations = new ArrayList<EditOperation>();
 
 		@Override

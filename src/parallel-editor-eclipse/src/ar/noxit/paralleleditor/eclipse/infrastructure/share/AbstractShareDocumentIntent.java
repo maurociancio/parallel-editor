@@ -7,8 +7,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocumentListener;
 
-import ar.noxit.paralleleditor.common.Message;
-import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
 
@@ -27,26 +25,34 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 		Assert.isNotNull(document);
 
 		try {
-			ITextFileManager textFileBufferManager = getTextFileBufferManager();
+			connectToBufferManager(document);
+			String fullPath = document.getFullPath().toString();
 
-			IPath fullPath = document.getFullPath();
-			LocationKind locationKind = document.getLocationKind();
+			// callback from kernel
+			RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
+			// create the new document session
+			IDocumentSession docSession = shareManager.createShare(fullPath, getContentFor(document), remoteCallback);
 
-			textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
+			// callback from editor
+			Synchronizer fromEditorCallback = new Synchronizer(docSession);
 
-			IDocumentSession docSession = shareManager.createShare(fullPath.toString(), getContentFor(document),
-					new IOperationCallback() {
+			// adapt callbacks
+			remoteCallback.setAdapted(fromEditorCallback);
 
-						@Override
-						public void processOperation(Message<EditOperation> message) {
-							System.out.println(message);
-						}
-					});
-
-			installCallback(document, new EclipseDocumentListener());
+			// install callback on editor
+			installCallback(document, new EclipseDocumentListener(fromEditorCallback));
 		} catch (CoreException e) {
 			onException(e);
 		}
+	}
+
+	protected void connectToBufferManager(IDocument document) throws CoreException {
+		ITextFileManager textFileBufferManager = getTextFileBufferManager();
+
+		IPath fullPath = document.getFullPath();
+		LocationKind locationKind = document.getLocationKind();
+
+		textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
 	}
 
 	protected abstract void installCallback(IDocument document, IDocumentListener listener);
