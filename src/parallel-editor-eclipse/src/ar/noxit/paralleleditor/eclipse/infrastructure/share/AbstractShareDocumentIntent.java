@@ -6,6 +6,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import ar.noxit.paralleleditor.common.Message;
+import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
 
@@ -31,7 +33,13 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 
 			textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
 
-			shareManager.createShare(fullPath.toString(), getContentFor(document));
+			shareManager.createShare(fullPath.toString(), getContentFor(document), new IOperationCallback() {
+
+				@Override
+				public void processOperation(Message<EditOperation> message) {
+					System.out.println(message);
+				}
+			});
 		} catch (CoreException e) {
 			onException(e);
 		}

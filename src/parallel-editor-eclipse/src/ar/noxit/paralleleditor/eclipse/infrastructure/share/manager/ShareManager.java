@@ -11,6 +11,8 @@ import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.client.SessionFactory;
 import ar.noxit.paralleleditor.common.BasicXFormStrategy;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
+import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IOperationCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
 import ar.noxit.paralleleditor.kernel.Kernel;
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel;
@@ -18,6 +20,7 @@ import ar.noxit.paralleleditor.kernel.basic.SynchronizerFactory;
 import ar.noxit.paralleleditor.kernel.basic.UserListMerger;
 import ar.noxit.paralleleditor.kernel.basic.sync.SynchronizerAdapterFactory;
 import ar.noxit.paralleleditor.kernel.basic.userlist.DefaultUserListMerger;
+import ar.noxit.paralleleditor.kernel.messages.ProcessOperation;
 import ar.noxit.paralleleditor.kernel.remote.KernelService;
 import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
@@ -25,24 +28,34 @@ public class ShareManager implements IShareManager {
 
 	private KernelService kernelService;
 
-	private Map<String, JSession> sessions = new HashMap<String, JSession>();
+	private Map<String, IOperationCallback> sessions = new HashMap<String, IOperationCallback>();
+	private JSession currentSession;
 
 	@Override
-	public void createShare(String docTitle, String initialContent) {
+	public void createShare(final String docTitle, String initialContent, IOperationCallback operationCallback) {
 		Assert.isNotNull(docTitle);
 		Assert.isNotNull(initialContent);
 
 		createServiceIfNotCreated();
 
+		sessions.put(docTitle, operationCallback);
+
 		JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
 
 			@Override
 			public void process(CommandFromKernel command) {
+				System.out.println(command);
+
+				if (command instanceof ProcessOperation) {
+					ProcessOperation processOperation = (ProcessOperation) command;
+					sessions.get(docTitle).processOperation(processOperation.m());
+				}
 			}
 		});
-		newSession.send(new RemoteLoginRequest("becho"));
+		this.currentSession = newSession;
 
-		sessions.put(docTitle, newSession);
+		newSession.send(new RemoteLoginRequest("becho"));
+		newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 	}
 
 	protected void createServiceIfNotCreated() {
