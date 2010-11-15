@@ -83,21 +83,18 @@ public class ServerPanel extends Composite {
 
 			this.userName = new Label(this, SWT.NONE);
 			userName.setLayoutData(gridData);
-			userName.setText("dd");
 
 			Label serverIPLabel = new Label(this, SWT.CENTER);
 			serverIPLabel.setText("Hostname:");
 
 			this.serverIP = new Label(this, SWT.NONE);
 			serverIP.setLayoutData(gridData);
-			serverIP.setText("aaa");
 
 			Label serverPortLabel = new Label(this, SWT.CENTER);
 			serverPortLabel.setText("Server Port:");
 
 			this.serverPort = new Label(this, SWT.NONE);
 			serverPort.setLayoutData(gridData);
-			serverPort.setText("hol");
 
 			final Color colorYelllow = new Color(this.getDisplay(), 255, 255, 0);
 			final Color colorGreen = new Color(this.getDisplay(), 0, 255, 0);

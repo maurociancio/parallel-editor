@@ -14,14 +14,12 @@ import ar.noxit.paralelleditor.eclipse.model.IModel;
 public class HostsList extends Composite {
 
 	private IModel<java.util.List<ConnectionInfo>> hostsModel;
-	private IModel<ConnectionInfo> selectedConnection;
 	private List hosts;
 
 	public HostsList(Composite parent, int style, final IModel<java.util.List<ConnectionInfo>> hostsModel,
 			final IModel<ConnectionInfo> selectedConnection) {
 		super(parent, style);
 		this.hostsModel = hostsModel;
-		this.selectedConnection = selectedConnection;
 
 		// layout
 		setLayout(new FillLayout(SWT.VERTICAL));
