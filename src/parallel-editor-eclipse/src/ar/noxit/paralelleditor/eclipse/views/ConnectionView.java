@@ -1,5 +1,8 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -32,9 +35,17 @@ public class ConnectionView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
-		ConnectionPanel panel = new ConnectionPanel(parent, SWT.NONE);
+		// ConnectionPanel panel = new ConnectionPanel(parent, SWT.NONE);
+		new HostsList(parent, SWT.NONE, new IModel<List<Host>>() {
+
+			@Override
+			public List<Host> get() {
+				List<Host> arrayList = new ArrayList<Host>();
+				arrayList.add(new Host("localhost", 50));
+				return arrayList;
+			}
+		});
 
 		Text infoConsole = new Text(parent, SWT.MULTI | SWT.V_SCROLL);
 		infoConsole.setSize(100, 100);
