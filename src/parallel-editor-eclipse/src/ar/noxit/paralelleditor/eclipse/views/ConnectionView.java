@@ -138,7 +138,6 @@ public class ConnectionView extends ViewPart {
 					
 					IPath location = project.getProjectRelativePath().append(path);
 					IFile file = project.getFile(location);
-					project.get
 					IWorkbenchPage page = window.getActivePage();
 					if (page != null)
 						try {
