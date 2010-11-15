@@ -28,6 +28,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
+import ar.noxit.paralelleditor.eclipse.model.Model;
+
 public class ConnectionView extends ViewPart {
 
 	public ConnectionView() {
@@ -38,23 +40,8 @@ public class ConnectionView extends ViewPart {
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 		// ConnectionPanel panel = new ConnectionPanel(parent, SWT.NONE);
 
-		final List<ConnectionInfo> arrayList = new ArrayList<ConnectionInfo>();
-		arrayList.add(new ConnectionInfo("localhost", 50, "becho"));
-
-		new HostsList(parent, SWT.NONE, new IModel<List<ConnectionInfo>>() {
-
-			List<ConnectionInfo> list = arrayList;
-
-			@Override
-			public List<ConnectionInfo> get() {
-				return list;
-			}
-
-			@Override
-			public void set(List<ConnectionInfo> object) {
-				this.list = object;
-			}
-		});
+		List<ConnectionInfo> arrayList = new ArrayList<ConnectionInfo>();
+		new HostsList(parent, SWT.NONE, Model.of(arrayList));
 
 		Text infoConsole = new Text(parent, SWT.MULTI | SWT.V_SCROLL);
 		infoConsole.setSize(100, 100);

@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
+import ar.noxit.paralelleditor.eclipse.model.IModel;
+
 public class HostsList extends Composite {
 
 	private IModel<java.util.List<ConnectionInfo>> hostsModel;
@@ -51,6 +53,11 @@ public class HostsList extends Composite {
 		deleteHost.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				int selection = hosts.getSelectionIndex();
+				if (selection != -1) {
+					hostsModel.get().remove(selection);
+					redraw();
+				}
 			}
 		});
 	}
