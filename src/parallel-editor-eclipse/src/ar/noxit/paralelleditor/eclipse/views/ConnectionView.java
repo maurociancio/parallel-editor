@@ -37,13 +37,22 @@ public class ConnectionView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 		// ConnectionPanel panel = new ConnectionPanel(parent, SWT.NONE);
-		new HostsList(parent, SWT.NONE, new IModel<List<Host>>() {
+
+		final List<ConnectionInfo> arrayList = new ArrayList<ConnectionInfo>();
+		arrayList.add(new ConnectionInfo("localhost", 50, "becho"));
+
+		new HostsList(parent, SWT.NONE, new IModel<List<ConnectionInfo>>() {
+
+			List<ConnectionInfo> list = arrayList;
 
 			@Override
-			public List<Host> get() {
-				List<Host> arrayList = new ArrayList<Host>();
-				arrayList.add(new Host("localhost", 50));
-				return arrayList;
+			public List<ConnectionInfo> get() {
+				return list;
+			}
+
+			@Override
+			public void set(List<ConnectionInfo> object) {
+				this.list = object;
 			}
 		});
 

@@ -1,21 +1,24 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
-import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Shell;
 
 public class HostsList extends Composite {
 
-	public HostsList(Composite parent, int style, IModel<java.util.List<Host>> hostsModel) {
+	private IModel<java.util.List<ConnectionInfo>> hostsModel;
+	private List hosts;
+
+	public HostsList(Composite parent, int style, final IModel<java.util.List<ConnectionInfo>> hostsModel) {
 		super(parent, style);
+		this.hostsModel = hostsModel;
 
 		// layout
-		Shell shell = parent.getShell();
 		setLayout(new FillLayout(SWT.VERTICAL));
 
 		// hosts
@@ -23,14 +26,48 @@ public class HostsList extends Composite {
 		host.setText("Available hosts");
 
 		// hosts list
-		List hosts = new List(this, SWT.BORDER | SWT.V_SCROLL);
+		this.hosts = new List(this, SWT.BORDER | SWT.V_SCROLL);
 
 		// items
-		java.util.List<Host> list = hostsModel.get();
+		populateList();
+
+		Button newHost = new Button(this, SWT.PUSH);
+		newHost.setText("Add hostname");
+		newHost.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				NewServerDialog newServerDialog = new NewServerDialog(getShell(), 0);
+				ConnectionInfo info = newServerDialog.open();
+
+				if (info != null) {
+					hostsModel.get().add(info);
+					redraw();
+				}
+			}
+		});
+
+		Button deleteHost = new Button(this, SWT.PUSH);
+		deleteHost.setText("Delete hostname");
+		deleteHost.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+	}
+
+	@Override
+	public void redraw() {
+		populateList();
+		super.redraw();
+	}
+
+	protected void populateList() {
+		// items
+		java.util.List<ConnectionInfo> list = hostsModel.get();
 		String arrayItems[] = new String[list.size()];
 		Integer i = 0;
-		for (Host h : list) {
-			arrayItems[i] = (h.getHostname() + ":" + h.getPort());
+		for (ConnectionInfo h : list) {
+			arrayItems[i] = h.getHost() + ":" + h.getPort() + " as " + h.getUsername();
 			i = i + 1;
 		}
 
