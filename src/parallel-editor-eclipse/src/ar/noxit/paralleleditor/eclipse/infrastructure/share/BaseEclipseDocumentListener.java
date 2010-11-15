@@ -32,7 +32,7 @@ public class BaseEclipseDocumentListener implements IDocumentListener {
 		} else {
 			// borramos de a un caracter
 			for (int i = 0; i < replacedTextLength; i++) {
-				processOperation(new DeleteTextOperation(offset + i, 1));
+				processOperation(new DeleteTextOperation(offset, 1));
 			}
 
 			if (textLength == 0) {
