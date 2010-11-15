@@ -1,9 +1,8 @@
 package ar.noxit.paralleleditor.eclipse.menu.actions;
 
-import org.eclipse.core.filebuffers.LocationKind;
-import org.eclipse.core.runtime.IPath;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 
 public interface IShareDocumentIntent {
 
-	void shareDocument(IPath fullPath, LocationKind locationKind);
+	void shareDocument(IDocument document);
 }

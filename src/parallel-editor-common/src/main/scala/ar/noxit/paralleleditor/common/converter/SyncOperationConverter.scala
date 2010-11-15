@@ -8,7 +8,7 @@ trait SyncOperationConverter {
     def convert(message: Message[EditOperation]): SyncOperation
 }
 
-class DefaultSyncOperationConverter(val editOpConverter: EditOperationConverter) extends SyncOperationConverter {
+    class DefaultSyncOperationConverter(val editOpConverter: EditOperationConverter) extends SyncOperationConverter {
     def convert(message: Message[EditOperation]) = {
         val converted = editOpConverter.convert(message.op)
         SyncOperation(SyncStatus(message.myMsgs, message.otherMsgs), converted)

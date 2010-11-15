@@ -7,11 +7,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+
 public class ShareDocumentAction extends Action {
 
 	private ITextEditorProvider textEditorProvider;
-	// private ITextFileBufferManager manager = ITextFileBufferManager.DEFAULT;
-
 	private IShareDocumentIntent shareDocumentIntent;
 
 	public ShareDocumentAction(ITextEditorProvider textEditorProvider, IShareDocumentIntent shareDocIntent) {
@@ -26,7 +25,7 @@ public class ShareDocumentAction extends Action {
 
 	@Override
 	public void run() {
-		ITextEditor textEditor = textEditorProvider.getTextEditor();
+		ITextEditor textEditor = textEditorProvider.getCurrentTextEditor();
 
 		if (textEditor != null) {
 			doRun(textEditor);
@@ -48,7 +47,7 @@ public class ShareDocumentAction extends Action {
 			IPath fullPath = file.getFullPath();
 			LocationKind locationKind = LocationKind.IFILE;
 
-			shareDocumentIntent.shareDocument(fullPath, locationKind);
+			shareDocumentIntent.shareDocument(new Document(fullPath, locationKind));
 		} else {
 			onNullFile();
 		}

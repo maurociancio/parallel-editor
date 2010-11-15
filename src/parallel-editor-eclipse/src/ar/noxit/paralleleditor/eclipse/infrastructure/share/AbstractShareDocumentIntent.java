@@ -5,7 +5,10 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.text.IDocumentListener;
 
+import ar.noxit.paralleleditor.common.operation.DocumentData;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
 
 public abstract class AbstractShareDocumentIntent implements IShareDocumentIntent {
@@ -19,40 +22,50 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 	}
 
 	@Override
-	public void shareDocument(IPath fullPath, LocationKind locationKind) {
-		Assert.isNotNull(fullPath);
-		Assert.isNotNull(locationKind);
+	public void shareDocument(IDocument document) {
+		Assert.isNotNull(document);
 
 		try {
-			ITextFileManager textFileBufferManager = getTextFileBufferManager();
-			textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
+			connectToBufferManager(document);
+			String fullPath = document.getFullPath().toString();
 
-			shareManager.createShare(fullPath.toString());
+			// callback from kernel
+			RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
+
+			// create the new document session
+			IDocumentSession docSession = shareManager.createShare(fullPath, getContentFor(document), remoteCallback);
+
+			// callback from editor
+			Synchronizer sync = new Synchronizer(docSession, getAdapterFor(document));
+
+			// adapt callbacks
+			remoteCallback.setAdapted(sync);
+
+			// install callback on editor
+			installCallback(document, new EclipseDocumentListener(sync));
 		} catch (CoreException e) {
 			onException(e);
 		}
-
-		// IDocument document =
-		// textFileBufferManager.getTextFileBuffer(fullPath,
-		// locationKind).getDocument();
-		//
-		// document.addDocumentListener(new IDocumentListener() {
-		//
-		// @Override
-		// public void documentChanged(DocumentEvent event) {
-		// System.out.println("event fired " + event.fText + " " + event.fOffset
-		// + " " + event.fLength);
-		// }
-		//
-		// @Override
-		// public void documentAboutToBeChanged(DocumentEvent event) {
-		// }
-		// });
 	}
 
-	protected abstract ITextFileManager getTextFileBufferManager();
+	protected void connectToBufferManager(IDocument document) throws CoreException {
+		ITextFileManager textFileBufferManager = getTextFileBufferManager();
+
+		IPath fullPath = document.getFullPath();
+		LocationKind locationKind = document.getLocationKind();
+
+		textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
+	}
 
 	protected void onException(CoreException e) {
 		// TODO log
 	}
+
+	protected abstract DocumentData getAdapterFor(IDocument document);
+
+	protected abstract String getContentFor(IDocument document);
+
+	protected abstract void installCallback(IDocument document, IDocumentListener listener);
+
+	protected abstract ITextFileManager getTextFileBufferManager();
 }

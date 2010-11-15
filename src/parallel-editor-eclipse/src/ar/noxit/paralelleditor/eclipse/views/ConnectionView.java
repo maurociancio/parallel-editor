@@ -1,6 +1,5 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -29,9 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ConnectionView extends ViewPart {
 
-	
 	public ConnectionView() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -50,11 +47,10 @@ public class ConnectionView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		//helloWorldTest.setFocus();
+		// helloWorldTest.setFocus();
 	}
-	
-	private class ConnectionPanel extends Composite {
 
+	private class ConnectionPanel extends Composite {
 
 		private boolean isConnected = false;
 		private static final String STATUS_DISCONNECTED = "Disconnected";
@@ -65,59 +61,57 @@ public class ConnectionView extends ViewPart {
 		
 		public ConnectionPanel(Composite parent, int style) {
 			super(parent, style);
-			//contenedor.setSize(200, 100);
-			
+			// contenedor.setSize(200, 100);
+
 			GridLayout layoutContendor = new GridLayout();
 			layoutContendor.numColumns = 2;
 			setLayout(layoutContendor);
 
-			Label userNameLabel = new Label(this,SWT.CENTER);
+			Label userNameLabel = new Label(this, SWT.CENTER);
 			userNameLabel.setText("Username:");
 
 			GridData gridData = new GridData();
-			gridData.grabExcessHorizontalSpace=true;
+			gridData.grabExcessHorizontalSpace = true;
 			gridData.horizontalAlignment = GridData.FILL;
 
-			Text userName = new Text(this,SWT.NONE);
+			Text userName = new Text(this, SWT.NONE);
 			userName.setLayoutData(gridData);
-			
-			Label serverIPLabel = new Label(this,SWT.CENTER);
+
+			Label serverIPLabel = new Label(this, SWT.CENTER);
 			serverIPLabel.setText("Server IP:");
-			
+
 			Text serverIP = new Text(this, SWT.NONE);
 			serverIP.setLayoutData(gridData);
 
-			
-			Label serverPortLabel = new Label(this,SWT.CENTER);
+			Label serverPortLabel = new Label(this, SWT.CENTER);
 			serverPortLabel.setText("Server Port:");
-			Text serverPort = new Text(this,SWT.NONE);
+			Text serverPort = new Text(this, SWT.NONE);
 			serverPort.setLayoutData(gridData);
-			
 
 			final Color colorYelllow = new Color(this.getDisplay(), 255, 255, 0);
-			final Color colorGreen = new Color(this.getDisplay(),0,255,0);
-			final Label connectionStatus = new Label(this,SWT.CENTER);
+			final Color colorGreen = new Color(this.getDisplay(), 0, 255, 0);
+			final Label connectionStatus = new Label(this, SWT.CENTER);
 			connectionStatus.setText(STATUS_DISCONNECTED);
 			connectionStatus.setBackground(colorYelllow);
-			
-			final Button connectButton = new Button(this,SWT.CENTER);
+
+			final Button connectButton = new Button(this, SWT.CENTER);
 			connectButton.setText("Conectar");
 			connectButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent event) {
-					if (!isConnected){
+					if (!isConnected) {
 						System.out.println("You clicked conectar!");
 						connectionStatus.setText(STATUS_CONNECTING);
-						BusyIndicator.showWhile(connectButton.getDisplay(),new ConnectorThread());
+						BusyIndicator.showWhile(connectButton.getDisplay(), new ConnectorThread());
 						connectionStatus.setBackground(colorGreen);
 						connectionStatus.setText(STATUS_CONNECTED);
-						isConnected=true;
+						isConnected = true;
 					} else {
 						System.out.println("You clicked conectar!");
 						connectionStatus.setText(STATUS_DISCONNECTING);
-						BusyIndicator.showWhile(connectButton.getDisplay(),new ConnectorThread());
+						BusyIndicator.showWhile(connectButton.getDisplay(), new ConnectorThread());
 						connectionStatus.setBackground(colorYelllow);
 						connectionStatus.setText(STATUS_DISCONNECTED);
-						isConnected=false;
+						isConnected = false;
 					}
 				}
 			});
@@ -157,15 +151,13 @@ public class ConnectionView extends ViewPart {
 			});
 			
 		}
-	
-		
+
 	}
-	
-	
+
 	private class ConnectorThread extends Thread {
-		
+
 		@Override
-		public void run(){
+		public void run() {
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -173,7 +165,5 @@ public class ConnectionView extends ViewPart {
 				e.printStackTrace();
 			}
 		}
-			
 	}
-
 }

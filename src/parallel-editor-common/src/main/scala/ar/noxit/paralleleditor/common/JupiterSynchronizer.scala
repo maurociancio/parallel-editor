@@ -79,3 +79,19 @@ abstract class JupiterSynchronizer[Op] extends Loggable {
 class EditOperationJupiterSynchronizer(private val xformStrategy: XFormStrategy) extends JupiterSynchronizer[EditOperation] {
     override protected def xform(c: EditOperation, s: EditOperation) = xformStrategy.xform(c, s)
 }
+
+trait SendFunction {
+    def send(message: Message[EditOperation])
+}
+
+trait ApplyFunction {
+    def apply(operation: EditOperation)
+}
+
+class JEditOperationJupiterSynchronizer(val adaptedSync: JupiterSynchronizer[EditOperation]) {
+    def generate(op: EditOperation, fun: SendFunction) =
+        adaptedSync.generate(op, {m => fun.send(m)})
+
+    def receive(message: Message[EditOperation], fun: ApplyFunction) =
+        adaptedSync.receive(message, {op => fun.apply(op)})
+}

@@ -14,6 +14,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ITextEditorProvider;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ShareDocumentAction;
@@ -33,7 +34,7 @@ public class ShareDocumentActionTest {
 	@Test
 	public void testShareDocumentUnexistantTextEditor() {
 		ITextEditorProvider textEditorProvider = createMock(ITextEditorProvider.class);
-		expect(textEditorProvider.getTextEditor()).andReturn(null);
+		expect(textEditorProvider.getCurrentTextEditor()).andReturn(null);
 		replay(textEditorProvider);
 
 		IShareDocumentIntent shareDocIntent = createMock(IShareDocumentIntent.class);
@@ -62,7 +63,7 @@ public class ShareDocumentActionTest {
 		replay(textEditor);
 
 		ITextEditorProvider textEditorProvider = createMock(ITextEditorProvider.class);
-		expect(textEditorProvider.getTextEditor()).andReturn(textEditor);
+		expect(textEditorProvider.getCurrentTextEditor()).andReturn(textEditor);
 		replay(textEditorProvider);
 
 		IShareDocumentIntent shareDocIntent = createMock(IShareDocumentIntent.class);
@@ -97,11 +98,11 @@ public class ShareDocumentActionTest {
 		replay(textEditor);
 
 		ITextEditorProvider textEditorProvider = createMock(ITextEditorProvider.class);
-		expect(textEditorProvider.getTextEditor()).andReturn(textEditor);
+		expect(textEditorProvider.getCurrentTextEditor()).andReturn(textEditor);
 		replay(textEditorProvider);
 
 		IShareDocumentIntent shareDocIntent = createMock(IShareDocumentIntent.class);
-		shareDocIntent.shareDocument(path, LocationKind.IFILE);
+		shareDocIntent.shareDocument(new Document(path, LocationKind.IFILE));
 		replay(shareDocIntent);
 
 		ShareDocumentAction shareDocumentAction = new ShareDocumentAction(textEditorProvider, shareDocIntent);

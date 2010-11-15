@@ -12,7 +12,7 @@ import ar.noxit.paralleleditor.eclipse.menu.actions.ITextEditorProvider;
 public class TextEditorProvider implements ITextEditorProvider {
 
 	@Override
-	public ITextEditor getTextEditor() {
+	public ITextEditor getCurrentTextEditor() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		if (workbench == null)
 			return null;
