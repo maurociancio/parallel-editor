@@ -22,6 +22,7 @@ public class ServerPanel extends Composite {
 	private StatusPanel statusPanel;
 	private Label noSelectionLabel;
 
+	// TODO no instanciar
 	private IRemoteConnectionFactory connectionFactory = new ShareManager();
 
 	private static final String STATUS_DISCONNECTED = "Disconnected";
