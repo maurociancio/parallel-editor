@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo.ConnectionId;
+
 public class NewServerDialog extends Dialog {
 
 	private ConnectionInfo result = null;
@@ -67,7 +69,8 @@ public class NewServerDialog extends Dialog {
 					messageBox.setMessage("Incorrect parameters:\n" + error);
 					messageBox.open();
 				} else {
-					result = new ConnectionInfo(host.getText(), Integer.valueOf(port.getText()), username.getText());
+					ConnectionId connectionId = new ConnectionId(host.getText(), Integer.valueOf(port.getText()));
+					result = new ConnectionInfo(connectionId, username.getText());
 					shell.dispose();
 				}
 			}

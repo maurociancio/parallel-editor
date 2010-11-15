@@ -88,7 +88,7 @@ public class HostsList extends Composite {
 		String arrayItems[] = new String[list.size()];
 		Integer i = 0;
 		for (ConnectionInfo h : list) {
-			arrayItems[i] = h.getHost() + ":" + h.getPort() + " as " + h.getUsername();
+			arrayItems[i] = h.getId().getHost() + ":" + h.getId().getPort() + " as " + h.getUsername();
 			i = i + 1;
 		}
 

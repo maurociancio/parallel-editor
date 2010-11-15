@@ -1,6 +1,8 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -10,6 +12,7 @@ import org.eclipse.swt.widgets.Label;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 
 public class ServerPanel extends Composite {
 
@@ -18,6 +21,8 @@ public class ServerPanel extends Composite {
 	private DocumentsPanel documentsPanel;
 	private StatusPanel statusPanel;
 	private Label noSelectionLabel;
+
+	private IRemoteConnectionFactory connectionFactory = new ShareManager();
 
 	private static final String STATUS_DISCONNECTED = "Disconnected";
 	private static final String STATUS_CONNECTED = "Connected";
@@ -66,6 +71,7 @@ public class ServerPanel extends Composite {
 		private Label userName;
 		private Label serverIP;
 		private Label serverPort;
+		private Label connectionStatus;
 
 		public StatusPanel(Composite parent, int style) {
 			super(parent, style);
@@ -96,29 +102,57 @@ public class ServerPanel extends Composite {
 			this.serverPort = new Label(this, SWT.NONE);
 			serverPort.setLayoutData(gridData);
 
-			final Color colorYelllow = new Color(this.getDisplay(), 255, 255, 0);
-			final Color colorGreen = new Color(this.getDisplay(), 0, 255, 0);
-			final Label connectionStatus = new Label(this, SWT.CENTER);
-			connectionStatus.setText(STATUS_DISCONNECTED);
-			connectionStatus.setBackground(colorYelllow);
+			this.connectionStatus = new Label(this, SWT.NONE);
+			this.connectionStatus.setText("                   "); // FIX
+			GridData connectionData = new GridData();
+			connectionData.grabExcessHorizontalSpace = true;
+			// connectionStatus.setLayoutData(connectionData);
+			showStatus();
 
 			final Button connectButton = new Button(this, SWT.CENTER);
-			connectButton.setText("Conectar");
+			connectButton.setText("Connect");
+			connectButton.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					ConnectionInfo info = connectionInfo.get();
+
+					connectionFactory.connect(info);
+				}
+			});
 
 			updateTexts();
+		}
+
+		protected void showStatus() {
+			final Color colorYelllow = new Color(this.getDisplay(), 255, 255, 0);
+			final Color colorGreen = new Color(this.getDisplay(), 0, 255, 0);
+
+			ConnectionInfo info = connectionInfo.get();
+			if (info != null) {
+				ConnectionStatus status = connectionFactory.statusOf(info);
+				if (status.equals(ConnectionStatus.CONNECTED)) {
+					connectionStatus.setText(STATUS_CONNECTED);
+					connectionStatus.setBackground(colorGreen);
+				} else {
+					connectionStatus.setText(STATUS_DISCONNECTED);
+					connectionStatus.setBackground(colorYelllow);
+				}
+			}
 		}
 
 		private void updateTexts() {
 			ConnectionInfo info = connectionInfo.get();
 			if (info != null) {
 				userName.setText(info.getUsername());
-				serverPort.setText(String.valueOf(info.getPort()));
-				serverIP.setText(info.getHost());
+				serverPort.setText(String.valueOf(info.getId().getPort()));
+				serverIP.setText(info.getId().getHost());
 			}
 		}
 
 		@Override
 		public void redraw() {
+			showStatus();
 			updateTexts();
 			super.redraw();
 		}

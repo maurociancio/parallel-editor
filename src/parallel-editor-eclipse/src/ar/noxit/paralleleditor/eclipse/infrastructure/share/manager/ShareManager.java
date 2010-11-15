@@ -5,6 +5,10 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 
+import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo;
+import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo.ConnectionId;
+import ar.noxit.paralelleditor.eclipse.views.ConnectionStatus;
+import ar.noxit.paralelleditor.eclipse.views.IRemoteConnectionFactory;
 import ar.noxit.paralleleditor.client.CommandFromKernel;
 import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
@@ -31,13 +35,16 @@ import ar.noxit.paralleleditor.kernel.basic.userlist.DefaultUserListMerger;
 import ar.noxit.paralleleditor.kernel.remote.KernelService;
 import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
-public class ShareManager implements IShareManager {
+public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	private Map<String, IRemoteMessageCallback> sessions = new HashMap<String, IRemoteMessageCallback>();
 	private JSession currentSession;
 
 	// kernel service
 	private KernelService kernelService;
+
+	// remote session
+	private Map<ConnectionId, JSession> remoteSessions = new HashMap<ConnectionId, JSession>();
 
 	// converter
 	private DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
@@ -78,6 +85,33 @@ public class ShareManager implements IShareManager {
 				currentSession.send(converter.convert(new DocumentOperation(docTitle, message)));
 			}
 		};
+	}
+
+	@Override
+	public void connect(ConnectionInfo info) {
+		Assert.isNotNull(info);
+
+		ConnectionId id = info.getId();
+		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), new Documents() {
+
+			@Override
+			public void process(CommandFromKernel command) {
+				System.out.println(command);
+			}
+		});
+		newSession.send(new RemoteLoginRequest(info.getUsername()));
+		remoteSessions.put(info.getId(), newSession);
+	}
+
+	@Override
+	public ConnectionStatus statusOf(ConnectionInfo info) {
+		Assert.isNotNull(info);
+
+		JSession session = remoteSessions.get(info.getId());
+		if (session == null)
+			return ConnectionStatus.DISCONNECTED;
+		else
+			return ConnectionStatus.CONNECTED;
 	}
 
 	protected void createServiceIfNotCreated() {
