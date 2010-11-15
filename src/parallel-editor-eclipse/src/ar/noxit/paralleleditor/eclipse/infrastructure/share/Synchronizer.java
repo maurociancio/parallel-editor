@@ -20,6 +20,8 @@ public class Synchronizer implements IOperationCallback, IRemoteMessageCallback 
 	private final IDocumentSession docSession;
 	private final DocumentData documentData;
 
+	private boolean disableFiringEvents = false;
+
 	public Synchronizer(IDocumentSession docSession, DocumentData documentData) {
 		Assert.isNotNull(docSession);
 		Assert.isNotNull(documentData);
@@ -30,13 +32,15 @@ public class Synchronizer implements IOperationCallback, IRemoteMessageCallback 
 
 	@Override
 	public void apply(EditOperation editOperation) {
-		sync.generate(editOperation, new SendFunction() {
+		if (!disableFiringEvents) {
+			sync.generate(editOperation, new SendFunction() {
 
-			@Override
-			public void send(Message<EditOperation> message) {
-				docSession.onNewLocalMessage(message);
-			}
-		});
+				@Override
+				public void send(Message<EditOperation> message) {
+					docSession.onNewLocalMessage(message);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -49,7 +53,12 @@ public class Synchronizer implements IOperationCallback, IRemoteMessageCallback 
 
 					@Override
 					public void apply(EditOperation editOperation) {
-						editOperation.executeOn(documentData);
+						try {
+							disableFiringEvents = true;
+							editOperation.executeOn(documentData);
+						} finally {
+							disableFiringEvents = false;
+						}
 					}
 				});
 			}

@@ -36,13 +36,13 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 			IDocumentSession docSession = shareManager.createShare(fullPath, getContentFor(document), remoteCallback);
 
 			// callback from editor
-			Synchronizer fromEditorCallback = new Synchronizer(docSession, getAdapterFor(document));
+			Synchronizer sync = new Synchronizer(docSession, getAdapterFor(document));
 
 			// adapt callbacks
-			remoteCallback.setAdapted(fromEditorCallback);
+			remoteCallback.setAdapted(sync);
 
 			// install callback on editor
-			installCallback(document, new EclipseDocumentListener(fromEditorCallback));
+			installCallback(document, new EclipseDocumentListener(sync));
 		} catch (CoreException e) {
 			onException(e);
 		}
