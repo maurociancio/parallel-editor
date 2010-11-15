@@ -14,11 +14,14 @@ import ar.noxit.paralelleditor.eclipse.model.IModel;
 public class HostsList extends Composite {
 
 	private IModel<java.util.List<ConnectionInfo>> hostsModel;
+	private IModel<ConnectionInfo> selectedConnection;
 	private List hosts;
 
-	public HostsList(Composite parent, int style, final IModel<java.util.List<ConnectionInfo>> hostsModel) {
+	public HostsList(Composite parent, int style, final IModel<java.util.List<ConnectionInfo>> hostsModel,
+			final IModel<ConnectionInfo> selectedConnection) {
 		super(parent, style);
 		this.hostsModel = hostsModel;
+		this.selectedConnection = selectedConnection;
 
 		// layout
 		setLayout(new FillLayout(SWT.VERTICAL));
@@ -29,6 +32,18 @@ public class HostsList extends Composite {
 
 		// hosts list
 		this.hosts = new List(this, SWT.BORDER | SWT.V_SCROLL);
+		this.hosts.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectionIndex = hosts.getSelectionIndex();
+				if (selectionIndex != -1) {
+					selectedConnection.set(hostsModel.get().get(selectionIndex));
+				} else {
+					selectedConnection.set(null);
+				}
+			}
+		});
 
 		// items
 		populateList();
@@ -56,6 +71,7 @@ public class HostsList extends Composite {
 				int selection = hosts.getSelectionIndex();
 				if (selection != -1) {
 					hostsModel.get().remove(selection);
+					selectedConnection.set(null);
 					redraw();
 				}
 			}

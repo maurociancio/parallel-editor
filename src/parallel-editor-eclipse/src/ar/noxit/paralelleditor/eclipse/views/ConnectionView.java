@@ -28,6 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
+import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.Model;
 
 public class ConnectionView extends ViewPart {
@@ -40,8 +41,11 @@ public class ConnectionView extends ViewPart {
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 		// ConnectionPanel panel = new ConnectionPanel(parent, SWT.NONE);
 
-		List<ConnectionInfo> arrayList = new ArrayList<ConnectionInfo>();
-		new HostsList(parent, SWT.NONE, Model.of(arrayList));
+		List<ConnectionInfo> connections = new ArrayList<ConnectionInfo>();
+		IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
+
+		new HostsList(parent, SWT.NONE, Model.of(connections), selectedConnection);
+		new ServerPanel(parent, SWT.NONE, selectedConnection);
 
 		Text infoConsole = new Text(parent, SWT.MULTI | SWT.V_SCROLL);
 		infoConsole.setSize(100, 100);
