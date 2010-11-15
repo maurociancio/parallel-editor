@@ -7,7 +7,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
 public class ShareDocumentAction extends Action {
 
 	private ITextEditorProvider textEditorProvider;

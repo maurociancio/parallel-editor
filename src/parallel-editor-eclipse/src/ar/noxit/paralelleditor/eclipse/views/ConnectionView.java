@@ -25,7 +25,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
-
 public class ConnectionView extends ViewPart {
 
 	public ConnectionView() {
@@ -57,9 +56,8 @@ public class ConnectionView extends ViewPart {
 		private static final String STATUS_CONNECTED = "Connected";
 		private static final String STATUS_CONNECTING = "Connecting to server...";
 		private static final String STATUS_DISCONNECTING = "Disconnecting...";
-		
-		
-		public ConnectionPanel(Composite parent, int style) {
+
+		public ConnectionPanel(final Composite parent, int style) {
 			super(parent, style);
 			// contenedor.setSize(200, 100);
 
@@ -115,15 +113,18 @@ public class ConnectionView extends ViewPart {
 					}
 				}
 			});
-			
-			final Button prueba = new Button(this,SWT.PUSH);
+
+			final Button prueba = new Button(this, SWT.PUSH);
 			prueba.setText("Editor");
 			prueba.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent event){
+				public void widgetSelected(SelectionEvent event) {
+					NewServerDialog newServerDialog = new NewServerDialog(parent.getShell(), 0);
+					newServerDialog.open();
+
 					IWorkspace ws = ResourcesPlugin.getWorkspace();
 					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 					IProject project =
-						ws.getRoot().getProject("Test");
+							ws.getRoot().getProject("Test");
 
 					if (!project.isOpen())
 						try {
@@ -133,9 +134,8 @@ public class ConnectionView extends ViewPart {
 							e.printStackTrace();
 						}
 
-					String path =
-					"src/Caca.java";
-					
+					String path = "src/Caca.java";
+
 					IPath location = project.getProjectRelativePath().append(path);
 					IFile file = project.getFile(location);
 					IWorkbenchPage page = window.getActivePage();
@@ -148,7 +148,7 @@ public class ConnectionView extends ViewPart {
 						}
 				}
 			});
-			
+
 		}
 
 	}
