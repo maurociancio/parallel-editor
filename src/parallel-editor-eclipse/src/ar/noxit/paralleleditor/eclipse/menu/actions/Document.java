@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.eclipse.menu.actions;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 
@@ -10,13 +11,16 @@ public class Document implements IDocument {
 
 	private final LocationKind locationKind;
 	private final IPath fullPath;
+	private final ITextEditor textEditor;
 
-	public Document(IPath fullPath, LocationKind locationKind) {
+	public Document(IPath fullPath, LocationKind locationKind, ITextEditor textEditor) {
 		Assert.isNotNull(fullPath);
 		Assert.isNotNull(locationKind);
+		Assert.isNotNull(textEditor);
 
 		this.fullPath = fullPath;
 		this.locationKind = locationKind;
+		this.textEditor = textEditor;
 	}
 
 	@Override
@@ -27,6 +31,11 @@ public class Document implements IDocument {
 	@Override
 	public LocationKind getLocationKind() {
 		return locationKind;
+	}
+
+	@Override
+	public ITextEditor getTextEditor() {
+		return textEditor;
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package ar.noxit.paralleleditor.eclipse;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.runtime.CoreException;
@@ -7,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -74,7 +78,10 @@ public class ShareDocumentIntentTest {
 			}
 		};
 
-		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE));
+		ITextEditor textEditor = createMock(ITextEditor.class);
+		replay(textEditor);
+
+		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE, textEditor));
 		EasyMock.verify(fileBuffer, shareManager, docSession, data);
 		Assert.assertEquals(1, countListener);
 	}
@@ -117,8 +124,10 @@ public class ShareDocumentIntentTest {
 				return null;
 			}
 		};
+		ITextEditor textEditor = createMock(ITextEditor.class);
+		replay(textEditor);
 
-		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE));
+		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE, textEditor));
 		EasyMock.verify(fileBuffer, shareManager);
 		Assert.assertEquals(1, count);
 	}

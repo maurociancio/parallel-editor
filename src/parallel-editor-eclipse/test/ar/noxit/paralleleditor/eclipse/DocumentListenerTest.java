@@ -56,8 +56,9 @@ public class DocumentListenerTest {
 		String substitutionText = "";
 		listener.documentChanged(new DocumentEvent(document, offset, replacedTextLength, substitutionText));
 
-		Assert.assertEquals(1, listener.editOperations.size());
-		Assert.assertEquals(new DeleteTextOperation(0, 10), listener.editOperations.get(0));
+		Assert.assertEquals(10, listener.editOperations.size());
+		for (int i = 0; i < 10; i++)
+			Assert.assertEquals(new DeleteTextOperation(0, 1), listener.editOperations.get(i));
 
 		verify(document);
 	}
@@ -74,10 +75,11 @@ public class DocumentListenerTest {
 		String substitutionText = "hola";
 		listener.documentChanged(new DocumentEvent(document, offset, replacedTextLength, substitutionText));
 
-		Assert.assertEquals(2, listener.editOperations.size());
-		Assert.assertEquals(new DeleteTextOperation(0, 10), listener.editOperations.get(0));
+		Assert.assertEquals(11, listener.editOperations.size());
+		for (int i = 0; i < 10; i++)
+			Assert.assertEquals(new DeleteTextOperation(0, 1), listener.editOperations.get(i));
 		Assert.assertEquals(new AddTextOperation("hola", 0, BaseEclipseDocumentListener.getNilFromScala()),
-				listener.editOperations.get(1));
+				listener.editOperations.get(10));
 
 		verify(document);
 	}

@@ -102,7 +102,7 @@ public class ShareDocumentActionTest {
 		replay(textEditorProvider);
 
 		IShareDocumentIntent shareDocIntent = createMock(IShareDocumentIntent.class);
-		shareDocIntent.shareDocument(new Document(path, LocationKind.IFILE));
+		shareDocIntent.shareDocument(new Document(path, LocationKind.IFILE, textEditor));
 		replay(shareDocIntent);
 
 		ShareDocumentAction shareDocumentAction = new ShareDocumentAction(textEditorProvider, shareDocIntent);

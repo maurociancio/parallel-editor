@@ -8,6 +8,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
@@ -63,10 +66,18 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 		return new DocumentData() {
 
 			private org.eclipse.jface.text.IDocument adapted = getTextFileBuffer(document).getDocument();
+			private ITextEditor textEditor = document.getTextEditor();
 
 			@Override
 			public void data_$eq(String data) {
 				adapted.set(data);
+
+				ISelection selection = textEditor.getSelectionProvider().getSelection();
+				if (selection instanceof ITextSelection) {
+					ITextSelection t = (ITextSelection) selection;
+				}
+
+				textEditor.selectAndReveal(0, 1);
 			}
 
 			@Override

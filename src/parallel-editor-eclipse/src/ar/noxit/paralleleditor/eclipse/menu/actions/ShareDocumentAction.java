@@ -46,7 +46,7 @@ public class ShareDocumentAction extends Action {
 			IPath fullPath = file.getFullPath();
 			LocationKind locationKind = LocationKind.IFILE;
 
-			shareDocumentIntent.shareDocument(new Document(fullPath, locationKind));
+			shareDocumentIntent.shareDocument(new Document(fullPath, locationKind, textEditor));
 		} else {
 			onNullFile();
 		}
