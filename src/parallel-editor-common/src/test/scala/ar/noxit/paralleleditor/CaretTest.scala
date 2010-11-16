@@ -334,6 +334,24 @@ class CaretTest extends AssertionsForJUnit {
         Assert.assertEquals(6, doc.caret.selectionLength)
     }
 
+    /**
+     * ""
+     *  ^
+     * "text"
+     *  ^
+     */
+    @Test
+    def testInsertEmptyText: Unit = {
+        val dto = new AddTextOperation(text = "text", startPos = 0)
+
+        val doc = newDocument("", offset = 0, selectionLen = 0)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("text", doc.data)
+        Assert.assertEquals(4, doc.caret.offset)
+        Assert.assertEquals(0, doc.caret.selectionLength)
+    }
+
     def newDocument(text: String, offset: Int, selectionLen: Int) =
         new BaseDocumentData(text) {
             val caret = new BaseCaret(offset, selectionLen)
