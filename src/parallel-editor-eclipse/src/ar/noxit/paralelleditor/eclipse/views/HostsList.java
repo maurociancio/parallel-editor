@@ -114,7 +114,8 @@ public class HostsList extends Composite {
 
 			public String getText(Object element) {
 				ConnectionInfo h = (ConnectionInfo) element;
-				return element == null ? "" : h.getId().getHost() + ":" + h.getId().getPort() + " as "+ h.getUsername();
+				return element == null ? "" : h.getId().getHost() + ":" + h.getId().getPort() + " as "
+						+ h.getUsername();
 			}
 		};
 	}

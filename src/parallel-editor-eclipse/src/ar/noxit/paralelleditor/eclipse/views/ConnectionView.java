@@ -40,7 +40,6 @@ public class ConnectionView extends ViewPart {
 		serverPanelData.verticalAlignment = SWT.FILL;
 		serverPanelData.grabExcessVerticalSpace = true;
 		serverPanel.setLayoutData(serverPanelData);
-
 	}
 
 	@Override
