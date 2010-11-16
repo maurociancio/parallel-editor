@@ -150,8 +150,188 @@ class CaretTest extends AssertionsForJUnit {
         dto.executeOn(doc)
 
         Assert.assertEquals("RIGINAL", doc.data)
-//        Assert.assertEquals(0, doc.caret.offset)
-//        Assert.assertEquals(2, doc.caret.selectionLength)
+        Assert.assertEquals(0, doc.caret.offset)
+        Assert.assertEquals(2, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "IGINAL"
+     *  |^
+     */
+    @Test
+    def testDeleteText2: Unit = {
+        val dto = new DeleteTextOperation(startPos = 0, size = 2)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("IGINAL", doc.data)
+        Assert.assertEquals(0, doc.caret.offset)
+        Assert.assertEquals(1, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "GINAL"
+     *  ^
+     */
+    @Test
+    def testDeleteText3: Unit = {
+        val dto = new DeleteTextOperation(startPos = 0, size = 3)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("GINAL", doc.data)
+        Assert.assertEquals(0, doc.caret.offset)
+        Assert.assertEquals(0, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "INAL"
+     *  ^
+     */
+    @Test
+    def testDeleteText4: Unit = {
+        val dto = new DeleteTextOperation(startPos = 0, size = 4)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("INAL", doc.data)
+        Assert.assertEquals(0, doc.caret.offset)
+        Assert.assertEquals(0, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "ORIGI"
+     *   ||^
+     */
+    @Test
+    def testDeleteText5: Unit = {
+        val dto = new DeleteTextOperation(startPos = 5, size = 3)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("ORIGI", doc.data)
+        Assert.assertEquals(1, doc.caret.offset)
+        Assert.assertEquals(2, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "ORIG"
+     *   ||^
+     */
+    @Test
+    def testDeleteText6: Unit = {
+        val dto = new DeleteTextOperation(startPos = 4, size = 4)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("ORIG", doc.data)
+        Assert.assertEquals(1, doc.caret.offset)
+        Assert.assertEquals(2, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "ORI"
+     *   ||^
+     */
+    @Test
+    def testDeleteText7: Unit = {
+        val dto = new DeleteTextOperation(startPos = 3, size = 5)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("ORI", doc.data)
+        Assert.assertEquals(1, doc.caret.offset)
+        Assert.assertEquals(2, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "OR"
+     *   |^
+     */
+    @Test
+    def testDeleteText8: Unit = {
+        val dto = new DeleteTextOperation(startPos = 2, size = 6)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("OR", doc.data)
+        Assert.assertEquals(1, doc.caret.offset)
+        Assert.assertEquals(1, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * "O"
+     *   ^
+     */
+    @Test
+    def testDeleteText9: Unit = {
+        val dto = new DeleteTextOperation(startPos = 1, size = 7)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("O", doc.data)
+        Assert.assertEquals(1, doc.caret.offset)
+        Assert.assertEquals(0, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *   ||^
+     * ""
+     *  ^
+     */
+    @Test
+    def testDeleteText10: Unit = {
+        val dto = new DeleteTextOperation(startPos = 0, size = 8)
+
+        val doc = newDocument("ORIGINAL", offset = 1, selectionLen = 2)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("", doc.data)
+        Assert.assertEquals(0, doc.caret.offset)
+        Assert.assertEquals(0, doc.caret.selectionLength)
+    }
+
+    /**
+     * "ORIGINAL"
+     *  ||||||||^
+     * "ORINAL"
+     *  ||||||^
+     */
+    @Test
+    def testDeleteText11: Unit = {
+        val dto = new DeleteTextOperation(startPos = 2, size = 2)
+
+        val doc = newDocument("ORIGINAL", offset = 0, selectionLen = 8)
+        dto.executeOn(doc)
+
+        Assert.assertEquals("ORINAL", doc.data)
+        Assert.assertEquals(0, doc.caret.offset)
+        Assert.assertEquals(6, doc.caret.selectionLength)
     }
 
     def newDocument(text: String, offset: Int, selectionLen: Int) =
