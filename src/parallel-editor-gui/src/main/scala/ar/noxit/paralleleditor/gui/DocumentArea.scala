@@ -12,7 +12,6 @@ trait Synchronizer {
 }
 
 class DocumentArea(private val docTitle: String, private val initialContent: String) extends ScrollPane {
-
     @BeanProperty
     var sync: Synchronizer = _
 
@@ -57,18 +56,23 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
     private def processOperation(o: EditOperation) = {
         doInGuard({
             val docData = new DocumentData {
-                var data = areaEdicion.text
+                def data = areaEdicion.text
 
-                // TODO implementar en GUI
+                def data_=(text: String) {
+                    areaEdicion.text = text
+                }
+
                 val caret = new Caret {
-                    val selectionLength = 0
-                    val offset = 0
+                    def selectionLength = 0
 
-                    def change(offset: Int, selectionLength: Int) = {}
+                    def offset = areaEdicion.caret.position
+
+                    def change(offset: Int, selectionLength: Int) = {
+                        areaEdicion.caret.position = offset
+                    }
                 }
             }
             o.executeOn(docData)
-            areaEdicion.text = docData.data
         })
     }
 
