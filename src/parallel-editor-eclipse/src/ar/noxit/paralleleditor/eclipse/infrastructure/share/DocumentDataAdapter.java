@@ -1,8 +1,8 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.Caret;
@@ -13,25 +13,20 @@ public class DocumentDataAdapter implements DocumentData {
 
 	private final org.eclipse.jface.text.IDocument adapted;
 	private final ITextEditor textEditor;
+	private final StyledText adapter;
 
 	public DocumentDataAdapter(org.eclipse.jface.text.IDocument eclipseDoc, IDocument document) {
 		Assert.isNotNull(eclipseDoc);
 		Assert.isNotNull(document);
 
-		adapted = eclipseDoc;
-		textEditor = document.getTextEditor();
+		this.adapted = eclipseDoc;
+		this.textEditor = document.getTextEditor();
+		this.adapter = (StyledText) textEditor.getAdapter(Control.class);
 	}
 
 	@Override
 	public void data_$eq(String data) {
 		adapted.set(data);
-
-		ISelection selection = textEditor.getSelectionProvider().getSelection();
-		if (selection instanceof ITextSelection) {
-			ITextSelection t = (ITextSelection) selection;
-		}
-
-		textEditor.selectAndReveal(0, 1);
 	}
 
 	@Override
@@ -45,16 +40,19 @@ public class DocumentDataAdapter implements DocumentData {
 
 			@Override
 			public int selectionLength() {
-				return 0;
+				return adapter.getSelectionCount();
 			}
 
 			@Override
 			public int offset() {
-				return 0;
+				return adapter.getCaretOffset();
 			}
 
 			@Override
 			public void change(int offset, int selectionLength) {
+				System.out.println("antes: offset " + this.offset() + " len" + this.selectionLength());
+				System.out.println("dsps: offset " + offset + " len" + selectionLength);
+				textEditor.selectAndReveal(offset, selectionLength);
 			}
 		};
 	}
