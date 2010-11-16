@@ -1,8 +1,8 @@
 package ar.noxit.paralleleditor.common.operation
 
 trait Caret {
-    val offset: Int
-    val selectionLength: Int
+    def offset: Int
+    def selectionLength: Int
     def change(offset: Int, selectionLength: Int)
 }
 

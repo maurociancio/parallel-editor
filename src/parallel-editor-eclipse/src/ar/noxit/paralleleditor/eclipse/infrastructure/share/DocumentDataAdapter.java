@@ -11,8 +11,8 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 
 public class DocumentDataAdapter implements DocumentData {
 
-	private org.eclipse.jface.text.IDocument adapted;
-	private ITextEditor textEditor;
+	private final org.eclipse.jface.text.IDocument adapted;
+	private final ITextEditor textEditor;
 
 	public DocumentDataAdapter(org.eclipse.jface.text.IDocument eclipseDoc, IDocument document) {
 		Assert.isNotNull(eclipseDoc);
