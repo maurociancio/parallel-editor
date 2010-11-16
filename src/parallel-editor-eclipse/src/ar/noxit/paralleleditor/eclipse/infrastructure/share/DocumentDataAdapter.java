@@ -50,8 +50,6 @@ public class DocumentDataAdapter implements DocumentData {
 
 			@Override
 			public void change(int offset, int selectionLength) {
-				System.out.println("antes: offset " + this.offset() + " len" + this.selectionLength());
-				System.out.println("dsps: offset " + offset + " len" + selectionLength);
 				textEditor.selectAndReveal(offset, selectionLength);
 			}
 		};
