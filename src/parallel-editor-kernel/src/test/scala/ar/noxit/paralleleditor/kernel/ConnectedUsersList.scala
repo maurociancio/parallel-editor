@@ -94,16 +94,15 @@ class ConnectedUsersList extends AssertionsForJUnit {
         ca2.start
 
         ca2 ! NetworkActors(gateway2, null)
+
+        Thread.sleep(1000)
         ca2 ! RemoteLoginRequest("username2")
-
-        Thread.sleep(500)
-
         ca2 ! RemoteSubscribeRequest("new_doc")
 
         Thread.sleep(500)
         ca2 ! RemoteUserListRequest()
 
-        Thread.sleep(500)
+        Thread.sleep(1500)
         EasyMock.verify(gateway1)
         EasyMock.verify(gateway2)
     }

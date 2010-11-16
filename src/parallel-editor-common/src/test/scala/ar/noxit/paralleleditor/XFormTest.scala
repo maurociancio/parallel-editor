@@ -1,7 +1,7 @@
 package ar.noxit.paralleleditor
 
 import ar.noxit.paralleleditor.common.BasicXFormStrategy
-import common.operation.{DeleteTextOperation, EditOperation, DocumentData, AddTextOperation}
+import common.operation._
 import org.junit._
 import org.scalatest.junit.AssertionsForJUnit
 import Assert._
@@ -96,9 +96,6 @@ class XFormTest extends AssertionsForJUnit {
 
         checkTransform(c, ctext, s, stext, "acde")
     }
-
-
-
 
 
     @Test
@@ -266,5 +263,12 @@ class XFormTest extends AssertionsForJUnit {
         assertEquals(expected, ctext.data)
     }
 
-    def docFromText(text: String) = (new DocumentData {var data = text}, new DocumentData {var data = text})
+    def docFromText(text: String) = 
+        (new DocumentData {
+            var data = text
+            val caret = new NullCaret
+        }, new DocumentData {
+            var data = text
+            val caret = new NullCaret
+        })
 }

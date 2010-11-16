@@ -58,6 +58,14 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
         doInGuard({
             val docData = new DocumentData {
                 var data = areaEdicion.text
+
+                // TODO implementar en GUI
+                val caret = new Caret {
+                    val selectionLength = 0
+                    val offset = 0
+
+                    def change(offset: Int, selectionLength: Int) = {}
+                }
             }
             o.executeOn(docData)
             areaEdicion.text = docData.data

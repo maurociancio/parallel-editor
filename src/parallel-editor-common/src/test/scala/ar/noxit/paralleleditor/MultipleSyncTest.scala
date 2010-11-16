@@ -458,7 +458,7 @@ class MultipleSyncTest extends AssertionsForJUnit {
         val startPosC1 = 6
         val colaC1 = Queue[Message[EditOperation]]()
 
-        (0 until textClient1.length).foreach{
+        (0 until textClient1.length).foreach {
             i =>
                 val c = textClient1.substring(i, i + 1)
 
@@ -467,19 +467,19 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
                 c1.generate(op, {
                     msg => colaC1 += msg
-            })
+                })
         }
 
         val startPosC2 = 4
         val delSizeC2 = 4
         val colaC2 = Queue[Message[EditOperation]]()
 
-        (1 to delSizeC2).foreach{
+        (1 to delSizeC2).foreach {
             i =>
-                val op = new DeleteTextOperation(startPosC2,1)
+                val op = new DeleteTextOperation(startPosC2, 1)
                 op.executeOn(c2Doc)
-                 c2.generate(op, {
-                        msg => colaC2 += msg
+                c2.generate(op, {
+                    msg => colaC2 += msg
                 })
         }
 
@@ -512,9 +512,9 @@ class MultipleSyncTest extends AssertionsForJUnit {
                 })
         }
 
-        Assert.assertEquals("ABCDWXYZ",serverDoc.data)
+        Assert.assertEquals("ABCDWXYZ", serverDoc.data)
 
-         (0 until 4).foreach {
+        (0 until 4).foreach {
             i =>
                 c1.receive(colaACliente1.dequeue, {
                     op => op.executeOn(c1Doc)
@@ -531,5 +531,6 @@ class MultipleSyncTest extends AssertionsForJUnit {
 
     def docFromText(text: String) = new DocumentData {
         var data = text
+        val caret = new NullCaret
     }
 }

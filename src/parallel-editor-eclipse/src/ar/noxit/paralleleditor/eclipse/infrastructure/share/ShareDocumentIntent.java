@@ -47,19 +47,6 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 		getTextFileBuffer(document).getDocument().addDocumentListener(listener);
 	}
 
-	protected ITextFileBuffer getTextFileBuffer(IDocument document) {
-		Assert.isNotNull(document);
-
-		LocationKind locationKind = document.getLocationKind();
-		IPath fullPath = document.getFullPath();
-
-		return get().getTextFileBuffer(fullPath, locationKind);
-	}
-
-	protected ITextFileBufferManager get() {
-		return ITextFileBufferManager.DEFAULT;
-	}
-
 	@Override
 	protected DocumentData getAdapterFor(final IDocument document) {
 		// TODO adaptar mejor, sin reemplazar todo
@@ -85,5 +72,18 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 				return adapted.get();
 			}
 		};
+	}
+
+	protected ITextFileBufferManager get() {
+		return ITextFileBufferManager.DEFAULT;
+	}
+
+	protected ITextFileBuffer getTextFileBuffer(IDocument document) {
+		Assert.isNotNull(document);
+
+		LocationKind locationKind = document.getLocationKind();
+		IPath fullPath = document.getFullPath();
+
+		return get().getTextFileBuffer(fullPath, locationKind);
 	}
 }

@@ -4,7 +4,7 @@ import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
 import messages.{SubscriberLeftDocument, NewSubscriberToDocument}
 import scala.List
-import ar.noxit.paralleleditor.common.operation.DocumentData
+import ar.noxit.paralleleditor.common.operation.{Caret, DocumentData}
 
 class BasicDocument(val title: String, var data: String, private val docSessionFactory: DocumentSessionFactory) extends Document with DocumentData {
     private var subscribers = List[Session]()
@@ -64,6 +64,13 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
             throw new DocumentInUseException("document is being used")
 
         subscribers = List()
+    }
+
+    val caret = new Caret {
+        val selectionLength = 0 // caret at pos 0
+        val offset = 0 // nothing selected
+
+        override def change(offset: Int, selectionLength: Int) = null // do nothing}
     }
 
     def subscriberCount =
