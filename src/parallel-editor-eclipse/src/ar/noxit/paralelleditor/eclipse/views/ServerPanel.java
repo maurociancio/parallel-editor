@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Label;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 
 public class ServerPanel extends Composite {
 
@@ -35,19 +34,28 @@ public class ServerPanel extends Composite {
 	private StackLayout layoutVisibility;
 	private Composite docsContainer;
 
-	// TODO no instanciar
-	private IRemoteConnectionFactory connectionFactory = new ShareManager();
+	private final IRemoteConnectionFactory connectionFactory;
 
 	private static final String STATUS_DISCONNECTED = "Disconnected";
 	private static final String STATUS_CONNECTED = "Connected";
 	private static final String STATUS_CONNECTING = "Connecting to server...";
 	private static final String STATUS_DISCONNECTING = "Disconnecting...";
 
-	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo) {
+	public ServerPanel(Composite parent, int style,
+			IModel<ConnectionInfo> connectionInfo,
+			IRemoteConnectionFactory connectionFactory) {
 		super(parent, style);
+
+		// connection factory
+		this.connectionFactory = connectionFactory;
+
+		// connection factory
 		this.connectionInfo = connectionInfo;
+
+		// layout
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
+		// status
 		this.statusPanel = new StatusPanel(this, SWT.NONE);
 
 		docsContainer = new Composite(this, SWT.NONE);
@@ -208,40 +216,40 @@ public class ServerPanel extends Composite {
 			Group contenedor = new Group(this, SWT.NONE);
 			contenedor.setText("Available Docs");
 			contenedor.setLayout(new FillLayout());
-			TreeViewer docTree = new TreeViewer(contenedor,SWT.NONE);
+			TreeViewer docTree = new TreeViewer(contenedor, SWT.NONE);
 			docTree.setLabelProvider(getLabelProvider());
 			docTree.setContentProvider(getContentProvider());
 			docTree.setInput(getSampleInput());
 		}
 
-		public LabelProvider getLabelProvider(){
-			return new LabelProvider(){
+		public LabelProvider getLabelProvider() {
+			return new LabelProvider() {
 
 				@Override
 				public Image getImage(Object element) {
 					return null;
 				}
-				
+
 				@Override
 				public String getText(Object element) {
-					return element == null ? "" : ((DocumentElement)element).getTitle();
+					return element == null ? "" : ((DocumentElement) element).getTitle();
 				}
 			};
 		}
-		
-		public ITreeContentProvider getContentProvider(){
+
+		public ITreeContentProvider getContentProvider() {
 			return new DocumentTreeContentProvider();
 		}
-		
-		
-		private class DocumentTreeContentProvider extends ArrayContentProvider implements ITreeContentProvider{
+
+		private class DocumentTreeContentProvider extends ArrayContentProvider implements ITreeContentProvider {
 
 			@Override
 			public Object[] getChildren(Object parentElement) {
-//				return ((DocumentElement)parentElement).getUsers().toArray();
-				if (((DocumentElement)parentElement).getTitle().startsWith("t")) 
-				return new DocumentElement[] {new DocumentElement("lala",null)};
-				else return null;
+				// return ((DocumentElement)parentElement).getUsers().toArray();
+				if (((DocumentElement) parentElement).getTitle().startsWith("t"))
+					return new DocumentElement[] { new DocumentElement("lala", null) };
+				else
+					return null;
 			}
 
 			@Override
@@ -251,12 +259,11 @@ public class ServerPanel extends Composite {
 
 			@Override
 			public boolean hasChildren(Object element) {
-				return (((DocumentElement)element).getUsers()!=null);
+				return (((DocumentElement) element).getUsers() != null);
 			}
-			
 		}
 
-		public Object[] getSampleInput(){
+		public Object[] getSampleInput() {
 			ArrayList<DocumentElement> docsModels = new ArrayList<DocumentElement>();
 			docsModels.add(new DocumentElement("pirulo", null));
 			ArrayList<String> users = new ArrayList<String>();
@@ -265,23 +272,23 @@ public class ServerPanel extends Composite {
 			docsModels.add(new DocumentElement("tallala", users));
 			return docsModels.toArray();
 		}
-		
+
 		public class DocumentElement {
 			private String title;
-			private  Collection<String> users;
+			private Collection<String> users;
 
-			public DocumentElement(String title, Collection<String> users){
+			public DocumentElement(String title, Collection<String> users) {
 				this.title = title;
 				this.users = users;
 			}
-			
+
 			public String getTitle() {
 				return title;
 			}
+
 			public Collection<String> getUsers() {
 				return users;
 			}
-			
 		}
 	}
 }

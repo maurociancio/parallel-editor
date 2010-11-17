@@ -11,6 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.Model;
+import ar.noxit.paralleleditor.eclipse.Activator;
 
 public class ConnectionView extends ViewPart {
 
@@ -32,7 +33,7 @@ public class ConnectionView extends ViewPart {
 		hostList.setLayoutData(hostListData);
 
 		// server panel
-		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID, selectedConnection);
+		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID, selectedConnection, Activator.shareManager);
 		GridData serverPanelData = new GridData();
 		serverPanelData.horizontalSpan = 2;
 		serverPanelData.horizontalAlignment = SWT.FILL;

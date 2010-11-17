@@ -114,6 +114,10 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 			return ConnectionStatus.CONNECTED;
 	}
 
+	public void dispose() {
+		// TODO implementar
+	}
+
 	protected void createServiceIfNotCreated() {
 		if (this.kernelService == null) {
 			this.kernelService = newKernelService();

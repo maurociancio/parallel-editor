@@ -4,6 +4,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -14,6 +16,9 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+
+	// Share manager
+	public static ShareManager shareManager = null;
 
 	/**
 	 * The constructor
@@ -31,6 +36,8 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		shareManager = new ShareManager();
 	}
 
 	/*
@@ -41,6 +48,8 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
+		shareManager.dispose();
+
 		plugin = null;
 		super.stop(context);
 	}
