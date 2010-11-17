@@ -57,6 +57,11 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	 */
 	private Map<ConnectionId, JSession> remoteSessions = new HashMap<ConnectionId, JSession>();
 
+	/**
+	 * remote sessions callbacks
+	 */
+	private Map<ConnectionId, ISession> remoteSessionsCallbacks = new HashMap<ConnectionId, ISession>();
+
 	// converter
 	private DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
 			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
@@ -76,7 +81,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		//
 		callbacks.put(docTitle, remoteMessageCallback);
 		// create the session
-		JSession newSession = createSessionIfNotExists();
+		JSession newSession = createLocalSessionIfNotExists();
 		// create the new document
 		newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 
@@ -90,19 +95,23 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	@Override
-	public void connect(ConnectionInfo info) {
+	public ISession connect(ConnectionInfo info) {
 		Assert.isNotNull(info);
 
+		// connection id
 		ConnectionId id = info.getId();
-		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), new Documents() {
-
-			@Override
-			public void process(CommandFromKernel command) {
-				System.out.println(command);
-			}
-		});
+		// adapter
+		RemoteDocumentsAdapter adapter = new RemoteDocumentsAdapter();
+		// the newly created session
+		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), adapter);
+		// logging to the kernel
 		newSession.send(new RemoteLoginRequest(info.getUsername()));
+
 		remoteSessions.put(info.getId(), newSession);
+
+		ISession newRemoteSession = new RemoteSession(info, newSession, adapter);
+		remoteSessionsCallbacks.put(id, newRemoteSession);
+		return newRemoteSession;
 	}
 
 	@Override
@@ -120,7 +129,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// TODO implementar
 	}
 
-	protected JSession createSessionIfNotExists() {
+	protected JSession createLocalSessionIfNotExists() {
 		if (localSession == null) {
 			JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
 

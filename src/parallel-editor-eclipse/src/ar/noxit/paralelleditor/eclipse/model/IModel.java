@@ -8,7 +8,7 @@ public interface IModel<T> {
 
 	T get();
 
-	void set(T object);
+	void set(final T object);
 
 	void addNewListener(IModelListener listener);
 }

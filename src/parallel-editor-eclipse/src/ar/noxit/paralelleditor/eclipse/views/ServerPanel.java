@@ -1,18 +1,13 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -28,6 +23,8 @@ import org.eclipse.ui.ide.IDE;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
+import ar.noxit.paralelleditor.eclipse.model.Model;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
 
 public class ServerPanel extends Composite {
 
@@ -46,7 +43,10 @@ public class ServerPanel extends Composite {
 	private static final String STATUS_CONNECTING = "Connecting to server...";
 	private static final String STATUS_DISCONNECTING = "Disconnecting...";
 
-	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo,
+	private Model<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>();
+
+	public ServerPanel(Composite parent, int style,
+			IModel<ConnectionInfo> connectionInfo,
 			IRemoteConnectionFactory connectionFactory) {
 		super(parent, style);
 
@@ -166,29 +166,32 @@ public class ServerPanel extends Composite {
 				public void widgetSelected(SelectionEvent e) {
 					ConnectionInfo info = connectionInfo.get();
 
-					connectionFactory.connect(info);
+					ISession session = connectionFactory.connect(info);
+					session.installUserListCallback(new UserListCallback(usersModel));
+					session.requestDocumentList();
 				}
 			});
 
-			final Button openEditor  = new Button(contenedor, SWT.None);
-			openEditor.addSelectionListener(new SelectionAdapter(){
+			final Button openEditor = new Button(contenedor, SWT.None);
+			openEditor.addSelectionListener(new SelectionAdapter() {
 				@Override
-				public void widgetSelected(SelectionEvent e){
+				public void widgetSelected(SelectionEvent e) {
 					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 					IWorkbenchPage page = window.getActivePage();
 					if (page != null)
 						try {
 							String title = "Titulo.java";
 							String content = "Parabarabarabara texto";
-							IDE.openEditor(page, new StringEditorInput(title, content), IDE.getEditorDescriptor(title).getId(),true);
+							IDE.openEditor(page, new StringEditorInput(title, content), IDE.getEditorDescriptor(title)
+									.getId(), true);
 						} catch (PartInitException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						}			
+						}
 				}
 			});
 			openEditor.setText("editor");
-			
+
 			GridData gridDataButton = new GridData();
 			gridDataButton.grabExcessHorizontalSpace = true;
 			gridDataButton.horizontalAlignment = SWT.FILL;
@@ -233,85 +236,33 @@ public class ServerPanel extends Composite {
 
 	private class DocumentsPanel extends Composite {
 
+		private TreeViewer docTree;
+
 		public DocumentsPanel(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new FillLayout(SWT.HORIZONTAL));
+
 			Group contenedor = new Group(this, SWT.NONE);
-			contenedor.setText("Available Docs");
+			contenedor.setText("Available Users & Docs");
 			contenedor.setLayout(new FillLayout());
-			TreeViewer docTree = new TreeViewer(contenedor, SWT.NONE);
-			docTree.setLabelProvider(getLabelProvider());
-			docTree.setContentProvider(getContentProvider());
-			docTree.setInput(getSampleInput());
-		}
 
-		public LabelProvider getLabelProvider() {
-			return new LabelProvider() {
+			this.docTree = new TreeViewer(contenedor, SWT.NONE);
+			docTree.setLabelProvider(new TreeLabelProvider());
+			docTree.setContentProvider(new DocumentTreeContentProvider());
+
+			usersModel.addNewListener(new IModelListener() {
 
 				@Override
-				public Image getImage(Object element) {
-					return null;
+				public void onUpdate() {
+					redraw();
 				}
-
-				@Override
-				public String getText(Object element) {
-					return element == null ? "" : ((DocumentElement) element).getTitle();
-				}
-			};
+			});
 		}
 
-		public ITreeContentProvider getContentProvider() {
-			return new DocumentTreeContentProvider();
-		}
-
-		private class DocumentTreeContentProvider extends ArrayContentProvider implements ITreeContentProvider {
-
-			@Override
-			public Object[] getChildren(Object parentElement) {
-				// return ((DocumentElement)parentElement).getUsers().toArray();
-				if (((DocumentElement) parentElement).getTitle().startsWith("t"))
-					return new DocumentElement[] { new DocumentElement("lala", null) };
-				else
-					return null;
-			}
-
-			@Override
-			public Object getParent(Object element) {
-				return null;
-			}
-
-			@Override
-			public boolean hasChildren(Object element) {
-				return (((DocumentElement) element).getUsers() != null);
-			}
-		}
-
-		public Object[] getSampleInput() {
-			ArrayList<DocumentElement> docsModels = new ArrayList<DocumentElement>();
-			docsModels.add(new DocumentElement("pirulo", null));
-			ArrayList<String> users = new ArrayList<String>();
-			users.add("pepe");
-			users.add("juan");
-			docsModels.add(new DocumentElement("tallala", users));
-			return docsModels.toArray();
-		}
-
-		public class DocumentElement {
-			private String title;
-			private Collection<String> users;
-
-			public DocumentElement(String title, Collection<String> users) {
-				this.title = title;
-				this.users = users;
-			}
-
-			public String getTitle() {
-				return title;
-			}
-
-			public Collection<String> getUsers() {
-				return users;
-			}
+		@Override
+		public void redraw() {
+			docTree.setInput(usersModel.get());
+			super.redraw();
 		}
 	}
 }
