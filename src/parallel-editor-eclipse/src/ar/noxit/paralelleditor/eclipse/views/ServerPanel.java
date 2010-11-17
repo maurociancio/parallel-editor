@@ -1,13 +1,16 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
@@ -21,6 +24,8 @@ public class ServerPanel extends Composite {
 	private DocumentsPanel documentsPanel;
 	private StatusPanel statusPanel;
 	private Label noSelectionLabel;
+	private StackLayout layoutVisibility;
+	private Composite docsContainer;
 
 	// TODO no instanciar
 	private IRemoteConnectionFactory connectionFactory = new ShareManager();
@@ -33,12 +38,18 @@ public class ServerPanel extends Composite {
 	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo) {
 		super(parent, style);
 		this.connectionInfo = connectionInfo;
+		setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		this.statusPanel = new StatusPanel(parent, SWT.NONE);
-		this.documentsPanel = new DocumentsPanel(parent, SWT.NONE);
-		this.noSelectionLabel = new Label(parent, SWT.NONE);
+		this.statusPanel = new StatusPanel(this, SWT.NONE);
+
+		docsContainer = new Composite(this, SWT.NONE);
+		layoutVisibility = new StackLayout();
+		docsContainer.setLayout(layoutVisibility);
+		this.documentsPanel = new DocumentsPanel(docsContainer, SWT.NONE);
+		this.noSelectionLabel = new Label(docsContainer, SWT.NONE);
 		this.noSelectionLabel.setText("Please select a hostname");
 
+		layoutVisibility.topControl = documentsPanel;
 		connectionInfo.addNewListener(new IModelListener() {
 
 			@Override
@@ -52,10 +63,9 @@ public class ServerPanel extends Composite {
 
 	private void determineVisibility() {
 		ConnectionInfo info = connectionInfo.get();
-
-		documentsPanel.setVisible(info != null);
+		layoutVisibility.topControl = (info != null) ? documentsPanel : noSelectionLabel;
 		statusPanel.setVisible(info != null);
-		noSelectionLabel.setVisible(info == null);
+		docsContainer.layout();
 	}
 
 	@Override
@@ -76,41 +86,59 @@ public class ServerPanel extends Composite {
 
 		public StatusPanel(Composite parent, int style) {
 			super(parent, style);
-
+			setLayout(new FillLayout());
+			Group contenedor = new Group(this, SWT.NONE);
+			contenedor.setText("Connection Details");
 			GridLayout layoutContenedor = new GridLayout();
 			layoutContenedor.numColumns = 2;
-			setLayout(layoutContenedor);
+			// layoutContenedor.makeColumnsEqualWidth = true;
+			contenedor.setLayout(layoutContenedor);
 
-			Label userNameLabel = new Label(this, SWT.CENTER);
+			// username
+			Label userNameLabel = new Label(contenedor, SWT.NONE);
 			userNameLabel.setText("Username:");
 
-			GridData gridData = new GridData();
-			gridData.grabExcessHorizontalSpace = true;
-			gridData.horizontalAlignment = GridData.FILL;
+			GridData gridDataUserName = new GridData();
+			gridDataUserName.grabExcessHorizontalSpace = true;
+			gridDataUserName.horizontalAlignment = GridData.FILL;
+			gridDataUserName.grabExcessVerticalSpace = true;
 
-			this.userName = new Label(this, SWT.NONE);
-			userName.setLayoutData(gridData);
+			this.userName = new Label(contenedor, SWT.NONE);
+			userName.setLayoutData(gridDataUserName);
 
-			Label serverIPLabel = new Label(this, SWT.CENTER);
+			// serverIP
+			Label serverIPLabel = new Label(contenedor, SWT.CENTER);
 			serverIPLabel.setText("Hostname:");
 
-			this.serverIP = new Label(this, SWT.NONE);
-			serverIP.setLayoutData(gridData);
+			GridData gridDataServerIp = new GridData();
+			gridDataServerIp.grabExcessHorizontalSpace = true;
+			gridDataServerIp.horizontalAlignment = GridData.FILL;
+			gridDataServerIp.grabExcessVerticalSpace = true;
 
-			Label serverPortLabel = new Label(this, SWT.CENTER);
+			this.serverIP = new Label(contenedor, SWT.NONE);
+			serverIP.setLayoutData(gridDataServerIp);
+
+			// serverPort
+			Label serverPortLabel = new Label(contenedor, SWT.CENTER);
 			serverPortLabel.setText("Server Port:");
 
-			this.serverPort = new Label(this, SWT.NONE);
-			serverPort.setLayoutData(gridData);
+			GridData gridDataServerPort = new GridData();
+			gridDataServerPort.grabExcessHorizontalSpace = true;
+			gridDataServerPort.horizontalAlignment = GridData.FILL;
+			gridDataServerPort.grabExcessVerticalSpace = true;
 
-			this.connectionStatus = new Label(this, SWT.NONE);
-			this.connectionStatus.setText("                   "); // FIX
+			this.serverPort = new Label(contenedor, SWT.NONE);
+			serverPort.setLayoutData(gridDataServerPort);
+
+			this.connectionStatus = new Label(contenedor, SWT.NONE);
+			this.connectionStatus.setText("                          "); // FIX
 			GridData connectionData = new GridData();
 			connectionData.grabExcessHorizontalSpace = true;
-			// connectionStatus.setLayoutData(connectionData);
+			connectionStatus.setLayoutData(connectionData);
 			showStatus();
 
-			final Button connectButton = new Button(this, SWT.CENTER);
+			// connect-disconnect button
+			final Button connectButton = new Button(contenedor, SWT.CENTER);
 			connectButton.setText("Connect");
 			connectButton.addSelectionListener(new SelectionAdapter() {
 
@@ -121,6 +149,11 @@ public class ServerPanel extends Composite {
 					connectionFactory.connect(info);
 				}
 			});
+
+			GridData gridDataButton = new GridData();
+			gridDataButton.grabExcessHorizontalSpace = true;
+			gridDataButton.horizontalAlignment = SWT.FILL;
+			connectButton.setLayoutData(gridDataButton);
 
 			updateTexts();
 		}
@@ -163,6 +196,8 @@ public class ServerPanel extends Composite {
 
 		public DocumentsPanel(Composite parent, int style) {
 			super(parent, style);
+			setLayout(new FillLayout(SWT.HORIZONTAL));
+			new Button(this, SWT.PUSH).setText("listadoc");
 		}
 	}
 }

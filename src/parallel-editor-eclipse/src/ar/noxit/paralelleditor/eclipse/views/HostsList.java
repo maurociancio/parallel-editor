@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Group;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 
@@ -23,18 +24,17 @@ public class HostsList extends Composite {
 			final IModel<ConnectionInfo> selectedConnection) {
 		super(parent, style);
 		this.hostsModel = hostsModel;
-
+		setLayout(new FillLayout());
+		
 		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
-		setLayout(layout);
-
-		// hosts
-		Label host = new Label(this, style);
-		host.setText("Available hosts");
-
+		Group contenedor = new Group(this, SWT.NONE);
+		contenedor.setLayout(layout);
+		contenedor.setText("Available hosts");
+	
 		// hosts list
-		this.hosts = new List(this, SWT.BORDER | SWT.V_SCROLL);
+		this.hosts = new List(contenedor, SWT.BORDER | SWT.V_SCROLL);
 		this.hosts.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -62,7 +62,7 @@ public class HostsList extends Composite {
 		populateList();
 
 		//buttons container 
-		Composite buttonsContainer = new Composite(this, SWT.NONE);
+		Composite buttonsContainer = new Composite(contenedor, SWT.NONE);
 		buttonsContainer.setLayout(new FillLayout(SWT.VERTICAL));
 		GridData buttonsGridData = new GridData();
 		buttonsGridData.horizontalAlignment = SWT.FILL;

@@ -22,8 +22,7 @@ public class ConnectionView extends ViewPart {
 		IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
 
 		// host list
-		HostsList hostList = new HostsList(parent, SWT.NONE,
-				Model.of(connections), selectedConnection);
+		HostsList hostList = new HostsList(parent, SWT.NONE, Model.of(connections), selectedConnection);
 		GridData hostListData = new GridData();
 		hostListData.grabExcessVerticalSpace = true;
 		hostListData.verticalAlignment = SWT.FILL;
@@ -33,8 +32,7 @@ public class ConnectionView extends ViewPart {
 		hostList.setLayoutData(hostListData);
 
 		// server panel
-		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID,
-				selectedConnection);
+		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID, selectedConnection);
 		GridData serverPanelData = new GridData();
 		serverPanelData.horizontalSpan = 2;
 		serverPanelData.horizontalAlignment = SWT.FILL;
