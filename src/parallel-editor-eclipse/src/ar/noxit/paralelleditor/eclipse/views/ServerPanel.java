@@ -2,6 +2,7 @@ package ar.noxit.paralelleditor.eclipse.views;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -25,11 +26,14 @@ public class ServerPanel extends Composite {
 
 	private IModel<ConnectionInfo> connectionInfo;
 
-	private DocumentsPanel documentsPanel;
-	private StatusPanel statusPanel;
-	private Label noSelectionLabel;
+	private Composite hostComposite;
 	private StackLayout layoutVisibility;
-	private Composite docsContainer;
+
+	private UsersPanel usersPanel;
+	private StatusPanel statusPanel;
+	private DocumentsPanel documentsPanel;
+
+	private Label noSelectionLabel;
 
 	private final IRemoteConnectionFactory connectionFactory;
 
@@ -48,23 +52,27 @@ public class ServerPanel extends Composite {
 		// connection factory
 		this.connectionFactory = connectionFactory;
 
-		// connection factory
+		// connection info
 		this.connectionInfo = connectionInfo;
 
 		// layout
-		setLayout(new FillLayout(SWT.HORIZONTAL));
+		this.layoutVisibility = new StackLayout();
+		setLayout(layoutVisibility);
+
+		// composite de: documents, users y server info
+		this.hostComposite = new Composite(this, SWT.NONE);
+		this.hostComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		// status
-		this.statusPanel = new StatusPanel(this, SWT.NONE);
+		this.statusPanel = new StatusPanel(hostComposite, SWT.NONE);
+		// user panel
+		this.usersPanel = new UsersPanel(hostComposite, SWT.NONE);
+		// docs panel
+		this.documentsPanel = new DocumentsPanel(hostComposite, SWT.NONE);
 
-		docsContainer = new Composite(this, SWT.NONE);
-		layoutVisibility = new StackLayout();
-		docsContainer.setLayout(layoutVisibility);
-		this.documentsPanel = new DocumentsPanel(docsContainer, SWT.NONE);
-		this.noSelectionLabel = new Label(docsContainer, SWT.NONE);
+		this.noSelectionLabel = new Label(this, SWT.NONE);
 		this.noSelectionLabel.setText("Please select a hostname");
 
-		layoutVisibility.topControl = documentsPanel;
 		connectionInfo.addNewListener(new IModelListener() {
 
 			@Override
@@ -78,15 +86,14 @@ public class ServerPanel extends Composite {
 
 	private void determineVisibility() {
 		ConnectionInfo info = connectionInfo.get();
-		layoutVisibility.topControl = (info != null) ? documentsPanel : noSelectionLabel;
-		statusPanel.setVisible(info != null);
-		docsContainer.layout();
+		layoutVisibility.topControl = info != null ? hostComposite : noSelectionLabel;
+		layout();
 	}
 
 	@Override
 	public void redraw() {
 		determineVisibility();
-		documentsPanel.redraw();
+		usersPanel.redraw();
 		noSelectionLabel.redraw();
 		statusPanel.redraw();
 		super.redraw();
@@ -218,19 +225,19 @@ public class ServerPanel extends Composite {
 		}
 	}
 
-	private class DocumentsPanel extends Composite {
+	private class UsersPanel extends Composite {
 
 		private TreeViewer docTree;
 
-		public DocumentsPanel(Composite parent, int style) {
+		public UsersPanel(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new FillLayout(SWT.HORIZONTAL));
 
 			Group contenedor = new Group(this, SWT.NONE);
-			contenedor.setText("Available Users & Docs");
+			contenedor.setText("Available Users");
 			contenedor.setLayout(new FillLayout());
 
-			this.docTree = new TreeViewer(contenedor, SWT.NONE);
+			this.docTree = new TreeViewer(contenedor, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 			docTree.setLabelProvider(new TreeLabelProvider());
 			docTree.setContentProvider(new DocumentTreeContentProvider());
 
@@ -246,6 +253,27 @@ public class ServerPanel extends Composite {
 		@Override
 		public void redraw() {
 			docTree.setInput(usersModel.get());
+			super.redraw();
+		}
+	}
+
+	private class DocumentsPanel extends Composite {
+
+		private ListViewer documents;
+
+		public DocumentsPanel(Composite parent, int style) {
+			super(parent, style);
+			setLayout(new FillLayout(SWT.HORIZONTAL));
+
+			Group contenedor = new Group(this, SWT.NONE);
+			contenedor.setText("Available Docs");
+			contenedor.setLayout(new FillLayout());
+
+			this.documents = new ListViewer(contenedor, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		}
+
+		@Override
+		public void redraw() {
 			super.redraw();
 		}
 	}
