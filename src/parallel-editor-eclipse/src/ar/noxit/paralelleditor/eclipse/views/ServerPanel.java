@@ -1,10 +1,19 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -197,7 +206,83 @@ public class ServerPanel extends Composite {
 		public DocumentsPanel(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new FillLayout(SWT.HORIZONTAL));
-			new Button(this, SWT.PUSH).setText("listadoc");
+			Group contenedor = new Group(this, SWT.NONE);
+			contenedor.setText("Available Docs");
+			contenedor.setLayout(new FillLayout());
+			TreeViewer docTree = new TreeViewer(contenedor,SWT.NONE);
+			docTree.setLabelProvider(getLabelProvider());
+			docTree.setContentProvider(getContentProvider());
+			docTree.setInput(getSampleInput());
+		}
+
+		public LabelProvider getLabelProvider(){
+			return new LabelProvider(){
+
+				@Override
+				public Image getImage(Object element) {
+					return null;
+				}
+				
+				@Override
+				public String getText(Object element) {
+					return element == null ? "" : ((DocumentElement)element).getTitle();
+				}
+			};
+		}
+		
+		public ITreeContentProvider getContentProvider(){
+			return new DocumentTreeContentProvider();
+		}
+		
+		
+		private class DocumentTreeContentProvider extends ArrayContentProvider implements ITreeContentProvider{
+
+			@Override
+			public Object[] getChildren(Object parentElement) {
+//				return ((DocumentElement)parentElement).getUsers().toArray();
+				if (((DocumentElement)parentElement).getTitle().startsWith("t")) 
+				return new DocumentElement[] {new DocumentElement("lala",null)};
+				else return null;
+			}
+
+			@Override
+			public Object getParent(Object element) {
+				return null;
+			}
+
+			@Override
+			public boolean hasChildren(Object element) {
+				return (((DocumentElement)element).getUsers()!=null);
+			}
+			
+		}
+
+		public Object[] getSampleInput(){
+			ArrayList<DocumentElement> docsModels = new ArrayList<DocumentElement>();
+			docsModels.add(new DocumentElement("pirulo", null));
+			ArrayList<String> users = new ArrayList<String>();
+			users.add("pepe");
+			users.add("juan");
+			docsModels.add(new DocumentElement("tallala", users));
+			return docsModels.toArray();
+		}
+		
+		public class DocumentElement {
+			private String title;
+			private  Collection<String> users;
+
+			public DocumentElement(String title, Collection<String> users){
+				this.title = title;
+				this.users = users;
+			}
+			
+			public String getTitle() {
+				return title;
+			}
+			public Collection<String> getUsers() {
+				return users;
+			}
+			
 		}
 	}
 }
