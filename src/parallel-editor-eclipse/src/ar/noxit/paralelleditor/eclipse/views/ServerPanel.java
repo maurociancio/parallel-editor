@@ -15,11 +15,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
@@ -176,18 +171,7 @@ public class ServerPanel extends Composite {
 			openEditor.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-					IWorkbenchPage page = window.getActivePage();
-					if (page != null)
-						try {
-							String title = "Titulo.java";
-							String content = "Parabarabarabara texto";
-							IDE.openEditor(page, new StringEditorInput(title, content), IDE.getEditorDescriptor(title)
-									.getId(), true);
-						} catch (PartInitException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+					EditorOpener.openNewEditor("titulo.java", "");
 				}
 			});
 			openEditor.setText("editor");
