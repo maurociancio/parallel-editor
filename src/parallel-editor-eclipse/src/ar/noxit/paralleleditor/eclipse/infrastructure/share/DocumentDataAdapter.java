@@ -68,7 +68,7 @@ public class DocumentDataAdapter implements DocumentData {
 				adapter.setSelectionRange(offset + selectionLength, -selectionLength);
 			} else {
 				// right to left?
-				adapter.setSelectionRange(offset, offset + selectionLength);
+				adapter.setSelectionRange(offset, selectionLength);
 			}
 		}
 	}
