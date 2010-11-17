@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.Caret;
 import ar.noxit.paralleleditor.common.operation.DocumentData;
@@ -13,7 +12,6 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 public class DocumentDataAdapter implements DocumentData {
 
 	private final org.eclipse.jface.text.IDocument adapted;
-	private final ITextEditor textEditor;
 	private final StyledText adapter;
 
 	public DocumentDataAdapter(org.eclipse.jface.text.IDocument eclipseDoc, IDocument document) {
@@ -21,8 +19,7 @@ public class DocumentDataAdapter implements DocumentData {
 		Assert.isNotNull(document);
 
 		this.adapted = eclipseDoc;
-		this.textEditor = document.getTextEditor();
-		this.adapter = (StyledText) textEditor.getAdapter(Control.class);
+		this.adapter = (StyledText) document.getTextEditor().getAdapter(Control.class);
 	}
 
 	@Override
@@ -68,7 +65,7 @@ public class DocumentDataAdapter implements DocumentData {
 		public void change(int offset, int selectionLength) {
 			if (x == caretOffset) {
 				// left to right?
-				adapter.setSelectionRange(offset + selectionLength, - selectionLength);
+				adapter.setSelectionRange(offset + selectionLength, -selectionLength);
 			} else {
 				// right to left?
 				adapter.setSelectionRange(offset, offset + selectionLength);
