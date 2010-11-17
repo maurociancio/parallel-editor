@@ -1,12 +1,10 @@
 package ar.noxit.paralelleditor.eclipse.views;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,9 +21,11 @@ public class HostsList extends Composite {
 	private List hosts;
 	private ListViewer hostList;
 
-	public HostsList(Composite parent, int style, final IModel<java.util.List<ConnectionInfo>> hostsModel,
+	public HostsList(Composite parent, int style,
+			final IModel<java.util.List<ConnectionInfo>> hostsModel,
 			final IModel<ConnectionInfo> selectedConnection) {
 		super(parent, style);
+
 		this.hostsModel = hostsModel;
 		setLayout(new FillLayout());
 
@@ -61,7 +61,7 @@ public class HostsList extends Composite {
 
 		hostList = new ListViewer(hosts);
 		hostList.setContentProvider(new ArrayContentProvider());
-		hostList.setLabelProvider(getHostLabelProvider());
+		hostList.setLabelProvider(new ConnectionInfoLabelProvider());
 
 		// items
 		populateList();
@@ -104,20 +104,6 @@ public class HostsList extends Composite {
 		});
 
 		pack();
-	}
-
-	private LabelProvider getHostLabelProvider() {
-		return new LabelProvider() {
-			public Image getImage(Object element) {
-				return null;
-			}
-
-			public String getText(Object element) {
-				ConnectionInfo h = (ConnectionInfo) element;
-				return element == null ? "" : h.getId().getHost() + ":" + h.getId().getPort() + " as "
-						+ h.getUsername();
-			}
-		};
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package ar.noxit.paralelleditor.eclipse.views;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -43,6 +44,7 @@ public class ServerPanel extends Composite {
 	private static final String STATUS_DISCONNECTING = "Disconnecting...";
 
 	private Model<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>();
+	private Model<List<String>> docsModel = new Model<List<String>>();
 
 	public ServerPanel(Composite parent, int style,
 			IModel<ConnectionInfo> connectionInfo,
@@ -96,6 +98,7 @@ public class ServerPanel extends Composite {
 		usersPanel.redraw();
 		noSelectionLabel.redraw();
 		statusPanel.redraw();
+		documentsPanel.redraw();
 		super.redraw();
 	}
 
@@ -170,6 +173,8 @@ public class ServerPanel extends Composite {
 
 					ISession session = connectionFactory.connect(info);
 					session.installUserListCallback(new UserListCallback(usersModel));
+					session.requestUserList();
+					session.installDocumentListCallback(new DocumentListCallback(docsModel));
 					session.requestDocumentList();
 				}
 			});
@@ -270,10 +275,20 @@ public class ServerPanel extends Composite {
 			contenedor.setLayout(new FillLayout());
 
 			this.documents = new ListViewer(contenedor, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+			this.documents.setLabelProvider(new DocumentLabelProvider());
+			this.documents.setContentProvider(new ArrayContentProvider());
+			docsModel.addNewListener(new IModelListener() {
+
+				@Override
+				public void onUpdate() {
+					redraw();
+				}
+			});
 		}
 
 		@Override
 		public void redraw() {
+			this.documents.setInput(docsModel.get().toArray());
 			super.redraw();
 		}
 	}

@@ -9,7 +9,15 @@ public interface ISession {
 		void onUserListResponse(Map<String, List<String>> usernames);
 	}
 
+	public static interface IDocumentListCallback {
+		void onDocumentListResponse(List<String> docs);
+	}
+
 	void installUserListCallback(IUserListCallback callback);
+
+	void requestUserList();
+
+	void installDocumentListCallback(IDocumentListCallback callback);
 
 	void requestDocumentList();
 }
