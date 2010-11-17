@@ -137,6 +137,24 @@ class CaretTest extends AssertionsForJUnit {
     }
 
     /**
+     * "TEXTOLARGO"
+     *   |||||||||^
+     * "TEXTOLARGOnuevo"
+     *   |||||||||^
+     */
+    @Test
+    def testInsertAfterSelection: Unit = {
+        val ato = new AddTextOperation("nuevo", 10)
+
+        val doc = newDocument("TEXTOLARGO", offset = 1, selectionLen = 9)
+        ato.executeOn(doc)
+
+        Assert.assertEquals("TEXTOLARGOnuevo", doc.data)
+        Assert.assertEquals(1, doc.caret.offset)
+        Assert.assertEquals(9, doc.caret.selectionLength)
+    }
+
+    /**
      * "ORIGINAL"
      *   ||^
      * "RIGINAL"

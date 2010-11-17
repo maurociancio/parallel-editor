@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.texteditor.ITextEditor;
 
@@ -36,22 +37,42 @@ public class DocumentDataAdapter implements DocumentData {
 
 	@Override
 	public Caret caret() {
-		return new Caret() {
+		return new CaretAdapter();
+	}
 
-			@Override
-			public int selectionLength() {
-				return adapter.getSelectionCount();
-			}
+	private class CaretAdapter implements Caret {
 
-			@Override
-			public int offset() {
-				return adapter.getCaretOffset();
-			}
+		private final int x;
+		private final int y;
+		private int caretOffset;
 
-			@Override
-			public void change(int offset, int selectionLength) {
-				textEditor.selectAndReveal(offset, selectionLength);
+		public CaretAdapter() {
+			Point selection = adapter.getSelection();
+
+			this.x = selection.x;
+			this.y = selection.y;
+			this.caretOffset = adapter.getCaretOffset();
+		}
+
+		@Override
+		public int selectionLength() {
+			return y - x;
+		}
+
+		@Override
+		public int offset() {
+			return x;
+		}
+
+		@Override
+		public void change(int offset, int selectionLength) {
+			if (x == caretOffset) {
+				// left to right?
+				adapter.setSelectionRange(offset + selectionLength, - selectionLength);
+			} else {
+				// right to left?
+				adapter.setSelectionRange(offset, offset + selectionLength);
 			}
-		};
+		}
 	}
 }
