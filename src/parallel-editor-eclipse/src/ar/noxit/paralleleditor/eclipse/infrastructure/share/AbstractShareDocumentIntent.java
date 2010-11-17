@@ -33,7 +33,7 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 			RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
 
 			// create the new document session
-			IDocumentSession docSession = shareManager.createShare(fullPath, getContentFor(document), remoteCallback);
+			IDocumentSession docSession = shareManager.createLocalShare(fullPath, getContentFor(document), remoteCallback);
 
 			// callback from editor
 			Synchronizer sync = new Synchronizer(docSession, getAdapterFor(document));

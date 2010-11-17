@@ -37,13 +37,24 @@ import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
 public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
-	private Map<String, IRemoteMessageCallback> sessions = new HashMap<String, IRemoteMessageCallback>();
-	private JSession currentSession;
+	/**
+	 * kernel service for local documents
+	 */
+	private KernelService kernelService = null;
 
-	// kernel service
-	private KernelService kernelService;
+	/**
+	 * Connection to the local kernel (kernelService)
+	 */
+	private JSession localSession = null;
 
-	// remote session
+	/**
+	 * Map of doctitle (local documents) to callback
+	 */
+	private Map<String, IRemoteMessageCallback> callbacks = new HashMap<String, IRemoteMessageCallback>();
+
+	/**
+	 * remote sessions
+	 */
 	private Map<ConnectionId, JSession> remoteSessions = new HashMap<ConnectionId, JSession>();
 
 	// converter
@@ -51,38 +62,29 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
 
 	@Override
-	public IDocumentSession createShare(final String docTitle, String initialContent,
-			IRemoteMessageCallback operationCallback) {
+	public IDocumentSession createLocalShare(
+			final String docTitle,
+			String initialContent,
+			IRemoteMessageCallback remoteMessageCallback) {
+
 		Assert.isNotNull(docTitle);
 		Assert.isNotNull(initialContent);
+		Assert.isNotNull(remoteMessageCallback);
 
+		// create the service
 		createServiceIfNotCreated();
-		sessions.put(docTitle, operationCallback);
+		//
+		callbacks.put(docTitle, remoteMessageCallback);
+		// create the session
+		JSession newSession = createSessionIfNotExists();
+		// create the new document
+		newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 
-		if (currentSession == null) {
-			JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
-
-				@Override
-				public void process(CommandFromKernel command) {
-					System.out.println(command);
-
-					if (command instanceof ProcessOperation) {
-						ProcessOperation processOperation = (ProcessOperation) command;
-						sessions.get(docTitle).onNewRemoteMessage(processOperation.msg());
-					}
-				}
-			});
-			newSession.send(new RemoteLoginRequest("becho"));
-
-			this.currentSession = newSession;
-		}
-
-		currentSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 		return new IDocumentSession() {
 
 			@Override
 			public void onNewLocalMessage(Message<EditOperation> message) {
-				currentSession.send(converter.convert(new DocumentOperation(docTitle, message)));
+				localSession.send(converter.convert(new DocumentOperation(docTitle, message)));
 			}
 		};
 	}
@@ -116,6 +118,29 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	public void dispose() {
 		// TODO implementar
+	}
+
+	protected JSession createSessionIfNotExists() {
+		if (localSession == null) {
+			JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
+
+				@Override
+				public void process(CommandFromKernel command) {
+					System.out.println(command);
+
+					if (command instanceof ProcessOperation) {
+						ProcessOperation processOperation = (ProcessOperation) command;
+
+						String docTitle = processOperation.title();
+						callbacks.get(docTitle).onNewRemoteMessage(processOperation.msg());
+					}
+				}
+			});
+
+			newSession.send(new RemoteLoginRequest("becho"));
+			this.localSession = newSession;
+		}
+		return this.localSession;
 	}
 
 	protected void createServiceIfNotCreated() {

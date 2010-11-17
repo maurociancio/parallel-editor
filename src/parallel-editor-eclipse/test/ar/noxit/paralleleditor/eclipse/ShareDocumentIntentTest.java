@@ -48,7 +48,7 @@ public class ShareDocumentIntentTest {
 		EasyMock.replay(docSession);
 
 		IShareManager shareManager = EasyMock.createMock(IShareManager.class);
-		EasyMock.expect(shareManager.createShare(
+		EasyMock.expect(shareManager.createLocalShare(
 				EasyMock.eq("/"), EasyMock.eq("initial"), (IRemoteMessageCallback) EasyMock.anyObject())).
 						andReturn(docSession);
 		EasyMock.replay(shareManager);
