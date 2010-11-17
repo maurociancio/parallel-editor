@@ -20,6 +20,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
@@ -41,8 +46,7 @@ public class ServerPanel extends Composite {
 	private static final String STATUS_CONNECTING = "Connecting to server...";
 	private static final String STATUS_DISCONNECTING = "Disconnecting...";
 
-	public ServerPanel(Composite parent, int style,
-			IModel<ConnectionInfo> connectionInfo,
+	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo,
 			IRemoteConnectionFactory connectionFactory) {
 		super(parent, style);
 
@@ -166,6 +170,25 @@ public class ServerPanel extends Composite {
 				}
 			});
 
+			final Button openEditor  = new Button(contenedor, SWT.None);
+			openEditor.addSelectionListener(new SelectionAdapter(){
+				@Override
+				public void widgetSelected(SelectionEvent e){
+					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					IWorkbenchPage page = window.getActivePage();
+					if (page != null)
+						try {
+							String title = "Titulo.java";
+							String content = "Parabarabarabara texto";
+							IDE.openEditor(page, new StringEditorInput(title, content), IDE.getEditorDescriptor(title).getId(),true);
+						} catch (PartInitException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}			
+				}
+			});
+			openEditor.setText("editor");
+			
 			GridData gridDataButton = new GridData();
 			gridDataButton.grabExcessHorizontalSpace = true;
 			gridDataButton.horizontalAlignment = SWT.FILL;
