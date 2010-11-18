@@ -6,26 +6,34 @@ import remote.RemoteServerProxy
 import java.net.Socket
 import ar.noxit.paralleleditor.common.network.SocketNetworkConnection
 import ar.noxit.paralleleditor.common.converter.{DefaultRemoteOperationConverter, DefaultMessageConverter}
+import ar.noxit.paralleleditor.common.remote.Peer
 
 trait Session {
     def !(msg: Any)
+    def close
 }
 
 object Session {
-    implicit def sessionActor2Session(actor: Actor): Session =
+    implicit def sessionActor2Session(tuple: (Actor, Peer)): Session =
         new Session {
+            private val actor = tuple._1
+            private val peer = tuple._2
+
             def !(msg: Any) = actor ! msg
+            def close = peer disconnect
         }
 }
 
 trait JSession {
     def send(msg: Any)
+    def close
 }
 
 object JSession {
     implicit def session2JSession(session: Session): JSession =
         new JSession {
             def send(msg: Any) = session ! msg
+            def close = session close
         }
 }
 
@@ -53,9 +61,7 @@ object SessionFactory {
         val socket = new Socket(host, port)
         val factory = new InternalClientActorFactory(adapter)
 
-        // TODO resolver el tema de la conexión, que se cierra on disconnect
-        new RemoteServerProxy(new SocketNetworkConnection(socket), factory)
-        factory.clientActor
+        (factory.clientActor, new RemoteServerProxy(new SocketNetworkConnection(socket), factory))
     }
 
     def newJSession(host: String, port: Int, adapter: Documents): JSession =
