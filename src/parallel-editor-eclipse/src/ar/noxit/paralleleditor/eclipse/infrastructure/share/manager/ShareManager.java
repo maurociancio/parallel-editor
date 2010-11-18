@@ -34,6 +34,10 @@ import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
 public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
+	// extract to configuration panel
+	private static final String LOCALHOST = "localhost";
+	private static final int LOCALPORT = 5000;
+
 	/**
 	 * kernel service for local documents
 	 */
@@ -128,7 +132,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	protected JSession createLocalSessionIfNotExists() {
 		if (localSession == null) {
-			JSession newSession = SessionFactory.newJSession("localhost", 5000, new Documents() {
+			JSession newSession = SessionFactory.newJSession(LOCALHOST, LOCALPORT, new Documents() {
 
 				@Override
 				public void process(CommandFromKernel command) {
@@ -155,7 +159,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	protected KernelService newKernelService() {
-		SocketKernelService kernelService = new SocketKernelService(5000);
+		SocketKernelService kernelService = new SocketKernelService(LOCALPORT);
 		kernelService.setKernel(newKernel());
 		return kernelService;
 	}
