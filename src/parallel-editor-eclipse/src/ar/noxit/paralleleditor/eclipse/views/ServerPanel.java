@@ -24,7 +24,6 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.Model;
 import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
-import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo.ConnectionId;
 
 public class ServerPanel extends Composite {
 

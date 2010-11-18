@@ -15,7 +15,9 @@ public interface ISession {
 	}
 
 	public static interface ISubscriptionCallback {
-		void onDocumentListResponse(String docTitle, String initialContent, IDocumentSession documentSession);
+		void onDocumentListResponse(String docTitle,
+				String initialContent,
+				IDocumentSession documentSession);
 	}
 
 	void installUserListCallback(IUserListCallback callback);

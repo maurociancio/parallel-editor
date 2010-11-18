@@ -6,6 +6,7 @@ import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter
 import ar.noxit.paralleleditor.common.operation.DocumentOperation;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 
 public class DocumentSession implements IDocumentSession {
 
@@ -22,5 +23,9 @@ public class DocumentSession implements IDocumentSession {
 	@Override
 	public void onNewLocalMessage(Message<EditOperation> message) {
 		session.send(converter.convert(new DocumentOperation(docTitle, message)));
+	}
+
+	@Override
+	public void installCallback(IRemoteMessageCallback remoteCallback) {
 	}
 }

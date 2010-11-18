@@ -19,14 +19,15 @@ public class SubscriptionCallback implements ISubscriptionCallback {
 			final String initialContent,
 			final IDocumentSession docSession) {
 
+		final RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
+		docSession.installCallback(remoteCallback);
+
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
 				ITextEditor newEditor = openNewEditor(docTitle, initialContent);
 				IDocument document = getDocumentFromEditor(newEditor);
-
-				RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
 
 				// synchronizer
 				Synchronizer sync = new Synchronizer(docSession, new DocumentDataAdapter(document, newEditor));
@@ -43,7 +44,7 @@ public class SubscriptionCallback implements ISubscriptionCallback {
 				return documentProvider.getDocument(textEditor.getEditorInput());
 			}
 
-			protected ITextEditor openNewEditor(final String docTitle, final String initialContent) {
+			protected ITextEditor openNewEditor(String docTitle, String initialContent) {
 				return (ITextEditor) EditorOpener.openNewEditor(docTitle, initialContent);
 			}
 		});

@@ -23,6 +23,10 @@ public class DocumentListCallback implements IDocumentListCallback {
 
 			@Override
 			public void run() {
+				docsModel.set(convertFromScala(docs));
+			}
+
+			protected java.util.List<String> convertFromScala(final List<String> docs) {
 				java.util.List<String> result = new ArrayList<String>();
 
 				@SuppressWarnings("unchecked")
@@ -30,8 +34,7 @@ public class DocumentListCallback implements IDocumentListCallback {
 				while (it.hasNext()) {
 					result.add(it.next());
 				}
-
-				docsModel.set(result);
+				return result;
 			}
 		});
 	}

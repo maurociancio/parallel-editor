@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.eclipse.views;
 import java.util.Collection;
 
 public class DocumentElement {
+
 	private String title;
 	private Collection<String> users;
 

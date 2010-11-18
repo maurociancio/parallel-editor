@@ -32,7 +32,7 @@
    <extension point="org.eclipse.ui.views">
       <view
             category="ar.noxit.paralleleditor.eclipse"
-            class="ar.noxit.paralelleditor.eclipse.views.ConnectionView"
+            class="ar.noxit.paralleleditor.eclipse.views.ConnectionView"
             icon="icons/sample.gif"
             id="ParallelEditor-Eclipse.connectionView"
             name="PE Connection view"

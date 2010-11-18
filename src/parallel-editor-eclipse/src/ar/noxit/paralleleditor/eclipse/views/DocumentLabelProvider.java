@@ -5,7 +5,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 
-final class DocumentLabelProvider extends LabelProvider {
+public class DocumentLabelProvider extends LabelProvider {
+
 	@Override
 	public Image getImage(Object element) {
 		try {

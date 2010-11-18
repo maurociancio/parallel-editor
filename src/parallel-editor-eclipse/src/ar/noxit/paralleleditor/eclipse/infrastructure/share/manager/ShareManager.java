@@ -19,10 +19,10 @@ import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionStatus;
 import ar.noxit.paralleleditor.eclipse.views.IRemoteConnectionFactory;
-import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo.ConnectionId;
 import ar.noxit.paralleleditor.kernel.Kernel;
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel;
 import ar.noxit.paralleleditor.kernel.basic.SynchronizerFactory;
@@ -94,9 +94,9 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		RemoteDocumentsAdapter adapter = new RemoteDocumentsAdapter();
 		// the newly created session
 		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), adapter);
-		// logging to the kernel
+		// log in to the kernel
 		newSession.send(new RemoteLoginRequest(info.getUsername()));
-
+		// store the remote session
 		remoteSessions.put(info.getId(), newSession);
 
 		ISession newRemoteSession = new RemoteSession(info, newSession, adapter);

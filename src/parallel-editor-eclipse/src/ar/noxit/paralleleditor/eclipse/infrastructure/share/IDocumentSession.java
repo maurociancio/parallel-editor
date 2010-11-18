@@ -6,4 +6,6 @@ import ar.noxit.paralleleditor.common.operation.EditOperation;
 public interface IDocumentSession {
 
 	void onNewLocalMessage(Message<EditOperation> message);
+
+	void installCallback(IRemoteMessageCallback remoteCallback);
 }

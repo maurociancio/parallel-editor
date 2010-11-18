@@ -1,5 +1,7 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
+import java.util.HashMap;
+
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
 import ar.noxit.paralleleditor.client.CommandFromKernel;
@@ -14,6 +16,7 @@ import ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter;
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationConverter;
 import ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IDocumentListCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.ISubscriptionCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IUserListCallback;
@@ -24,6 +27,8 @@ public class RemoteDocumentsAdapter implements Documents {
 	private IDocumentListCallback userListCallback;
 	private ISubscriptionCallback subscriptionResponseCallback;
 	private JSession remoteSession;
+
+	private java.util.Map<String, IRemoteMessageCallback> callbacks = new HashMap<String, IRemoteMessageCallback>();
 
 	// converter
 	private DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
@@ -46,19 +51,28 @@ public class RemoteDocumentsAdapter implements Documents {
 		if (command instanceof DocumentSubscription) {
 			DocumentSubscription documentSubscription = (DocumentSubscription) command;
 
-			String title = documentSubscription.title();
-			String initialContent = documentSubscription.initialContent();
+			final String docTitle = documentSubscription.title();
+			final String initialContent = documentSubscription.initialContent();
 
 			if (subscriptionResponseCallback != null) {
-				DocumentSession docSession = new DocumentSession(title, remoteSession, converter);
-				subscriptionResponseCallback.onDocumentListResponse(title, initialContent, docSession);
+				DocumentSession docSession = new DocumentSession(docTitle, remoteSession, converter) {
+
+					@Override
+					public void installCallback(IRemoteMessageCallback remoteCallback) {
+						callbacks.put(docTitle, remoteCallback);
+					}
+				};
+				subscriptionResponseCallback.onDocumentListResponse(docTitle, initialContent, docSession);
 			}
 		}
 		if (command instanceof ProcessOperation) {
 			ProcessOperation processOperation = (ProcessOperation) command;
 
-			String title = processOperation.title();
+			String docTitle = processOperation.title();
 			Message<EditOperation> msg = processOperation.msg();
+
+			// TODO valir not null
+			callbacks.get(docTitle).onNewRemoteMessage(msg);
 		}
 	}
 

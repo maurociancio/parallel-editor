@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo.ConnectionId;
 
 public class NewServerDialog extends Dialog {
 

@@ -1,12 +1,8 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
 
-public final class ConnectionInfoLabelProvider extends LabelProvider {
-	public Image getImage(Object element) {
-		return null;
-	}
+public class ConnectionInfoLabelProvider extends LabelProvider {
 
 	public String getText(Object element) {
 		ConnectionInfo h = (ConnectionInfo) element;
