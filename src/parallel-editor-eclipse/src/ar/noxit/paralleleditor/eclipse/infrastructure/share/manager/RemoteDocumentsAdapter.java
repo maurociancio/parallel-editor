@@ -10,6 +10,7 @@ import ar.noxit.paralleleditor.client.DocumentSubscription;
 import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.client.ProcessOperation;
+import ar.noxit.paralleleditor.client.SubscriptionCancelled;
 import ar.noxit.paralleleditor.client.UserListUpdate;
 import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter;
@@ -73,6 +74,12 @@ public class RemoteDocumentsAdapter implements Documents {
 
 			if (subscriptionResponseCallback != null)
 				subscriptionResponseCallback.onDocumentListResponse(docTitle, initialContent, docSession);
+		}
+
+		// subscription canceled
+		if (command instanceof SubscriptionCancelled) {
+			SubscriptionCancelled canceled = (SubscriptionCancelled) command;
+			callbacks.remove(canceled.docTitle());
 		}
 
 		// operations
