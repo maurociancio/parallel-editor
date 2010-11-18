@@ -19,15 +19,18 @@ public class Synchronizer implements IOperationCallback, IRemoteMessageCallback 
 
 	private final IDocumentSession docSession;
 	private final DocumentData documentData;
+	private final ITextEditorDisabler disabler;
 
 	private boolean disableFiringEvents = false;
 
-	public Synchronizer(IDocumentSession docSession, DocumentData documentData) {
+	public Synchronizer(IDocumentSession docSession, DocumentData documentData, ITextEditorDisabler disabler) {
 		Assert.isNotNull(docSession);
 		Assert.isNotNull(documentData);
+		Assert.isNotNull(disabler);
 
 		this.docSession = docSession;
 		this.documentData = documentData;
+		this.disabler = disabler;
 	}
 
 	@Override
@@ -49,18 +52,23 @@ public class Synchronizer implements IOperationCallback, IRemoteMessageCallback 
 
 			@Override
 			public void run() {
-				sync.receive(message, new ApplyFunction() {
+				try {
+					disabler.disableInput();
+					sync.receive(message, new ApplyFunction() {
 
-					@Override
-					public void apply(EditOperation editOperation) {
-						try {
-							disableFiringEvents = true;
-							editOperation.executeOn(documentData);
-						} finally {
-							disableFiringEvents = false;
+						@Override
+						public void apply(EditOperation editOperation) {
+							try {
+								disableFiringEvents = true;
+								editOperation.executeOn(documentData);
+							} finally {
+								disableFiringEvents = false;
+							}
 						}
-					}
-				});
+					});
+				} finally {
+					disabler.enableInput();
+				}
 			}
 		});
 	}

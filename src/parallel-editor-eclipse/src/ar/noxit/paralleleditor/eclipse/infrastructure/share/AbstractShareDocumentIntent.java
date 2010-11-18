@@ -34,7 +34,7 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 		IDocumentSession docSession = shareManager.createLocalShare(path, getContentFor(textEditor), remoteCallback);
 
 		// callback from editor
-		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor));
+		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor), adapt(textEditor));
 
 		// adapt callbacks
 		remoteCallback.setAdapted(sync);
@@ -51,7 +51,7 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 		ITextEditor textEditor = openNewEditor(docTitle, initialContent);
 
 		// synchronizer
-		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor));
+		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor), adapt(textEditor));
 
 		// adapt
 		docSession.installCallback(sync);
@@ -62,6 +62,10 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 
 	private ITextEditor openNewEditor(String docTitle, String initialContent) {
 		return (ITextEditor) EditorOpener.openNewEditor(docTitle, initialContent);
+	}
+
+	private ITextEditorDisabler adapt(ITextEditor textEditor) {
+		return new TextEditorDisabler(textEditor);
 	}
 
 	protected abstract DocumentData getAdapterFor(ITextEditor textEditor);
