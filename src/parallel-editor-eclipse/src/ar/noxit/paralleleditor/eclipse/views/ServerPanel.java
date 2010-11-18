@@ -200,7 +200,7 @@ public class ServerPanel extends Composite {
 			gridDataButton.grabExcessHorizontalSpace = true;
 			gridDataButton.horizontalAlignment = SWT.FILL;
 			connectButton.setLayoutData(gridDataButton);
-			
+
 			updateTexts();
 		}
 
