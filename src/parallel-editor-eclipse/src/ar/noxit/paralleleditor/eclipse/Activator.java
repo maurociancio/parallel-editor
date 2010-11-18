@@ -99,7 +99,12 @@ public class Activator extends AbstractUIPlugin {
 						ShareManager.LOCALPORT),
 						ShareManager.LOCAL_USERNAME);
 
-				hostsModel.get().add(0, element);
+				List<ConnectionInfo> hosts = hostsModel.get();
+				hosts.add(0, element);
+
+				// para que se disparen los listeners
+				hostsModel.set(hosts);
+
 				this.added = true;
 			}
 		}
@@ -107,7 +112,12 @@ public class Activator extends AbstractUIPlugin {
 		@Override
 		public synchronized void onDestroy() {
 			if (added) {
-				hostsModel.get().remove(element);
+				List<ConnectionInfo> hosts = hostsModel.get();
+				hosts.remove(element);
+
+				// para que se disparen los listeners
+				hostsModel.set(hosts);
+
 				added = false;
 			}
 		}

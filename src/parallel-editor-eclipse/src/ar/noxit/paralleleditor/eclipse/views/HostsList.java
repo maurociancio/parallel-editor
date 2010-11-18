@@ -10,10 +10,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 
 import ar.noxit.paralleleditor.eclipse.model.IModel;
+import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
 
 public class HostsList extends Composite {
 
@@ -63,6 +65,19 @@ public class HostsList extends Composite {
 		hostList.setContentProvider(new ArrayContentProvider());
 		hostList.setLabelProvider(new ConnectionInfoLabelProvider());
 
+		hostsModel.addNewListener(new IModelListener() {
+
+			@Override
+			public void onUpdate() {
+				Display.getDefault().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						redraw();
+					}
+				});
+			}
+		});
 		// items
 		populateList();
 
