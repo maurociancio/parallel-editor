@@ -9,6 +9,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.ide.IDE;
 
 public class StringEditorInput implements IStorageEditorInput {
 
@@ -28,7 +30,11 @@ public class StringEditorInput implements IStorageEditorInput {
 
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return null;
+		try {
+			return IDE.getEditorDescriptor(title).getImageDescriptor();
+		} catch (PartInitException e) {
+			return null;
+		}
 	}
 
 	@Override
