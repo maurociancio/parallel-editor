@@ -5,6 +5,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class ShareDocumentAction extends Action {
@@ -46,7 +48,18 @@ public class ShareDocumentAction extends Action {
 			IPath fullPath = file.getFullPath();
 			LocationKind locationKind = LocationKind.IFILE;
 
-			shareDocumentIntent.shareDocument(new Document(fullPath, locationKind, textEditor));
+			try {
+				shareDocumentIntent.shareDocument(new Document(fullPath, locationKind, textEditor));
+			} catch (Exception e) {
+				// TODO log here the full stacktrace
+
+				// the kernel or the client we're not created, notify the user
+				MessageDialog.openError(Display.getDefault().getActiveShell(),
+						"Error while creating the share",
+						"The share could not be created. It is possible that the default port is taken. " +
+								"Please see the logs in order to find more information."
+						);
+			}
 		} else {
 			onNullFile();
 		}

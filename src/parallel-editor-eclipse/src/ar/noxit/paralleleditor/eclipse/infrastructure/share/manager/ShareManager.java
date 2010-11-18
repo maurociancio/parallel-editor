@@ -79,12 +79,23 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 		// create the service
 		createServiceIfNotCreated();
+
 		//
 		callbacks.put(docTitle, remoteMessageCallback);
-		// create the session
-		JSession newSession = createLocalSessionIfNotExists();
-		// create the new document
-		newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
+
+		try {
+			// create the session
+			JSession newSession = createLocalSessionIfNotExists();
+
+			// create the new document
+			newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
+		} catch (Exception e) {
+			// remove the added callback
+			callbacks.remove(docTitle);
+
+			// rethrow the exception
+			throw new RuntimeException(e);
+		}
 
 		return new DocumentSession(docTitle, localSession, converter);
 	}
