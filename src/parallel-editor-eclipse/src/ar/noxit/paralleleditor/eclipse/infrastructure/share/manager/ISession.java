@@ -31,4 +31,6 @@ public interface ISession {
 	void subscribe(String docTitle);
 
 	void installSubscriptionResponseCallback(ISubscriptionCallback callback);
+	
+	void close();
 }

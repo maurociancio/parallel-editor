@@ -54,4 +54,9 @@ public class RemoteSession implements ISession {
 	public void installSubscriptionResponseCallback(ISubscriptionCallback callback) {
 		adapter.installSubscriptionResponseCallback(callback);
 	}
+
+	@Override
+	public void close() {
+		newSession.close();
+	}
 }
