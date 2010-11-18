@@ -15,14 +15,11 @@ import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.client.ProcessOperation;
 import ar.noxit.paralleleditor.client.SessionFactory;
 import ar.noxit.paralleleditor.common.BasicXFormStrategy;
-import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter;
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationConverter;
 import ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
-import ar.noxit.paralleleditor.common.operation.DocumentOperation;
-import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
@@ -67,8 +64,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
 
 	@Override
-	public IDocumentSession createLocalShare(
-			final String docTitle,
+	public IDocumentSession createLocalShare(String docTitle,
 			String initialContent,
 			IRemoteMessageCallback remoteMessageCallback) {
 
@@ -85,13 +81,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// create the new document
 		newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 
-		return new IDocumentSession() {
-
-			@Override
-			public void onNewLocalMessage(Message<EditOperation> message) {
-				localSession.send(converter.convert(new DocumentOperation(docTitle, message)));
-			}
-		};
+		return new DocumentSession(docTitle, localSession, converter);
 	}
 
 	@Override
@@ -115,14 +105,21 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	@Override
-	public ConnectionStatus statusOf(ConnectionInfo info) {
-		Assert.isNotNull(info);
+	public ConnectionStatus statusOf(ConnectionId id) {
+		Assert.isNotNull(id);
 
-		JSession session = remoteSessions.get(info.getId());
+		JSession session = remoteSessions.get(id);
 		if (session == null)
 			return ConnectionStatus.DISCONNECTED;
 		else
 			return ConnectionStatus.CONNECTED;
+	}
+
+	@Override
+	public ISession getSession(ConnectionId id) {
+		Assert.isNotNull(id);
+
+		return remoteSessionsCallbacks.get(id);
 	}
 
 	public void dispose() {

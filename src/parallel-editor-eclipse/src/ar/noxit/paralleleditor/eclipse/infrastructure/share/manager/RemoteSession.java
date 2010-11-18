@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.Assert;
 import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo;
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.common.messages.RemoteDocumentListRequest;
+import ar.noxit.paralleleditor.common.messages.RemoteSubscribeRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteUserListRequest;
 
 public class RemoteSession implements ISession {
@@ -21,6 +22,7 @@ public class RemoteSession implements ISession {
 		this.info = info;
 		this.newSession = newSession;
 		this.adapter = adapter;
+		this.adapter.setRemoteSession(newSession);
 	}
 
 	@Override
@@ -41,5 +43,15 @@ public class RemoteSession implements ISession {
 	@Override
 	public void requestDocumentList() {
 		newSession.send(new RemoteDocumentListRequest());
+	}
+
+	@Override
+	public void subscribe(String docTitle) {
+		newSession.send(new RemoteSubscribeRequest(docTitle));
+	}
+
+	@Override
+	public void installSubscriptionResponseCallback(ISubscriptionCallback callback) {
+		adapter.installSubscriptionResponseCallback(callback);
 	}
 }

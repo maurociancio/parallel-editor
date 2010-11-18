@@ -3,6 +3,8 @@ package ar.noxit.paralelleditor.eclipse.views;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -21,6 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
 import ar.noxit.paralelleditor.eclipse.model.Model;
+import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
 
 public class ServerPanel extends Composite {
@@ -202,7 +205,7 @@ public class ServerPanel extends Composite {
 
 			ConnectionInfo info = connectionInfo.get();
 			if (info != null) {
-				ConnectionStatus status = connectionFactory.statusOf(info);
+				ConnectionStatus status = connectionFactory.statusOf(info.getId());
 				if (status.equals(ConnectionStatus.CONNECTED)) {
 					connectionStatus.setText(STATUS_CONNECTED);
 					connectionStatus.setBackground(colorGreen);
@@ -277,6 +280,22 @@ public class ServerPanel extends Composite {
 			this.documents = new ListViewer(contenedor, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 			this.documents.setLabelProvider(new DocumentLabelProvider());
 			this.documents.setContentProvider(new ArrayContentProvider());
+			this.documents.addDoubleClickListener(new IDoubleClickListener() {
+
+				@Override
+				public void doubleClick(DoubleClickEvent event) {
+					String[] selection = documents.getList().getSelection();
+
+					if (selection != null && selection.length == 1) {
+						ConnectionId id = connectionInfo.get().getId();
+
+						// TODO VALIDAR null
+						ISession session = connectionFactory.getSession(id);
+						session.installSubscriptionResponseCallback(new SubscriptionCallback());
+						session.subscribe(selection[0]);
+					}
+				}
+			});
 			docsModel.addNewListener(new IModelListener() {
 
 				@Override

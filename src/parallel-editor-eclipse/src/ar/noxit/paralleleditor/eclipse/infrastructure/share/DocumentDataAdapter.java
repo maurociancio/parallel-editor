@@ -4,22 +4,22 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.Caret;
 import ar.noxit.paralleleditor.common.operation.DocumentData;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 
 public class DocumentDataAdapter implements DocumentData {
 
 	private final org.eclipse.jface.text.IDocument adapted;
 	private final StyledText adapter;
 
-	public DocumentDataAdapter(org.eclipse.jface.text.IDocument eclipseDoc, IDocument document) {
+	public DocumentDataAdapter(org.eclipse.jface.text.IDocument eclipseDoc, ITextEditor textEditor) {
 		Assert.isNotNull(eclipseDoc);
-		Assert.isNotNull(document);
+		Assert.isNotNull(textEditor);
 
 		this.adapted = eclipseDoc;
-		this.adapter = (StyledText) document.getTextEditor().getAdapter(Control.class);
+		this.adapter = (StyledText) textEditor.getAdapter(Control.class);
 	}
 
 	@Override

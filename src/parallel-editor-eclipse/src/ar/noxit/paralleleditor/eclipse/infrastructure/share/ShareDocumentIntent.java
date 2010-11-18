@@ -46,7 +46,7 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 
 	@Override
 	protected DocumentData getAdapterFor(final IDocument document) {
-		return new DocumentDataAdapter(getTextFileBuffer(document).getDocument(), document);
+		return new DocumentDataAdapter(getTextFileBuffer(document).getDocument(), document.getTextEditor());
 	}
 
 	protected ITextFileBufferManager get() {

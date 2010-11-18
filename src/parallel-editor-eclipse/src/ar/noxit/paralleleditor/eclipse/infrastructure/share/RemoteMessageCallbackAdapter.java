@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.Assert;
 import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
 
-final class RemoteMessageCallbackAdapter implements IRemoteMessageCallback {
+public final class RemoteMessageCallbackAdapter implements IRemoteMessageCallback {
 
 	private IRemoteMessageCallback adapted = null;
 	private List<Message<EditOperation>> queued = new ArrayList<Message<EditOperation>>();
