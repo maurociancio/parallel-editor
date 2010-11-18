@@ -37,6 +37,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	// extract to configuration panel
 	private static final String LOCALHOST = "localhost";
 	private static final int LOCALPORT = 5000;
+	private static final String LOCAL_USERNAME = "local_username";
 
 	/**
 	 * kernel service for local documents
@@ -145,7 +146,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 				}
 			});
 
-			newSession.send(new RemoteLoginRequest("becho"));
+			newSession.send(new RemoteLoginRequest(LOCAL_USERNAME));
 			this.localSession = newSession;
 		}
 		return this.localSession;
