@@ -4,6 +4,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu;
 
 @Test
@@ -22,6 +23,11 @@ public class TextEditorContextualMenuTest {
 		@Override
 		public IContributionItem[] getContributionItems() {
 			return super.getContributionItems();
+		}
+
+		@Override
+		protected ShareManager getShareManager() {
+			return new ShareManager();
 		}
 	}
 }

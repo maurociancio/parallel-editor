@@ -1,10 +1,6 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
-import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocumentListener;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
@@ -25,40 +21,22 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 	public void shareDocument(IDocument document) {
 		Assert.isNotNull(document);
 
-		try {
-			connectToBufferManager(document);
-			String fullPath = document.getFullPath().toString();
+		String fullPath = document.getFullPath().toString();
 
-			// callback from kernel
-			RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
+		// callback from kernel
+		RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
 
-			// create the new document session
-			IDocumentSession docSession = shareManager.createLocalShare(fullPath, getContentFor(document), remoteCallback);
+		// create the new document session
+		IDocumentSession docSession = shareManager.createLocalShare(fullPath, getContentFor(document), remoteCallback);
 
-			// callback from editor
-			Synchronizer sync = new Synchronizer(docSession, getAdapterFor(document));
+		// callback from editor
+		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(document));
 
-			// adapt callbacks
-			remoteCallback.setAdapted(sync);
+		// adapt callbacks
+		remoteCallback.setAdapted(sync);
 
-			// install callback on editor
-			installCallback(document, new EclipseDocumentListener(sync));
-		} catch (CoreException e) {
-			onException(e);
-		}
-	}
-
-	protected void connectToBufferManager(IDocument document) throws CoreException {
-		ITextFileManager textFileBufferManager = getTextFileBufferManager();
-
-		IPath fullPath = document.getFullPath();
-		LocationKind locationKind = document.getLocationKind();
-
-		textFileBufferManager.connect(fullPath, locationKind, new NullProgressMonitor());
-	}
-
-	protected void onException(CoreException e) {
-		// TODO log
+		// install callback on editor
+		installCallback(document, new EclipseDocumentListener(sync));
 	}
 
 	protected abstract DocumentData getAdapterFor(IDocument document);
@@ -66,6 +44,4 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 	protected abstract String getContentFor(IDocument document);
 
 	protected abstract void installCallback(IDocument document, IDocumentListener listener);
-
-	protected abstract ITextFileManager getTextFileBufferManager();
 }
