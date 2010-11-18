@@ -132,8 +132,6 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 				@Override
 				public void process(CommandFromKernel command) {
-					System.out.println(command);
-
 					if (command instanceof ProcessOperation) {
 						ProcessOperation processOperation = (ProcessOperation) command;
 
