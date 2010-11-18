@@ -5,10 +5,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 
-import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo;
-import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo.ConnectionId;
-import ar.noxit.paralelleditor.eclipse.views.ConnectionStatus;
-import ar.noxit.paralelleditor.eclipse.views.IRemoteConnectionFactory;
 import ar.noxit.paralleleditor.client.CommandFromKernel;
 import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
@@ -23,6 +19,10 @@ import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionStatus;
+import ar.noxit.paralleleditor.eclipse.views.IRemoteConnectionFactory;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo.ConnectionId;
 import ar.noxit.paralleleditor.kernel.Kernel;
 import ar.noxit.paralleleditor.kernel.basic.BasicKernel;
 import ar.noxit.paralleleditor.kernel.basic.SynchronizerFactory;

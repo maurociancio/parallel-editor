@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 import java.io.InputStream;
 import java.io.StringBufferInputStream;

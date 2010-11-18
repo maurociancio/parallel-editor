@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-import ar.noxit.paralelleditor.eclipse.model.IModel;
-import ar.noxit.paralelleditor.eclipse.model.Model;
 import ar.noxit.paralleleditor.eclipse.Activator;
+import ar.noxit.paralleleditor.eclipse.model.IModel;
+import ar.noxit.paralleleditor.eclipse.model.Model;
 
 public class ConnectionView extends ViewPart {
 

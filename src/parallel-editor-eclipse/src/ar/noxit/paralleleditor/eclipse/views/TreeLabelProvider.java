@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

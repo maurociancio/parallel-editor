@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.model;
+package ar.noxit.paralleleditor.eclipse.model;
 
 import java.util.ArrayList;
 import java.util.List;

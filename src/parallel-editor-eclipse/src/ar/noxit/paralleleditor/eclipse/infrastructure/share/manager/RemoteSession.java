@@ -2,11 +2,11 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
 import org.eclipse.core.runtime.Assert;
 
-import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo;
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.common.messages.RemoteDocumentListRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteSubscribeRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteUserListRequest;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 public class RemoteSession implements ISession {
 

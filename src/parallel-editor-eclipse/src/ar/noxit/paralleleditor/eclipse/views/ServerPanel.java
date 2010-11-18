@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 import java.util.List;
 
@@ -20,11 +20,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import ar.noxit.paralelleditor.eclipse.model.IModel;
-import ar.noxit.paralelleditor.eclipse.model.IModel.IModelListener;
-import ar.noxit.paralelleditor.eclipse.model.Model;
-import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
+import ar.noxit.paralleleditor.eclipse.model.IModel;
+import ar.noxit.paralleleditor.eclipse.model.Model;
+import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo.ConnectionId;
 
 public class ServerPanel extends Composite {
 

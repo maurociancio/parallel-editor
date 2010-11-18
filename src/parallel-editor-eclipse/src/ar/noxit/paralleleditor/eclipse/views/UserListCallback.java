@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 import java.util.ArrayList;
 
@@ -8,8 +8,8 @@ import scala.Tuple2;
 import scala.collection.Iterator;
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
-import ar.noxit.paralelleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IUserListCallback;
+import ar.noxit.paralleleditor.eclipse.model.IModel;
 
 public class UserListCallback implements IUserListCallback {
 

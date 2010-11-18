@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 public enum ConnectionStatus {
 	CONNECTED, DISCONNECTED

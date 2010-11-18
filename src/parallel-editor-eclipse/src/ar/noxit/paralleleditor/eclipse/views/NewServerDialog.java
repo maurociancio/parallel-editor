@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.views;
+package ar.noxit.paralleleditor.eclipse.views;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import ar.noxit.paralelleditor.eclipse.views.ConnectionInfo.ConnectionId;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo.ConnectionId;
 
 public class NewServerDialog extends Dialog {
 

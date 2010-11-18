@@ -1,4 +1,4 @@
-package ar.noxit.paralelleditor.eclipse.model;
+package ar.noxit.paralleleditor.eclipse.model;
 
 public interface IModel<T> {
 
