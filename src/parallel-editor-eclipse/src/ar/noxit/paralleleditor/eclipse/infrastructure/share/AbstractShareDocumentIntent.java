@@ -33,14 +33,8 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 		// create the new document session
 		IDocumentSession docSession = shareManager.createLocalShare(path, getContentFor(textEditor), remoteCallback);
 
-		// callback from editor
-		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor), adapt(textEditor));
-
-		// adapt callbacks
-		remoteCallback.setAdapted(sync);
-
-		// install callback on editor
-		installCallback(textEditor, new EclipseDocumentListener(sync));
+		// set up callbacks
+		setUpCallbacks(textEditor, new RemoteMessageCallbackInstaller(remoteCallback), docSession);
 	}
 
 	@Override
@@ -48,15 +42,21 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 		Assert.isNotNull(docTitle);
 		Assert.isNotNull(initialContent);
 
+		// open a new editor
 		ITextEditor textEditor = openNewEditor(docTitle, initialContent);
 
-		// synchronizer
+		// set up callbacks
+		setUpCallbacks(textEditor, new DocumentSessionCallbackInstaller(docSession), docSession);
+	}
+
+	private void setUpCallbacks(ITextEditor textEditor, CallbackInstaller installer, IDocumentSession docSession) {
+		// callback from editor
 		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor), adapt(textEditor));
 
-		// adapt
-		docSession.installCallback(sync);
+		// adapt callbacks
+		installer.install(sync);
 
-		// listener
+		// install callback on editor
 		installCallback(textEditor, new EclipseDocumentListener(sync));
 	}
 
@@ -73,4 +73,37 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 	protected abstract String getContentFor(ITextEditor textEditor);
 
 	protected abstract void installCallback(ITextEditor textEditor, IDocumentListener listener);
+
+	// internal interfaces
+	private static interface CallbackInstaller {
+		void install(IRemoteMessageCallback callback);
+	}
+
+	private static class RemoteMessageCallbackInstaller implements CallbackInstaller {
+
+		private RemoteMessageCallbackAdapter adapter;
+
+		public RemoteMessageCallbackInstaller(RemoteMessageCallbackAdapter adapter) {
+			this.adapter = adapter;
+		}
+
+		@Override
+		public void install(IRemoteMessageCallback callback) {
+			adapter.setAdapted(callback);
+		}
+	}
+
+	private static class DocumentSessionCallbackInstaller implements CallbackInstaller {
+
+		private IDocumentSession docSession;
+
+		public DocumentSessionCallbackInstaller(IDocumentSession docSession) {
+			this.docSession = docSession;
+		}
+
+		@Override
+		public void install(IRemoteMessageCallback callback) {
+			docSession.installCallback(callback);
+		}
+	}
 }
