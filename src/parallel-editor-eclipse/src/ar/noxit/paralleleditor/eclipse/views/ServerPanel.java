@@ -1,7 +1,9 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -17,6 +19,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
@@ -176,11 +179,20 @@ public class ServerPanel extends Composite {
 				public void widgetSelected(SelectionEvent e) {
 					ConnectionInfo info = connectionInfo.get();
 
-					ISession session = connectionFactory.connect(info);
-					session.installUserListCallback(new UserListCallback(usersModel));
-					session.requestUserList();
-					session.installDocumentListCallback(new DocumentListCallback(docsModel));
-					session.requestDocumentList();
+					try {
+						ISession session = connectionFactory.connect(info);
+						session.installUserListCallback(new UserListCallback(usersModel));
+						session.requestUserList();
+						session.installDocumentListCallback(new DocumentListCallback(docsModel));
+						session.requestDocumentList();
+					} catch (Exception ex) {
+						// TODO log here the full stacktrace
+
+						MessageDialog.openError(Display.getDefault().getActiveShell(),
+								"Cannot connect to collaboration server",
+								"It probably means that the remote host or port you entered is invalid. " +
+										"Please check the configuration.");
+					}
 				}
 			});
 
