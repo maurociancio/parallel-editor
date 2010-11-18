@@ -11,4 +11,6 @@ public interface IModel<T> {
 	void set(final T object);
 
 	void addNewListener(IModelListener listener);
+
+	void clearListeners();
 }

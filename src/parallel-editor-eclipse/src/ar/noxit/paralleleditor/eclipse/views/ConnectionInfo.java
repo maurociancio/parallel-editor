@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.eclipse.views;
 
 public class ConnectionInfo {
 
-	private ConnectionId id;
+	private final ConnectionId id;
 	private final String username;
 
 	public ConnectionInfo(ConnectionId id, String username) {

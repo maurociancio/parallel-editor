@@ -6,7 +6,7 @@ import java.util.List;
 public class Model<T> implements IModel<T> {
 
 	private T obj;
-	private List<IModelListener> listeners = new ArrayList<IModel.IModelListener>();
+	private final List<IModelListener> listeners = new ArrayList<IModel.IModelListener>();
 
 	public static <T> Model<T> of(T obj) {
 		return new Model<T>(obj);
@@ -42,5 +42,10 @@ public class Model<T> implements IModel<T> {
 		for (IModelListener l : listeners) {
 			l.onUpdate();
 		}
+	}
+
+	@Override
+	public void clearListeners() {
+		listeners.clear();
 	}
 }

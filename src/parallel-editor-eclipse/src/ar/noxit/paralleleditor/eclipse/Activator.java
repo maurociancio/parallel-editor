@@ -1,10 +1,15 @@
 package ar.noxit.paralleleditor.eclipse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
+import ar.noxit.paralleleditor.eclipse.model.IModel;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -19,6 +24,9 @@ public class Activator extends AbstractUIPlugin {
 
 	// Share manager
 	public static ShareManager shareManager = null;
+
+	// hosts list
+	public static IModel<List<ConnectionInfo>> hostsModel = null;
 
 	/**
 	 * The constructor
@@ -38,6 +46,7 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 
 		shareManager = new ShareManager();
+		hostsModel.set(new ArrayList<ConnectionInfo>());
 	}
 
 	/*
