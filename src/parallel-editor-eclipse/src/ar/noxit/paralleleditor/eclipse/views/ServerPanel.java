@@ -196,20 +196,11 @@ public class ServerPanel extends Composite {
 				}
 			});
 
-			final Button openEditor = new Button(contenedor, SWT.None);
-			openEditor.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					EditorOpener.openNewEditor("titulo.java", "");
-				}
-			});
-			openEditor.setText("editor");
-
 			GridData gridDataButton = new GridData();
 			gridDataButton.grabExcessHorizontalSpace = true;
 			gridDataButton.horizontalAlignment = SWT.FILL;
 			connectButton.setLayoutData(gridDataButton);
-
+			
 			updateTexts();
 		}
 
