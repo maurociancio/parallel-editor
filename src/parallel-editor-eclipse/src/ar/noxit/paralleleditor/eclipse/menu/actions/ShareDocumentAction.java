@@ -9,6 +9,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.DocumentAlreadySharedException;
+
 public class ShareDocumentAction extends Action {
 
 	private ITextEditorProvider textEditorProvider;
@@ -50,6 +52,12 @@ public class ShareDocumentAction extends Action {
 
 			try {
 				shareDocumentIntent.shareDocument(new Document(fullPath, locationKind, textEditor));
+			} catch (DocumentAlreadySharedException e) {
+				// TODO log here the full stacktrace
+
+				MessageDialog.openError(Display.getDefault().getActiveShell(),
+						"Document already shared",
+						"This document \"" + e.getDocTitle() + "\" is already shared.");
 			} catch (Exception e) {
 				// TODO log here the full stacktrace
 

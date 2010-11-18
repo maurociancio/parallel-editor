@@ -77,6 +77,8 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		Assert.isNotNull(initialContent);
 		Assert.isNotNull(remoteMessageCallback);
 
+		verifyDocTitleNotExists(docTitle);
+
 		// create the service
 		createServiceIfNotCreated();
 
@@ -140,6 +142,13 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	public void dispose() {
 		// TODO implementar
+	}
+
+	private void verifyDocTitleNotExists(String docTitle) {
+		Assert.isNotNull(docTitle);
+		if (callbacks.containsKey(docTitle)) {
+			throw new DocumentAlreadySharedException("document already shared", docTitle);
+		}
 	}
 
 	protected JSession createLocalSessionIfNotExists() {
