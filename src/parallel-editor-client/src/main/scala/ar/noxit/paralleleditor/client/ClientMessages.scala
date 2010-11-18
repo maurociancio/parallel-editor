@@ -41,3 +41,5 @@ case class NewSubscriberToDocument(val username: String, val docTitle: String) e
 case class SubscriberLeftDocument(val username: String, val docTitle: String) extends CommandFromKernel
 
 case class DocumentTitleNotExists(val offenderTitle: String) extends CommandFromKernel
+
+case class SubscriptionCancelled(val docTitle: String) extends CommandFromKernel

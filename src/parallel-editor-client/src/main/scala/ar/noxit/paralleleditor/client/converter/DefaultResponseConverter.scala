@@ -77,6 +77,9 @@ class DefaultResponseConverter extends ResponseConverter with Loggable {
 
             case RemoteDocumentNotExists(offenderTitle) =>
                 DocumentTitleNotExists(offenderTitle)
+
+            case RemoteSubscriptionCancelled(docTitle) =>
+                SubscriptionCancelled(docTitle)
         }
     }
 }

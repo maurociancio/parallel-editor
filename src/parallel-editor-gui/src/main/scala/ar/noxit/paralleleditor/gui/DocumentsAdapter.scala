@@ -9,7 +9,7 @@ import ar.noxit.paralleleditor.client._
 class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
                        private val gui: Reactor,
-                       private val logger : GUILogger) extends Documents {
+                       private val logger: GUILogger) extends Documents {
     override def process(msg: CommandFromKernel) = {
         msg match {
             case ProcessOperation(title, msg) => {
@@ -99,6 +99,9 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                 }
             }
 
+            case SubscriptionCancelled(docTitle) => {
+            }
+
             case LoginOk() => {
             }
         }
@@ -110,5 +113,5 @@ class DocumentsAdapter(private val tabs: TabbedPane,
         doc
     }
 
-    private def logEvent(msg:String) =  logger trace (msg)
+    private def logEvent(msg: String) = logger trace (msg)
 }

@@ -2,7 +2,7 @@ package ar.noxit.paralleleditor.kernel.basic
 
 import ar.noxit.paralleleditor.kernel.exceptions._
 import ar.noxit.paralleleditor.kernel._
-import messages.{SubscriberLeftDocument, NewSubscriberToDocument}
+import messages.{SubscriptionCancelled, SubscriberLeftDocument, NewSubscriberToDocument}
 import scala.List
 import ar.noxit.paralleleditor.common.operation.{Caret, DocumentData}
 
@@ -37,6 +37,8 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
 
         // notify the subscribers
         subscribers.foreach {target => target notifyUpdate SubscriberLeftDocument(session.username, title)}
+
+        session notifyUpdate SubscriptionCancelled(title)
     }
 
     def silentUnsubscribe(session: Session) = {

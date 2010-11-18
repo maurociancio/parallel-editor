@@ -79,3 +79,8 @@ case class NewSubscriberToDocument(val username: String, val docTitle: String) e
  * Generado cuando un usuario deja la edición de un documento
  */
 case class SubscriberLeftDocument(val username: String, val docTitle: String) extends ToRemote
+
+/**
+ * Generado cuando el usuario se desuscribe de un document
+ */
+case class SubscriptionCancelled(val docTitle: String) extends ToRemote
