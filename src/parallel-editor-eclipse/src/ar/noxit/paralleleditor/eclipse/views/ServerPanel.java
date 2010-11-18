@@ -52,10 +52,8 @@ public class ServerPanel extends Composite {
 	private Model<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>(new ArrayList<DocumentElement>());
 	private Model<List<String>> docsModel = new Model<List<String>>(new ArrayList<String>());
 
-	public ServerPanel(Composite parent, int style,
-			IModel<ConnectionInfo> connectionInfo,
-			IRemoteConnectionFactory connectionFactory,
-			IRemoteDocumentShare remoteDocumentShare) {
+	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo,
+			IRemoteConnectionFactory connectionFactory, IRemoteDocumentShare remoteDocumentShare) {
 		super(parent, style);
 
 		// connection factory
@@ -116,7 +114,8 @@ public class ServerPanel extends Composite {
 		private Label serverIP;
 		private Label serverPort;
 		private Label connectionStatus;
-
+		private Button connectButton;
+		
 		public StatusPanel(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new FillLayout());
@@ -171,14 +170,23 @@ public class ServerPanel extends Composite {
 			showStatus();
 
 			// connect-disconnect button
-			final Button connectButton = new Button(contenedor, SWT.CENTER);
+			connectButton = new Button(contenedor, SWT.CENTER);
 			connectButton.setText("Connect");
 			connectButton.addSelectionListener(new SelectionAdapter() {
 
+				ConnectionInfo info;
+
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ConnectionInfo info = connectionInfo.get();
+					info = connectionInfo.get();
+					if (!connectionFactory.isConnected(info.getId()))
+						connect();
+					else
+						disconnect();
+					redraw();
+				}
 
+				public void connect() {
 					try {
 						ISession session = connectionFactory.connect(info);
 						session.installUserListCallback(new UserListCallback(usersModel));
@@ -187,13 +195,17 @@ public class ServerPanel extends Composite {
 						session.requestDocumentList();
 					} catch (Exception ex) {
 						// TODO log here the full stacktrace
-
 						MessageDialog.openError(Display.getDefault().getActiveShell(),
 								"Cannot connect to collaboration server",
-								"It probably means that the remote host or port you entered is invalid. " +
-										"Please check the configuration.");
+								"It probably means that the remote host or port you entered is invalid. "
+										+ "Please check the configuration.");
 					}
 				}
+
+				public void disconnect() {
+					connectionFactory.removeSession(info.getId());
+				}
+
 			});
 
 			GridData gridDataButton = new GridData();
@@ -214,9 +226,11 @@ public class ServerPanel extends Composite {
 				if (status.equals(ConnectionStatus.CONNECTED)) {
 					connectionStatus.setText(STATUS_CONNECTED);
 					connectionStatus.setBackground(colorGreen);
+					connectButton.setText("Disconnect");
 				} else {
 					connectionStatus.setText(STATUS_DISCONNECTED);
 					connectionStatus.setBackground(colorYelllow);
+					connectButton.setText("Connect");
 				}
 			}
 		}

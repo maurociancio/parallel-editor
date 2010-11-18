@@ -77,8 +77,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	@Override
-	public IDocumentSession createLocalShare(String docTitle,
-			String initialContent,
+	public IDocumentSession createLocalShare(String docTitle, String initialContent,
 			IRemoteMessageCallback remoteMessageCallback) {
 
 		Assert.isNotNull(docTitle);
@@ -214,5 +213,20 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		DefaultUserListMerger defaultUserListMerger = new DefaultUserListMerger();
 		defaultUserListMerger.setTimeout(5000);
 		return defaultUserListMerger;
+	}
+
+	@Override
+	public boolean isConnected(ConnectionId id) {
+		return remoteSessions.containsKey(id);
+	}
+
+	@Override
+	public void removeSession(ConnectionId id) {
+
+		ISession session = getSession(id);
+		if (session != null) {
+			session.close();
+			remoteSessions.remove(id);
+		}
 	}
 }

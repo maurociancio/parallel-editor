@@ -9,4 +9,8 @@ public interface IRemoteConnectionFactory {
 	ISession getSession(ConnectionId id);
 
 	ConnectionStatus statusOf(ConnectionId id);
+
+	boolean isConnected(ConnectionId id);
+
+	void removeSession(ConnectionId id);
 }
