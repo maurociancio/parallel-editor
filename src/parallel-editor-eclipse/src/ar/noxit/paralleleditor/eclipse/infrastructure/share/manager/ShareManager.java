@@ -52,20 +52,20 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	/**
 	 * Map of doctitle (local documents) to callback
 	 */
-	private Map<String, IRemoteMessageCallback> callbacks = new HashMap<String, IRemoteMessageCallback>();
+	private final Map<String, IRemoteMessageCallback> callbacks = new HashMap<String, IRemoteMessageCallback>();
 
 	/**
 	 * remote sessions
 	 */
-	private Map<ConnectionId, JSession> remoteSessions = new HashMap<ConnectionId, JSession>();
+	private final Map<ConnectionId, JSession> remoteSessions = new HashMap<ConnectionId, JSession>();
 
 	/**
 	 * remote sessions callbacks
 	 */
-	private Map<ConnectionId, ISession> remoteSessionsCallbacks = new HashMap<ConnectionId, ISession>();
+	private final Map<ConnectionId, ISession> remoteSessionsCallbacks = new HashMap<ConnectionId, ISession>();
 
 	// converter
-	private DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
+	private final DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
 			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
 
 	@Override

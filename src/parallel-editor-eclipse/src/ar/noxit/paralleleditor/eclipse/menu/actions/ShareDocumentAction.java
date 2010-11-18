@@ -13,8 +13,8 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.DocumentAlre
 
 public class ShareDocumentAction extends Action {
 
-	private ITextEditorProvider textEditorProvider;
-	private IShareLocalDocumentIntent shareDocumentIntent;
+	private final ITextEditorProvider textEditorProvider;
+	private final IShareLocalDocumentIntent shareDocumentIntent;
 
 	public ShareDocumentAction(ITextEditorProvider textEditorProvider, IShareLocalDocumentIntent shareDocIntent) {
 		Assert.isNotNull(textEditorProvider);

@@ -17,9 +17,9 @@ import ar.noxit.paralleleditor.eclipse.model.IModel;
 
 public class HostsList extends Composite {
 
-	private IModel<java.util.List<ConnectionInfo>> hostsModel;
-	private List hosts;
-	private ListViewer hostList;
+	private final IModel<java.util.List<ConnectionInfo>> hostsModel;
+	private final List hosts;
+	private final ListViewer hostList;
 
 	public HostsList(Composite parent, int style,
 			final IModel<java.util.List<ConnectionInfo>> hostsModel,
