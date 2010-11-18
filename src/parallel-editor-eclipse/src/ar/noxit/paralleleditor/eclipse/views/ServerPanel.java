@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Label;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
-import ar.noxit.paralleleditor.eclipse.model.Model;
 import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
+import ar.noxit.paralleleditor.eclipse.model.Model;
 
 public class ServerPanel extends Composite {
 
@@ -39,6 +39,7 @@ public class ServerPanel extends Composite {
 	private Label noSelectionLabel;
 
 	private final IRemoteConnectionFactory connectionFactory;
+	private final IRemoteDocumentShare remoteDocumentShare;
 
 	private static final String STATUS_DISCONNECTED = "Disconnected";
 	private static final String STATUS_CONNECTED = "Connected";
@@ -50,11 +51,13 @@ public class ServerPanel extends Composite {
 
 	public ServerPanel(Composite parent, int style,
 			IModel<ConnectionInfo> connectionInfo,
-			IRemoteConnectionFactory connectionFactory) {
+			IRemoteConnectionFactory connectionFactory,
+			IRemoteDocumentShare remoteDocumentShare) {
 		super(parent, style);
 
 		// connection factory
 		this.connectionFactory = connectionFactory;
+		this.remoteDocumentShare = remoteDocumentShare;
 
 		// connection info
 		this.connectionInfo = connectionInfo;
@@ -290,7 +293,7 @@ public class ServerPanel extends Composite {
 
 						// TODO VALIDAR null
 						ISession session = connectionFactory.getSession(id);
-						session.installSubscriptionResponseCallback(new SubscriptionCallback());
+						session.installSubscriptionResponseCallback(new SubscriptionCallback(remoteDocumentShare));
 						session.subscribe(selection[0]);
 					}
 				}

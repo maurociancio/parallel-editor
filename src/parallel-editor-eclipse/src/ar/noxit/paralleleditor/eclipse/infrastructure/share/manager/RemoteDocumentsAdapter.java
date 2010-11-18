@@ -17,6 +17,7 @@ import ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationCo
 import ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.RemoteMessageCallbackAdapter;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IDocumentListCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.ISubscriptionCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IUserListCallback;
@@ -28,7 +29,7 @@ public class RemoteDocumentsAdapter implements Documents {
 	private ISubscriptionCallback subscriptionResponseCallback;
 	private JSession remoteSession;
 
-	private java.util.Map<String, IRemoteMessageCallback> callbacks = new HashMap<String, IRemoteMessageCallback>();
+	private java.util.Map<String, RemoteMessageCallbackAdapter> callbacks = new HashMap<String, RemoteMessageCallbackAdapter>();
 
 	// converter
 	private DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
@@ -54,17 +55,21 @@ public class RemoteDocumentsAdapter implements Documents {
 			final String docTitle = documentSubscription.title();
 			final String initialContent = documentSubscription.initialContent();
 
-			if (subscriptionResponseCallback != null) {
-				DocumentSession docSession = new DocumentSession(docTitle, remoteSession, converter) {
+			final RemoteMessageCallbackAdapter adaptedCallback = new RemoteMessageCallbackAdapter();
+			callbacks.put(docTitle, adaptedCallback);
 
-					@Override
-					public void installCallback(IRemoteMessageCallback remoteCallback) {
-						callbacks.put(docTitle, remoteCallback);
-					}
-				};
+			DocumentSession docSession = new DocumentSession(docTitle, remoteSession, converter) {
+
+				@Override
+				public void installCallback(IRemoteMessageCallback newCallback) {
+					adaptedCallback.setAdapted(newCallback);
+				}
+			};
+
+			if (subscriptionResponseCallback != null)
 				subscriptionResponseCallback.onDocumentListResponse(docTitle, initialContent, docSession);
-			}
 		}
+
 		if (command instanceof ProcessOperation) {
 			ProcessOperation processOperation = (ProcessOperation) command;
 

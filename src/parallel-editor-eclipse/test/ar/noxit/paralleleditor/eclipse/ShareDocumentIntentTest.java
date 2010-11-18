@@ -17,7 +17,6 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.AbstractShareDocumen
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
 
 @Test
@@ -49,17 +48,17 @@ public class ShareDocumentIntentTest {
 		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent(shareManager) {
 
 			@Override
-			protected String getContentFor(IDocument document) {
+			protected String getContentFor(ITextEditor textEditor) {
 				return "initial";
 			}
 
 			@Override
-			protected void installCallback(IDocument document, IDocumentListener listener) {
+			protected void installCallback(ITextEditor textEditor, IDocumentListener listener) {
 				countListener = countListener + 1;
 			}
 
 			@Override
-			protected DocumentData getAdapterFor(IDocument document) {
+			protected DocumentData getAdapterFor(ITextEditor textEditor) {
 				return data;
 			}
 		};

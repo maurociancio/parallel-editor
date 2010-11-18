@@ -2,12 +2,15 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
-import ar.noxit.paralleleditor.eclipse.menu.actions.IShareDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.menu.actions.IShareLocalDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.views.EditorOpener;
+import ar.noxit.paralleleditor.eclipse.views.IRemoteDocumentShare;
 
-public abstract class AbstractShareDocumentIntent implements IShareDocumentIntent {
+public abstract class AbstractShareDocumentIntent implements IShareLocalDocumentIntent, IRemoteDocumentShare {
 
 	private IShareManager shareManager;
 
@@ -21,27 +24,49 @@ public abstract class AbstractShareDocumentIntent implements IShareDocumentInten
 	public void shareDocument(IDocument document) {
 		Assert.isNotNull(document);
 
-		String fullPath = document.getFullPath().toString();
+		ITextEditor textEditor = document.getTextEditor();
+		String path = document.getFullPath().toString();
 
 		// callback from kernel
 		RemoteMessageCallbackAdapter remoteCallback = new RemoteMessageCallbackAdapter();
 
 		// create the new document session
-		IDocumentSession docSession = shareManager.createLocalShare(fullPath, getContentFor(document), remoteCallback);
+		IDocumentSession docSession = shareManager.createLocalShare(path, getContentFor(textEditor), remoteCallback);
 
 		// callback from editor
-		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(document));
+		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor));
 
 		// adapt callbacks
 		remoteCallback.setAdapted(sync);
 
 		// install callback on editor
-		installCallback(document, new EclipseDocumentListener(sync));
+		installCallback(textEditor, new EclipseDocumentListener(sync));
 	}
 
-	protected abstract DocumentData getAdapterFor(IDocument document);
+	@Override
+	public void shareRemoteDocument(String docTitle, String initialContent, IDocumentSession docSession) {
+		Assert.isNotNull(docTitle);
+		Assert.isNotNull(initialContent);
 
-	protected abstract String getContentFor(IDocument document);
+		ITextEditor textEditor = openNewEditor(docTitle, initialContent);
 
-	protected abstract void installCallback(IDocument document, IDocumentListener listener);
+		// synchronizer
+		Synchronizer sync = new Synchronizer(docSession, getAdapterFor(textEditor));
+
+		// adapt
+		docSession.installCallback(sync);
+
+		// listener
+		installCallback(textEditor, new EclipseDocumentListener(sync));
+	}
+
+	private ITextEditor openNewEditor(String docTitle, String initialContent) {
+		return (ITextEditor) EditorOpener.openNewEditor(docTitle, initialContent);
+	}
+
+	protected abstract DocumentData getAdapterFor(ITextEditor textEditor);
+
+	protected abstract String getContentFor(ITextEditor textEditor);
+
+	protected abstract void installCallback(ITextEditor textEditor, IDocumentListener listener);
 }

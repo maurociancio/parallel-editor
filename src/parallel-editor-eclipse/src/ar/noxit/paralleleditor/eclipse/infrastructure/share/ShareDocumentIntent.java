@@ -5,7 +5,6 @@ import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.IDocument;
 
 public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 
@@ -14,27 +13,26 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 	}
 
 	@Override
-	protected String getContentFor(IDocument document) {
-		Assert.isNotNull(document);
+	protected String getContentFor(ITextEditor textEditor) {
+		Assert.isNotNull(textEditor);
 
-		return getEclipseDocument(document).get();
+		return getEclipseDocument(textEditor).get();
 	}
 
 	@Override
-	protected void installCallback(IDocument document, IDocumentListener listener) {
+	protected void installCallback(ITextEditor document, IDocumentListener listener) {
 		Assert.isNotNull(document);
 		Assert.isNotNull(listener);
 
 		getEclipseDocument(document).addDocumentListener(listener);
 	}
 
-	protected org.eclipse.jface.text.IDocument getEclipseDocument(IDocument document) {
-		ITextEditor textEditor = document.getTextEditor();
-		return textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
+	@Override
+	protected DocumentData getAdapterFor(ITextEditor textEditor) {
+		return new DocumentDataAdapter(getEclipseDocument(textEditor), textEditor);
 	}
 
-	@Override
-	protected DocumentData getAdapterFor(final IDocument document) {
-		return new DocumentDataAdapter(getEclipseDocument(document), document.getTextEditor());
+	private org.eclipse.jface.text.IDocument getEclipseDocument(ITextEditor textEditor) {
+		return textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
 	}
 }

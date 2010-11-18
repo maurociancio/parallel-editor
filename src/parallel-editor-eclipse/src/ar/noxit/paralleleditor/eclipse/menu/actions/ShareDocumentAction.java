@@ -10,9 +10,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class ShareDocumentAction extends Action {
 
 	private ITextEditorProvider textEditorProvider;
-	private IShareDocumentIntent shareDocumentIntent;
+	private IShareLocalDocumentIntent shareDocumentIntent;
 
-	public ShareDocumentAction(ITextEditorProvider textEditorProvider, IShareDocumentIntent shareDocIntent) {
+	public ShareDocumentAction(ITextEditorProvider textEditorProvider, IShareLocalDocumentIntent shareDocIntent) {
 		Assert.isNotNull(textEditorProvider);
 		Assert.isNotNull(shareDocIntent);
 

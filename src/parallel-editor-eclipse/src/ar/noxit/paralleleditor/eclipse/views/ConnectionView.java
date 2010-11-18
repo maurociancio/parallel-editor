@@ -10,10 +10,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import ar.noxit.paralleleditor.eclipse.Activator;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.ShareDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.Model;
 
 public class ConnectionView extends ViewPart {
+
+	private ShareManager shareManager = Activator.shareManager;
+	private IRemoteDocumentShare remoteDocShare = new ShareDocumentIntent(shareManager);
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -32,8 +37,8 @@ public class ConnectionView extends ViewPart {
 		hostListData.horizontalSpan = 1;
 		hostList.setLayoutData(hostListData);
 
-		// server panel
-		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID, selectedConnection, Activator.shareManager);
+		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID, selectedConnection, shareManager,
+				remoteDocShare);
 		GridData serverPanelData = new GridData();
 		serverPanelData.horizontalSpan = 2;
 		serverPanelData.horizontalAlignment = SWT.FILL;
