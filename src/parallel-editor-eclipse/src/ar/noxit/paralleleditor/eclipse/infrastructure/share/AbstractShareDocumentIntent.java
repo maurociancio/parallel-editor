@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.ui.IPartService;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
@@ -58,6 +59,10 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 
 		// install callback on editor
 		installCallback(textEditor, new EclipseDocumentListener(sync));
+
+		// install callback for document close
+		IPartService partService = textEditor.getSite().getWorkbenchWindow().getPartService();
+		partService.addPartListener(new TextEditorClosedListener(partService, textEditor, docSession));
 	}
 
 	private ITextEditor openNewEditor(String docTitle, String initialContent) {

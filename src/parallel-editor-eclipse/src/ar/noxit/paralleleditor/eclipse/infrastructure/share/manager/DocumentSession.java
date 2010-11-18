@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter;
+import ar.noxit.paralleleditor.common.messages.RemoteUnsubscribeRequest;
 import ar.noxit.paralleleditor.common.operation.DocumentOperation;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
@@ -23,6 +24,11 @@ public class DocumentSession implements IDocumentSession {
 	@Override
 	public void onNewLocalMessage(Message<EditOperation> message) {
 		session.send(converter.convert(new DocumentOperation(docTitle, message)));
+	}
+
+	@Override
+	public void unsubscribe() {
+		session.send(new RemoteUnsubscribeRequest(docTitle));
 	}
 
 	@Override

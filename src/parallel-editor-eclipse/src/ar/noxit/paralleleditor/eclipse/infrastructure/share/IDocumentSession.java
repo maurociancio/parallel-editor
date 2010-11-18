@@ -8,4 +8,6 @@ public interface IDocumentSession {
 	void onNewLocalMessage(Message<EditOperation> message);
 
 	void installCallback(IRemoteMessageCallback remoteCallback);
+
+	void unsubscribe();
 }

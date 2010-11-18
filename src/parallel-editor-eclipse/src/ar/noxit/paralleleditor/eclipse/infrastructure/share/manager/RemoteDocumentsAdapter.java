@@ -37,18 +37,23 @@ public class RemoteDocumentsAdapter implements Documents {
 
 	@Override
 	public synchronized void process(CommandFromKernel command) {
+		// user list update
 		if (command instanceof UserListUpdate) {
 			Map<String, List<String>> usernames = ((UserListUpdate) command).usernames();
 
 			if (documentListCallback != null)
 				documentListCallback.onUserListResponse(usernames);
 		}
+
+		// doc list update
 		if (command instanceof DocumentListUpdate) {
 			List<String> docs = ((DocumentListUpdate) command).docs();
 
 			if (userListCallback != null)
 				userListCallback.onDocumentListResponse(docs);
 		}
+
+		// subscription
 		if (command instanceof DocumentSubscription) {
 			DocumentSubscription documentSubscription = (DocumentSubscription) command;
 
@@ -70,13 +75,13 @@ public class RemoteDocumentsAdapter implements Documents {
 				subscriptionResponseCallback.onDocumentListResponse(docTitle, initialContent, docSession);
 		}
 
+		// operations
 		if (command instanceof ProcessOperation) {
 			ProcessOperation processOperation = (ProcessOperation) command;
 
 			String docTitle = processOperation.title();
 			Message<EditOperation> msg = processOperation.msg();
 
-			// TODO valir not null
 			callbacks.get(docTitle).onNewRemoteMessage(msg);
 		}
 	}
