@@ -7,8 +7,11 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernelListener;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
+import ar.noxit.paralleleditor.eclipse.model.Model;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 /**
@@ -45,8 +48,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		shareManager = new ShareManager();
-		hostsModel.set(new ArrayList<ConnectionInfo>());
+		hostsModel = new Model<List<ConnectionInfo>>(new ArrayList<ConnectionInfo>());
+		shareManager = new ShareManager(new LocalKernelListener());
 	}
 
 	/*
@@ -82,5 +85,31 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	private class LocalKernelListener implements ILocalKernelListener {
+
+		private boolean added;
+		private ConnectionInfo element;
+
+		@Override
+		public synchronized void onCreation() {
+			if (!added) {
+				this.element = new ConnectionInfo(new ConnectionId(ShareManager.LOCALHOST,
+						ShareManager.LOCALPORT),
+						ShareManager.LOCAL_USERNAME);
+
+				hostsModel.get().add(0, element);
+				this.added = true;
+			}
+		}
+
+		@Override
+		public synchronized void onDestroy() {
+			if (added) {
+				hostsModel.get().remove(element);
+				added = false;
+			}
+		}
 	}
 }

@@ -1,9 +1,11 @@
 package ar.noxit.paralleleditor.eclipse;
 
+import org.easymock.EasyMock;
 import org.eclipse.jface.action.IContributionItem;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernelListener;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu;
 
@@ -27,7 +29,9 @@ public class TextEditorContextualMenuTest {
 
 		@Override
 		protected ShareManager getShareManager() {
-			return new ShareManager();
+			ILocalKernelListener mock = EasyMock.createMock(ILocalKernelListener.class);
+			EasyMock.replay(mock);
+			return new ShareManager(mock);
 		}
 	}
 }

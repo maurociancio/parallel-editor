@@ -35,9 +35,9 @@ import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	// extract to configuration panel
-	private static final String LOCALHOST = "localhost";
-	private static final int LOCALPORT = 5000;
-	private static final String LOCAL_USERNAME = "local_username";
+	public static final String LOCALHOST = "localhost";
+	public static final int LOCALPORT = 5000;
+	public static final String LOCAL_USERNAME = "local_username";
 
 	/**
 	 * kernel service for local documents
@@ -67,6 +67,14 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	// converter
 	private final DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
 			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
+
+	// TODO falta que se llame a la destruccion del kernel local
+	private final ILocalKernelListener localKernelListener;
+
+	public ShareManager(ILocalKernelListener localKernelListener) {
+		Assert.isNotNull(localKernelListener);
+		this.localKernelListener = localKernelListener;
+	}
 
 	@Override
 	public IDocumentSession createLocalShare(String docTitle,
@@ -176,6 +184,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		if (this.kernelService == null) {
 			this.kernelService = newKernelService();
 			this.kernelService.startService();
+			this.localKernelListener.onCreation();
 		}
 	}
 
