@@ -60,6 +60,10 @@ class ClientActor(private val doc: Documents) extends Actor with Loggable {
                     trace("Logout request received")
                     doExit
                 }
+                case TerminateActor() => {
+                    trace("terminate actor received")
+                    doExit
+                }
 
                 case any: Any => {
                     warn("Uknown message received [%s] [caller=%s]", any, sender)
