@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.SubscriptionAlreadyExistsException;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
 import ar.noxit.paralleleditor.eclipse.model.Model;
@@ -309,10 +310,19 @@ public class ServerPanel extends Composite {
 					if (selection != null && selection.length == 1) {
 						ConnectionId id = connectionInfo.get().getId();
 
-						// TODO VALIDAR null
-						ISession session = connectionFactory.getSession(id);
-						session.installSubscriptionResponseCallback(new SubscriptionCallback(remoteDocumentShare));
-						session.subscribe(selection[0]);
+						try {
+							ISession session = connectionFactory.getSession(id);
+							if (session != null) {
+								session.installSubscriptionResponseCallback(
+										new SubscriptionCallback(remoteDocumentShare));
+								session.subscribe(selection[0]);
+							}
+						}
+						catch (SubscriptionAlreadyExistsException e) {
+							MessageDialog.openError(Display.getDefault().getActiveShell(),
+									"Subscription to document already exists",
+									"You are already subscribed to this document.");
+						}
 					}
 				}
 			});

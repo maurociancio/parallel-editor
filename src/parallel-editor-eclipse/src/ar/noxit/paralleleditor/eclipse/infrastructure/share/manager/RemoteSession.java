@@ -47,6 +47,9 @@ public class RemoteSession implements ISession {
 
 	@Override
 	public void subscribe(String docTitle) {
+		if (adapter.isSubscribedTo(docTitle)) {
+			throw new SubscriptionAlreadyExistsException("subscription already exists to this document", docTitle);
+		}
 		newSession.send(new RemoteSubscribeRequest(docTitle));
 	}
 

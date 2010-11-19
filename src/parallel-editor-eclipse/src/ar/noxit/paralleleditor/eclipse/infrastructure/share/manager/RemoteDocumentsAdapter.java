@@ -2,6 +2,8 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
 import java.util.HashMap;
 
+import org.eclipse.core.runtime.Assert;
+
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
 import ar.noxit.paralleleditor.client.CommandFromKernel;
@@ -91,6 +93,12 @@ public class RemoteDocumentsAdapter implements Documents {
 
 			callbacks.get(docTitle).onNewRemoteMessage(msg);
 		}
+	}
+
+	public synchronized boolean isSubscribedTo(String docTitle) {
+		Assert.isNotNull(docTitle);
+
+		return callbacks.get(docTitle) != null;
 	}
 
 	public synchronized void installUserListCallback(IUserListCallback callback) {
