@@ -115,15 +115,11 @@ public class ServerPanel extends Composite {
 
 					// refresh button
 					Button refreshButton = new Button(listsComposite, SWT.PUSH);
-					refreshButton.setText("Refresh");
+					refreshButton.setText("Refresh docs and users");
 					refreshButton.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							ConnectionId id = connectionInfo.get().getId();
-							ISession session = connectionFactory.getSession(id);
-							if (session != null) {
-								askDocumentsAndUsers(session);
-							}
+							askDocumentsAndUsersIfSessionExists();
 						}
 					});
 
@@ -145,6 +141,10 @@ public class ServerPanel extends Composite {
 			@Override
 			public void onUpdate() {
 				redraw();
+				// clear the docs because the user has changed the selected host
+				clearUsersAndDocs();
+				// ask for fresh data
+				askDocumentsAndUsersIfSessionExists();
 			}
 		});
 		determineVisibility();
@@ -400,5 +400,18 @@ public class ServerPanel extends Composite {
 		session.installDocumentListCallback(new DocumentListCallback(docsModel));
 		session.requestUserList();
 		session.requestDocumentList();
+	}
+
+	private void askDocumentsAndUsersIfSessionExists() {
+		ConnectionId id = connectionInfo.get().getId();
+		ISession session = connectionFactory.getSession(id);
+		if (session != null) {
+			askDocumentsAndUsers(session);
+		}
+	}
+
+	private void clearUsersAndDocs() {
+		usersModel.set(new ArrayList<DocumentElement>());
+		docsModel.set(new ArrayList<String>());
 	}
 }
