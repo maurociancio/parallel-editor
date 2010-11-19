@@ -176,11 +176,8 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	@Override
 	public void stopLocalService() {
 		if (existsLocalConnection()) {
-			if (kernelService != null) {
-				// kernelService.stopService();
-				// TODO
-			}
-
+			if (kernelService != null)
+				kernelService.stopService();
 			if (localKernelListener != null)
 				localKernelListener.onDestroy();
 			if (localAdapter != null)
