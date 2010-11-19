@@ -95,15 +95,33 @@ public class ServerPanel extends Composite {
 				listsGridData.horizontalAlignment = GridData.FILL;
 				listsGridData.verticalAlignment = GridData.FILL;
 				listsComposite.setLayoutData(listsGridData);
-				listsComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
+
+				// listsComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
+				listsComposite.setLayout(new GridLayout(2, true));
 				{
+					GridData usersOrDocsGridData = new GridData();
+					usersOrDocsGridData.grabExcessVerticalSpace = true;
+					usersOrDocsGridData.grabExcessHorizontalSpace = true;
+					usersOrDocsGridData.horizontalAlignment = GridData.FILL;
+					usersOrDocsGridData.verticalAlignment = GridData.FILL;
+
 					// user panel
 					this.usersPanel = new UsersPanel(listsComposite, SWT.NONE);
+					this.usersPanel.setLayoutData(usersOrDocsGridData);
+
 					// docs panel
 					this.documentsPanel = new DocumentsPanel(listsComposite, SWT.NONE);
+					this.documentsPanel.setLayoutData(usersOrDocsGridData);
+
 					// refresh button
 					Button refreshButton = new Button(listsComposite, SWT.PUSH);
 					refreshButton.setText("Refresh");
+
+					GridData refreshGridData = new GridData();
+					refreshGridData.horizontalSpan = 2;
+					refreshGridData.horizontalAlignment = GridData.FILL;
+					refreshGridData.verticalAlignment = GridData.FILL;
+					refreshButton.setLayoutData(refreshGridData);
 				}
 			}
 
