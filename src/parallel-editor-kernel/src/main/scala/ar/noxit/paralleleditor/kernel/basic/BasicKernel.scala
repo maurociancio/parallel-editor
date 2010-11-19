@@ -86,11 +86,9 @@ class BasicKernel extends Kernel with Loggable {
         actor
     }
 
-    def removeDeletedDocument(title: String) {
+    override def removeDeletedDocument(title: String) {
         documents = documents.filter {doc => doc.title != title}
     }
-
-    protected def newSyncFactory: SynchronizerFactory = sync
 
     override def documentList = documents.map {_.title}
 
@@ -116,6 +114,10 @@ class BasicKernel extends Kernel with Loggable {
     override def userList(session: Session) =
         userListMerger.notifyUserList(session, sessions, documents)
 
+    override def terminate = {
+        documents.foreach {doc => doc ! TerminateDocument()}
+    }
+
     def documentCount = documents size
 
     def sessionCount = sessions size
@@ -131,4 +133,6 @@ class BasicKernel extends Kernel with Loggable {
             })
         })
     }
+
+    protected def newSyncFactory: SynchronizerFactory = sync
 }

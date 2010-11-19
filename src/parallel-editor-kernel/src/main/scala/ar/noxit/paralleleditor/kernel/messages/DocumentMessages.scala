@@ -8,6 +8,8 @@ import ar.noxit.paralleleditor.common.Message
  * Mensajes que se envian entre el actor del documento y el kernel.
  */
 
+case class TerminateDocument()
+
 case class ProcessOperation(val who: Session, val m: Message[EditOperation])
 
 case class SubscriberCount()

@@ -10,7 +10,6 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
     def act = {
         info("Started")
 
-        // TODO hacer que salga
         loop {
             trace("Choosing")
             react {
@@ -80,11 +79,22 @@ class KernelActor(val kernel: Kernel) extends Actor with Loggable {
                     kernel.removeDeletedDocument(title)
                 }
 
+                case TerminateKernel() => {
+                    trace("terminate kernel received")
+                    kernel.terminate
+                    doExit
+                }
+
                 case msg: Any => {
                     warn("Unknown message received [%s]", msg)
                 }
             }
         }
         // la ejecución nunca llega acá
+    }
+
+    protected def doExit = {
+        trace("exiting")
+        exit
     }
 }

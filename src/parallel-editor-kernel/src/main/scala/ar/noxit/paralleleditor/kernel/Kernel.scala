@@ -10,4 +10,6 @@ trait Kernel {
     def newDocument(owner: Session, title: String, initialContent: String = "")
     def deleteDocument(session: Session, title: String)
     def removeDeletedDocument(title: String)
+
+    def terminate
 }

@@ -56,7 +56,6 @@ class ClientListActor extends Actor with Loggable with DisconnectablePeer {
         }
     }
 
-    def disconnect(client: Peer) = {
+    def disconnect(client: Peer) =
         this ! RemoveClient(client)
-    }
 }

@@ -11,6 +11,8 @@ sealed trait ToRemote
  * Mensajes entre el actor Kernel y el actor del proxy del Cliente remoto
  */
 
+case class TerminateKernel()
+
 case class LoginRequest(val username: String)
 
 case class LoginResponse(val session: Session) {

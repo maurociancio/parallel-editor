@@ -13,6 +13,7 @@ import ar.noxit.paralleleditor.kernel.actors.converter.{DefaultToKernelConverter
 
 trait KernelService {
     def startService
+    def stopService
 }
 
 /**
@@ -30,7 +31,8 @@ abstract class BaseKernelService extends DaemonActor with Loggable with KernelSe
     protected val clientList = new ClientListActor
     clientList.start
 
-    def startService = this.start
+    override def startService = this.start
+    override def stopService = this.stop
 
     protected def initialize = {
         kernel = newKernel

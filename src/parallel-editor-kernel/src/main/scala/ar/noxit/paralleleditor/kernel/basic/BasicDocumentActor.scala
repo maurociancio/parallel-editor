@@ -101,9 +101,19 @@ class BasicDocumentActor(val document: BasicDocument, private val syncFactory: S
                     }
                 }
 
+                case TerminateDocument() => {
+                    trace("terminate document received")
+                    doExit
+                }
+
                 case any: Any => warn("Unknown message received %s", any)
             }
         }
+    }
+
+    protected def doExit = {
+        trace("terminating")
+        exit
     }
 
     protected def newSynchronizer: Synchronizer = syncFactory.newSynchronizer
