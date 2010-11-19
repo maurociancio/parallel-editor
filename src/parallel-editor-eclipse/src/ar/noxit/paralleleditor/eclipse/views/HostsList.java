@@ -24,16 +24,11 @@ public class HostsList extends Composite {
 	private final List hosts;
 	private final ListViewer hostList;
 
-	private final IRemoteConnectionFactory connectionFactory;
-
 	public HostsList(Composite parent, int style,
 			final IModel<java.util.List<ConnectionInfo>> hostsModel,
 			final IModel<ConnectionInfo> selectedConnection,
 			final IRemoteConnectionFactory connectionFactory) {
 		super(parent, style);
-
-		// connection factory
-		this.connectionFactory = connectionFactory;
 
 		this.hostsModel = hostsModel;
 		setLayout(new FillLayout());
