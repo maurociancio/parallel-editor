@@ -404,10 +404,13 @@ public class ServerPanel extends Composite {
 	}
 
 	private void askDocumentsAndUsersIfSessionExists() {
-		ConnectionId id = connectionInfo.get().getId();
-		ISession session = connectionFactory.getSession(id);
-		if (session != null) {
-			askDocumentsAndUsers(session);
+		ConnectionInfo info = connectionInfo.get();
+		if (info != null) {
+			ConnectionId id = info.getId();
+			ISession session = connectionFactory.getSession(id);
+			if (session != null) {
+				askDocumentsAndUsers(session);
+			}
 		}
 	}
 
