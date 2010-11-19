@@ -126,7 +126,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// store the remote session
 		remoteSessions.put(info.getId(), newSession);
 
-		ISession newRemoteSession = new RemoteSession(info, newSession, adapter);
+		ISession newRemoteSession = new Session(info, newSession, adapter);
 		remoteSessionsCallbacks.put(id, newRemoteSession);
 		return newRemoteSession;
 	}
@@ -146,11 +146,44 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	public ISession getSession(ConnectionId id) {
 		Assert.isNotNull(id);
 
-		return remoteSessionsCallbacks.get(id);
+		if (id.isLocal()) {
+			// TODO ver el nombre de usuario, de donde sacarlo, y evitar que
+			// cambie si cambia en el panel de configuracion
+			if (existsLocalConnection())
+				return new Session(new ConnectionInfo(id, LOCAL_USERNAME), localSession, this.localAdapter);
+			else
+				return null;
+		} else {
+			return remoteSessionsCallbacks.get(id);
+		}
 	}
 
 	public void dispose() {
 		// TODO implementar
+	}
+
+	@Override
+	public boolean isConnected(ConnectionId id) {
+		Assert.isNotNull(id);
+
+		return remoteSessions.containsKey(id) || (isLocalConnection(id) && existsLocalConnection());
+	}
+
+	private boolean isLocalConnection(ConnectionId id) {
+		return id.isLocal();
+	}
+
+	private boolean existsLocalConnection() {
+		return kernelService != null;
+	}
+
+	@Override
+	public void disconnect(ConnectionId id) {
+		ISession session = getSession(id);
+		if (session != null) {
+			session.close();
+			remoteSessions.remove(id);
+		}
 	}
 
 	protected JSession createLocalSessionIfNotExists() {
@@ -196,19 +229,5 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		DefaultUserListMerger defaultUserListMerger = new DefaultUserListMerger();
 		defaultUserListMerger.setTimeout(5000);
 		return defaultUserListMerger;
-	}
-
-	@Override
-	public boolean isConnected(ConnectionId id) {
-		return remoteSessions.containsKey(id);
-	}
-
-	@Override
-	public void disconnect(ConnectionId id) {
-		ISession session = getSession(id);
-		if (session != null) {
-			session.close();
-			remoteSessions.remove(id);
-		}
 	}
 }

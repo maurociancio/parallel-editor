@@ -10,7 +10,7 @@ public interface IRemoteConnectionFactory {
 
 	ConnectionStatus statusOf(ConnectionId id);
 
-	boolean isConnected(ConnectionId id);
+	boolean isConnected(ConnectionId connectionId);
 
 	void disconnect(ConnectionId id);
 }

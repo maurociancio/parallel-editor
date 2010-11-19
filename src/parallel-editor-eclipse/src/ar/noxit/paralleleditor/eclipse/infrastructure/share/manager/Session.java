@@ -8,19 +8,19 @@ import ar.noxit.paralleleditor.common.messages.RemoteSubscribeRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteUserListRequest;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
-public class RemoteSession implements ISession {
+public class Session implements ISession {
 
 	private final ConnectionInfo info;
-	private final JSession newSession;
+	private final JSession session;
 	private final DocumentsAdapter adapter;
 
-	public RemoteSession(ConnectionInfo info, JSession newSession, DocumentsAdapter adapter) {
+	public Session(ConnectionInfo info, JSession newSession, DocumentsAdapter adapter) {
 		Assert.isNotNull(info);
 		Assert.isNotNull(newSession);
 		Assert.isNotNull(adapter);
 
 		this.info = info;
-		this.newSession = newSession;
+		this.session = newSession;
 		this.adapter = adapter;
 		this.adapter.setSession(newSession);
 	}
@@ -32,7 +32,7 @@ public class RemoteSession implements ISession {
 
 	@Override
 	public void requestUserList() {
-		newSession.send(new RemoteUserListRequest());
+		session.send(new RemoteUserListRequest());
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class RemoteSession implements ISession {
 
 	@Override
 	public void requestDocumentList() {
-		newSession.send(new RemoteDocumentListRequest());
+		session.send(new RemoteDocumentListRequest());
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class RemoteSession implements ISession {
 		if (adapter.isSubscribedTo(docTitle)) {
 			throw new SubscriptionAlreadyExistsException("subscription already exists to this document", docTitle);
 		}
-		newSession.send(new RemoteSubscribeRequest(docTitle));
+		session.send(new RemoteSubscribeRequest(docTitle));
 	}
 
 	@Override
@@ -60,6 +60,6 @@ public class RemoteSession implements ISession {
 
 	@Override
 	public void close() {
-		newSession.close();
+		session.close();
 	}
 }
