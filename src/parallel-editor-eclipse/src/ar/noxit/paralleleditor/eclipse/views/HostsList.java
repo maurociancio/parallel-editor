@@ -111,7 +111,12 @@ public class HostsList extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				int selection = hosts.getSelectionIndex();
 				if (selection != -1) {
-					hostsModel.get().remove(selection);
+					java.util.List<ConnectionInfo> hosts = hostsModel.get();
+					hosts.remove(selection);
+
+					// para que se disparen los listeners
+					hostsModel.set(hosts);
+
 					selectedConnection.set(null);
 					redraw();
 				}
