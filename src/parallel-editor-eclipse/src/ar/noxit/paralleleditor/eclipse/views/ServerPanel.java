@@ -49,7 +49,8 @@ public class ServerPanel extends Composite {
 	private static final String STATUS_CONNECTING = "Connecting to server...";
 	private static final String STATUS_DISCONNECTING = "Disconnecting...";
 
-	private IModel<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>(new ArrayList<DocumentElement>());
+	private IModel<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>(
+			new ArrayList<DocumentElement>());
 	private IModel<List<String>> docsModel = new Model<List<String>>(new ArrayList<String>());
 
 	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo,
@@ -202,6 +203,9 @@ public class ServerPanel extends Composite {
 
 				public void disconnect(ConnectionInfo info) {
 					connectionFactory.removeSession(info.getId());
+
+					usersModel.set(new ArrayList<DocumentElement>());
+					docsModel.set(new ArrayList<String>());
 				}
 			});
 
