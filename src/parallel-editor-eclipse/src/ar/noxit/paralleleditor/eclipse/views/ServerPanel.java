@@ -115,7 +115,7 @@ public class ServerPanel extends Composite {
 		private Label serverPort;
 		private Label connectionStatus;
 		private Button connectButton;
-		
+
 		public StatusPanel(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new FillLayout());
@@ -174,19 +174,17 @@ public class ServerPanel extends Composite {
 			connectButton.setText("Connect");
 			connectButton.addSelectionListener(new SelectionAdapter() {
 
-				ConnectionInfo info;
-
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					info = connectionInfo.get();
+					ConnectionInfo info = connectionInfo.get();
 					if (!connectionFactory.isConnected(info.getId()))
-						connect();
+						connect(info);
 					else
-						disconnect();
+						disconnect(info);
 					redraw();
 				}
 
-				public void connect() {
+				public void connect(ConnectionInfo info) {
 					try {
 						ISession session = connectionFactory.connect(info);
 						session.installUserListCallback(new UserListCallback(usersModel));
@@ -202,10 +200,9 @@ public class ServerPanel extends Composite {
 					}
 				}
 
-				public void disconnect() {
+				public void disconnect(ConnectionInfo info) {
 					connectionFactory.removeSession(info.getId());
 				}
-
 			});
 
 			GridData gridDataButton = new GridData();
