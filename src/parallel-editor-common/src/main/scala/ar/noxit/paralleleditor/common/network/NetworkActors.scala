@@ -24,6 +24,7 @@ abstract class BaseNetworkActor extends Actor with Loggable {
     }
 
     protected def doExit = {
+        trace("terminating")
         if (peer != null)
             peer ! TerminateActor()
         exit
@@ -70,15 +71,12 @@ class GatewayActor(private val output: MessageOutput) extends BaseNetworkActor {
 
         loop {
             react {
-                case TerminateActor() => {
-                    trace("Exit received, exiting")
+                case TerminateActor() =>
                     doExit
-                }
                 case message: Any => {
                     trace("writing message to client [%s]", message)
-                    try {
+                    try
                         onNewMessage(message)
-                    }
                     catch {
                         case e: Exception => {
                             warn(e, "Exception thrown during send")
