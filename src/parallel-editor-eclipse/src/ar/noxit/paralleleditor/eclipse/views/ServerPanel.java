@@ -54,8 +54,8 @@ public class ServerPanel extends Composite {
 			new ArrayList<DocumentElement>());
 	private IModel<List<String>> docsModel = new Model<List<String>>(new ArrayList<String>());
 
-	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo,
-			IRemoteConnectionFactory connectionFactory, IRemoteDocumentShare remoteDocumentShare) {
+	public ServerPanel(Composite parent, int style, final IModel<ConnectionInfo> connectionInfo,
+			final IRemoteConnectionFactory connectionFactory, IRemoteDocumentShare remoteDocumentShare) {
 		super(parent, style);
 
 		// connection factory
@@ -116,6 +116,16 @@ public class ServerPanel extends Composite {
 					// refresh button
 					Button refreshButton = new Button(listsComposite, SWT.PUSH);
 					refreshButton.setText("Refresh");
+					refreshButton.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							ConnectionId id = connectionInfo.get().getId();
+							ISession session = connectionFactory.getSession(id);
+							if (session != null) {
+								askDocumentsAndUsers(session);
+							}
+						}
+					});
 
 					GridData refreshGridData = new GridData();
 					refreshGridData.horizontalSpan = 2;
@@ -235,10 +245,7 @@ public class ServerPanel extends Composite {
 				public void connect(ConnectionInfo info) {
 					try {
 						ISession session = connectionFactory.connect(info);
-						session.installUserListCallback(new UserListCallback(usersModel));
-						session.requestUserList();
-						session.installDocumentListCallback(new DocumentListCallback(docsModel));
-						session.requestDocumentList();
+						askDocumentsAndUsers(session);
 					} catch (Exception ex) {
 						// TODO log here the full stacktrace
 						MessageDialog.openError(Display.getDefault().getActiveShell(),
@@ -386,5 +393,12 @@ public class ServerPanel extends Composite {
 			this.documents.setInput(docsModel.get().toArray());
 			super.redraw();
 		}
+	}
+
+	private void askDocumentsAndUsers(ISession session) {
+		session.installUserListCallback(new UserListCallback(usersModel));
+		session.installDocumentListCallback(new DocumentListCallback(docsModel));
+		session.requestUserList();
+		session.requestDocumentList();
 	}
 }
