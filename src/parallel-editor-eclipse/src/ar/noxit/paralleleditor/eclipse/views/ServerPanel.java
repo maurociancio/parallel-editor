@@ -69,19 +69,45 @@ public class ServerPanel extends Composite {
 		this.layoutVisibility = new StackLayout();
 		setLayout(layoutVisibility);
 
-		// composite de: documents, users y server info
-		this.hostComposite = new Composite(this, SWT.NONE);
-		this.hostComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
+		{
+			// composite de: lists y server info
+			this.hostComposite = new Composite(this, SWT.NONE);
+			// this.hostComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
+			this.hostComposite.setLayout(new GridLayout(3, true));
 
-		// status
-		this.statusPanel = new StatusPanel(hostComposite, SWT.NONE);
-		// user panel
-		this.usersPanel = new UsersPanel(hostComposite, SWT.NONE);
-		// docs panel
-		this.documentsPanel = new DocumentsPanel(hostComposite, SWT.NONE);
+			{
+				// status
+				this.statusPanel = new StatusPanel(hostComposite, SWT.NONE);
+				GridData statusGridData = new GridData();
+				statusGridData.horizontalSpan = 1;
+				statusGridData.grabExcessVerticalSpace = true;
+				statusGridData.grabExcessHorizontalSpace = true;
+				statusGridData.horizontalAlignment = GridData.FILL;
+				statusGridData.verticalAlignment = GridData.FILL;
+				this.statusPanel.setLayoutData(statusGridData);
 
-		this.noSelectionLabel = new Label(this, SWT.NONE);
-		this.noSelectionLabel.setText("Please select a hostname");
+				// lists
+				Composite listsComposite = new Composite(hostComposite, SWT.NONE);
+				GridData listsGridData = new GridData();
+				listsGridData.horizontalSpan = 2;
+				listsGridData.grabExcessVerticalSpace = true;
+				listsGridData.grabExcessHorizontalSpace = true;
+				listsGridData.horizontalAlignment = GridData.FILL;
+				listsGridData.verticalAlignment = GridData.FILL;
+				listsComposite.setLayoutData(listsGridData);
+				listsComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
+				{
+					// user panel
+					this.usersPanel = new UsersPanel(listsComposite, SWT.NONE);
+					// docs panel
+					this.documentsPanel = new DocumentsPanel(listsComposite, SWT.NONE);
+				}
+			}
+
+			// label no selection
+			this.noSelectionLabel = new Label(this, SWT.NONE);
+			this.noSelectionLabel.setText("Please select a hostname");
+		}
 
 		connectionInfo.addNewListener(new IModelListener() {
 
@@ -90,7 +116,6 @@ public class ServerPanel extends Composite {
 				redraw();
 			}
 		});
-
 		determineVisibility();
 	}
 
