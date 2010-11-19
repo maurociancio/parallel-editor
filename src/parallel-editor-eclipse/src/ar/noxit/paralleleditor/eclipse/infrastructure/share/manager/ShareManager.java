@@ -34,7 +34,7 @@ import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
 public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
-	// extract to configuration panel
+	// TODO extract to configuration panel
 	public static final String LOCALHOST = "localhost";
 	public static final int LOCALPORT = 5000;
 	public static final String LOCAL_USERNAME = "local_username";
@@ -222,7 +222,6 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	@Override
 	public void removeSession(ConnectionId id) {
-
 		ISession session = getSession(id);
 		if (session != null) {
 			session.close();

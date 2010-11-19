@@ -49,8 +49,8 @@ public class ServerPanel extends Composite {
 	private static final String STATUS_CONNECTING = "Connecting to server...";
 	private static final String STATUS_DISCONNECTING = "Disconnecting...";
 
-	private Model<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>(new ArrayList<DocumentElement>());
-	private Model<List<String>> docsModel = new Model<List<String>>(new ArrayList<String>());
+	private IModel<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>(new ArrayList<DocumentElement>());
+	private IModel<List<String>> docsModel = new Model<List<String>>(new ArrayList<String>());
 
 	public ServerPanel(Composite parent, int style, IModel<ConnectionInfo> connectionInfo,
 			IRemoteConnectionFactory connectionFactory, IRemoteDocumentShare remoteDocumentShare) {
