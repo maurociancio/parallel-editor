@@ -72,7 +72,6 @@ public class ServerPanel extends Composite {
 		{
 			// composite de: lists y server info
 			this.hostComposite = new Composite(this, SWT.NONE);
-			// this.hostComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 			this.hostComposite.setLayout(new GridLayout(3, true));
 
 			{
@@ -96,7 +95,6 @@ public class ServerPanel extends Composite {
 				listsGridData.verticalAlignment = GridData.FILL;
 				listsComposite.setLayoutData(listsGridData);
 
-				// listsComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 				listsComposite.setLayout(new GridLayout(2, true));
 				{
 					GridData usersOrDocsGridData = new GridData();
