@@ -101,6 +101,9 @@ public class ServerPanel extends Composite {
 					this.usersPanel = new UsersPanel(listsComposite, SWT.NONE);
 					// docs panel
 					this.documentsPanel = new DocumentsPanel(listsComposite, SWT.NONE);
+					// refresh button
+					Button refreshButton = new Button(listsComposite, SWT.PUSH);
+					refreshButton.setText("Refresh");
 				}
 			}
 
