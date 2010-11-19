@@ -10,6 +10,7 @@ import reflect.BeanProperty
 import ar.noxit.paralleleditor.common.converter._
 import ar.noxit.paralleleditor.kernel.actors.{RemoteMessageConverter, ToKernelConverter, ClientActor, KernelActor}
 import ar.noxit.paralleleditor.kernel.actors.converter.{DefaultToKernelConverter, DefaultRemoteMessageConverter}
+import ar.noxit.paralleleditor.kernel.messages.TerminateKernel
 
 trait KernelService {
     def startService
@@ -67,6 +68,7 @@ abstract class BaseKernelService extends DaemonActor with Loggable with KernelSe
     def stop {
         sExit = true
         clientList ! RemoveAllClients()
+        ka ! TerminateKernel()
     }
 
     protected def newClient(networkConnection: NetworkConnection): Peer =
