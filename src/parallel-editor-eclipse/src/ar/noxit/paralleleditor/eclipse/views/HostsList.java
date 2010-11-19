@@ -1,5 +1,6 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
@@ -23,10 +24,16 @@ public class HostsList extends Composite {
 	private final List hosts;
 	private final ListViewer hostList;
 
+	private final IRemoteConnectionFactory connectionFactory;
+
 	public HostsList(Composite parent, int style,
 			final IModel<java.util.List<ConnectionInfo>> hostsModel,
-			final IModel<ConnectionInfo> selectedConnection) {
+			final IModel<ConnectionInfo> selectedConnection,
+			final IRemoteConnectionFactory connectionFactory) {
 		super(parent, style);
+
+		// connection factory
+		this.connectionFactory = connectionFactory;
 
 		this.hostsModel = hostsModel;
 		setLayout(new FillLayout());
@@ -112,13 +119,22 @@ public class HostsList extends Composite {
 				int selection = hosts.getSelectionIndex();
 				if (selection != -1) {
 					java.util.List<ConnectionInfo> hosts = hostsModel.get();
-					hosts.remove(selection);
+					ConnectionInfo connectionInfo = hosts.get(selection);
 
-					// para que se disparen los listeners
-					hostsModel.set(hosts);
+					// check if connected
+					if (!connectionFactory.isConnected(connectionInfo.getId())) {
+						hosts.remove(selection);
 
-					selectedConnection.set(null);
-					redraw();
+						// para que se disparen los listeners
+						hostsModel.set(hosts);
+
+						selectedConnection.set(null);
+						redraw();
+					} else {
+						MessageDialog.openError(Display.getDefault().getActiveShell(),
+								"Cannot delete server",
+								"You're connected to this server. Please disconnect and try again.");
+					}
 				}
 			}
 		});

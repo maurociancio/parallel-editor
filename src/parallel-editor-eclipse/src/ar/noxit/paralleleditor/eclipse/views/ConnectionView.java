@@ -27,7 +27,7 @@ public class ConnectionView extends ViewPart {
 		IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
 
 		// host list
-		HostsList hostList = new HostsList(parent, SWT.NONE, hosts, selectedConnection);
+		HostsList hostList = new HostsList(parent, SWT.NONE, hosts, selectedConnection, shareManager);
 		GridData hostListData = new GridData();
 		hostListData.grabExcessVerticalSpace = true;
 		hostListData.verticalAlignment = SWT.FILL;
