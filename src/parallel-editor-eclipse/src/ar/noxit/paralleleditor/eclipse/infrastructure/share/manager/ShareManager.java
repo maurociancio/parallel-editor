@@ -37,6 +37,13 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	public static final int LOCALPORT = 5000;
 	public static final String LOCAL_USERNAME = "local_username";
 
+	// converter
+	private final RemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
+			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
+
+	// ///////////
+	// LOCAL
+	// ///////////
 	/**
 	 * kernel service for local documents
 	 */
@@ -47,6 +54,14 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	 */
 	private JSession localSession = null;
 
+	private final ILocalKernelListener localKernelListener;
+
+	// callbacks locales
+	private DocumentsAdapter localAdapter = new DocumentsAdapter(converter);
+
+	// ///////////
+	// REMOTE
+	// ///////////
 	/**
 	 * remote sessions
 	 */
@@ -56,17 +71,6 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	 * remote sessions callbacks
 	 */
 	private final Map<ConnectionId, ISession> remoteSessionsCallbacks = new HashMap<ConnectionId, ISession>();
-
-	// converter
-	private final RemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
-			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
-
-	// TODO falta que se llame a la destruccion del kernel local
-	private final ILocalKernelListener localKernelListener;
-
-	// callbacks locales
-	// TODO limpiar cuando se para el servicio local
-	private DocumentsAdapter localAdapter = new DocumentsAdapter(converter);
 
 	public ShareManager(ILocalKernelListener localKernelListener) {
 		Assert.isNotNull(localKernelListener);
@@ -135,11 +139,15 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	public ConnectionStatus statusOf(ConnectionId id) {
 		Assert.isNotNull(id);
 
-		JSession session = remoteSessions.get(id);
-		if (session == null)
-			return ConnectionStatus.DISCONNECTED;
-		else
-			return ConnectionStatus.CONNECTED;
+		if (isLocalConnection(id)) {
+			if (existsLocalConnection())
+				return ConnectionStatus.CONNECTED;
+		} else {
+			JSession session = remoteSessions.get(id);
+			if (session != null)
+				return ConnectionStatus.CONNECTED;
+		}
+		return ConnectionStatus.DISCONNECTED;
 	}
 
 	@Override
@@ -158,15 +166,36 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		}
 	}
 
-	public void dispose() {
-		// TODO implementar
-	}
-
 	@Override
 	public boolean isConnected(ConnectionId id) {
 		Assert.isNotNull(id);
 
 		return remoteSessions.containsKey(id) || (isLocalConnection(id) && existsLocalConnection());
+	}
+
+	@Override
+	public void stopLocalService() {
+		if (existsLocalConnection()) {
+			if (kernelService != null) {
+				// kernelService.stopService();
+				// TODO
+			}
+
+			if (localKernelListener != null)
+				localKernelListener.onDestroy();
+			if (localAdapter != null)
+				localAdapter.dispose();
+			if (localSession != null)
+				localSession.close();
+
+			localAdapter = new DocumentsAdapter(converter);
+		}
+		this.kernelService = null;
+		this.localSession = null;
+	}
+
+	public void dispose() {
+		// TODO implementar
 	}
 
 	private boolean isLocalConnection(ConnectionId id) {

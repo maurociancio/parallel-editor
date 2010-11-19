@@ -97,7 +97,9 @@ public class DocumentsAdapter implements Documents {
 			String docTitle = processOperation.title();
 			Message<EditOperation> msg = processOperation.msg();
 
-			callbacks.get(docTitle).onNewRemoteMessage(msg);
+			RemoteMessageCallbackAdapter callback = callbacks.get(docTitle);
+			if (callback != null)
+				callback.onNewRemoteMessage(msg);
 		}
 	}
 
@@ -141,5 +143,12 @@ public class DocumentsAdapter implements Documents {
 
 	public synchronized void removeCallback(String docTitle) {
 		callbacks.remove(docTitle);
+	}
+
+	public synchronized void dispose() {
+		subscriptionResponseCallback = null;
+		userListCallback = null;
+		documentListCallback = null;
+		callbacks.clear();
 	}
 }

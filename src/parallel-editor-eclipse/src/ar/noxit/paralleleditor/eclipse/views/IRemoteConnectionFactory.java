@@ -6,11 +6,13 @@ public interface IRemoteConnectionFactory {
 
 	ISession connect(ConnectionInfo info);
 
-	ISession getSession(ConnectionId id);
+	void disconnect(ConnectionId id);
 
-	ConnectionStatus statusOf(ConnectionId id);
+	ISession getSession(ConnectionId id);
 
 	boolean isConnected(ConnectionId connectionId);
 
-	void disconnect(ConnectionId id);
+	ConnectionStatus statusOf(ConnectionId id);
+
+	void stopLocalService();
 }

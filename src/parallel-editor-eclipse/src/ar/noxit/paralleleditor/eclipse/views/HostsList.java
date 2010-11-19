@@ -46,12 +46,7 @@ public class HostsList extends Composite {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int selectionIndex = hosts.getSelectionIndex();
-				if (selectionIndex != -1) {
-					selectedConnection.set(hostsModel.get().get(selectionIndex));
-				} else {
-					selectedConnection.set(null);
-				}
+				updateSelection(selectedConnection);
 			}
 		});
 
@@ -75,6 +70,7 @@ public class HostsList extends Composite {
 
 					@Override
 					public void run() {
+						updateSelection(selectedConnection);
 						redraw();
 					}
 				});
@@ -145,5 +141,20 @@ public class HostsList extends Composite {
 
 	protected void populateList() {
 		hostList.setInput(hostsModel.get().toArray());
+	}
+
+	private void updateSelection(IModel<ConnectionInfo> selectedConnection) {
+		int selectionIndex = hosts.getSelectionIndex();
+		if (selectionIndex != -1) {
+			java.util.List<ConnectionInfo> list = hostsModel.get();
+
+			// are there elements?
+			if (list.size() > selectionIndex)
+				selectedConnection.set(list.get(selectionIndex));
+			else
+				selectedConnection.set(null);
+		} else {
+			selectedConnection.set(null);
+		}
 	}
 }

@@ -47,8 +47,8 @@ public class ServerPanel extends Composite {
 
 	private static final String STATUS_DISCONNECTED = "Disconnected";
 	private static final String STATUS_CONNECTED = "Connected";
-	private static final String STATUS_CONNECTING = "Connecting to server...";
-	private static final String STATUS_DISCONNECTING = "Disconnecting...";
+	private static final String STATUS_NOT_HOSTING = "Not hosting";
+	private static final String STATUS_HOSTING = "Hosting";
 
 	private IModel<List<DocumentElement>> usersModel = new Model<List<DocumentElement>>(
 			new ArrayList<DocumentElement>());
@@ -172,6 +172,10 @@ public class ServerPanel extends Composite {
 		private Label connectionStatus;
 		private Button connectButton;
 
+		// backgrounds
+		private final Color colorYelllow = new Color(this.getDisplay(), 255, 255, 0);
+		private final Color colorGreen = new Color(this.getDisplay(), 0, 255, 0);
+
 		public StatusPanel(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new FillLayout());
@@ -233,10 +237,15 @@ public class ServerPanel extends Composite {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					ConnectionInfo info = connectionInfo.get();
-					if (!connectionFactory.isConnected(info.getId()))
-						connect(info);
-					else
-						disconnect(info);
+
+					if (info.getId().isLocal()) {
+						connectionFactory.stopLocalService();
+					} else {
+						if (!connectionFactory.isConnected(info.getId()))
+							connect(info);
+						else
+							disconnect(info);
+					}
 					redraw();
 				}
 
@@ -271,21 +280,41 @@ public class ServerPanel extends Composite {
 		}
 
 		protected void showStatus() {
-			final Color colorYelllow = new Color(this.getDisplay(), 255, 255, 0);
-			final Color colorGreen = new Color(this.getDisplay(), 0, 255, 0);
-
 			ConnectionInfo info = connectionInfo.get();
 			if (info != null) {
 				ConnectionStatus status = connectionFactory.statusOf(info.getId());
-				if (status.equals(ConnectionStatus.CONNECTED)) {
-					connectionStatus.setText(STATUS_CONNECTED);
-					connectionStatus.setBackground(colorGreen);
-					connectButton.setText("Disconnect");
+
+				connectButton.setVisible(true);
+
+				if (info.getId().isLocal()) {
+					showLocalStatus(status);
 				} else {
-					connectionStatus.setText(STATUS_DISCONNECTED);
-					connectionStatus.setBackground(colorYelllow);
-					connectButton.setText("Connect");
+					showRemoteStatus(status);
 				}
+			}
+		}
+
+		private void showRemoteStatus(ConnectionStatus status) {
+			if (status.equals(ConnectionStatus.CONNECTED)) {
+				connectionStatus.setText(STATUS_CONNECTED);
+				connectionStatus.setBackground(colorGreen);
+				connectButton.setText("Disconnect");
+			} else {
+				connectionStatus.setText(STATUS_DISCONNECTED);
+				connectionStatus.setBackground(colorYelllow);
+				connectButton.setText("Connect");
+			}
+		}
+
+		private void showLocalStatus(ConnectionStatus status) {
+			if (status.equals(ConnectionStatus.CONNECTED)) {
+				connectionStatus.setText(STATUS_HOSTING);
+				connectionStatus.setBackground(colorGreen);
+				connectButton.setText("Stop");
+			} else {
+				connectionStatus.setText(STATUS_NOT_HOSTING);
+				connectionStatus.setBackground(colorYelllow);
+				connectButton.setVisible(false);
 			}
 		}
 
