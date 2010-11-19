@@ -5,15 +5,13 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 
-import ar.noxit.paralleleditor.client.CommandFromKernel;
-import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
-import ar.noxit.paralleleditor.client.ProcessOperation;
 import ar.noxit.paralleleditor.client.SessionFactory;
 import ar.noxit.paralleleditor.common.BasicXFormStrategy;
 import ar.noxit.paralleleditor.common.converter.DefaultEditOperationConverter;
 import ar.noxit.paralleleditor.common.converter.DefaultRemoteDocumentOperationConverter;
 import ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter;
+import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
@@ -50,11 +48,6 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	private JSession localSession = null;
 
 	/**
-	 * Map of doctitle (local documents) to callback
-	 */
-	private final Map<String, IRemoteMessageCallback> callbacks = new HashMap<String, IRemoteMessageCallback>();
-
-	/**
 	 * remote sessions
 	 */
 	private final Map<ConnectionId, JSession> remoteSessions = new HashMap<ConnectionId, JSession>();
@@ -65,14 +58,19 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	private final Map<ConnectionId, ISession> remoteSessionsCallbacks = new HashMap<ConnectionId, ISession>();
 
 	// converter
-	private final DefaultRemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
+	private final RemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
 			new DefaultSyncOperationConverter(new DefaultEditOperationConverter()));
 
 	// TODO falta que se llame a la destruccion del kernel local
 	private final ILocalKernelListener localKernelListener;
 
+	// callbacks locales
+	// TODO limpiar cuando se para el servicio local
+	private DocumentsAdapter localAdapter = new DocumentsAdapter(converter);
+
 	public ShareManager(ILocalKernelListener localKernelListener) {
 		Assert.isNotNull(localKernelListener);
+
 		this.localKernelListener = localKernelListener;
 	}
 
@@ -84,23 +82,27 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		Assert.isNotNull(initialContent);
 		Assert.isNotNull(remoteMessageCallback);
 
-		verifyDocTitleNotExists(docTitle);
+		// verify title
+		localAdapter.verifyDocTitleNotExists(docTitle);
 
 		// create the service
 		createServiceIfNotCreated();
 
 		//
-		callbacks.put(docTitle, remoteMessageCallback);
+		this.localAdapter.installCallback(docTitle, remoteMessageCallback);
 
 		try {
 			// create the session
 			JSession newSession = createLocalSessionIfNotExists();
 
+			// set session
+			localAdapter.setSession(newSession);
+
 			// create the new document
 			newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
 		} catch (Exception e) {
 			// remove the added callback
-			callbacks.remove(docTitle);
+			this.localAdapter.removeCallback(docTitle);
 
 			// rethrow the exception
 			throw new RuntimeException(e);
@@ -116,7 +118,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// connection id
 		ConnectionId id = info.getId();
 		// adapter
-		RemoteDocumentsAdapter adapter = new RemoteDocumentsAdapter();
+		DocumentsAdapter adapter = new DocumentsAdapter(converter);
 		// the newly created session
 		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), adapter);
 		// log in to the kernel
@@ -151,28 +153,9 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// TODO implementar
 	}
 
-	private void verifyDocTitleNotExists(String docTitle) {
-		Assert.isNotNull(docTitle);
-		if (callbacks.containsKey(docTitle)) {
-			throw new DocumentAlreadySharedException("document already shared", docTitle);
-		}
-	}
-
 	protected JSession createLocalSessionIfNotExists() {
 		if (localSession == null) {
-			JSession newSession = SessionFactory.newJSession(LOCALHOST, LOCALPORT, new Documents() {
-
-				@Override
-				public void process(CommandFromKernel command) {
-					if (command instanceof ProcessOperation) {
-						ProcessOperation processOperation = (ProcessOperation) command;
-
-						String docTitle = processOperation.title();
-						callbacks.get(docTitle).onNewRemoteMessage(processOperation.msg());
-					}
-				}
-			});
-
+			JSession newSession = SessionFactory.newJSession(LOCALHOST, LOCALPORT, localAdapter);
 			newSession.send(new RemoteLoginRequest(LOCAL_USERNAME));
 			this.localSession = newSession;
 		}
@@ -221,7 +204,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	@Override
-	public void removeSession(ConnectionId id) {
+	public void disconnect(ConnectionId id) {
 		ISession session = getSession(id);
 		if (session != null) {
 			session.close();

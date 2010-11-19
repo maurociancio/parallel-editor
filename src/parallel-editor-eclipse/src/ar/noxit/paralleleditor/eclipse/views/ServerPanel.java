@@ -248,6 +248,7 @@ public class ServerPanel extends Composite {
 						askDocumentsAndUsers(session);
 					} catch (Exception ex) {
 						// TODO log here the full stacktrace
+
 						MessageDialog.openError(Display.getDefault().getActiveShell(),
 								"Cannot connect to collaboration server",
 								"It probably means that the remote host or port you entered is invalid. "
@@ -256,7 +257,7 @@ public class ServerPanel extends Composite {
 				}
 
 				public void disconnect(ConnectionInfo info) {
-					connectionFactory.removeSession(info.getId());
+					connectionFactory.disconnect(info.getId());
 
 					usersModel.set(new ArrayList<DocumentElement>());
 					docsModel.set(new ArrayList<String>());

@@ -12,9 +12,9 @@ public class RemoteSession implements ISession {
 
 	private final ConnectionInfo info;
 	private final JSession newSession;
-	private final RemoteDocumentsAdapter adapter;
+	private final DocumentsAdapter adapter;
 
-	public RemoteSession(ConnectionInfo info, JSession newSession, RemoteDocumentsAdapter adapter) {
+	public RemoteSession(ConnectionInfo info, JSession newSession, DocumentsAdapter adapter) {
 		Assert.isNotNull(info);
 		Assert.isNotNull(newSession);
 		Assert.isNotNull(adapter);
@@ -22,7 +22,7 @@ public class RemoteSession implements ISession {
 		this.info = info;
 		this.newSession = newSession;
 		this.adapter = adapter;
-		this.adapter.setRemoteSession(newSession);
+		this.adapter.setSession(newSession);
 	}
 
 	@Override

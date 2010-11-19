@@ -12,5 +12,5 @@ public interface IRemoteConnectionFactory {
 
 	boolean isConnected(ConnectionId id);
 
-	void removeSession(ConnectionId id);
+	void disconnect(ConnectionId id);
 }
