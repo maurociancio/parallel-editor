@@ -14,8 +14,8 @@ public class FileSelectorDialog extends ElementListSelectionDialog {
 
 	public FileSelectorDialog(Shell parent, Collection<IFile> fileList) {
 		super(parent, new FileLabelProvider());
-		setTitle("Select a file to be opened");
-		setMessage("The specified project does not exist or is not active in the current workspace.\n" +
+		setTitle("Select a file to be opened for concurrent editing");
+		setMessage("The remote file does not exist or it's in a non opened project in the current workspace.\n" +
 				"The following files present in active projects can be opened for edition:");
 		setMultipleSelection(false);
 		setElements(fileList.toArray());
