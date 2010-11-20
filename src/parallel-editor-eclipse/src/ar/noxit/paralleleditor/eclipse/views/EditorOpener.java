@@ -3,7 +3,6 @@ package ar.noxit.paralleleditor.eclipse.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -50,12 +49,11 @@ abstract public class EditorOpener {
 		List<IProject> projects = Arrays.asList(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 
 		// obtengo archivos que matchean el titulo del archivo remoto requerido
-		Collection<IFile> matchingFiles = new ArrayList<IFile>();
-		Iterator<IProject> projectsIterator = projects.iterator();
-		while (projectsIterator.hasNext()) {
-			IProject currentProject = projectsIterator.next();
+		final Collection<IFile> matchingFiles = new ArrayList<IFile>();
+		final Path candidate = new Path(fileRelativePath);
+		for (IProject currentProject : projects) {
 			if (currentProject != project) {
-				IFile projectFile = currentProject.getFile(new Path(fileRelativePath));
+				IFile projectFile = currentProject.getFile(candidate);
 				if (projectFile.exists())
 					matchingFiles.add(projectFile);
 			}
