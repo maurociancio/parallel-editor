@@ -11,9 +11,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
@@ -108,16 +106,16 @@ abstract public class EditorOpener {
 			IWorkbenchWindow window) {
 
 		IEditorPart editor = openEditorFromLocalFile(file, window);
+		// TODO text editor puede ser null y provocar NPE
 		ITextEditor textEditor = (editor instanceof ITextEditor) ? (ITextEditor) editor : null;
 		String localContent = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).get();
 
 		if (localContent.equals(remoteContent))
 			return editor;
 		else {
-
 			MessageDialog overwriteDialog = new MessageDialog(window.getShell(), "Synchronization error", null,
 					"Remote and local file contents are different, update local copy with remote content?", 3,
-					new String[] { "Open in new editor","Overwrite contents" }, 0);
+					new String[] { "Open in new editor", "Overwrite contents" }, 0);
 			boolean overwrite = overwriteDialog.open() != 0;
 
 			if (overwrite) {
