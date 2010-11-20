@@ -66,10 +66,7 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 	}
 
 	private ITextEditor openNewEditor(String docTitle, String initialContent) {
-		ITextEditor editor = (ITextEditor) EditorOpener.openFileFromWorkspace(docTitle, initialContent);
-		if (editor == null)
-			editor = (ITextEditor) EditorOpener.openNewEditor(docTitle, initialContent);
-		return editor;
+		return EditorOpener.openFileFromWorkspace(docTitle, initialContent);
 	}
 
 	private ITextEditorDisabler adapt(ITextEditor textEditor) {

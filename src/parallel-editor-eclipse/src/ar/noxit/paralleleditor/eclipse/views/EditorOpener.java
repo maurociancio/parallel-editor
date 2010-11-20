@@ -10,8 +10,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
@@ -25,26 +28,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 abstract public class EditorOpener {
 
-	public static IEditorPart openNewEditor(String title, String content) {
-		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		final IWorkbenchPage page = window.getActivePage();
-
-		if (page != null) {
-			try {
-				return IDE.openEditor(page, new StringEditorInput(title, content), IDE.getEditorDescriptor(title)
-						.getId(), true);
-			} catch (PartInitException e1) {
-				throw new RuntimeException(e1);
-			}
-		}
-		return null;
-	}
-
-	public static IEditorPart openFileFromWorkspace(String title, String content) {
-		final IWorkbench workbench = PlatformUI.getWorkbench();
-		final IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+	public static ITextEditor openFileFromWorkspace(String title, String content) {
+		final IWorkbenchWindow window = getWorkbenchWindow();
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		IFile file = null;
 
 		final String projectName = getProjectNameFromPath(title);
 		final String fileRelativePath = getFileRelativePath(title);
@@ -54,9 +40,9 @@ abstract public class EditorOpener {
 
 		// si el proyecto existe busco el archivo y si existe lo abro
 		if (project.exists()) {
-			file = project.getFile(fileRelativePath);
+			IFile file = project.getFile(fileRelativePath);
 			if (file.exists())
-				return openEditorFromLocalFileWithSyncCheck(file, content, window);
+				return openEditorFromLocalFileWithSyncCheck(file, content);
 		}
 
 		// el proyecto no existe o no se encontro el archivo
@@ -75,53 +61,69 @@ abstract public class EditorOpener {
 			}
 		}
 
-		// if (searchOthers) {
 		if (matchingFiles.size() > 0) {
 			FileSelectorDialog fileChooser = new FileSelectorDialog(window.getShell(), matchingFiles);
-			fileChooser.open();
-			IFile selectedFile = fileChooser.getSelectedFile();
-			IEditorPart editor = (selectedFile != null) ? openEditorFromLocalFileWithSyncCheck(selectedFile, content,
-					window) : null;
-			if (editor != null)
-				return editor;
+
+			if (fileChooser.open() == Window.OK) {
+				IFile selectedFile = fileChooser.getSelectedFile();
+				ITextEditor editor = openEditorFromLocalFileWithSyncCheck(selectedFile, content);
+				if (editor != null)
+					return editor;
+			}
 		}
 
 		return openNewEditor(title, content);
 	}
 
-	private static IEditorPart openEditorFromLocalFile(IFile file, final IWorkbenchWindow window) {
+	private static ITextEditor openNewEditor(String title, String content) {
+		Assert.isNotNull(title);
+		Assert.isNotNull(content);
+
 		try {
-			final IWorkbenchPage page = window.getActivePage();
-			IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
-			return page.openEditor(new FileEditorInput(file), desc.getId());
+			final IWorkbenchPage page = getWorkbenchWindow().getActivePage();
+
+			IEditorPart editor = IDE.openEditor(page, new StringEditorInput(title, content),
+					IDE.getEditorDescriptor(title).getId(), true);
+
+			return getAsTextEditor(editor);
 		} catch (PartInitException e) {
 			// TODO log here
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
-	private static IEditorPart openEditorFromLocalFileWithSyncCheck(IFile file,
-			String remoteContent,
-			IWorkbenchWindow window) {
+	private static ITextEditor openEditorFromLocalFile(IFile file) {
+		try {
+			final IWorkbenchPage page = getWorkbenchWindow().getActivePage();
+			IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
 
-		IEditorPart editor = openEditorFromLocalFile(file, window);
-		// TODO text editor puede ser null y provocar NPE
-		ITextEditor textEditor = (editor instanceof ITextEditor) ? (ITextEditor) editor : null;
-		String localContent = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).get();
+			IEditorPart openEditor = page.openEditor(new FileEditorInput(file), desc.getId());
+			return getAsTextEditor(openEditor);
+		} catch (PartInitException e) {
+			// TODO log here
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static ITextEditor openEditorFromLocalFileWithSyncCheck(IFile file, String remoteContent) {
+		final ITextEditor editor = openEditorFromLocalFile(file);
+		final IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
+		final String localContent = document.get();
 
 		if (localContent.equals(remoteContent))
 			return editor;
 		else {
-			MessageDialog overwriteDialog = new MessageDialog(window.getShell(), "Synchronization error", null,
+			MessageDialog overwriteDialog = new MessageDialog(getWorkbenchWindow().getShell(),
+					"Synchronization error", null,
 					"Remote and local file contents are different, update local copy with remote content?", 3,
 					new String[] { "Open in new editor", "Overwrite contents" }, 0);
 			boolean overwrite = overwriteDialog.open() != 0;
 
 			if (overwrite) {
-				textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).set(remoteContent);
-				return textEditor;
+				document.set(remoteContent);
+				return editor;
 			} else {
-				textEditor.close(false);
+				editor.close(false);
 				return openNewEditor(file.getProjectRelativePath().lastSegment(), remoteContent);
 			}
 		}
@@ -141,6 +143,18 @@ abstract public class EditorOpener {
 			return parts[2];
 		else
 			return "";
+	}
+
+	private static IWorkbenchWindow getWorkbenchWindow() {
+		final IWorkbench workbench = PlatformUI.getWorkbench();
+		return workbench.getActiveWorkbenchWindow();
+	}
+
+	private static ITextEditor getAsTextEditor(IEditorPart editor) {
+		if (editor instanceof ITextEditor)
+			return (ITextEditor) editor;
+
+		throw new TextEditorCouldNotBeCreatedException();
 	}
 
 	private EditorOpener() {

@@ -15,15 +15,16 @@ public class FileSelectorDialog extends ElementListSelectionDialog {
 	public FileSelectorDialog(Shell parent, Collection<IFile> fileList) {
 		super(parent, new FileLabelProvider());
 		setTitle("Select a file to be opened");
-		setMessage("The specified project does not exist or is not active in the current workspace. \n The following files present in active projects can be opened for edition:");
+		setMessage("The specified project does not exist or is not active in the current workspace.\n" +
+				"The following files present in active projects can be opened for edition:");
 		setMultipleSelection(false);
 		setElements(fileList.toArray());
 	}
 
-	public IFile getSelectedFile(){
-		return (IFile) ((getResult()!=null)?getResult()[0]:null);
+	public IFile getSelectedFile() {
+		return (IFile) ((getResult() != null) ? getResult()[0] : null);
 	}
-	
+
 	private static class FileLabelProvider extends LabelProvider {
 
 		private static final Image IMG_FILE = PlatformUI.getWorkbench().getSharedImages()
@@ -42,7 +43,5 @@ public class FileSelectorDialog extends ElementListSelectionDialog {
 			else
 				return "unknown element";
 		}
-
 	}
-
 }
