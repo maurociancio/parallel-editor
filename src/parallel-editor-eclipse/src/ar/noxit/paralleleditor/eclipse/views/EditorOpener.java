@@ -114,7 +114,7 @@ abstract public class EditorOpener {
 			MessageDialog overwriteDialog = new MessageDialog(getWorkbenchWindow().getShell(),
 					"Synchronization error", null,
 					"Remote and local file contents are different, update local copy with remote content?", 3,
-					new String[] { "Open in new editor", "Overwrite contents" }, 0);
+					new String[] { "No, open in new editor", "Yes, overwrite contents" }, 0);
 			boolean overwrite = overwriteDialog.open() != 0;
 
 			if (overwrite) {
