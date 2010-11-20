@@ -107,7 +107,8 @@ abstract public class EditorOpener {
 			IWorkbenchWindow window) {
 		IEditorPart editor = openEditorFromLocalFile(file, window);
 		ITextEditor textEditor = (editor instanceof ITextEditor) ? (ITextEditor) editor : null;
-		if (textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).get() == remoteContent)
+		String localContent = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).get();
+		if (localContent.equals(remoteContent))
 			return editor;
 		else {
 			boolean overwrite = MessageDialog.openQuestion(window.getShell(), "Synchronization error",
