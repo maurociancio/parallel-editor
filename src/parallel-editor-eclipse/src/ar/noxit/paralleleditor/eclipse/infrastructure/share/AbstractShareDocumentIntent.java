@@ -44,7 +44,9 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 		Assert.isNotNull(initialContent);
 
 		// open a new editor
+
 		ITextEditor textEditor = openNewEditor(docTitle, initialContent);
+
 
 		// set up callbacks
 		setUpCallbacks(textEditor, new DocumentSessionCallbackInstaller(docSession), docSession);
@@ -66,7 +68,9 @@ public abstract class AbstractShareDocumentIntent implements IShareLocalDocument
 	}
 
 	private ITextEditor openNewEditor(String docTitle, String initialContent) {
-		return (ITextEditor) EditorOpener.openNewEditor(docTitle, initialContent);
+		ITextEditor editor = (ITextEditor) EditorOpener.openFileFromWorkspace(docTitle, initialContent);
+		if (editor==null) editor =  (ITextEditor) EditorOpener.openNewEditor(docTitle, initialContent);
+		return editor;
 	}
 
 	private ITextEditorDisabler adapt(ITextEditor textEditor) {

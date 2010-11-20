@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.SubscriptionAlreadyExistsException;
@@ -276,6 +277,18 @@ public class ServerPanel extends Composite {
 			gridDataButton.horizontalAlignment = SWT.FILL;
 			connectButton.setLayoutData(gridDataButton);
 
+			final Text archivo = new Text(contenedor, SWT.NONE);
+			archivo.setText("/Test/src/Caca.java");
+			Button prueba = new Button(contenedor, SWT.None);
+			prueba.setText("editor");
+			prueba.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					// TODO Auto-generated method stub
+					super.widgetSelected(e);
+					EditorOpener.openFileFromWorkspace(archivo.getText(), "1,2,3,4");
+				}
+			});
 			updateTexts();
 		}
 
