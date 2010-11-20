@@ -81,7 +81,7 @@ public class DocumentsAdapter implements Documents {
 			};
 
 			if (subscriptionResponseCallback != null)
-				subscriptionResponseCallback.onDocumentListResponse(docTitle, initialContent, docSession);
+				subscriptionResponseCallback.onSubscriptionResponse(docTitle, initialContent, docSession);
 		}
 
 		// subscription canceled

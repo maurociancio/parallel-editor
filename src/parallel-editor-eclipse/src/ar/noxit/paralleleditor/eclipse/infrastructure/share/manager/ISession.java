@@ -1,8 +1,8 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 
 public interface ISession {
 
@@ -15,7 +15,7 @@ public interface ISession {
 	}
 
 	public static interface ISubscriptionCallback {
-		void onDocumentListResponse(String docTitle,
+		void onSubscriptionResponse(String docTitle,
 				String initialContent,
 				IDocumentSession documentSession);
 	}
@@ -31,6 +31,6 @@ public interface ISession {
 	void subscribe(String docTitle);
 
 	void installSubscriptionResponseCallback(ISubscriptionCallback callback);
-	
+
 	void close();
 }

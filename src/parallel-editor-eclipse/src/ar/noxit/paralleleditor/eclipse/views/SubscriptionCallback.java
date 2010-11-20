@@ -16,7 +16,7 @@ public class SubscriptionCallback implements ISubscriptionCallback {
 	}
 
 	@Override
-	public void onDocumentListResponse(final String docTitle,
+	public void onSubscriptionResponse(final String docTitle,
 			final String initialContent,
 			final IDocumentSession docSession) {
 
