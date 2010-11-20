@@ -1,132 +1,221 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
-
+/**
+ * A simple input dialog for soliciting an input string from the user.
+ * <p>
+ * This concrete dialog class can be instantiated as is, or further subclassed
+ * as required.
+ * </p>
+ */
 public class NewServerDialog extends Dialog {
 
-	private ConnectionInfo result = null;
+	private String hostNameValue = "";//$NON-NLS-1$
+	private Integer portValue = 0;//$NON-NLS-1$
+	private String usernameValue = "";//$NON-NLS-1$
 
-	public NewServerDialog(Shell parent, int style) {
-		super(parent, style);
-	}
+	private IInputValidator hostNameValidator;
+	private IInputValidator usernameValidator;
 
-	public ConnectionInfo open() {
-		Shell parent = getParent();
+	private Text hostNameText;
+	private Text usernameText;
+	private Spinner portSlider;
 
-		final Shell shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		shell.setText("New Connection");
+	private Text errorMessageText;
+	private String errorMessage;
 
-		shell.setLayout(new GridLayout(2, true));
+	public NewServerDialog(Shell parentShell) {
+		super(parentShell);
 
-		Label label = new Label(shell, SWT.CENTER);
-		label.setText("Insert the following information: ");
-		GridData layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		label.setLayoutData(layoutData);
-
-		new Label(shell, SWT.CENTER).setText("Hostname: ");
-		final Text host = new Text(shell, SWT.Expand);
-
-		new Label(shell, SWT.CENTER).setText("Port: ");
-		final Text port = new Text(shell, SWT.NONE);
-
-		// TODO sacar el valor desde la configuración
-		port.setText("5000");
-
-		new Label(shell, SWT.CENTER).setText("Username: ");
-		final Text username = new Text(shell, SWT.NONE);
-		// TODO sacar el valor desde la configuración
-		username.setText("username");
-
-		Button accept = new Button(shell, SWT.PUSH);
-		accept.setText("Accept");
-		accept.addSelectionListener(new SelectionAdapter() {
+		hostNameValidator = new IInputValidator() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				List<String> errors = validateFields(host, port, username);
-				if (!errors.isEmpty()) {
-					String error = getError(errors);
-
-					MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.ICON_ERROR);
-					messageBox.setMessage("Incorrect parameters:\n" + error);
-					messageBox.open();
-				} else {
-					ConnectionId connectionId = new ConnectionId(host.getText(), Integer.valueOf(port.getText()));
-					result = new ConnectionInfo(connectionId, username.getText());
-					shell.dispose();
-				}
+			public String isValid(String newText) {
+				if (newText == null || newText.isEmpty())
+					return "";
+				else if (newText.contains(" "))
+					return "Invalid hostname, it contains an space ' '.";
+				else
+					return null;
 			}
-		});
-
-		Button cancel = new Button(shell, SWT.PUSH);
-		cancel.setText("Cancel");
-		cancel.addSelectionListener(new SelectionAdapter() {
+		};
+		usernameValidator = new IInputValidator() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				shell.dispose();
+			public String isValid(String newText) {
+				if (newText == null || newText.isEmpty())
+					return "";
+				else
+					return null;
+			}
+		};
+	}
+
+	/*
+	 * (non-Javadoc) Method declared on Dialog.
+	 */
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == IDialogConstants.OK_ID) {
+			hostNameValue = hostNameText.getText();
+			portValue = portSlider.getSelection();
+			usernameValue = usernameText.getText();
+		} else {
+			hostNameValue = null;
+			portValue = null;
+			usernameValue = null;
+		}
+		super.buttonPressed(buttonId);
+	}
+
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		shell.setText("New remote connection");
+	}
+
+	protected void createButtonsForButtonBar(Composite parent) {
+		// create OK and Cancel buttons by default
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true).setEnabled(false);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+		// do this here because setting the text will set enablement on the ok
+		// button
+		hostNameText.setFocus();
+	}
+
+	protected Control createDialogArea(Composite parent) {
+		// create composite
+		Composite composite = (Composite) super.createDialogArea(parent);
+
+		// hostname
+		newLabel("Hostname: ", parent, composite);
+		hostNameText = newText(composite);
+
+		// port
+		newLabel("Port: ", parent, composite);
+		portSlider = new Spinner(composite, SWT.BORDER);
+		portSlider.setMaximum(65535);
+		portSlider.setMinimum(1);
+		portSlider.setSelection(5000);
+
+		// username
+		newLabel("Username: ", parent, composite);
+		usernameText = newText(composite);
+
+		errorMessageText = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
+		errorMessageText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		errorMessageText.setBackground(errorMessageText.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		// Set the error message text
+		// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=66292
+		setErrorMessage(errorMessage);
+
+		applyDialogFont(composite);
+		return composite;
+	}
+
+	private Text newText(Composite composite) {
+		Text text = new Text(composite, getInputTextStyle());
+		text.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		text.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				validateInput();
 			}
 		});
-
-		shell.pack();
-		shell.open();
-
-		Display display = parent.getDisplay();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-
-		return result;
+		return text;
 	}
 
-	protected List<String> validateFields(final Text host, final Text port, final Text username) {
-		final String hostString = host.getText();
-		final String portString = port.getText();
-		final String usernameString = username.getText();
+	private Label newLabel(String label, Composite parent, Composite composite) {
+		Label hostNamelabel = new Label(composite, SWT.WRAP);
+		hostNamelabel.setText(label);
 
-		List<String> errors = new ArrayList<String>();
+		GridData hostNameData = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL
+				| GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_CENTER);
+		hostNameData.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
 
-		try {
-			Integer portInt = Integer.valueOf(portString);
-			if ((portInt < 1) || (portInt > 65535)) {
-				errors.add("Port should be between 1 and 65535");
+		hostNamelabel.setLayoutData(hostNameData);
+		hostNamelabel.setFont(parent.getFont());
+
+		return hostNamelabel;
+	}
+
+	protected void validateInput() {
+		Set<String> errors = new HashSet<String>();
+		errors.add(hostNameValidator.isValid(hostNameText.getText()));
+		errors.add(usernameValidator.isValid(usernameText.getText()));
+
+		errors.remove(null);
+		if (!errors.isEmpty()) {
+			errors.remove("");
+
+			String errorMessage = "";
+			for (String current : errors) {
+				errorMessage = errorMessage + current + "\n";
 			}
-		} catch (NumberFormatException ex) {
-			errors.add("Port is not a number");
+			setErrorMessage(errorMessage);
+		} else {
+			setErrorMessage(null);
 		}
-
-		if (hostString.isEmpty()) {
-			errors.add("Hostname is empty.");
-		}
-		if (usernameString.isEmpty()) {
-			errors.add("Username is empty.");
-		}
-		return errors;
 	}
 
-	protected String getError(List<String> errors) {
-		String error = "";
-		for (String current : errors) {
-			error += current + "\n";
+	public ConnectionInfo getConnectionInfo() {
+		return new ConnectionInfo(new ConnectionId(hostNameValue, portValue), usernameValue);
+	}
+
+	/**
+	 * Sets or clears the error message. If not <code>null</code>, the OK button
+	 * is disabled.
+	 * 
+	 * @param errorMessage
+	 *            the error message, or <code>null</code> to clear
+	 * @since 3.0
+	 */
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+		if (errorMessageText != null && !errorMessageText.isDisposed()) {
+			errorMessageText.setText(errorMessage == null ? " \n " : errorMessage); //$NON-NLS-1$
+			// Disable the error message text control if there is no error, or
+			// no error text (empty or whitespace only). Hide it also to avoid
+			// color change.
+			// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=130281
+			boolean hasError = errorMessage != null && (StringConverter.removeWhiteSpaces(errorMessage)).length() > 0;
+			errorMessageText.setEnabled(hasError);
+			errorMessageText.setVisible(hasError);
+			errorMessageText.getParent().update();
+			// Access the ok button by id, in case clients have overridden
+			// button creation.
+			// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=113643
+			Control button = getButton(IDialogConstants.OK_ID);
+			if (button != null) {
+				button.setEnabled(errorMessage == null);
+			}
 		}
-		return error;
+	}
+
+	/**
+	 * Returns the style bits that should be used for the input text field.
+	 * Defaults to a single line entry. Subclasses may override.
+	 * 
+	 * @return the integer style bits that should be used when creating the
+	 *         input text
+	 * 
+	 * @since 3.4
+	 */
+	protected int getInputTextStyle() {
+		return SWT.SINGLE | SWT.BORDER;
 	}
 }

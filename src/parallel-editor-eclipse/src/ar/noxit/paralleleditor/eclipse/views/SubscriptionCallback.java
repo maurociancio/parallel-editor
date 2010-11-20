@@ -8,7 +8,7 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.ISu
 
 public class SubscriptionCallback implements ISubscriptionCallback {
 
-	private IRemoteDocumentShare remoteDocumentShare;
+	private final IRemoteDocumentShare remoteDocumentShare;
 
 	public SubscriptionCallback(IRemoteDocumentShare remoteDocumentShare) {
 		Assert.isNotNull(remoteDocumentShare);

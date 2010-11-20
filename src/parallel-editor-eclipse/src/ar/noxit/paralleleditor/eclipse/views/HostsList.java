@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.eclipse.views;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -92,11 +93,9 @@ public class HostsList extends Composite {
 		newHost.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				NewServerDialog newServerDialog = new NewServerDialog(getShell(), 0);
-				ConnectionInfo info = newServerDialog.open();
-
-				if (info != null) {
-					hostsModel.get().add(info);
+				NewServerDialog newServer = new NewServerDialog(getShell());
+				if (newServer.open() == Window.OK) {
+					hostsModel.get().add(newServer.getConnectionInfo());
 					redraw();
 				}
 			}
