@@ -81,11 +81,10 @@ abstract public class EditorOpener {
 		if (searchOthers) {
 			if (matchingFiles.size() > 0)
 				return promptFileToOpen(window, matchingFiles);
-		} else
-			return null;
+		}
 
 		boolean openInNewEditor = MessageDialog.openQuestion(window.getShell(), "Unexistant File",
-				"The file is not present in the local workspeace. Open as a new file?");
+				"The file is not present in the local workspace. Open as a new file?");
 
 		if (openInNewEditor)
 			return openNewEditor(title, content);
