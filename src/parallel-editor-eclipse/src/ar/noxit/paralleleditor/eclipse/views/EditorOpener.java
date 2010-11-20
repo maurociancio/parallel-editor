@@ -41,7 +41,6 @@ abstract public class EditorOpener {
 	}
 
 	public static IEditorPart openFileFromWorkspace(String title, String content) {
-
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		final IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
@@ -87,7 +86,7 @@ abstract public class EditorOpener {
 				return editor;
 		}
 
-		return openNewEditor(file.getProjectRelativePath().lastSegment(), content);
+		return openNewEditor(title, content);
 	}
 
 	private static IEditorPart openEditorFromLocalFile(IFile file, final IWorkbenchWindow window) {
@@ -146,5 +145,4 @@ abstract public class EditorOpener {
 
 	private EditorOpener() {
 	}
-
 }
