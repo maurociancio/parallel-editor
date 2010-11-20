@@ -11,7 +11,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
@@ -86,7 +88,7 @@ abstract public class EditorOpener {
 			if (editor != null)
 				return editor;
 		}
-		
+
 		return openNewEditor(file.getProjectRelativePath().lastSegment(), content);
 	}
 
@@ -111,9 +113,12 @@ abstract public class EditorOpener {
 		if (localContent.equals(remoteContent))
 			return editor;
 		else {
-			boolean overwrite = MessageDialog.openQuestion(window.getShell(), "Synchronization error",
-					"Remote and local file contents are different, update local copy with remote content?"
-							+ "\n Select No to open up a new file with remote contents.");
+
+			MessageDialog overwriteDialog = new MessageDialog(window.getShell(), "Synchronization error", null,
+					"Remote and local file contents are different, update local copy with remote content?", 3,
+					new String[] { "Open in new editor","Overwrite contents" }, 0);
+			boolean overwrite = overwriteDialog.open() != 0;
+
 			if (overwrite) {
 				textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).set(remoteContent);
 				return textEditor;
