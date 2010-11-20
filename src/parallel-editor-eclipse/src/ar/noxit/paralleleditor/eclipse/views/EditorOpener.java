@@ -28,6 +28,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 abstract public class EditorOpener {
 
 	public static ITextEditor openFileFromWorkspace(String title, String content) {
+		Assert.isNotNull(title);
+		Assert.isNotNull(content);
+
 		final IWorkbenchWindow window = getWorkbenchWindow();
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 
@@ -64,9 +67,7 @@ abstract public class EditorOpener {
 
 			if (fileChooser.open() == Window.OK) {
 				IFile selectedFile = fileChooser.getSelectedFile();
-				ITextEditor editor = openEditorFromLocalFileWithSyncCheck(selectedFile, content);
-				if (editor != null)
-					return editor;
+				return openEditorFromLocalFileWithSyncCheck(selectedFile, content);
 			}
 		}
 
