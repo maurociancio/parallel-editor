@@ -93,23 +93,24 @@ abstract public class EditorOpener {
 	}
 
 	private static IEditorPart openEditorFromLocalFile(IFile file, final IWorkbenchWindow window) {
-
-		final IWorkbenchPage page = window.getActivePage();
-
-		IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
 		try {
+			final IWorkbenchPage page = window.getActivePage();
+			IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
 			return page.openEditor(new FileEditorInput(file), desc.getId());
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			// TODO log here
 			return null;
 		}
 	}
 
-	private static IEditorPart openEditorFromLocalFileWithSyncCheck(IFile file, String remoteContent,
+	private static IEditorPart openEditorFromLocalFileWithSyncCheck(IFile file,
+			String remoteContent,
 			IWorkbenchWindow window) {
+
 		IEditorPart editor = openEditorFromLocalFile(file, window);
 		ITextEditor textEditor = (editor instanceof ITextEditor) ? (ITextEditor) editor : null;
 		String localContent = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).get();
+
 		if (localContent.equals(remoteContent))
 			return editor;
 		else {
@@ -127,7 +128,6 @@ abstract public class EditorOpener {
 				return openNewEditor(file.getProjectRelativePath().lastSegment(), remoteContent);
 			}
 		}
-
 	}
 
 	private static String getProjectNameFromPath(String title) {
