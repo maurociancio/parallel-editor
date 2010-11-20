@@ -21,6 +21,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 abstract public class EditorOpener {
 
@@ -56,7 +57,7 @@ abstract public class EditorOpener {
 		if (project.exists()) {
 			file = project.getFile(fileRelativePath);
 			if (file.exists())
-				return openEditorFromLocalFile(file, window);
+				return openEditorFromLocalFileWithSyncCheck(file, content, window);
 		}
 
 		// el proyecto no existe o no se encontro el archivo
@@ -75,27 +76,18 @@ abstract public class EditorOpener {
 			}
 		}
 
-		boolean searchOthers = MessageDialog.openQuestion(window.getShell(), "Unexistant project",
-				"The specified project for the file does not exist. Search for file in the rest of active projects?");
-
-		if (searchOthers) {
-			if (matchingFiles.size() > 0)
-				return promptFileToOpen(window, matchingFiles);
+		// if (searchOthers) {
+		if (matchingFiles.size() > 0) {
+			FileSelectorDialog fileChooser = new FileSelectorDialog(window.getShell(), matchingFiles);
+			fileChooser.open();
+			IFile selectedFile = fileChooser.getSelectedFile();
+			IEditorPart editor = (selectedFile != null) ? openEditorFromLocalFileWithSyncCheck(selectedFile, content,
+					window) : null;
+			if (editor != null)
+				return editor;
 		}
-
-		boolean openInNewEditor = MessageDialog.openQuestion(window.getShell(), "Unexistant File",
-				"The file is not present in the local workspace. Open as a new file?");
-
-		if (openInNewEditor)
-			return openNewEditor(title, content);
-		else
-			return null;
-	}
-
-	private static IEditorPart promptFileToOpen(final IWorkbenchWindow window, Collection<IFile> matchingFiles) {
-		FileSelectorDialog fileChooser = new FileSelectorDialog(window.getShell(), matchingFiles);
-		fileChooser.open();
-		return openEditorFromLocalFile(fileChooser.getSelectedFile(), window);
+		
+		return openNewEditor(file.getProjectRelativePath().lastSegment(), content);
 	}
 
 	private static IEditorPart openEditorFromLocalFile(IFile file, final IWorkbenchWindow window) {
@@ -106,10 +98,30 @@ abstract public class EditorOpener {
 		try {
 			return page.openEditor(new FileEditorInput(file), desc.getId());
 		} catch (PartInitException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private static IEditorPart openEditorFromLocalFileWithSyncCheck(IFile file, String remoteContent,
+			IWorkbenchWindow window) {
+		IEditorPart editor = openEditorFromLocalFile(file, window);
+		ITextEditor textEditor = (editor instanceof ITextEditor) ? (ITextEditor) editor : null;
+		if (textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).get() == remoteContent)
+			return editor;
+		else {
+			boolean overwrite = MessageDialog.openQuestion(window.getShell(), "Synchronization error",
+					"Remote and local file contents are different, update local copy with remote content?"
+							+ "\n Select No to open up a new file with remote contents.");
+			if (overwrite) {
+				textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput()).set(remoteContent);
+				return textEditor;
+			} else {
+				textEditor.close(false);
+				return openNewEditor(file.getProjectRelativePath().lastSegment(), remoteContent);
+			}
+		}
+
 	}
 
 	private static String getProjectNameFromPath(String title) {
