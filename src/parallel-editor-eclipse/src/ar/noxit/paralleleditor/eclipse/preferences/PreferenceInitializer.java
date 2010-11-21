@@ -9,8 +9,17 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.P_BOOLEAN, true);
-		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
-		store.setDefault(PreferenceConstants.P_STRING, "Default value");
+
+		store.setDefault(PreferenceConstants.DEFAULT_USERNAME, getUsername());
+		store.setDefault(PreferenceConstants.LOCAL_SERVICE_PORT, 5000);
+		store.setDefault(PreferenceConstants.LOCAL_SERVICE_HOSTNAME, "localhost");
+	}
+
+	protected String getUsername() {
+		final String username = System.getProperty("user.name");
+		if (username != null && !username.isEmpty())
+			return username;
+		else
+			return "your_name_here";
 	}
 }

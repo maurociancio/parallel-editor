@@ -1,9 +1,7 @@
 package ar.noxit.paralleleditor.eclipse.preferences;
 
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.RadioGroupFieldEditor;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -15,27 +13,33 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public PreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("A demonstration of a preference page implementation");
+		setDescription("Configuration for Parallel-Editor Eclipse Plugin");
 	}
 
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH,
-				"&Directory preference:", getFieldEditorParent()));
+		StringFieldEditor username = new StringFieldEditor(PreferenceConstants.DEFAULT_USERNAME,
+				"Default &username used when creating local shares:",
+				getFieldEditorParent());
+		username.setEmptyStringAllowed(false);
+		addField(username);
 
-		addField(new BooleanFieldEditor(
-				PreferenceConstants.P_BOOLEAN,
-				"&An example of a boolean preference",
-				getFieldEditorParent()));
+		IntegerFieldEditor port = new IntegerFieldEditor(PreferenceConstants.LOCAL_SERVICE_PORT,
+				"&Port used when creating local shares:",
+				getFieldEditorParent());
+		port.setValidRange(1, 65535);
+		addField(port);
 
-		addField(new RadioGroupFieldEditor(
-				PreferenceConstants.P_CHOICE,
-				"An example of a multiple-choice preference",
-				1,
-				new String[][] { { "&Choice 1", "choice1" }, {
-						"C&hoice 2", "choice2" }
-		}, getFieldEditorParent()));
-
-		addField(new StringFieldEditor(PreferenceConstants.P_STRING, "A &text preference:", getFieldEditorParent()));
+		StringFieldEditor hostname = new StringFieldEditor(PreferenceConstants.LOCAL_SERVICE_HOSTNAME,
+				"&Destination when connecting to local service:",
+				getFieldEditorParent()) {
+			@Override
+			protected boolean doCheckState() {
+				final String hostname = getTextControl().getText();
+				return !hostname.contains(" ");
+			}
+		};
+		hostname.setEmptyStringAllowed(false);
+		addField(hostname);
 	}
 
 	public void init(IWorkbench workbench) {
