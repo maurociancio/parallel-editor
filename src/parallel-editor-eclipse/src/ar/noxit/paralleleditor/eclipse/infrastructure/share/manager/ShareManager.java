@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.client.SessionFactory;
@@ -14,9 +15,11 @@ import ar.noxit.paralleleditor.common.converter.DefaultSyncOperationConverter;
 import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter;
 import ar.noxit.paralleleditor.common.messages.RemoteLoginRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteNewDocumentRequest;
+import ar.noxit.paralleleditor.eclipse.Activator;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
+import ar.noxit.paralleleditor.eclipse.preferences.PreferenceConstants;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionStatus;
@@ -31,11 +34,6 @@ import ar.noxit.paralleleditor.kernel.remote.KernelService;
 import ar.noxit.paralleleditor.kernel.remote.SocketKernelService;
 
 public class ShareManager implements IShareManager, IRemoteConnectionFactory {
-
-	// TODO extract to configuration panel
-	public static final String LOCALHOST = "localhost";
-	public static final int LOCALPORT = 5000;
-	public static final String LOCAL_USERNAME = "local_username";
 
 	// converter
 	private final RemoteDocumentOperationConverter converter = new DefaultRemoteDocumentOperationConverter(
@@ -58,6 +56,9 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	// callbacks locales
 	private DocumentsAdapter localAdapter = new DocumentsAdapter(converter);
+
+	// current username
+	private String currentUsername = null;
 
 	// ///////////
 	// REMOTE
@@ -104,6 +105,9 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 			// create the new document
 			newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
+
+			// set the current username
+			currentUsername = getUsername();
 		} catch (Exception e) {
 			// remove the added callback
 			this.localAdapter.removeCallback(docTitle);
@@ -155,10 +159,8 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		Assert.isNotNull(id);
 
 		if (id.isLocal()) {
-			// TODO ver el nombre de usuario, de donde sacarlo, y evitar que
-			// cambie si cambia en el panel de configuracion
 			if (existsLocalConnection())
-				return new Session(new ConnectionInfo(id, LOCAL_USERNAME), localSession, this.localAdapter);
+				return new Session(new ConnectionInfo(id, currentUsername), localSession, this.localAdapter);
 			else
 				return null;
 		} else {
@@ -186,9 +188,19 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 				localSession.close();
 
 			localAdapter = new DocumentsAdapter(converter);
+			currentUsername = null;
 		}
 		this.kernelService = null;
 		this.localSession = null;
+	}
+
+	@Override
+	public void disconnect(ConnectionId id) {
+		ISession session = getSession(id);
+		if (session != null) {
+			session.close();
+			remoteSessions.remove(id);
+		}
 	}
 
 	public void dispose() {
@@ -203,19 +215,26 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		return kernelService != null;
 	}
 
-	@Override
-	public void disconnect(ConnectionId id) {
-		ISession session = getSession(id);
-		if (session != null) {
-			session.close();
-			remoteSessions.remove(id);
-		}
+	public static String getLocalHostname() {
+		return getStore().getString(PreferenceConstants.LOCAL_SERVICE_HOSTNAME);
+	}
+
+	public static String getUsername() {
+		return getStore().getString(PreferenceConstants.DEFAULT_USERNAME);
+	}
+
+	public static int getLocalPort() {
+		return getStore().getInt(PreferenceConstants.LOCAL_SERVICE_PORT);
+	}
+
+	public static IPreferenceStore getStore() {
+		return Activator.getDefault().getPreferenceStore();
 	}
 
 	protected JSession createLocalSessionIfNotExists() {
 		if (localSession == null) {
-			JSession newSession = SessionFactory.newJSession(LOCALHOST, LOCALPORT, localAdapter);
-			newSession.send(new RemoteLoginRequest(LOCAL_USERNAME));
+			JSession newSession = SessionFactory.newJSession(getLocalHostname(), getLocalPort(), localAdapter);
+			newSession.send(new RemoteLoginRequest(getUsername()));
 			this.localSession = newSession;
 		}
 		return this.localSession;
@@ -230,7 +249,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	protected KernelService newKernelService() {
-		SocketKernelService kernelService = new SocketKernelService(LOCALPORT);
+		SocketKernelService kernelService = new SocketKernelService(getLocalPort());
 		kernelService.setKernel(newKernel());
 		return kernelService;
 	}

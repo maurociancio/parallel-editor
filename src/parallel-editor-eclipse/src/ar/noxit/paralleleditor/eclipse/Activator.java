@@ -95,8 +95,8 @@ public class Activator extends AbstractUIPlugin {
 		@Override
 		public synchronized void onCreation() {
 			if (!added) {
-				ConnectionId id = new ConnectionId(ShareManager.LOCALHOST, ShareManager.LOCALPORT, true);
-				this.element = new ConnectionInfo(id, ShareManager.LOCAL_USERNAME);
+				ConnectionId id = new ConnectionId(ShareManager.getLocalHostname(), ShareManager.getLocalPort(), true);
+				this.element = new ConnectionInfo(id, ShareManager.getUsername());
 
 				List<ConnectionInfo> hosts = hostsModel.get();
 				hosts.add(0, element);
