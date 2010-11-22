@@ -1,7 +1,8 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
@@ -61,9 +62,15 @@ public class StringEditorInput implements IStorageEditorInput {
 	public IStorage getStorage() throws CoreException {
 		return new IStorage() {
 
-			@SuppressWarnings("deprecation")
 			public InputStream getContents() throws CoreException {
-				return new StringBufferInputStream(content);
+		            InputStream is;
+					try {
+						is = new ByteArrayInputStream(content.getBytes("UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						is = null;
+						e.printStackTrace();
+					}
+					return is;
 			}
 
 			public IPath getFullPath() {
