@@ -83,8 +83,10 @@ class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory,
     private def doExit = {
         trace("Terminating")
 
-        gateway ! TerminateActor()
-        listener ! TerminateActor()
+        if (gateway != null)
+            gateway ! TerminateActor()
+        if (listener != null)
+            listener ! TerminateActor()
         peer.disconnect
 
         exit
