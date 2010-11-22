@@ -2,6 +2,7 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.ui.IPartService;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
@@ -34,5 +35,16 @@ public class ShareDocumentIntent extends AbstractShareDocumentIntent {
 
 	private org.eclipse.jface.text.IDocument getEclipseDocument(ITextEditor textEditor) {
 		return textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
+	}
+
+	@Override
+	protected ITextEditorDisabler adapt(ITextEditor textEditor) {
+		return new TextEditorDisabler(textEditor);
+	}
+
+	@Override
+	protected void installOnCloseTextEditorCallback(ITextEditor textEditor, IDocumentSession docSession) {
+		IPartService partService = textEditor.getSite().getWorkbenchWindow().getPartService();
+		partService.addPartListener(new TextEditorClosedListener(partService, textEditor, docSession));
 	}
 }

@@ -17,6 +17,7 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.AbstractShareDocumen
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.ITextEditorDisabler;
 import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
 
 @Test
@@ -45,6 +46,9 @@ public class ShareDocumentIntentTest {
 		final DocumentData data = EasyMock.createMock(DocumentData.class);
 		EasyMock.replay(data);
 
+		final ITextEditorDisabler enabler = EasyMock.createMock(ITextEditorDisabler.class);
+		EasyMock.replay(enabler);
+
 		AbstractShareDocumentIntent shareDocumentIntent = new AbstractShareDocumentIntent(shareManager) {
 
 			@Override
@@ -61,13 +65,22 @@ public class ShareDocumentIntentTest {
 			protected DocumentData getAdapterFor(ITextEditor textEditor) {
 				return data;
 			}
+
+			@Override
+			protected ITextEditorDisabler adapt(ITextEditor textEditor) {
+				return enabler;
+			}
+
+			@Override
+			protected void installOnCloseTextEditorCallback(ITextEditor textEditor, IDocumentSession docSession) {
+			}
 		};
 
 		ITextEditor textEditor = createMock(ITextEditor.class);
 		replay(textEditor);
 
 		shareDocumentIntent.shareDocument(new Document(path, LocationKind.IFILE, textEditor));
-		EasyMock.verify(shareManager, docSession, data);
+		EasyMock.verify(shareManager, docSession, data, enabler);
 		Assert.assertEquals(1, countListener);
 	}
 }

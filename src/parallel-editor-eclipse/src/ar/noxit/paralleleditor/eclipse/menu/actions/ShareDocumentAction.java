@@ -7,6 +7,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.DocumentAlreadySharedException;
@@ -52,6 +55,9 @@ public class ShareDocumentAction extends Action {
 
 			try {
 				shareDocumentIntent.shareDocument(new Document(fullPath, locationKind, textEditor));
+
+				// final IWorkbenchPage page =
+				// getWorkbenchWindow().getActivePage();
 			} catch (DocumentAlreadySharedException e) {
 				// TODO log here the full stacktrace
 
@@ -71,6 +77,11 @@ public class ShareDocumentAction extends Action {
 		} else {
 			onNullFile();
 		}
+	}
+
+	private static IWorkbenchWindow getWorkbenchWindow() {
+		final IWorkbench workbench = PlatformUI.getWorkbench();
+		return workbench.getActiveWorkbenchWindow();
 	}
 
 	protected void onNullFile() {
