@@ -8,6 +8,10 @@
    </extension>
 
    <extension point="org.eclipse.ui.views">
+      <category 
+           id="ar.noxit.paralleleditor.eclipse"
+           name="Parallel Editor">
+	  </category>
       <view
             category="ar.noxit.paralleleditor.eclipse"
             class="ar.noxit.paralleleditor.eclipse.views.ConnectionView"
