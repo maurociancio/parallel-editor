@@ -5,16 +5,8 @@ import reflect.BeanProperty
 import org.springframework.beans.factory.{BeanFactory, BeanFactoryAware, InitializingBean}
 import ar.noxit.paralleleditor.common.remote.PeerActorFactory
 
-class OneDefaultDocKernelService(private val port: Int) extends SocketKernelService(port) with BeanFactoryAware {
+class DefaultKernelService(private val port: Int) extends SocketKernelService(port) with BeanFactoryAware {
     private var bf: BeanFactory = _
-
-    override protected def newKernel = {
-        val kernel = super.newKernel
-        val session = kernel.login("test")
-        kernel.newDocument(session, "new_document")
-        session.logout
-        kernel
-    }
 
     override protected def newClientActorFactory =
         bf.getBean("clientActorFactory", ka).asInstanceOf[PeerActorFactory]

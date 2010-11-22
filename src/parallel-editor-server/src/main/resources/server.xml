@@ -9,7 +9,7 @@
         <property name="service" ref="kernelService"/>
     </bean>
 
-    <bean id="kernelService" class="ar.noxit.paralleleditor.server.OneDefaultDocKernelService" scope="singleton">
+    <bean id="kernelService" class="ar.noxit.paralleleditor.server.DefaultKernelService" scope="singleton">
         <constructor-arg value="5000"/>
         <property name="kernel" ref="basicKernel"/>
     </bean>
