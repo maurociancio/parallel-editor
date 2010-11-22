@@ -4,9 +4,9 @@ import ar.noxit.paralleleditor.kernel._
 import ar.noxit.paralleleditor.kernel.messages._
 import ar.noxit.paralleleditor.common.logger.Loggable
 import exceptions.{DocumentTitleNotExistsException, DocumentDeleteUnexistantException, DocumentTitleAlreadyExitsException, UsernameAlreadyExistsException}
-import scala.actors.Actor
+import ar.noxit.paralleleditor.common.BaseActor
 
-class KernelActor(val kernel: Kernel) extends Actor with Loggable {
+class KernelActor(val kernel: Kernel) extends BaseActor with Loggable {
     def act = {
         info("Started")
 

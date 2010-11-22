@@ -1,6 +1,5 @@
 package ar.noxit.paralleleditor.kernel.remote
 
-import actors.{DaemonActor, Actor}
 import java.net.ServerSocket
 import ar.noxit.paralleleditor.common.network.{NetworkConnection, SocketNetworkConnection}
 import ar.noxit.paralleleditor.kernel.Kernel
@@ -11,6 +10,8 @@ import ar.noxit.paralleleditor.common.converter._
 import ar.noxit.paralleleditor.kernel.actors.{RemoteMessageConverter, ToKernelConverter, ClientActor, KernelActor}
 import ar.noxit.paralleleditor.kernel.actors.converter.{DefaultToKernelConverter, DefaultRemoteMessageConverter}
 import ar.noxit.paralleleditor.kernel.messages.TerminateKernel
+import ar.noxit.paralleleditor.common.BaseActor
+import actors.Actor
 
 trait KernelService {
     def startService
@@ -21,7 +22,7 @@ trait KernelService {
  * Actor que se encarga de escuchar conexiones entrantes y crear una representacion del cliente remoto
  * a partir de la conexión recibida.
  */
-abstract class BaseKernelService extends DaemonActor with Loggable with KernelService {
+abstract class BaseKernelService extends BaseActor with Loggable with KernelService {
     private var sExit = false
 
     @BeanProperty
@@ -34,6 +35,9 @@ abstract class BaseKernelService extends DaemonActor with Loggable with KernelSe
 
     override def startService = this.start
     override def stopService = this.stop
+
+    // scheduler
+    override def scheduler = BaseActor.daemonScheduler
 
     protected def initialize = {
         kernel = newKernel

@@ -1,7 +1,7 @@
 package ar.noxit.paralleleditor.kernel.basic
 
-import actors.Actor
+import ar.noxit.paralleleditor.common.BaseActor
 
-trait DocumentActor extends Actor {
+trait DocumentActor extends BaseActor {
     val title: String
 }

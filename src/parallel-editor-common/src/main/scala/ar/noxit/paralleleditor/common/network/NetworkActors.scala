@@ -3,8 +3,9 @@ package ar.noxit.paralleleditor.common.network
 import actors.{Actor, TIMEOUT}
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, SetPeerActor}
+import ar.noxit.paralleleditor.common.BaseActor
 
-abstract class BaseNetworkActor extends Actor with Loggable {
+abstract class BaseNetworkActor extends BaseActor with Loggable {
     protected var peer: Actor = _
     protected val timeout = 5000
 

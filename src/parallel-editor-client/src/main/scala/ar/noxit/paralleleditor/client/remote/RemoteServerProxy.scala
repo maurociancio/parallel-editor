@@ -1,11 +1,12 @@
 package ar.noxit.paralleleditor.client.remote
 
-import actors.{TIMEOUT, Actor}
+import actors.TIMEOUT
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network._
 import ar.noxit.paralleleditor.common.remote.{TerminateActor, NetworkActors, BasePeerProxy, Peer}
 import ar.noxit.paralleleditor.client.{ToKernel, RegisterRemoteActor, FromKernel, LocalClientActorFactory}
 import ar.noxit.paralleleditor.common.messages.RemoteLogoutRequest
+import ar.noxit.paralleleditor.common.BaseActor
 
 object NullDisconnectablePeer extends DisconnectablePeer {
 
@@ -30,7 +31,7 @@ class RemoteServerProxy(private val networkConnection: NetworkConnection,
 }
 
 class RemoteKernelActor(private val clientActorFactory: LocalClientActorFactory,
-                        private val peer: Peer) extends Actor with Loggable {
+                        private val peer: Peer) extends BaseActor with Loggable {
 
     val localClientActor = clientActorFactory.newLocalClientActor.start
     val timeout = 5000

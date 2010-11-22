@@ -7,9 +7,9 @@ import actors.{TIMEOUT, Actor}
 import ar.noxit.paralleleditor.common.converter.MessageConverter
 import converter.ResponseConverter
 import reflect.BeanProperty
-import ar.noxit.paralleleditor._
+import ar.noxit.paralleleditor.common.BaseActor
 
-class ClientActor(private val doc: Documents) extends Actor with Loggable {
+class ClientActor(private val doc: Documents) extends BaseActor with Loggable {
     @BeanProperty
     var timeout = 5000
     @BeanProperty

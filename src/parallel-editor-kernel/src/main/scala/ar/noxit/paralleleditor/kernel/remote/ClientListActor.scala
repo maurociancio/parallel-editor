@@ -1,9 +1,9 @@
 package ar.noxit.paralleleditor.kernel.remote
 
-import actors.Actor
 import ar.noxit.paralleleditor.common.logger.Loggable
 import ar.noxit.paralleleditor.common.network.DisconnectablePeer
 import ar.noxit.paralleleditor.common.remote.Peer
+import ar.noxit.paralleleditor.common.BaseActor
 
 /**
  * Mensajes que se envian a la lista de peers
@@ -27,7 +27,7 @@ case class RemoveAllClients()
 /**
  * Actor que mantiene la lista de peers conectados al kernel.
  */
-class ClientListActor extends Actor with Loggable with DisconnectablePeer {
+class ClientListActor extends BaseActor with Loggable with DisconnectablePeer {
     private var connectedClients = List[Peer]()
 
     override def act = {

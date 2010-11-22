@@ -11,8 +11,9 @@ import ar.noxit.paralleleditor.kernel.callback.ActorCallback
 import ar.noxit.paralleleditor.common.remote.{NetworkActors, TerminateActor, Peer}
 import ar.noxit.paralleleditor.common.operation.DocumentOperation
 import ar.noxit.paralleleditor.common.network.SenderActor
+import ar.noxit.paralleleditor.common.BaseActor
 
-class ClientActor(private val kernel: Actor, private val client: Peer) extends Actor with Loggable {
+class ClientActor(private val kernel: Actor, private val client: Peer) extends BaseActor with Loggable {
     @BeanProperty
     var timeout = 5000
     @BeanProperty
