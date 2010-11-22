@@ -18,8 +18,6 @@ class RunKernelServer extends InitializingBean {
     @BeanProperty
     var service: KernelService = _
 
-    def afterPropertiesSet = {
-        System.setProperty("actors.corePoolSize", "50")
+    def afterPropertiesSet =
         service.startService
-    }
 }
