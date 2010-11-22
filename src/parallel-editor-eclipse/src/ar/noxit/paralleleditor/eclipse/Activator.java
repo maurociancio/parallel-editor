@@ -19,6 +19,8 @@ import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
  */
 public class Activator extends AbstractUIPlugin {
 
+	public static final String CONNECTIONVIEW = "ar.noxit.paralleleditor.connectionview";
+
 	// The plug-in ID
 	public static final String PLUGIN_ID = "ParallelEditor-Eclipse"; //$NON-NLS-1$
 
@@ -31,9 +33,6 @@ public class Activator extends AbstractUIPlugin {
 	// hosts list
 	public static IModel<List<ConnectionInfo>> hostsModel = null;
 
-	/**
-	 * The constructor
-	 */
 	public Activator() {
 	}
 

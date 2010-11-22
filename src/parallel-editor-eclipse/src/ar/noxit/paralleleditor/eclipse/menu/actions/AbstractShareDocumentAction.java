@@ -23,7 +23,7 @@ public abstract class AbstractShareDocumentAction extends Action {
 		this.textEditorProvider = textEditorProvider;
 		this.shareDocumentIntent = shareDocIntent;
 
-		setText("Share this Doc");
+		setText("Share this Document");
 	}
 
 	@Override
