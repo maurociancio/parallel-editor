@@ -18,6 +18,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
+
 /**
  * A simple input dialog for soliciting an input string from the user.
  * <p>
@@ -116,6 +118,7 @@ public class NewServerDialog extends Dialog {
 		// username
 		newLabel("Username: ", parent, composite);
 		usernameText = newText(composite);
+		usernameText.setText(usernameValue = ShareManager.getUsername());
 
 		errorMessageText = new Text(composite, SWT.READ_ONLY | SWT.WRAP);
 		errorMessageText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
