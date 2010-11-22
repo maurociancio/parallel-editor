@@ -17,7 +17,6 @@ sealed trait ToKernel
 /**
  * Mensajes enviados desde el cliente que tienen destino al kernel, son todos request
  */
-
 @serializable
 sealed trait Request
 
@@ -205,3 +204,13 @@ case class RemoteSubscriptionCancelled(val docTitle: String) extends BaseRemoteM
  * Cuando no existe documento en la suscripcion
  */
 case class RemoteDocumentNotExists(val offenderTitle: String) extends BaseRemoteMessage with Response
+
+/**
+ * Mensaje de chat de otro usuario
+ */
+case class RemoteChatMessage(val username: String, val message: String) extends BaseRemoteMessage with Response
+
+/**
+ * Send message
+ */
+case class RemoteSendChatMessage(val message: String) extends BaseRemoteMessage with Request with ToKernel

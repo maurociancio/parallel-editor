@@ -47,7 +47,6 @@ class GUI extends SimpleSwingApplication with Loggable {
 
         val panelGeneral = new BorderPanel
 
-
         panelGeneral.layout(connPanel) = BorderPanel.Position.South
         panelGeneral.layout(split) = BorderPanel.Position.Center
 
@@ -138,8 +137,8 @@ class GUI extends SimpleSwingApplication with Loggable {
         if (connected)
             currentSession ! Logout()
     }
-
 }
+
 trait GUILogger {
     def trace(msg: String)
 }

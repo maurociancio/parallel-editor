@@ -51,6 +51,9 @@ class DefaultRemoteMessageConverter extends RemoteMessageConverter {
 
             case SubscriptionCancelled(docTitle) =>
                 RemoteSubscriptionCancelled(docTitle)
+
+            case ChatMessage(session, message) =>
+                RemoteChatMessage(session.username, message)
         }
     }
 }

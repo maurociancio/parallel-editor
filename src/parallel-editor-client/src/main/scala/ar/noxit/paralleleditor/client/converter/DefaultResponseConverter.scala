@@ -80,6 +80,9 @@ class DefaultResponseConverter extends ResponseConverter with Loggable {
 
             case RemoteSubscriptionCancelled(docTitle) =>
                 SubscriptionCancelled(docTitle)
+
+            case RemoteChatMessage(username, message) =>
+                ChatMessage(username, message)
         }
     }
 }

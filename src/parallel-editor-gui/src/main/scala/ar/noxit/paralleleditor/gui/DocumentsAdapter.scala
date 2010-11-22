@@ -10,6 +10,7 @@ class DocumentsAdapter(private val tabs: TabbedPane,
                        private val menu: HomeMenuBar,
                        private val gui: Reactor,
                        private val logger: GUILogger) extends Documents {
+
     override def process(msg: CommandFromKernel) = {
         msg match {
             case ProcessOperation(title, msg) => {
@@ -36,22 +37,22 @@ class DocumentsAdapter(private val tabs: TabbedPane,
             }
             case DocumentTitleTaken(offenderTitle) => {
                 SwingUtil.invokeLater {
-                    Dialog.showMessage(parent = menu, message = "Nombre de documento ya tomado")
+                    Dialog.showMessage(parent = menu, message = "Nombre de documento '%s' ya tomado".format(offenderTitle))
                 }
             }
             case DocumentSubscriptionAlreadyExists(offenderTitle) => {
                 SwingUtil.invokeLater {
-                    Dialog.showMessage(parent = menu, message = "Ya estas suscripto al documento %s".format(offenderTitle))
+                    Dialog.showMessage(parent = menu, message = "Ya estas suscripto al documento '%s'".format(offenderTitle))
                 }
             }
             case DocumentSubscriptionNotExists(offenderTitle) => {
                 SwingUtil.invokeLater {
-                    Dialog.showMessage(parent = menu, message = "No estas suscripto al documento %s".format(offenderTitle))
+                    Dialog.showMessage(parent = menu, message = "No estas suscripto al documento '%s'".format(offenderTitle))
                 }
             }
             case DocumentInUse(docTitle) => {
                 SwingUtil.invokeLater {
-                    Dialog.showMessage(parent = menu, message = "Documento en uso %s".format(docTitle))
+                    Dialog.showMessage(parent = menu, message = "Documento en uso '%s'".format(docTitle))
                 }
             }
             case DocumentDeleted(docTitle) => {
@@ -65,37 +66,42 @@ class DocumentsAdapter(private val tabs: TabbedPane,
             }
             case DocumentDeletionTitleNotExists(docTitle) => {
                 SwingUtil.invokeLater {
-                    Dialog.showMessage(parent = menu, message = "El Document %s no existe".format(docTitle))
+                    Dialog.showMessage(parent = menu, message = "El documento '%s' no existe".format(docTitle))
                 }
             }
 
             case NewUserLoggedIn(username) => {
                 SwingUtil.invokeLater {
-
-                    logEvent("El usuario %s se ha logueado".format(username))
+                    logEvent("El usuario '%s' se ha logueado".format(username))
                 }
             }
             case UserLoggedOut(username) => {
                 SwingUtil.invokeLater {
-                    logEvent("El usuario %s se ha deslogueado".format(username))
+                    logEvent("El usuario '%s' se ha deslogueado".format(username))
                 }
             }
 
             case NewSubscriberToDocument(username, docTitle) => {
                 SwingUtil.invokeLater {
-                    logEvent("nuevo usuario en documento")
+                    logEvent("Nuevo usuario '%s' en documento '%s'".format(username, docTitle))
                 }
             }
 
             case SubscriberLeftDocument(username, docTitle) => {
                 SwingUtil.invokeLater {
-                    logEvent("usuario dejo documento")
+                    logEvent("El usuario '%s' dejó el documento '%s'.".format(username, docTitle))
                 }
             }
 
             case DocumentTitleNotExists(offenderTitle) => {
                 SwingUtil.invokeLater {
-                    logEvent("no existe titulo")
+                    logEvent("No existe titulo '%s'".format(offenderTitle))
+                }
+            }
+
+            case ChatMessage(username, message) => {
+                SwingUtil.invokeLater {
+                    logEvent("%s dijo: %s".format(username, message))
                 }
             }
 

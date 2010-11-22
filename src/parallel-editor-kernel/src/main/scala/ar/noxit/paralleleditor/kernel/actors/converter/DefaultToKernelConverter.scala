@@ -22,5 +22,8 @@ class DefaultToKernelConverter extends ToKernelConverter {
 
             case RemoteUserListRequest() =>
                 UserListRequest(session)
+
+            case RemoteSendChatMessage(message) =>
+                ChatMessage(session, message)
         }
 }

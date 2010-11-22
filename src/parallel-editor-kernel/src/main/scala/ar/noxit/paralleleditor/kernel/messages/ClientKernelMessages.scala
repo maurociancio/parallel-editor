@@ -86,3 +86,8 @@ case class SubscriberLeftDocument(val username: String, val docTitle: String) ex
  * Generado cuando el usuario se desuscribe de un document
  */
 case class SubscriptionCancelled(val docTitle: String) extends ToRemote
+
+/**
+ * Generado cuando un usuario envia un mensaje de chat
+ */
+case class ChatMessage(val session: Session, val message: String) extends ToRemote

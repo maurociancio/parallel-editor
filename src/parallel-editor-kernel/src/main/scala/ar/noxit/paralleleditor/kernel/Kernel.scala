@@ -11,5 +11,7 @@ trait Kernel {
     def deleteDocument(session: Session, title: String)
     def removeDeletedDocument(title: String)
 
+    def chat(from: Session, message: String)
+
     def terminate
 }

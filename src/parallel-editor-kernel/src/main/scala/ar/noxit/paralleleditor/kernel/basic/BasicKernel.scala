@@ -39,6 +39,17 @@ class BasicKernel extends Kernel with Loggable {
         newSession
     }
 
+    override def chat(from: Session, message: String) {
+        if (from == null)
+            throw new IllegalArgumentException("session cannot be null")
+        if (message == null)
+            throw new IllegalArgumentException("message cannot be null")
+        if (!sessions.contains(from))
+            throw new SessionNotExistsException("session not exists")
+
+        sessions filter {_ != from} foreach {s => s notifyUpdate ChatMessage(from, message)}
+    }
+
     override def newDocument(owner: Session, title: String, initialContent: String) = {
         if (documents exists {_.title == title})
             throw new DocumentTitleAlreadyExitsException("document title already exists")
@@ -114,9 +125,8 @@ class BasicKernel extends Kernel with Loggable {
     override def userList(session: Session) =
         userListMerger.notifyUserList(session, sessions, documents)
 
-    override def terminate = {
+    override def terminate =
         documents.foreach {doc => doc ! TerminateDocument()}
-    }
 
     def documentCount = documents size
 

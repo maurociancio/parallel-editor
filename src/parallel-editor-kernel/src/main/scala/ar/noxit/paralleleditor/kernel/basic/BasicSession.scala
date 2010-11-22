@@ -4,7 +4,7 @@ import ar.noxit.paralleleditor.kernel.UpdateCallback
 import ar.noxit.paralleleditor.kernel.Session
 
 class BasicSession(val username: String, private val kernel: BasicKernel) extends Session {
-    var updateCallback: UpdateCallback = _
+    private var updateCallback: UpdateCallback = _
 
     if (username == null)
         throw new IllegalArgumentException("username cannot be null")

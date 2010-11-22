@@ -43,3 +43,5 @@ case class SubscriberLeftDocument(val username: String, val docTitle: String) ex
 case class DocumentTitleNotExists(val offenderTitle: String) extends CommandFromKernel
 
 case class SubscriptionCancelled(val docTitle: String) extends CommandFromKernel
+
+case class ChatMessage(val username: String, val message: String) extends CommandFromKernel
