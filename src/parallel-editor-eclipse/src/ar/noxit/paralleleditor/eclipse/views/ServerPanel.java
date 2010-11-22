@@ -222,16 +222,23 @@ public class ServerPanel extends Composite {
 			this.serverPort = new Label(contenedor, SWT.NONE);
 			serverPort.setLayoutData(gridDataServerPort);
 
-			this.connectionStatus = new Label(contenedor, SWT.NONE);
-			this.connectionStatus.setText("                          "); // FIX
+			// connection status
+			this.connectionStatus = new Label(contenedor, SWT.CENTER);
 			GridData connectionData = new GridData();
 			connectionData.grabExcessHorizontalSpace = true;
+			connectionData.horizontalAlignment = GridData.FILL;
+			connectionData.horizontalSpan = 2;
 			connectionStatus.setLayoutData(connectionData);
 			showStatus();
 
 			// connect-disconnect button
 			connectButton = new Button(contenedor, SWT.CENTER);
 			connectButton.setText("Connect");
+			GridData connectButtonData = new GridData();
+			connectButtonData.horizontalSpan = 2;
+			connectButtonData.horizontalAlignment = GridData.FILL;
+//			connectButtonData.grabExcessHorizontalSpace = true;
+			connectButton.setLayoutData(connectButtonData);
 			connectButton.addSelectionListener(new SelectionAdapter() {
 
 				@Override
@@ -270,11 +277,6 @@ public class ServerPanel extends Composite {
 					docsModel.set(new ArrayList<String>());
 				}
 			});
-
-			GridData gridDataButton = new GridData();
-			gridDataButton.grabExcessHorizontalSpace = true;
-			gridDataButton.horizontalAlignment = SWT.FILL;
-			connectButton.setLayoutData(gridDataButton);
 
 			updateTexts();
 		}
