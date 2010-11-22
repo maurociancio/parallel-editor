@@ -8,7 +8,7 @@
    </extension>
 
    <extension point="org.eclipse.ui.views">
-      <category 
+      <category
            id="ar.noxit.paralleleditor.eclipse"
            name="Parallel Editor">
 	  </category>
@@ -17,7 +17,21 @@
             class="ar.noxit.paralleleditor.eclipse.views.ConnectionView"
             icon="icons/sample.gif"
             id="ar.noxit.paralleleditor.connectionview"
-            name="Connection view"
+            name="Connections"
+            restorable="true">
+      </view>
+   </extension>
+   <extension point="org.eclipse.ui.views">
+      <category
+           id="ar.noxit.paralleleditor.eclipse.chatview"
+           name="Parallel Editor">
+	  </category>
+      <view
+            category="ar.noxit.paralleleditor.eclipse"
+            class="ar.noxit.paralleleditor.eclipse.views.ChatView"
+            icon="icons/sample.gif"
+            id="ar.noxit.paralleleditor.chatview"
+            name="Chat"
             restorable="true">
       </view>
    </extension>
