@@ -20,8 +20,9 @@ class RemoteServerProxy(private val networkConnection: NetworkConnection,
 
     protected def newNetworkListener(input: MessageInput) = new NetworkListenerActor(input) {
 
-        override protected def onNewMessage(inputMessage: Any) = {
-            peer ! FromKernel(inputMessage)
+        override protected def newThread = new NetworkListenerThread(input, peer) {
+            override protected def onNewMessage(inputMessage: Any) =
+                peer ! FromKernel(inputMessage)
         }
     }
 

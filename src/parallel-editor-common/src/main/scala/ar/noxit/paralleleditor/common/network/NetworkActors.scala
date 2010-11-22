@@ -2,16 +2,14 @@ package ar.noxit.paralleleditor.common.network
 
 import actors.{Actor, TIMEOUT}
 import ar.noxit.paralleleditor.common.logger.Loggable
-import ar.noxit.paralleleditor.common.remote.{TerminateActor, SetPeerActor}
 import ar.noxit.paralleleditor.common.BaseActor
+import ar.noxit.paralleleditor.common.remote.{Peer, TerminateActor, SetPeerActor}
 
 abstract class BaseNetworkActor extends BaseActor with Loggable {
     protected var peer: Actor = _
     protected val timeout = 5000
 
-    override def act = {
-        peer = receiveClient
-    }
+    override def act = peer = receiveClient
 
     private def receiveClient = {
         receiveWithin(timeout) {
@@ -32,16 +30,12 @@ abstract class BaseNetworkActor extends BaseActor with Loggable {
     }
 }
 
-/**
- * Ver RemoteClientProxy ScalaDoc
- */
-class NetworkListenerActor(private val input: MessageInput) extends BaseNetworkActor {
-    override def act = {
-        super.act
-
-        try {
+class NetworkListenerThread(val input: MessageInput, val peer: Actor) extends Thread with Loggable {
+    setName("NetworkListenerThread")
+    override def run = {
+        try
             processMessages
-        } catch {
+        catch {
             case e: Exception => {
                 warn(e, "Exception thrown during receive")
                 doExit
@@ -61,6 +55,27 @@ class NetworkListenerActor(private val input: MessageInput) extends BaseNetworkA
     protected def onNewMessage(inputMessage: Any) {
         peer ! inputMessage
     }
+
+    protected def doExit = {
+        trace("terminating")
+        if (peer != null)
+            peer ! TerminateActor()
+    }
+}
+
+/**
+ * Ver RemoteClientProxy ScalaDoc
+ */
+class NetworkListenerActor(private val input: MessageInput) extends BaseNetworkActor {
+    override def act = {
+        super.act
+
+        // spawn a new thread to avoid blocking the current thread
+        newThread.start
+    }
+
+    protected def newThread: Thread =
+        new NetworkListenerThread(input, peer)
 }
 
 /**
