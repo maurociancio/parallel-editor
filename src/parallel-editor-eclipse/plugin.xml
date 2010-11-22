@@ -17,7 +17,7 @@
             class="ar.noxit.paralleleditor.eclipse.views.ConnectionView"
             icon="icons/sample.gif"
             id="ar.noxit.paralleleditor.connectionview"
-            name="PE Connection view"
+            name="Connection view"
             restorable="true">
       </view>
    </extension>
