@@ -1,92 +1,27 @@
 package ar.noxit.paralleleditor.eclipse.menu.actions;
 
-import org.eclipse.core.filebuffers.LocationKind;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.ITextEditor;
 
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.DocumentAlreadySharedException;
-
-public class ShareDocumentAction extends Action {
-
-	private final ITextEditorProvider textEditorProvider;
-	private final IShareLocalDocumentIntent shareDocumentIntent;
+public class ShareDocumentAction extends AbstractShareDocumentAction {
 
 	public ShareDocumentAction(ITextEditorProvider textEditorProvider, IShareLocalDocumentIntent shareDocIntent) {
-		Assert.isNotNull(textEditorProvider);
-		Assert.isNotNull(shareDocIntent);
-
-		this.textEditorProvider = textEditorProvider;
-		this.shareDocumentIntent = shareDocIntent;
-
-		setText("Share this Doc");
+		super(textEditorProvider, shareDocIntent);
 	}
 
 	@Override
-	public void run() {
-		ITextEditor textEditor = textEditorProvider.getCurrentTextEditor();
-
-		if (textEditor != null) {
-			doRun(textEditor);
-		} else {
-			onNullTextEditor();
+	protected void activateView() {
+		try {
+			getActivePage().showView("ar.noxit.paralleleditor.connectionview");
+		} catch (PartInitException e) {
+			// TODO log stack trace
 		}
 	}
 
-	/**
-	 * Runs this action with a text editor as argument
-	 * 
-	 * @param textEditor
-	 *            must not be null
-	 */
-	protected void doRun(ITextEditor textEditor) {
-		IFile file = (IFile) textEditor.getEditorInput().getAdapter(IFile.class);
-
-		if (file != null) {
-			IPath fullPath = file.getFullPath();
-			LocationKind locationKind = LocationKind.IFILE;
-
-			try {
-				shareDocumentIntent.shareDocument(new Document(fullPath, locationKind, textEditor));
-
-				// final IWorkbenchPage page =
-				// getWorkbenchWindow().getActivePage();
-			} catch (DocumentAlreadySharedException e) {
-				// TODO log here the full stacktrace
-
-				MessageDialog.openError(Display.getDefault().getActiveShell(),
-						"Document already shared",
-						"This document \"" + e.getDocTitle() + "\" is already shared.");
-			} catch (Exception e) {
-				// TODO log here the full stacktrace
-
-				// the kernel or the client we're not created, notify the user
-				MessageDialog.openError(Display.getDefault().getActiveShell(),
-						"Error while creating the share",
-						"The share could not be created. It is possible that the default port is taken. " +
-								"Please see the logs in order to find more information."
-						);
-			}
-		} else {
-			onNullFile();
-		}
-	}
-
-	private static IWorkbenchWindow getWorkbenchWindow() {
+	private static IWorkbenchPage getActivePage() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
-		return workbench.getActiveWorkbenchWindow();
-	}
-
-	protected void onNullFile() {
-	}
-
-	protected void onNullTextEditor() {
+		return workbench.getActiveWorkbenchWindow().getActivePage();
 	}
 }

@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
 import ar.noxit.paralleleditor.eclipse.menu.actions.IShareLocalDocumentIntent;
 import ar.noxit.paralleleditor.eclipse.menu.actions.ITextEditorProvider;
-import ar.noxit.paralleleditor.eclipse.menu.actions.ShareDocumentAction;
+import ar.noxit.paralleleditor.eclipse.menu.actions.AbstractShareDocumentAction;
 
 @Test
 public class ShareDocumentActionTest {
@@ -40,7 +40,8 @@ public class ShareDocumentActionTest {
 		IShareLocalDocumentIntent shareDocIntent = createMock(IShareLocalDocumentIntent.class);
 		replay(shareDocIntent);
 
-		ShareDocumentAction shareDocumentAction = new ShareDocumentAction(textEditorProvider, shareDocIntent) {
+		AbstractShareDocumentAction shareDocumentAction = new AbstractShareDocumentAction(textEditorProvider,
+				shareDocIntent) {
 			@Override
 			protected void onNullTextEditor() {
 				onNullTextEditorTimes = onNullTextEditorTimes + 1;
@@ -69,7 +70,8 @@ public class ShareDocumentActionTest {
 		IShareLocalDocumentIntent shareDocIntent = createMock(IShareLocalDocumentIntent.class);
 		replay(shareDocIntent);
 
-		ShareDocumentAction shareDocumentAction = new ShareDocumentAction(textEditorProvider, shareDocIntent) {
+		AbstractShareDocumentAction shareDocumentAction = new AbstractShareDocumentAction(textEditorProvider,
+				shareDocIntent) {
 
 			@Override
 			protected void onNullFile() {
@@ -105,7 +107,9 @@ public class ShareDocumentActionTest {
 		shareDocIntent.shareDocument(new Document(path, LocationKind.IFILE, textEditor));
 		replay(shareDocIntent);
 
-		ShareDocumentAction shareDocumentAction = new ShareDocumentAction(textEditorProvider, shareDocIntent);
+		AbstractShareDocumentAction shareDocumentAction = new AbstractShareDocumentAction(textEditorProvider,
+				shareDocIntent) {
+		};
 		shareDocumentAction.run();
 
 		verify(shareDocIntent, textEditor, textEditorProvider, editorInput, file);

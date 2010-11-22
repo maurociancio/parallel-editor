@@ -19,12 +19,11 @@ public class ConnectionView extends ViewPart {
 	private final ShareManager shareManager = Activator.shareManager;
 	private final IRemoteDocumentShare remoteDocShare = new ShareDocumentIntent(shareManager);
 	private final IModel<List<ConnectionInfo>> hosts = Activator.hostsModel;
+	private final IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
 
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new GridLayout(3, true));
-
-		IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
 
 		// host list
 		HostsList hostList = new HostsList(parent, SWT.NONE, hosts, selectedConnection, shareManager);

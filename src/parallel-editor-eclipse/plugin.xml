@@ -12,7 +12,7 @@
             category="ar.noxit.paralleleditor.eclipse"
             class="ar.noxit.paralleleditor.eclipse.views.ConnectionView"
             icon="icons/sample.gif"
-            id="ParallelEditor-Eclipse.connectionView"
+            id="ar.noxit.paralleleditor.connectionview"
             name="PE Connection view"
             restorable="true">
       </view>
