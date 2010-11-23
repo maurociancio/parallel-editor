@@ -64,6 +64,11 @@ class KernelActor(val kernel: Kernel) extends BaseActor with Loggable {
                     kernel.userList(session)
                 }
 
+                case ChatMessage(session, message) => {
+                    trace("chat message")
+                    kernel.chat(session, message)
+                }
+
                 case CloseDocument(session, docTitle) => {
                     trace("delete document")
                     try
