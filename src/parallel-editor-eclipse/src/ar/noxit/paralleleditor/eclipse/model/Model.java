@@ -53,4 +53,9 @@ public class Model<T> implements IModel<T> {
 	public void modelChanged() {
 		notifyListeners();
 	}
+
+	@Override
+	public void removeListener(IModelListener listener) {
+		listeners.remove(listener);
+	}
 }

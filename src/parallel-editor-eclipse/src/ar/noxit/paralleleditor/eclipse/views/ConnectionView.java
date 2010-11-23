@@ -53,10 +53,4 @@ public class ConnectionView extends ViewPart {
 	@Override
 	public void setFocus() {
 	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		hosts.clearListeners();// TODO
-	}
 }

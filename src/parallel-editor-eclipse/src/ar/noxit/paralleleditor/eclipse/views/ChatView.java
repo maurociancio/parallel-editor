@@ -38,6 +38,8 @@ public class ChatView extends ViewPart {
 	private final IModel<String> chatMessage = Model.of("");
 	private final IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
 
+	private IModelListener hostListener;
+
 	private Text history;
 	private ComboViewer server;
 	private Button send;
@@ -75,20 +77,6 @@ public class ChatView extends ViewPart {
 				messageLayout.horizontalAlignment = GridData.FILL;
 				message.setLayoutData(messageLayout);
 
-				Activator.getChatCallback().setAdapted(new IChatCallback() {
-
-					@Override
-					public void onNewChat(final ConnectionInfo from, final String username, final String chat) {
-						Display.getDefault().asyncExec(new Runnable() {
-
-							@Override
-							public void run() {
-								history.append(username + "said (from " + getStringOf(from) + "): " + chat + "\n");
-							}
-						});
-					}
-				});
-
 				this.server = new ComboViewer(target, SWT.DROP_DOWN | SWT.READ_ONLY);
 				this.server.setContentProvider(new ArrayContentProvider());
 				this.server.setLabelProvider(new ConnectionInfoLabelProvider(false));
@@ -109,7 +97,7 @@ public class ChatView extends ViewPart {
 						enableSendButton();
 					}
 				});
-				this.hosts.addNewListener(new IModelListener() {
+				this.hosts.addNewListener(this.hostListener = new IModelListener() {
 
 					@Override
 					public void onUpdate() {
@@ -150,6 +138,31 @@ public class ChatView extends ViewPart {
 			}
 		}
 
+		final IChatCallback adapted = new IChatCallback() {
+
+			@Override
+			public void onNewChat(final ConnectionInfo from, final String username, final String chat) {
+				Display.getDefault().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						history.append(username + "said (from " + getStringOf(from) + "): " + chat + "\n");
+					}
+				});
+			}
+		};
+		installChatCallback(adapted);
+	}
+
+	@Override
+	public void setFocus() {
+	}
+
+	@Override
+	public void dispose() {
+		hosts.removeListener(hostListener);
+		installChatCallback(null);
+		super.dispose();
 	}
 
 	protected String getStringOf(ConnectionInfo current) {
@@ -169,8 +182,8 @@ public class ChatView extends ViewPart {
 		this.server.refresh();
 	}
 
-	@Override
-	public void setFocus() {
+	private void installChatCallback(final IChatCallback adapted) {
+		Activator.getChatCallback().setAdapted(adapted);
 	}
 
 	private class ConnectedViewerFilter extends ViewerFilter {

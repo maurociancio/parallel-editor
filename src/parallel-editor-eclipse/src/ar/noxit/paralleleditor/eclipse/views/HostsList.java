@@ -24,6 +24,7 @@ public class HostsList extends Composite {
 	private final IModel<java.util.List<ConnectionInfo>> hostsModel;
 	private final List hosts;
 	private final ListViewer hostList;
+	private IModelListener hostListener;
 
 	public HostsList(Composite parent, int style,
 			final IModel<java.util.List<ConnectionInfo>> hostsModel,
@@ -63,7 +64,7 @@ public class HostsList extends Composite {
 		hostList.setContentProvider(new ArrayContentProvider());
 		hostList.setLabelProvider(new ConnectionInfoLabelProvider());
 
-		hostsModel.addNewListener(new IModelListener() {
+		hostsModel.addNewListener(this.hostListener = new IModelListener() {
 
 			@Override
 			public void onUpdate() {
@@ -156,5 +157,11 @@ public class HostsList extends Composite {
 		} else {
 			selectedConnection.set(null);
 		}
+	}
+
+	@Override
+	public void dispose() {
+		hostsModel.removeListener(hostListener);
+		super.dispose();
 	}
 }
