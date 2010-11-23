@@ -13,4 +13,6 @@ public interface IModel<T> {
 	void addNewListener(IModelListener listener);
 
 	void clearListeners();
+
+	void modelChanged();
 }

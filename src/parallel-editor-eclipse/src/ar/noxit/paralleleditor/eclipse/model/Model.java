@@ -48,4 +48,9 @@ public class Model<T> implements IModel<T> {
 	public void clearListeners() {
 		listeners.clear();
 	}
+
+	@Override
+	public void modelChanged() {
+		notifyListeners();
+	}
 }

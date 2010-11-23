@@ -1,17 +1,27 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
+import java.util.List;
+
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
+import ar.noxit.paralleleditor.eclipse.Activator;
+import ar.noxit.paralleleditor.eclipse.model.IModel;
+import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
+
 public class ChatView extends ViewPart {
 
+	private final IModel<List<ConnectionInfo>> hosts = Activator.hostsModel;
+
 	private Text history;
+	private ComboViewer server;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -27,7 +37,7 @@ public class ChatView extends ViewPart {
 			historyLayout.verticalAlignment = GridData.FILL;
 			this.history.setLayoutData(historyLayout);
 
-			Composite target = new Composite(parent, SWT.NONE);
+			final Composite target = new Composite(parent, SWT.NONE);
 			target.setLayout(new GridLayout(3, false));
 			GridData targetLayout = new GridData();
 			targetLayout.grabExcessHorizontalSpace = true;
@@ -41,12 +51,28 @@ public class ChatView extends ViewPart {
 				messageLayout.horizontalAlignment = GridData.FILL;
 				message.setLayoutData(messageLayout);
 
-				Combo server = new Combo(target, SWT.DROP_DOWN | SWT.READ_ONLY);
+				this.server = new ComboViewer(target, SWT.DROP_DOWN | SWT.READ_ONLY);
+				this.server.setContentProvider(new ArrayContentProvider());
+				this.server.setLabelProvider(new ConnectionInfoLabelProvider(false));
+				this.hosts.addNewListener(new IModelListener() {
+
+					@Override
+					public void onUpdate() {
+						populateItems();
+						target.layout();
+					}
+				});
+				populateItems();
 
 				Button send = new Button(target, SWT.PUSH);
 				send.setText("Send");
 			}
 		}
+	}
+
+	private void populateItems() {
+		this.server.setInput(hosts.get().toArray());
+		this.server.refresh();
 	}
 
 	@Override

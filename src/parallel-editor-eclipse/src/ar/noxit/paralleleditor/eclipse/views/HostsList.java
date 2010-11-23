@@ -96,6 +96,7 @@ public class HostsList extends Composite {
 				NewServerDialog newServer = new NewServerDialog(getShell());
 				if (newServer.open() == Window.OK) {
 					hostsModel.get().add(newServer.getConnectionInfo());
+					hostsModel.modelChanged();
 					redraw();
 				}
 			}
@@ -116,7 +117,7 @@ public class HostsList extends Composite {
 						hosts.remove(selection);
 
 						// para que se disparen los listeners
-						hostsModel.set(hosts);
+						hostsModel.modelChanged();
 
 						selectedConnection.set(null);
 						redraw();
