@@ -4,12 +4,20 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
@@ -18,11 +26,14 @@ import ar.noxit.paralleleditor.eclipse.Activator;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
+import ar.noxit.paralleleditor.eclipse.model.Model;
 
 public class ChatView extends ViewPart {
 
 	private final IModel<List<ConnectionInfo>> hosts = Activator.hostsModel;
 	private final ShareManager shareManager = Activator.shareManager;
+	private final IModel<String> chatMessage = Model.of("");
+	private final IModel<ConnectionInfo> selectedConnection = new Model<ConnectionInfo>();
 
 	private Text history;
 	private ComboViewer server;
@@ -47,7 +58,14 @@ public class ChatView extends ViewPart {
 			targetLayout.horizontalAlignment = GridData.FILL;
 			target.setLayoutData(targetLayout);
 			{
-				Text message = new Text(target, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+				final Text message = new Text(target, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+				message.addModifyListener(new ModifyListener() {
+
+					@Override
+					public void modifyText(ModifyEvent e) {
+						chatMessage.set(message.getText());
+					}
+				});
 				GridData messageLayout = new GridData();
 				messageLayout.grabExcessHorizontalSpace = true;
 				messageLayout.horizontalAlignment = GridData.FILL;
@@ -57,20 +75,55 @@ public class ChatView extends ViewPart {
 				this.server.setContentProvider(new ArrayContentProvider());
 				this.server.setLabelProvider(new ConnectionInfoLabelProvider(false));
 				this.server.setFilters(new ViewerFilter[] { new ConnectedViewerFilter() });
+				this.server.addPostSelectionChangedListener(new ISelectionChangedListener() {
+
+					@Override
+					public void selectionChanged(SelectionChangedEvent event) {
+						final Combo combo = server.getCombo();
+						int selectionIndex = combo.getSelectionIndex();
+
+						if (selectionIndex != -1) {
+							IStructuredSelection selection = (IStructuredSelection) server.getSelection();
+							selectedConnection.set((ConnectionInfo) selection.getFirstElement());
+						} else {
+							selectedConnection.set(null);
+						}
+						enableSend();
+					}
+				});
 				this.hosts.addNewListener(new IModelListener() {
 
 					@Override
 					public void onUpdate() {
 						populateItems();
 						target.layout();
+						enableSend();
 					}
 				});
 				populateItems();
 
-				Button send = new Button(target, SWT.PUSH);
+				final Button send = new Button(target, SWT.PUSH);
 				send.setText("Send");
+				send.setEnabled(false);
+				send.addSelectionListener(new SelectionAdapter() {
+
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+					}
+				});
+				chatMessage.addNewListener(new IModelListener() {
+
+					@Override
+					public void onUpdate() {
+						send.setEnabled(enableSend());
+					}
+				});
 			}
 		}
+	}
+
+	private boolean enableSend() {
+		return !chatMessage.get().isEmpty() && this.server.getCombo().getSelectionIndex() != -1;
 	}
 
 	private void populateItems() {
