@@ -35,7 +35,11 @@ public class ConnectionView extends ViewPart {
 		hostListData.horizontalSpan = 1;
 		hostList.setLayoutData(hostListData);
 
-		ServerPanel serverPanel = new ServerPanel(parent, SWT.BORDER_SOLID, selectedConnection, shareManager,
+		ServerPanel serverPanel = new ServerPanel(parent,
+				SWT.BORDER_SOLID,
+				selectedConnection,
+				hosts,
+				shareManager,
 				remoteDocShare);
 		GridData serverPanelData = new GridData();
 		serverPanelData.horizontalSpan = 2;

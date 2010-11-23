@@ -54,8 +54,13 @@ public class ServerPanel extends Composite {
 			new ArrayList<DocumentElement>());
 	private IModel<List<String>> docsModel = new Model<List<String>>(new ArrayList<String>());
 
-	public ServerPanel(Composite parent, int style, final IModel<ConnectionInfo> connectionInfo,
-			final IRemoteConnectionFactory connectionFactory, IRemoteDocumentShare remoteDocumentShare) {
+	private final IModel<List<ConnectionInfo>> hosts;
+
+	public ServerPanel(Composite parent, int style,
+			final IModel<ConnectionInfo> connectionInfo,
+			final IModel<List<ConnectionInfo>> hosts,
+			final IRemoteConnectionFactory connectionFactory,
+			IRemoteDocumentShare remoteDocumentShare) {
 		super(parent, style);
 
 		// connection factory
@@ -64,6 +69,7 @@ public class ServerPanel extends Composite {
 
 		// connection info
 		this.connectionInfo = connectionInfo;
+		this.hosts = hosts;
 
 		// layout
 		this.layoutVisibility = new StackLayout();
@@ -237,7 +243,7 @@ public class ServerPanel extends Composite {
 			GridData connectButtonData = new GridData();
 			connectButtonData.horizontalSpan = 2;
 			connectButtonData.horizontalAlignment = GridData.FILL;
-//			connectButtonData.grabExcessHorizontalSpace = true;
+			// connectButtonData.grabExcessHorizontalSpace = true;
 			connectButton.setLayoutData(connectButtonData);
 			connectButton.addSelectionListener(new SelectionAdapter() {
 
@@ -252,6 +258,9 @@ public class ServerPanel extends Composite {
 							connect(info);
 						else
 							disconnect(info);
+
+						// notify that the hosts list has changed.
+						hosts.modelChanged();
 					}
 					redraw();
 				}
