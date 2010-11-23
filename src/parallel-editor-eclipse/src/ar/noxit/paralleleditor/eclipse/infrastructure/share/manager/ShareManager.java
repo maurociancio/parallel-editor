@@ -52,13 +52,12 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	 */
 	private JSession localSession = null;
 
-	private final ILocalKernelListener localKernelListener;
-
 	// callbacks locales
-	private DocumentsAdapter localAdapter = new DocumentsAdapter(converter);
+	private DocumentsAdapter localAdapter;
 
-	// current username
-	private String currentUsername = null;
+	private ConnectionInfo localInfo;
+
+	private final ILocalKernelListener localKernelListener;
 
 	// ///////////
 	// REMOTE
@@ -88,7 +87,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		Assert.isNotNull(remoteMessageCallback);
 
 		// verify title
-		localAdapter.verifyDocTitleNotExists(docTitle);
+		verifyDocTitleNotExists(docTitle);
 
 		// create the service
 		createServiceIfNotCreated();
@@ -105,12 +104,12 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 			// create the new document
 			newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
-
-			// set the current username
-			currentUsername = getUsername();
 		} catch (Exception e) {
 			// remove the added callback
 			this.localAdapter.removeCallback(docTitle);
+
+			// set null
+			this.localInfo = null;
 
 			// rethrow the exception
 			throw new RuntimeException(e);
@@ -126,7 +125,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// connection id
 		ConnectionId id = info.getId();
 		// adapter
-		DocumentsAdapter adapter = new DocumentsAdapter(converter);
+		DocumentsAdapter adapter = new DocumentsAdapter(converter, info);
 		// the newly created session
 		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), adapter);
 		// log in to the kernel
@@ -159,9 +158,10 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		Assert.isNotNull(id);
 
 		if (id.isLocal()) {
-			if (existsLocalConnection())
-				return new Session(new ConnectionInfo(id, currentUsername), localSession, this.localAdapter);
-			else
+			if (existsLocalConnection()) {
+				ConnectionInfo info = new ConnectionInfo(id, this.localInfo.getUsername());
+				return new Session(info, localSession, this.localAdapter);
+			} else
 				return null;
 		} else {
 			return remoteSessionsCallbacks.get(id);
@@ -186,10 +186,10 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 				localAdapter.dispose();
 			if (localSession != null)
 				localSession.close();
-
-			localAdapter = new DocumentsAdapter(converter);
-			currentUsername = null;
 		}
+
+		this.localAdapter = null;
+		this.localInfo = null;
 		this.kernelService = null;
 		this.localSession = null;
 	}
@@ -205,6 +205,11 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	public void dispose() {
 		// TODO implementar
+	}
+
+	private void verifyDocTitleNotExists(String docTitle) {
+		if (localAdapter != null)
+			localAdapter.verifyDocTitleNotExists(docTitle);
 	}
 
 	private boolean isLocalConnection(ConnectionId id) {
@@ -242,9 +247,19 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 	protected void createServiceIfNotCreated() {
 		if (this.kernelService == null) {
+			// create service
 			this.kernelService = newKernelService();
 			this.kernelService.startService();
-			this.localKernelListener.onCreation();
+
+			// local info
+			this.localInfo = new ConnectionInfo(new ConnectionId(getLocalHostname(), getLocalPort(), true),
+					getUsername());
+
+			// notify service created
+			this.localKernelListener.onCreation(localInfo);
+
+			// create adapter
+			this.localAdapter = new DocumentsAdapter(converter, localInfo);
 		}
 	}
 

@@ -59,7 +59,13 @@ public class Session implements ISession {
 	}
 
 	@Override
+	public void installChatCallback(IChatCallback chatCallback) {
+		adapter.installChatCallback(chatCallback);
+	}
+
+	@Override
 	public void close() {
 		session.close();
 	}
+
 }

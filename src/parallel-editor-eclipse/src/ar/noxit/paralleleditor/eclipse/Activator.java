@@ -11,7 +11,6 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernel
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.Model;
-import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 /**
@@ -92,10 +91,9 @@ public class Activator extends AbstractUIPlugin {
 		private ConnectionInfo element;
 
 		@Override
-		public synchronized void onCreation() {
+		public synchronized void onCreation(ConnectionInfo info) {
 			if (!added) {
-				ConnectionId id = new ConnectionId(ShareManager.getLocalHostname(), ShareManager.getLocalPort(), true);
-				this.element = new ConnectionInfo(id, ShareManager.getUsername());
+				this.element = info;
 
 				List<ConnectionInfo> hosts = hostsModel.get();
 				hosts.add(0, element);

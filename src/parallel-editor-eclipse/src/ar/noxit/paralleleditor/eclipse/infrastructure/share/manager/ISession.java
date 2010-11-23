@@ -3,6 +3,7 @@ package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 public interface ISession {
 
@@ -20,6 +21,12 @@ public interface ISession {
 				IDocumentSession documentSession);
 	}
 
+	public static interface IChatCallback {
+		void onNewChat(ConnectionInfo from,
+				String username,
+				String message);
+	}
+
 	void installUserListCallback(IUserListCallback callback);
 
 	void requestUserList();
@@ -31,6 +38,8 @@ public interface ISession {
 	void subscribe(String docTitle);
 
 	void installSubscriptionResponseCallback(ISubscriptionCallback callback);
+
+	void installChatCallback(IChatCallback chatCallback);
 
 	void close();
 }

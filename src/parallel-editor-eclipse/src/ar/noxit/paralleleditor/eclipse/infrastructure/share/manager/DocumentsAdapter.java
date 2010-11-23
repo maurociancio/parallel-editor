@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.Assert;
 
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
+import ar.noxit.paralleleditor.client.ChatMessage;
 import ar.noxit.paralleleditor.client.CommandFromKernel;
 import ar.noxit.paralleleditor.client.DocumentListUpdate;
 import ar.noxit.paralleleditor.client.DocumentSubscription;
@@ -19,26 +20,34 @@ import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter
 import ar.noxit.paralleleditor.common.operation.EditOperation;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.RemoteMessageCallbackAdapter;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IChatCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IDocumentListCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.ISubscriptionCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IUserListCallback;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 public class DocumentsAdapter implements Documents {
 
 	private IUserListCallback documentListCallback;
 	private IDocumentListCallback userListCallback;
 	private ISubscriptionCallback subscriptionResponseCallback;
+	private IChatCallback chatCallback;
 	private JSession session;
 
-	private java.util.Map<String, RemoteMessageCallbackAdapter> callbacks = new HashMap<String, RemoteMessageCallbackAdapter>();
+	// connection info
+	private final ConnectionInfo info;
+
+	private final java.util.Map<String, RemoteMessageCallbackAdapter> callbacks = new HashMap<String, RemoteMessageCallbackAdapter>();
 
 	// converter
 	private final RemoteDocumentOperationConverter converter;
 
-	public DocumentsAdapter(RemoteDocumentOperationConverter converter) {
+	public DocumentsAdapter(RemoteDocumentOperationConverter converter, ConnectionInfo info) {
 		Assert.isNotNull(converter);
+		Assert.isNotNull(info);
 
 		this.converter = converter;
+		this.info = info;
 	}
 
 	@Override
@@ -57,6 +66,14 @@ public class DocumentsAdapter implements Documents {
 
 			if (userListCallback != null)
 				userListCallback.onDocumentListResponse(docs);
+		}
+
+		// chat
+		if (command instanceof ChatMessage) {
+			ChatMessage chatMessage = (ChatMessage) command;
+
+			if (chatCallback != null)
+				chatCallback.onNewChat(info, chatMessage.username(), chatMessage.message());
 		}
 
 		// subscription
@@ -130,6 +147,10 @@ public class DocumentsAdapter implements Documents {
 
 	public synchronized void setSession(JSession newSession) {
 		this.session = newSession;
+	}
+
+	public synchronized void installChatCallback(IChatCallback chatCallback) {
+		this.chatCallback = chatCallback;
 	}
 
 	public synchronized void installCallback(String docTitle, IRemoteMessageCallback remoteMessageCallback) {
