@@ -57,6 +57,6 @@ public class ConnectionView extends ViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
-		hosts.clearListeners();
+		hosts.clearListeners();// TODO
 	}
 }

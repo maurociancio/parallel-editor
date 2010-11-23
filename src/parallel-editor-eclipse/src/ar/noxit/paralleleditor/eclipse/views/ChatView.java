@@ -40,6 +40,7 @@ public class ChatView extends ViewPart {
 
 	private Text history;
 	private ComboViewer server;
+	private Button send;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -77,12 +78,12 @@ public class ChatView extends ViewPart {
 				Activator.getChatCallback().setAdapted(new IChatCallback() {
 
 					@Override
-					public void onNewChat(ConnectionInfo from, final String username, final String chat) {
+					public void onNewChat(final ConnectionInfo from, final String username, final String chat) {
 						Display.getDefault().asyncExec(new Runnable() {
 
 							@Override
 							public void run() {
-								message.append(username + ": " + chat);
+								history.append(username + "said (from " + getStringOf(from) + "): " + chat + "\n");
 							}
 						});
 					}
@@ -105,7 +106,7 @@ public class ChatView extends ViewPart {
 						} else {
 							selectedConnection.set(null);
 						}
-						enableSend();
+						enableSendButton();
 					}
 				});
 				this.hosts.addNewListener(new IModelListener() {
@@ -114,12 +115,12 @@ public class ChatView extends ViewPart {
 					public void onUpdate() {
 						populateItems();
 						target.layout();
-						enableSend();
+						enableSendButton();
 					}
 				});
 				populateItems();
 
-				final Button send = new Button(target, SWT.PUSH);
+				this.send = new Button(target, SWT.PUSH);
 				send.setText("Send");
 				send.setEnabled(false);
 				send.addSelectionListener(new SelectionAdapter() {
@@ -129,7 +130,13 @@ public class ChatView extends ViewPart {
 						ConnectionInfo current = selectedConnection.get();
 						ISession session = shareManager.getSession(current.getId());
 						if (session != null) {
-							session.chat("nice");
+							final String chat = chatMessage.get();
+							session.chat(chat);
+							history.append("you said (to " + getStringOf(current) + "): " + chat + "\n");
+
+							message.setText("");
+							chatMessage.set("");
+							message.setFocus();
 						}
 					}
 				});
@@ -137,12 +144,20 @@ public class ChatView extends ViewPart {
 
 					@Override
 					public void onUpdate() {
-						send.setEnabled(enableSend());
+						enableSendButton();
 					}
 				});
 			}
 		}
 
+	}
+
+	protected String getStringOf(ConnectionInfo current) {
+		return current.getId().getHost() + ":" + current.getId().getPort();
+	}
+
+	private void enableSendButton() {
+		send.setEnabled(enableSend());
 	}
 
 	private boolean enableSend() {
