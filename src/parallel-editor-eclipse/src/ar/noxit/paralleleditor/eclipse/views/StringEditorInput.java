@@ -53,6 +53,7 @@ public class StringEditorInput implements IStorageEditorInput {
 		return title;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
 		return null;
@@ -82,6 +83,7 @@ public class StringEditorInput implements IStorageEditorInput {
 				return false;
 			}
 
+			@SuppressWarnings("rawtypes")
 			public Object getAdapter(Class adapter) {
 				return null;
 			}
