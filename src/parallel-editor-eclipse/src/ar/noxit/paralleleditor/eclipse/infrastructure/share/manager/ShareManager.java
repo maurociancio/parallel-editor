@@ -221,7 +221,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	public void dispose() {
-		// TODO implementar
+		stopLocalService();
 	}
 
 	private void verifyDocTitleNotExists(String docTitle) {
