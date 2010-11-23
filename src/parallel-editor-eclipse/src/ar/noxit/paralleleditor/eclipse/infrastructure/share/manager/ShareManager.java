@@ -19,6 +19,7 @@ import ar.noxit.paralleleditor.eclipse.Activator;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IChatCallback;
 import ar.noxit.paralleleditor.eclipse.preferences.PreferenceConstants;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
@@ -74,10 +75,15 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	 */
 	private final Map<ConnectionId, ISession> remoteSessionsCallbacks = new HashMap<ConnectionId, ISession>();
 
-	public ShareManager(ILocalKernelListener localKernelListener) {
+	// ///////////
+	private final IChatCallback chatCallback;
+
+	public ShareManager(ILocalKernelListener localKernelListener, IChatCallback chatCallback) {
 		Assert.isNotNull(localKernelListener);
+		Assert.isNotNull(chatCallback);
 
 		this.localKernelListener = localKernelListener;
+		this.chatCallback = chatCallback;
 	}
 
 	@Override
@@ -102,7 +108,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 			JSession newSession = createLocalSessionIfNotExists();
 
 			// local session
-			this.localSession = new Session(localInfo, localApiSession, this.localAdapter);
+			this.localSession = newSession(localInfo, localApiSession, localAdapter);
 
 			// set session
 			this.localAdapter.setSession(newSession);
@@ -123,6 +129,12 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		return new DocumentSession(docTitle, localApiSession, converter);
 	}
 
+	private Session newSession(ConnectionInfo localInfo, JSession localApiSession, DocumentsAdapter localAdapter) {
+		Session newSession = new Session(localInfo, localApiSession, localAdapter);
+		newSession.installChatCallback(chatCallback);
+		return newSession;
+	}
+
 	@Override
 	public ISession connect(ConnectionInfo info) {
 		Assert.isNotNull(info);
@@ -138,7 +150,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 		// store the remote session
 		remoteSessions.put(info.getId(), newSession);
 
-		ISession newRemoteSession = new Session(info, newSession, adapter);
+		ISession newRemoteSession = newSession(info, newSession, adapter);
 		remoteSessionsCallbacks.put(id, newRemoteSession);
 		return newRemoteSession;
 	}

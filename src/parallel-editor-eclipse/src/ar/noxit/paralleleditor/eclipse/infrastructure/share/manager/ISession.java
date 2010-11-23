@@ -27,6 +27,8 @@ public interface ISession {
 				String message);
 	}
 
+	void chat(String message);
+
 	void installUserListCallback(IUserListCallback callback);
 
 	void requestUserList();

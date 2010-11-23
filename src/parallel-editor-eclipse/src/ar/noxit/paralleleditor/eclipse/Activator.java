@@ -7,6 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.ChatCallbackAdapter;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernelListener;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
@@ -32,6 +33,8 @@ public class Activator extends AbstractUIPlugin {
 	// hosts list
 	public static IModel<List<ConnectionInfo>> hostsModel = null;
 
+	private static ChatCallbackAdapter chatCallback;
+
 	public Activator() {
 	}
 
@@ -46,8 +49,9 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
+		chatCallback = new ChatCallbackAdapter();
 		hostsModel = new Model<List<ConnectionInfo>>(new ArrayList<ConnectionInfo>());
-		shareManager = new ShareManager(new LocalKernelListener());
+		shareManager = new ShareManager(new LocalKernelListener(), chatCallback);
 	}
 
 	/*
@@ -60,6 +64,8 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		shareManager.dispose();
 
+		chatCallback = null;
+		hostsModel = null;
 		plugin = null;
 		super.stop(context);
 	}
@@ -71,6 +77,10 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	public static ChatCallbackAdapter getChatCallback() {
+		return chatCallback;
 	}
 
 	/**

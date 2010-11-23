@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.Assert;
 
 import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.common.messages.RemoteDocumentListRequest;
+import ar.noxit.paralleleditor.common.messages.RemoteSendChatMessage;
 import ar.noxit.paralleleditor.common.messages.RemoteSubscribeRequest;
 import ar.noxit.paralleleditor.common.messages.RemoteUserListRequest;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
@@ -43,6 +44,11 @@ public class Session implements ISession {
 	@Override
 	public void requestDocumentList() {
 		session.send(new RemoteDocumentListRequest());
+	}
+
+	@Override
+	public void chat(String message) {
+		session.send(new RemoteSendChatMessage(message));
 	}
 
 	@Override

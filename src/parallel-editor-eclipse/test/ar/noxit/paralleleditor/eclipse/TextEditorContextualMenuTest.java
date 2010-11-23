@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernelListener;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IChatCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu;
 
@@ -31,7 +32,9 @@ public class TextEditorContextualMenuTest {
 		protected ShareManager getShareManager() {
 			ILocalKernelListener mock = EasyMock.createMock(ILocalKernelListener.class);
 			EasyMock.replay(mock);
-			return new ShareManager(mock);
+			IChatCallback callback = EasyMock.createMock(IChatCallback.class);
+			EasyMock.replay(callback);
+			return new ShareManager(mock, callback);
 		}
 	}
 }

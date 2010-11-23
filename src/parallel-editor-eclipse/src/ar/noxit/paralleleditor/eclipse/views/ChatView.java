@@ -19,10 +19,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 import ar.noxit.paralleleditor.eclipse.Activator;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IChatCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
@@ -71,6 +74,20 @@ public class ChatView extends ViewPart {
 				messageLayout.horizontalAlignment = GridData.FILL;
 				message.setLayoutData(messageLayout);
 
+				Activator.getChatCallback().setAdapted(new IChatCallback() {
+
+					@Override
+					public void onNewChat(ConnectionInfo from, final String username, final String chat) {
+						Display.getDefault().asyncExec(new Runnable() {
+
+							@Override
+							public void run() {
+								message.append(username + ": " + chat);
+							}
+						});
+					}
+				});
+
 				this.server = new ComboViewer(target, SWT.DROP_DOWN | SWT.READ_ONLY);
 				this.server.setContentProvider(new ArrayContentProvider());
 				this.server.setLabelProvider(new ConnectionInfoLabelProvider(false));
@@ -109,6 +126,11 @@ public class ChatView extends ViewPart {
 
 					@Override
 					public void widgetSelected(SelectionEvent e) {
+						ConnectionInfo current = selectedConnection.get();
+						ISession session = shareManager.getSession(current.getId());
+						if (session != null) {
+							session.chat("nice");
+						}
 					}
 				});
 				chatMessage.addNewListener(new IModelListener() {
@@ -120,6 +142,7 @@ public class ChatView extends ViewPart {
 				});
 			}
 		}
+
 	}
 
 	private boolean enableSend() {
