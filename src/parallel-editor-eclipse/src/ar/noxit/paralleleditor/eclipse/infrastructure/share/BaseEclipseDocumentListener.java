@@ -28,24 +28,34 @@ public class BaseEclipseDocumentListener implements IDocumentListener {
 
 		if (replacedTextLength == 0) {
 			// largo del reemplazo cero, no es reeplazo ni borrado => inserción
-			processOperation(new AddTextOperation(text, offset, getNilFromScala()));
+			createAddOperations(text, offset);
 		} else {
 			// borramos de a un caracter
-			for (int i = 0; i < replacedTextLength; i++) {
-				processOperation(new DeleteTextOperation(offset, 1));
-			}
+			createDeleteOperations(replacedTextLength, offset);
 
 			if (textLength == 0) {
 				// solo borrado
 			} else {
 				// reemplazo, generamos operaciones de borrado (arriba generadas
 				// y de insercion)
-				processOperation(new AddTextOperation(text, offset, getNilFromScala()));
+				createAddOperations(text, offset);
 			}
 		}
 	}
 
+	private void createDeleteOperations(final int replacedTextLength, final int offset) {
+		for (int i = 0; i < replacedTextLength; i++) {
+			processOperation(new DeleteTextOperation(offset, 1));
+		}
+	}
+
 	protected void processOperation(EditOperation editOperation) {
+	}
+
+	protected void createAddOperations(String text, int offset) {
+		for (int i = 0; i < text.length(); i++) {
+			processOperation(new AddTextOperation(text.substring(i, i + 1), offset + i, getNilFromScala()));
+		}
 	}
 
 	@Override
