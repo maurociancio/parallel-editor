@@ -50,7 +50,9 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	/**
 	 * Connection to the local kernel (kernelService)
 	 */
-	private JSession localSession = null;
+	private JSession localApiSession = null;
+
+	private ISession localSession = null;
 
 	// callbacks locales
 	private DocumentsAdapter localAdapter;
@@ -99,8 +101,11 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 			// create the session
 			JSession newSession = createLocalSessionIfNotExists();
 
+			// local session
+			this.localSession = new Session(localInfo, localApiSession, this.localAdapter);
+
 			// set session
-			localAdapter.setSession(newSession);
+			this.localAdapter.setSession(newSession);
 
 			// create the new document
 			newSession.send(new RemoteNewDocumentRequest(docTitle, initialContent));
@@ -115,7 +120,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 			throw new RuntimeException(e);
 		}
 
-		return new DocumentSession(docTitle, localSession, converter);
+		return new DocumentSession(docTitle, localApiSession, converter);
 	}
 
 	@Override
@@ -159,8 +164,7 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 
 		if (id.isLocal()) {
 			if (existsLocalConnection()) {
-				ConnectionInfo info = new ConnectionInfo(id, this.localInfo.getUsername());
-				return new Session(info, localSession, this.localAdapter);
+				return localSession;
 			} else
 				return null;
 		} else {
@@ -184,13 +188,14 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 				localKernelListener.onDestroy();
 			if (localAdapter != null)
 				localAdapter.dispose();
-			if (localSession != null)
-				localSession.close();
+			if (localApiSession != null)
+				localApiSession.close();
 		}
 
 		this.localAdapter = null;
 		this.localInfo = null;
 		this.kernelService = null;
+		this.localApiSession = null;
 		this.localSession = null;
 	}
 
@@ -237,12 +242,12 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	protected JSession createLocalSessionIfNotExists() {
-		if (localSession == null) {
+		if (localApiSession == null) {
 			JSession newSession = SessionFactory.newJSession(getLocalHostname(), getLocalPort(), localAdapter);
 			newSession.send(new RemoteLoginRequest(getUsername()));
-			this.localSession = newSession;
+			this.localApiSession = newSession;
 		}
-		return this.localSession;
+		return this.localApiSession;
 	}
 
 	protected void createServiceIfNotCreated() {
