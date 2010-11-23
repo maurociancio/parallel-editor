@@ -5,6 +5,9 @@
       <menuContribution locationURI="popup:#CompilationUnitEditorContext">
          <dynamic class="ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu" id="menu"/>
       </menuContribution>
+      <menuContribution locationURI="popup:#TextEditorContext">
+         <dynamic class="ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu" id="menu"/>
+      </menuContribution>
    </extension>
 
    <extension point="org.eclipse.ui.views">
