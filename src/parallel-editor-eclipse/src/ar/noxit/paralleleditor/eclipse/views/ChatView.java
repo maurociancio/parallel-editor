@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
@@ -43,6 +45,7 @@ public class ChatView extends ViewPart {
 	private Text history;
 	private ComboViewer server;
 	private Button send;
+	private Text message;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -64,12 +67,21 @@ public class ChatView extends ViewPart {
 			targetLayout.horizontalAlignment = GridData.FILL;
 			target.setLayoutData(targetLayout);
 			{
-				final Text message = new Text(target, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+				this.message = new Text(target, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 				message.addModifyListener(new ModifyListener() {
 
 					@Override
 					public void modifyText(ModifyEvent e) {
 						chatMessage.set(message.getText());
+					}
+				});
+				message.addListener(SWT.DefaultSelection, new Listener() {
+
+					@Override
+					public void handleEvent(Event event) {
+						if (send.isEnabled()) {
+							sendChat();
+						}
 					}
 				});
 				GridData messageLayout = new GridData();
@@ -115,17 +127,7 @@ public class ChatView extends ViewPart {
 
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ConnectionInfo current = selectedConnection.get();
-						ISession session = shareManager.getSession(current.getId());
-						if (session != null) {
-							final String chat = chatMessage.get();
-							session.chat(chat);
-							history.append("you said (to " + getStringOf(current) + "): " + chat + "\n");
-
-							message.setText("");
-							chatMessage.set("");
-							message.setFocus();
-						}
+						sendChat();
 					}
 				});
 				chatMessage.addNewListener(new IModelListener() {
@@ -146,7 +148,7 @@ public class ChatView extends ViewPart {
 
 					@Override
 					public void run() {
-						history.append(username + "said (from " + getStringOf(from) + "): " + chat + "\n");
+						history.append(username + " said (from " + getStringOf(from) + "): " + chat + "\n");
 					}
 				});
 			}
@@ -184,6 +186,20 @@ public class ChatView extends ViewPart {
 
 	private void installChatCallback(final IChatCallback adapted) {
 		Activator.getChatCallback().setAdapted(adapted);
+	}
+
+	private void sendChat() {
+		ConnectionInfo current = selectedConnection.get();
+		ISession session = shareManager.getSession(current.getId());
+		if (session != null) {
+			final String chat = chatMessage.get();
+			session.chat(chat);
+			history.append("you said (to " + getStringOf(current) + "): " + chat + "\n");
+
+			message.setText("");
+			chatMessage.set("");
+			message.setFocus();
+		}
 	}
 
 	private class ConnectedViewerFilter extends ViewerFilter {
