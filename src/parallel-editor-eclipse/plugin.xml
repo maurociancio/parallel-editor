@@ -15,9 +15,9 @@
       <view
             category="ar.noxit.paralleleditor.eclipse"
             class="ar.noxit.paralleleditor.eclipse.views.ConnectionView"
-            icon="icons/sample.gif"
+            icon="icons/share.png"
             id="ar.noxit.paralleleditor.connectionview"
-            name="Connections"
+            name="Shares"
             restorable="true">
       </view>
    </extension>
@@ -29,7 +29,7 @@
       <view
             category="ar.noxit.paralleleditor.eclipse"
             class="ar.noxit.paralleleditor.eclipse.views.ChatView"
-            icon="icons/sample.gif"
+            icon="icons/chat.png"
             id="ar.noxit.paralleleditor.chatview"
             name="Chat"
             restorable="true">
