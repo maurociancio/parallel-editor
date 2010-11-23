@@ -21,10 +21,10 @@ public class BaseEclipseDocumentListener implements IDocumentListener {
 	public void documentChanged(DocumentEvent event) {
 		Assert.isNotNull(event);
 
-		int replacedTextLength = event.fLength;
-		int offset = event.fOffset;
-		String text = event.fText;
-		int textLength = (text != null ? text.length() : 0);
+		final int replacedTextLength = event.fLength;
+		final int offset = event.fOffset;
+		final String text = event.fText;
+		final int textLength = text != null ? text.length() : 0;
 
 		if (replacedTextLength == 0) {
 			// largo del reemplazo cero, no es reeplazo ni borrado => inserción
