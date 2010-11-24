@@ -33,6 +33,8 @@ class BasicXFormStrategy extends XFormStrategy {
      * Transformation in Distributed Groupware Systems
      */
     protected def simpleXForm(c: AddTextOperation, s: AddTextOperation) = {
+        if (c.text.size != 1 || s.text.size != 1) throw new UnsupportedEditOperationException("add size must be 1")
+
         val p1 = c.startPos
         val p2 = s.startPos
         val c1 = c.text
@@ -74,6 +76,7 @@ class BasicXFormStrategy extends XFormStrategy {
      * de un caracter
      */
     protected def xform(c: AddTextOperation, s: DeleteTextOperation): (EditOperation, EditOperation) = {
+        if (c.text.size != 1) throw new UnsupportedEditOperationException("add size must be 1")
         if (s.size != 1) throw new UnsupportedEditOperationException("Delete size must be 1")
 
         val p1 = c.startPos

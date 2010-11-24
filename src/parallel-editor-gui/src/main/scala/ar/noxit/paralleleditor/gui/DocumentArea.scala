@@ -29,12 +29,12 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
 
     reactions += {
         case WrappedEvent(e) => {
-            val op = e match {
-                case InsertionEvent(pos, text) => generateOp(new AddTextOperation(text, pos))
-                case DeletionEvent(pos, count) => {
-                    //generar ops de borrado de a 1
+            e match {
+                //generar ops de a 1
+                case InsertionEvent(pos, text) =>
+                    (0 until text.size) foreach {index => generateOp(new AddTextOperation(text.substring(index, index + 1), pos + index))}
+                case DeletionEvent(pos, count) =>
                     (1 to count).foreach {Int => generateOp(new DeleteTextOperation(pos, 1))}
-                }
             }
         }
     }

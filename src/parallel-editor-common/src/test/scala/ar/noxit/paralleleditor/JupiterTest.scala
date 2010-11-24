@@ -21,13 +21,13 @@ class JupiterTest extends AssertionsForJUnit {
 
         val js = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-        applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
-        assertEquals(ctext.data, "HOLAabcdefg")
+        applyAndGenerate(applyClient, new AddTextOperation("H", 0), js)
+        assertEquals(ctext.data, "Habcdefg")
 
-        js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
-        assertEquals(ctext.data, "HOLAaDOGbcdefg")
-        js.receive(Message(new AddTextOperation("CAT", 10), 1, 0), applyClient)
-        assertEquals(ctext.data, "HOLAaDOGbcdefgCAT")
+        js.receive(Message(new AddTextOperation("D", 1), 0, 0), applyClient)
+        assertEquals(ctext.data, "HaDbcdefg")
+        js.receive(Message(new AddTextOperation("C", 8), 1, 0), applyClient)
+        assertEquals(ctext.data, "HaDbcdefgC")
     }
 
     @Test
@@ -37,14 +37,14 @@ class JupiterTest extends AssertionsForJUnit {
 
         val js = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-        applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
-        assertEquals(ctext.data, "HOLAabcdefg")
+        applyAndGenerate(applyClient, new AddTextOperation("H", 0), js)
+        assertEquals(ctext.data, "Habcdefg")
 
-        js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
-        assertEquals(ctext.data, "HOLAaDOGbcdefg")
+        js.receive(Message(new AddTextOperation("D", 1), 0, 0), applyClient)
+        assertEquals(ctext.data, "HaDbcdefg")
 
-        js.receive(Message(new DeleteTextOperation(7, 1), 1, 0), applyClient)
-        assertEquals(ctext.data, "HOLAaDOGbcdfg")
+        js.receive(Message(new DeleteTextOperation(5, 1), 1, 0), applyClient)
+        assertEquals(ctext.data, "HaDbcdfg")
     }
 
     @Test
@@ -54,14 +54,14 @@ class JupiterTest extends AssertionsForJUnit {
 
         val js = new EditOperationJupiterSynchronizer(new BasicXFormStrategy)
 
-        applyAndGenerate(applyClient, new AddTextOperation("HOLA", 0), js)
-        assertEquals(ctext.data, "HOLAabcdefg")
+        applyAndGenerate(applyClient, new AddTextOperation("H", 0), js)
+        assertEquals(ctext.data, "Habcdefg")
 
-        js.receive(Message(new AddTextOperation("DOG", 1), 0, 0), applyClient)
-        assertEquals(ctext.data, "HOLAaDOGbcdefg")
+        js.receive(Message(new AddTextOperation("D", 1), 0, 0), applyClient)
+        assertEquals(ctext.data, "HaDbcdefg")
 
         js.receive(Message(new DeleteTextOperation(0, 1), 1, 0), applyClient)
-        assertEquals(ctext.data, "HOLADOGbcdefg")
+        assertEquals(ctext.data, "HDbcdefg")
     }
 
     def docFromText(text: String) =
