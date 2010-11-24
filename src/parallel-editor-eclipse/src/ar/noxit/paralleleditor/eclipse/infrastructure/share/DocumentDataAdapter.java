@@ -1,6 +1,7 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
@@ -23,13 +24,17 @@ public class DocumentDataAdapter implements DocumentData {
 	}
 
 	@Override
-	public void data_$eq(String data) {
-		adapted.set(data);
+	public String data() {
+		return adapted.get();
 	}
 
 	@Override
-	public String data() {
-		return adapted.get();
+	public void replace(int offset, int length, String newText) {
+		try {
+			adapted.replace(offset, length, newText);
+		} catch (BadLocationException e) {
+			// TODO log here
+		}
 	}
 
 	@Override
@@ -72,4 +77,5 @@ public class DocumentDataAdapter implements DocumentData {
 			}
 		}
 	}
+
 }

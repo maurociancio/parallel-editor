@@ -7,6 +7,7 @@ trait Caret {
 }
 
 trait DocumentData {
-    var data: String
+    def data: String
+    def replace(offset: Int, length: Int, newText: String)
     val caret: Caret
 }

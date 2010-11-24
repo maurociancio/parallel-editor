@@ -375,7 +375,10 @@ class CaretTest extends AssertionsForJUnit {
             val caret = new BaseCaret(offset, selectionLen)
         }
 
-    abstract class BaseDocumentData(var data: String) extends DocumentData
+    abstract class BaseDocumentData(var data: String) extends DocumentData {
+        def replace(offset: Int, length: Int, newText: String) =
+            data = data.substring(0, offset) + (if (newText == null) "" else newText) + "" + data.substring(offset + length)
+    }
     class BaseCaret(var _offset: Int, var _selectionLength: Int) extends Caret {
         override def selectionLength = _selectionLength
 

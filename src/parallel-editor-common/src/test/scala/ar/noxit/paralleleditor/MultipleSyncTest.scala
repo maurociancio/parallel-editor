@@ -529,8 +529,5 @@ class MultipleSyncTest extends AssertionsForJUnit {
         Assert.assertEquals("ABCDWXYZ", c2Doc.data)
     }
 
-    def docFromText(text: String) = new DocumentData {
-        var data = text
-        val caret = new NullCaret
-    }
+    def docFromText(text: String) = new MockDocument(text)
 }

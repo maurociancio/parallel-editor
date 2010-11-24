@@ -8,8 +8,7 @@ class DeleteTextOperation(val startPos: Int, val size: Int) extends EditOperatio
         val selectionLength = caret.selectionLength
 
         // data
-        val original = documentData.data
-        documentData.data = original.substring(0, startPos) + original.substring(startPos + size)
+        documentData.replace(startPos, size, null)
 
         // move the caret
         val selectedRange = caretOffset to (caretOffset + selectionLength)

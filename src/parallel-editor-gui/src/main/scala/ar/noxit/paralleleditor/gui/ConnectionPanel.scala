@@ -46,7 +46,7 @@ class ConnectionPanel extends FlowPanel {
     }
 
     private def enableControls(state: Boolean) {
-        List(ip, port, username).foreach(_.enabled = state)
+        List(ip, port, username).foreach{_.enabled = state}
         def getButtonText = {
             if (state == true) "Conectar" else "Desconectar"
         }

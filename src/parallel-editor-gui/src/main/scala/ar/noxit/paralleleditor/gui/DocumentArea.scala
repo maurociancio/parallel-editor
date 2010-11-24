@@ -56,17 +56,16 @@ class DocumentArea(private val docTitle: String, private val initialContent: Str
     private def processOperation(o: EditOperation) = {
         doInGuard({
             val docData = new DocumentData {
-                def data = areaEdicion.text
+                override def data = areaEdicion.text
 
-                def data_=(text: String) {
-                    areaEdicion.text = text
+                override def replace(offset: Int, length: Int, newText: String) = {
+                    val result = data.substring(0, offset) + (if (newText == null) "" else newText) + "" + data.substring(offset + length)
+                    areaEdicion.text = result
                 }
 
                 val caret = new Caret {
                     def selectionLength = 0
-
                     def offset = areaEdicion.caret.position
-
                     def change(offset: Int, selectionLength: Int) = {
                         areaEdicion.caret.position = offset
                     }

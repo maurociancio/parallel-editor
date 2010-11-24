@@ -263,12 +263,13 @@ class XFormTest extends AssertionsForJUnit {
         assertEquals(expected, ctext.data)
     }
 
-    def docFromText(text: String) = 
-        (new DocumentData {
-            var data = text
-            val caret = new NullCaret
-        }, new DocumentData {
-            var data = text
-            val caret = new NullCaret
-        })
+    def docFromText(text: String) =
+        (new MockDocument(text), new MockDocument(text))
+}
+
+class MockDocument(var text: String) extends DocumentData {
+    override def data = text
+    override def replace(offset: Int, length: Int, newText: String) =
+       text = data.substring(0, offset) + (if (newText == null) "" else newText) + "" + data.substring(offset + length)
+    val caret = new NullCaret
 }

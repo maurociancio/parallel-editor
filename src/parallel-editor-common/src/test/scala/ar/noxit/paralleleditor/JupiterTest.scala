@@ -64,12 +64,6 @@ class JupiterTest extends AssertionsForJUnit {
         assertEquals(ctext.data, "HOLADOGbcdefg")
     }
 
-    def docFromText(text: String) = 
-        (new DocumentData {
-            var data = text
-            val caret = new NullCaret
-        }, new DocumentData {
-            var data = text
-            val caret = new NullCaret
-        })
+    def docFromText(text: String) =
+        (new MockDocument(text), new MockDocument(text))
 }

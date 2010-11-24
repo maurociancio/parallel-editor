@@ -75,9 +75,11 @@ class BasicDocument(val title: String, var data: String, private val docSessionF
         override def change(offset: Int, selectionLength: Int) = null // do nothing}
     }
 
-    def subscriberCount =
-        subscribers size
 
-    def subscribersNames =
-        subscribers.map {s => s.username}
+    override def replace(offset: Int, length: Int, newText: String) =
+        data = data.substring(0, offset) + (if (newText == null) "" else newText) + "" + data.substring(offset + length)
+
+    def subscriberCount = subscribers size
+
+    def subscribersNames = subscribers.map {s => s.username}
 }

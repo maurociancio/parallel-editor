@@ -7,9 +7,8 @@ class AddTextOperation(val text: String, val startPos: Int, val pword: List[Int]
         val caretOffset = caret.offset
         val selectionLength = caret.selectionLength
 
-        val original = documentData.data
         // insert the text
-        documentData.data = original.substring(0, startPos) + text + original.substring(startPos)
+        documentData.replace(startPos, 0, text)
 
         // selection range
         val selectedRange = (caretOffset + 1) until (caretOffset + selectionLength)

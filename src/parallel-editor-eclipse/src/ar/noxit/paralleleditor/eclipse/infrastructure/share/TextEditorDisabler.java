@@ -28,6 +28,7 @@ public class TextEditorDisabler implements ITextEditorDisabler {
 	private void setEnable(final boolean editable) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
+				textEditor.setRedraw(editable);
 				textEditor.setEditable(editable);
 			}
 		});
