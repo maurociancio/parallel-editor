@@ -1,8 +1,10 @@
 package ar.noxit.paralleleditor.eclipse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -11,12 +13,21 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernel
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.Model;
+import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
 
 /**
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
+
+	private static final String REMOTE_HOST = "remoteHost";
+
+	private static final String REMOTE_USER = "remoteUser";
+
+	private static final String REMOTE_PORT = "remotePort";
+
+	private static final String HOST_COUNT = "hostCount";
 
 	public static final String CONNECTIONVIEW = "ar.noxit.paralleleditor.connectionview";
 
@@ -47,10 +58,10 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
 		chatCallback = new ChatCallbackAdapter();
 		hostsModel = new Model<List<ConnectionInfo>>(new ArrayList<ConnectionInfo>());
 		shareManager = new ShareManager(new LocalKernelListener(), chatCallback);
+		loadHostList();
 	}
 
 	/*
@@ -61,8 +72,8 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
+		saveHostList();
 		shareManager.dispose();
-
 		chatCallback = null;
 		hostsModel = null;
 		plugin = null;
@@ -80,6 +91,40 @@ public class Activator extends AbstractUIPlugin {
 
 	public static ChatCallbackAdapter getChatCallback() {
 		return chatCallback;
+	}
+
+	private void saveHostList() {
+		Integer hostCount = 0;
+		for (ConnectionInfo c : hostsModel.get()) {
+			if (!c.getId().isLocal()) {
+				String portString = new Integer(c.getId().getPort()).toString();
+				String userName = c.getUsername();
+				String hostString = c.getId().getHost();
+				saveHost(hostCount, hostString, portString, userName);
+				hostCount++;
+			}
+		}
+		getPreferenceStore().setValue(HOST_COUNT, hostCount);
+	}
+
+	private void saveHost(Integer hostNumber, String hostString, String portString, String userString) {
+		IPreferenceStore preferenceStore = this.getPreferenceStore();
+		preferenceStore.setValue(REMOTE_HOST + hostNumber, hostString);
+		preferenceStore.setValue(REMOTE_PORT + hostNumber, portString);
+		preferenceStore.setValue(REMOTE_USER + hostNumber, userString);
+	}
+
+	private void loadHostList() {
+		IPreferenceStore preferenceStore = getPreferenceStore();
+		Integer count = preferenceStore.getInt(HOST_COUNT);
+		List<ConnectionInfo> hostList = new ArrayList<ConnectionInfo>();
+		for (int i = 0; i < count; i++) {
+			int portString = preferenceStore.getInt(REMOTE_PORT + i);
+			String userName = preferenceStore.getString(REMOTE_USER + i);
+			String hostString = preferenceStore.getString(REMOTE_HOST + i);
+			hostList.add(new ConnectionInfo(new ConnectionId(hostString, portString), userName));
+		}
+		hostsModel.set(hostList);
 	}
 
 	private class LocalKernelListener implements ILocalKernelListener {
