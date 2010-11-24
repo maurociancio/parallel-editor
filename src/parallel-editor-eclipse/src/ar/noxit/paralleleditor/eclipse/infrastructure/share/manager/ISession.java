@@ -1,5 +1,7 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
+import java.util.Date;
+
 import scala.collection.immutable.List;
 import scala.collection.immutable.Map;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
@@ -22,9 +24,24 @@ public interface ISession {
 	}
 
 	public static interface IChatCallback {
-		void onNewChat(ConnectionInfo from,
+		void onNewChat(Date when,
+				ConnectionInfo from,
 				String username,
 				String message);
+
+		void onNewSubscriber(Date when,
+				String username,
+				String docTitle);
+
+		void onSubscriberLeft(Date when,
+				String username,
+				String docTitle);
+
+		void onNewLogin(Date when,
+				String username);
+
+		void onNewLogout(Date date,
+				String username);
 	}
 
 	public static interface IOnLoginFailureCallback {

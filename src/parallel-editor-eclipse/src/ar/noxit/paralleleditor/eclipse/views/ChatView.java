@@ -1,5 +1,6 @@
 package ar.noxit.paralleleditor.eclipse.views;
 
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -19,7 +20,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
@@ -140,20 +140,7 @@ public class ChatView extends ViewPart {
 			}
 		}
 
-		final IChatCallback adapted = new IChatCallback() {
-
-			@Override
-			public void onNewChat(final ConnectionInfo from, final String username, final String chat) {
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						history.append(username + " said (from " + getStringOf(from) + "): " + chat + "\n");
-					}
-				});
-			}
-		};
-		installChatCallback(adapted);
+		installChatCallback(new HistoryCallback(history));
 	}
 
 	@Override
@@ -165,10 +152,6 @@ public class ChatView extends ViewPart {
 		hosts.removeListener(hostListener);
 		installChatCallback(null);
 		super.dispose();
-	}
-
-	protected String getStringOf(ConnectionInfo current) {
-		return current.getId().getHost() + ":" + current.getId().getPort();
 	}
 
 	private void enableSendButton() {
@@ -194,7 +177,7 @@ public class ChatView extends ViewPart {
 		if (session != null) {
 			final String chat = chatMessage.get();
 			session.chat(chat);
-			history.append("you said (to " + getStringOf(current) + "): " + chat + "\n");
+			history.append(HistoryCallback.formatLocalChat(new Date(), chat, current));
 
 			message.setText("");
 			chatMessage.set("");

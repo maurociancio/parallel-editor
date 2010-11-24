@@ -1,5 +1,6 @@
 package ar.noxit.paralleleditor.eclipse.infrastructure.share.manager;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import org.eclipse.core.runtime.Assert;
@@ -12,9 +13,13 @@ import ar.noxit.paralleleditor.client.DocumentListUpdate;
 import ar.noxit.paralleleditor.client.DocumentSubscription;
 import ar.noxit.paralleleditor.client.Documents;
 import ar.noxit.paralleleditor.client.JSession;
+import ar.noxit.paralleleditor.client.NewSubscriberToDocument;
+import ar.noxit.paralleleditor.client.NewUserLoggedIn;
 import ar.noxit.paralleleditor.client.ProcessOperation;
+import ar.noxit.paralleleditor.client.SubscriberLeftDocument;
 import ar.noxit.paralleleditor.client.SubscriptionCancelled;
 import ar.noxit.paralleleditor.client.UserListUpdate;
+import ar.noxit.paralleleditor.client.UserLoggedOut;
 import ar.noxit.paralleleditor.client.UsernameTaken;
 import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter;
@@ -77,7 +82,39 @@ public class DocumentsAdapter implements Documents {
 			ChatMessage chatMessage = (ChatMessage) command;
 
 			if (chatCallback != null)
-				chatCallback.onNewChat(info, chatMessage.username(), chatMessage.message());
+				chatCallback.onNewChat(new Date(), info, chatMessage.username(), chatMessage.message());
+		}
+
+		// new subscriber
+		if (command instanceof NewSubscriberToDocument) {
+			final NewSubscriberToDocument subs = (NewSubscriberToDocument) command;
+
+			if (chatCallback != null)
+				chatCallback.onNewSubscriber(new Date(), subs.username(), subs.docTitle());
+		}
+
+		// subscriber left
+		if (command instanceof SubscriberLeftDocument) {
+			final SubscriberLeftDocument subs = (SubscriberLeftDocument) command;
+
+			if (chatCallback != null)
+				chatCallback.onSubscriberLeft(new Date(), subs.username(), subs.docTitle());
+		}
+
+		// new login
+		if (command instanceof NewUserLoggedIn) {
+			final String username = ((NewUserLoggedIn) command).username();
+
+			if (chatCallback != null)
+				chatCallback.onNewLogin(new Date(), username);
+		}
+
+		// new log out
+		if (command instanceof UserLoggedOut) {
+			final String username = ((UserLoggedOut) command).username();
+
+			if (chatCallback != null)
+				chatCallback.onNewLogout(new Date(), username);
 		}
 
 		// login error
