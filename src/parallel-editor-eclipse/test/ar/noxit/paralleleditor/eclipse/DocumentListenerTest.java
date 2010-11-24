@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import ar.noxit.paralleleditor.common.operation.AddTextOperation;
 import ar.noxit.paralleleditor.common.operation.DeleteTextOperation;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.BaseEclipseDocumentListener;
+import ar.noxit.paralleleditor.eclipse.editor.listeners.BaseEclipseDocumentListener;
 
 @Test
 public class DocumentListenerTest {

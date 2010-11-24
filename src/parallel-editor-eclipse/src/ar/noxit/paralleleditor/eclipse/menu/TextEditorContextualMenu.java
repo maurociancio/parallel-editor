@@ -8,11 +8,9 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.CompoundContributionItem;
 
 import ar.noxit.paralleleditor.eclipse.Activator;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.ShareDocumentIntent;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
-import ar.noxit.paralleleditor.eclipse.infrastructure.texteditor.TextEditorProvider;
-import ar.noxit.paralleleditor.eclipse.menu.actions.ConnectToServerAction;
-import ar.noxit.paralleleditor.eclipse.menu.actions.ShareDocumentAction;
+import ar.noxit.paralleleditor.eclipse.editor.TextEditorProvider;
+import ar.noxit.paralleleditor.eclipse.share.ShareManager;
+import ar.noxit.paralleleditor.eclipse.share.sync.ShareDocumentIntent;
 
 public class TextEditorContextualMenu extends CompoundContributionItem {
 

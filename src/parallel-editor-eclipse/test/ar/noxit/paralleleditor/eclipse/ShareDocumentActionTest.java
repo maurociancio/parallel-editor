@@ -14,10 +14,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
-import ar.noxit.paralleleditor.eclipse.menu.actions.IShareLocalDocumentIntent;
-import ar.noxit.paralleleditor.eclipse.menu.actions.ITextEditorProvider;
-import ar.noxit.paralleleditor.eclipse.menu.actions.AbstractShareDocumentAction;
+import ar.noxit.paralleleditor.eclipse.menu.AbstractShareDocumentAction;
+import ar.noxit.paralleleditor.eclipse.menu.Document;
+import ar.noxit.paralleleditor.eclipse.menu.IShareLocalDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.menu.ITextEditorProvider;
 
 @Test
 public class ShareDocumentActionTest {

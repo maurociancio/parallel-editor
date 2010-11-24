@@ -1,33 +1,25 @@
 package ar.noxit.paralleleditor.eclipse;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.ChatCallbackAdapter;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernelListener;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
-import ar.noxit.paralleleditor.eclipse.model.IModel;
-import ar.noxit.paralleleditor.eclipse.model.Model;
-import ar.noxit.paralleleditor.eclipse.views.ConnectionId;
-import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
+import ar.noxit.paralleleditor.eclipse.locator.IModel;
+import ar.noxit.paralleleditor.eclipse.locator.Model;
+import ar.noxit.paralleleditor.eclipse.model.ConnectionId;
+import ar.noxit.paralleleditor.eclipse.model.ConnectionInfo;
+import ar.noxit.paralleleditor.eclipse.preferences.PreferenceConstants;
+import ar.noxit.paralleleditor.eclipse.share.ILocalKernelListener;
+import ar.noxit.paralleleditor.eclipse.share.ShareManager;
+import ar.noxit.paralleleditor.eclipse.share.sync.ChatCallbackAdapter;
 
 /**
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
-
-	private static final String REMOTE_HOST = "remoteHost";
-
-	private static final String REMOTE_USER = "remoteUser";
-
-	private static final String REMOTE_PORT = "remotePort";
-
-	private static final String HOST_COUNT = "hostCount";
 
 	public static final String CONNECTIONVIEW = "ar.noxit.paralleleditor.connectionview";
 
@@ -43,6 +35,7 @@ public class Activator extends AbstractUIPlugin {
 	// hosts list
 	public static IModel<List<ConnectionInfo>> hostsModel = null;
 
+	// chat callback
 	private static ChatCallbackAdapter chatCallback;
 
 	public Activator() {
@@ -104,24 +97,24 @@ public class Activator extends AbstractUIPlugin {
 				hostCount++;
 			}
 		}
-		getPreferenceStore().setValue(HOST_COUNT, hostCount);
+		getPreferenceStore().setValue(PreferenceConstants.HOST_COUNT, hostCount);
 	}
 
 	private void saveHost(Integer hostNumber, String hostString, String portString, String userString) {
 		IPreferenceStore preferenceStore = this.getPreferenceStore();
-		preferenceStore.setValue(REMOTE_HOST + hostNumber, hostString);
-		preferenceStore.setValue(REMOTE_PORT + hostNumber, portString);
-		preferenceStore.setValue(REMOTE_USER + hostNumber, userString);
+		preferenceStore.setValue(PreferenceConstants.REMOTE_HOST + hostNumber, hostString);
+		preferenceStore.setValue(PreferenceConstants.REMOTE_PORT + hostNumber, portString);
+		preferenceStore.setValue(PreferenceConstants.REMOTE_USER + hostNumber, userString);
 	}
 
 	private void loadHostList() {
 		IPreferenceStore preferenceStore = getPreferenceStore();
-		Integer count = preferenceStore.getInt(HOST_COUNT);
+		Integer count = preferenceStore.getInt(PreferenceConstants.HOST_COUNT);
 		List<ConnectionInfo> hostList = new ArrayList<ConnectionInfo>();
 		for (int i = 0; i < count; i++) {
-			int portString = preferenceStore.getInt(REMOTE_PORT + i);
-			String userName = preferenceStore.getString(REMOTE_USER + i);
-			String hostString = preferenceStore.getString(REMOTE_HOST + i);
+			int portString = preferenceStore.getInt(PreferenceConstants.REMOTE_PORT + i);
+			String userName = preferenceStore.getString(PreferenceConstants.REMOTE_USER + i);
+			String hostString = preferenceStore.getString(PreferenceConstants.REMOTE_HOST + i);
 			hostList.add(new ConnectionInfo(new ConnectionId(hostString, portString), userName));
 		}
 		hostsModel.set(hostList);

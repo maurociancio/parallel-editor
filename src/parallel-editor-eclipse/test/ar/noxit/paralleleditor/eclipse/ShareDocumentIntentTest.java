@@ -13,12 +13,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import ar.noxit.paralleleditor.common.operation.DocumentData;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.AbstractShareDocumentIntent;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.IDocumentSession;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallback;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.IShareManager;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.ITextEditorDisabler;
-import ar.noxit.paralleleditor.eclipse.menu.actions.Document;
+import ar.noxit.paralleleditor.eclipse.menu.Document;
+import ar.noxit.paralleleditor.eclipse.share.sync.AbstractShareDocumentIntent;
+import ar.noxit.paralleleditor.eclipse.share.sync.IDocumentSession;
+import ar.noxit.paralleleditor.eclipse.share.sync.IRemoteMessageCallback;
+import ar.noxit.paralleleditor.eclipse.share.sync.ITextEditorDisabler;
+import ar.noxit.paralleleditor.eclipse.views.share.IShareManager;
 
 @Test
 public class ShareDocumentIntentTest {

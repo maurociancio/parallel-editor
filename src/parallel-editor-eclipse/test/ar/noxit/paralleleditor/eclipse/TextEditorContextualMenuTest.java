@@ -5,10 +5,10 @@ import org.eclipse.jface.action.IContributionItem;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ILocalKernelListener;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IChatCallback;
-import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ShareManager;
 import ar.noxit.paralleleditor.eclipse.menu.TextEditorContextualMenu;
+import ar.noxit.paralleleditor.eclipse.share.ILocalKernelListener;
+import ar.noxit.paralleleditor.eclipse.share.ISession.IChatCallback;
+import ar.noxit.paralleleditor.eclipse.share.ShareManager;
 
 @Test
 public class TextEditorContextualMenuTest {
