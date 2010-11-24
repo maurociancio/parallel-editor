@@ -70,8 +70,12 @@ public class Session implements ISession {
 	}
 
 	@Override
+	public void installOnLoginFailureCallback(IOnLoginFailureCallback callback) {
+		adapter.adaptOnLoginFailureCallback(callback);
+	}
+
+	@Override
 	public void close() {
 		session.close();
 	}
-
 }

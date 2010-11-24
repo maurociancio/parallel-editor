@@ -27,6 +27,10 @@ public interface ISession {
 				String message);
 	}
 
+	public static interface IOnLoginFailureCallback {
+		void onLoginFailure();
+	}
+
 	void chat(String message);
 
 	void installUserListCallback(IUserListCallback callback);
@@ -42,6 +46,8 @@ public interface ISession {
 	void installSubscriptionResponseCallback(ISubscriptionCallback callback);
 
 	void installChatCallback(IChatCallback chatCallback);
+
+	void installOnLoginFailureCallback(IOnLoginFailureCallback callback);
 
 	void close();
 }

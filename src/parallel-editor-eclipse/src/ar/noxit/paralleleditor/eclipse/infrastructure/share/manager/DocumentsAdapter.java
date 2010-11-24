@@ -15,6 +15,7 @@ import ar.noxit.paralleleditor.client.JSession;
 import ar.noxit.paralleleditor.client.ProcessOperation;
 import ar.noxit.paralleleditor.client.SubscriptionCancelled;
 import ar.noxit.paralleleditor.client.UserListUpdate;
+import ar.noxit.paralleleditor.client.UsernameTaken;
 import ar.noxit.paralleleditor.common.Message;
 import ar.noxit.paralleleditor.common.converter.RemoteDocumentOperationConverter;
 import ar.noxit.paralleleditor.common.operation.EditOperation;
@@ -22,6 +23,7 @@ import ar.noxit.paralleleditor.eclipse.infrastructure.share.IRemoteMessageCallba
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.RemoteMessageCallbackAdapter;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IChatCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IDocumentListCallback;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IOnLoginFailureCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.ISubscriptionCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IUserListCallback;
 import ar.noxit.paralleleditor.eclipse.views.ConnectionInfo;
@@ -32,6 +34,8 @@ public class DocumentsAdapter implements Documents {
 	private IDocumentListCallback userListCallback;
 	private ISubscriptionCallback subscriptionResponseCallback;
 	private IChatCallback chatCallback;
+	private LoginFailureCallback onLoginFailure;
+
 	private JSession session;
 
 	// connection info
@@ -74,6 +78,12 @@ public class DocumentsAdapter implements Documents {
 
 			if (chatCallback != null)
 				chatCallback.onNewChat(info, chatMessage.username(), chatMessage.message());
+		}
+
+		// login error
+		if (command instanceof UsernameTaken) {
+			if (this.onLoginFailure != null)
+				this.onLoginFailure.onLoginFailure();
 		}
 
 		// subscription
@@ -153,6 +163,15 @@ public class DocumentsAdapter implements Documents {
 		this.chatCallback = chatCallback;
 	}
 
+	public synchronized void installOnLoginFailureCallback(LoginFailureCallback callback) {
+		this.onLoginFailure = callback;
+	}
+
+	public synchronized void adaptOnLoginFailureCallback(IOnLoginFailureCallback callback) {
+		if (this.onLoginFailure != null)
+			this.onLoginFailure.setCallback(callback);
+	}
+
 	public synchronized void installCallback(String docTitle, IRemoteMessageCallback remoteMessageCallback) {
 		RemoteMessageCallbackAdapter adapter = callbacks.get(docTitle);
 		if (adapter == null)
@@ -172,4 +191,5 @@ public class DocumentsAdapter implements Documents {
 		documentListCallback = null;
 		callbacks.clear();
 	}
+
 }

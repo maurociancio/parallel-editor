@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession;
+import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.ISession.IOnLoginFailureCallback;
 import ar.noxit.paralleleditor.eclipse.infrastructure.share.manager.SubscriptionAlreadyExistsException;
 import ar.noxit.paralleleditor.eclipse.model.IModel;
 import ar.noxit.paralleleditor.eclipse.model.IModel.IModelListener;
@@ -268,7 +269,19 @@ public class ServerPanel extends Composite {
 				public void connect(ConnectionInfo info) {
 					try {
 						ISession session = connectionFactory.connect(info);
+						session.installOnLoginFailureCallback(new IOnLoginFailureCallback() {
+
+							@Override
+							public void onLoginFailure() {
+								redraw();
+								MessageDialog.openError(Display.getCurrent().getActiveShell(),
+										"Login Error",
+										"The username you provided already exists in the remote server.\n"
+												+ "Please try again with another username.");
+							}
+						});
 						askDocumentsAndUsers(session);
+
 					} catch (Exception ex) {
 						// TODO log here the full stacktrace
 

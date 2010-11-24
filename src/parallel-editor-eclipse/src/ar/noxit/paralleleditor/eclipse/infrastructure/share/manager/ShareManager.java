@@ -136,13 +136,17 @@ public class ShareManager implements IShareManager, IRemoteConnectionFactory {
 	}
 
 	@Override
-	public ISession connect(ConnectionInfo info) {
+	public ISession connect(final ConnectionInfo info) {
 		Assert.isNotNull(info);
 
 		// connection id
 		ConnectionId id = info.getId();
 		// adapter
 		DocumentsAdapter adapter = new DocumentsAdapter(converter, info);
+
+		// callback for username
+		adapter.installOnLoginFailureCallback(new LoginFailureCallback(info, this));
+
 		// the newly created session
 		JSession newSession = SessionFactory.newJSession(id.getHost(), id.getPort(), adapter);
 		// log in to the kernel
