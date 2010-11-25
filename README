@@ -1,6 +1,9 @@
 Parallel Editor
 ===============
+A colaborative tool to develop files over the network.
 
+Installation
+============
 To try out the brand new Parallel Eclipse Plugin for Eclipse Helios (3.6) add the following
 update-site URL to the 'Install new Software' window in Eclipse:
 
@@ -12,7 +15,6 @@ The plugin is currently in version 0.0.beta1.
 
 Basic Usage
 ===========
-
 The plugin adds a contextual menu to your text editor under the name 'Share thru PE'.
 It allows to create a local share or to connect to a remote server. It can share
 any type of text editor including .java files.
