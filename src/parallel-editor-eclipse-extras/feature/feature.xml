@@ -2,7 +2,7 @@
 <feature
       id="ar.noxit.paralleleditor.eclipse"
       label="Parallel Editor"
-      version="1.0.0">
+      version="0.0.1.beta1">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
