@@ -59,7 +59,7 @@ class GUI extends SimpleSwingApplication with Loggable {
 
         reactions += {
             // conectar
-            case ConnectionRequest(host, port) => {
+          case ConnectionRequest(host, port) => {
                 trace("Connecting to %s %s", host, port)
 
                 connected = true
@@ -90,8 +90,7 @@ class GUI extends SimpleSwingApplication with Loggable {
                     case CloseCurrentDocument() =>
                         currentDocument.foreach {
                             selection =>
-                                currentSession ! RemoteUnsubscribeRequest(selection.docTitle)
-                                tabs.pages.remove(selection.index)
+                                closeDocument(selection)
                         }
 
                     // borrar documento actual
@@ -109,8 +108,13 @@ class GUI extends SimpleSwingApplication with Loggable {
                         currentSession ! RemoteUserListRequest()
 
                     // desconectar
-                    case DisconnectionRequest() =>
-                        currentSession ! Logout()
+                    case DisconnectionRequest() => {
+                      var doc = currentDocument
+                      while (currentDocument.isDefined)
+                            currentDocument.foreach(selection => closeDocument(selection))
+                      currentSession ! Logout()
+                      currentSession close
+                    }
 
                     // otros
                     case other: Any => {}
@@ -129,7 +133,15 @@ class GUI extends SimpleSwingApplication with Loggable {
         private def documentText(index: Int) =
             tabs.pages(index).content.asInstanceOf[DocumentArea].text
 
+        private def closeDocument(selection: SelectedDocument): TabbedPane.Page = {
+          currentSession ! RemoteUnsubscribeRequest(selection.docTitle)
+          tabs.pages.remove(selection.index)
+        }
+
+
     }
+
+
 
     override def shutdown() {
         //TODO ver bien como terminar de desloguearse y cerrar sockets
