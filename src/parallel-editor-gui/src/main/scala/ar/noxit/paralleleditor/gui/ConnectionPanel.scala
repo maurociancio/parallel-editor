@@ -4,6 +4,7 @@ import swing.event.ButtonClicked
 import swing._
 
 class ConnectionPanel extends FlowPanel {
+    
     val connectTo = new Label("Connect to:")
     val ip = new TextField("localhost", 20)
     val separation = new Label(":")

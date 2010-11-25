@@ -25,7 +25,7 @@ class GUI extends SimpleSwingApplication with Loggable {
         private val connPanel = new ConnectionPanel
 
         private val tabs = new TabbedPane {
-            preferredSize = new Dimension(300, 200)
+            preferredSize = new Dimension(700, 200)
         }
 
         private val debugConsole = new TextArea with GUILogger {
@@ -109,11 +109,8 @@ class GUI extends SimpleSwingApplication with Loggable {
 
                     // desconectar
                     case DisconnectionRequest() => {
-                      var doc = currentDocument
-                      while (currentDocument.isDefined)
-                            currentDocument.foreach(selection => closeDocument(selection))
-                      currentSession ! Logout()
-                      currentSession close
+                      closeAllDocs
+                      disconnect
                     }
 
                     // otros
@@ -128,6 +125,16 @@ class GUI extends SimpleSwingApplication with Loggable {
                 Some(SelectedDocument(selected, tabs.pages(selected).title))
             else
                 None
+        }
+
+        private def closeAllDocs {
+            while (currentDocument.isDefined)
+            currentDocument.foreach(selection => closeDocument(selection))
+        }
+
+        private def disconnect {
+            currentSession ! Logout()
+            currentSession close
         }
 
         private def documentText(index: Int) =
@@ -146,8 +153,9 @@ class GUI extends SimpleSwingApplication with Loggable {
     override def shutdown() {
         //TODO ver bien como terminar de desloguearse y cerrar sockets
         //este metodo se llama antes de cerrar la ventana
-        if (connected)
-            currentSession ! Logout()
+        if (connected){
+            top.publish(new DisconnectionRequest)
+        }
     }
 }
 
