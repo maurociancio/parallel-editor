@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/ar.noxit.paralleleditor.eclipse_1.0.0.jar" id="ar.noxit.paralleleditor.eclipse" version="1.0.0">
+      <category name="ParallelEditor"/>
+   </feature>
+   <category-def name="ParallelEditor" label="ParallelEditor"/>
+</site>
