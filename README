@@ -7,7 +7,7 @@ Installation
 To try out the brand new Parallel Eclipse Plugin for Eclipse Helios (3.6) add the following
 update-site URL to the 'Install new Software' window in Eclipse:
 
-https://github.com/maurociancio/parallel-editor/raw/update-site/update-site
+http://maurociancio.github.com/parallel-editor/update-site/
 
 and select the Parallel Editor Plugin.
 
