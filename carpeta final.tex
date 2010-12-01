@@ -96,7 +96,172 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
     \caption{\label{soluciones_comparacion} Tabla comparativa de soluciones}
 \end{table}
 
-	\section{Seccion 2}
+	\section{Justificación teórica de los algoritmos}
+	
+	El problema que resuelve este trabajo profesional se presenta genéricamente en escenarios en los cuales 
+	existen dos o mas partes que interactuan sobre un modelo (ya sea un documento o cualquier otro tipo de 
+	objeto que almacene estado) aplicando operaciones sobre el mismo.
+	
+	Cada operación modifica el estado del modelo que es común a todas las partes. La cantidad de tipos distintos
+	de operaciones que se pueden aplicar sobre el modelo depende de la naturaleza del mismo. Por ejemplo, en un
+	modelo que representa un documento de texto las operaciones pueden ser inserción o borrado de texto, en el caso
+	de un modelo que represente un area de dibujo se podrán aplicar operaciones de dibujado de figuras, 
+	borrado, coloreado, etcétera.
+	
+	La existencia de varios participantes compartiendo un modelo para su edición (sucesivas aplicaciones de
+	operaciones) hace que sea posible que más de un partipante puede estar realizando operaciones sobre el modelo.
+	Al cabo de la aplicación de cada una de ellas todos las partes deben ver el mismo estado final, es decir,
+	debe ser consistente. Por esta razón hay que tener en cuenta una manera de que esta condicion se alcance.
+
+	El enfoque tradicional propone utilizar un modelo de sincronización centralizado en el cual para aplicar una
+	operación sobre el modelo es necesario que el participante obtenga antes un control o autorización de un
+	arbitro central. Una vez aplicada la operación, el estado resultante se transmite a todas las demás ubicaciones
+	para que estén al tanto de los cambios generados como consecuencia de la aplicación de la operación remota.
+	Si bien este método logra su cometido al preservar la consistencia del documento en todas las ubicaciones, la
+	interactividad percibida en cada una de ellas es poco satisfactoria. Si al momento de querer aplicar una 
+	operación no se tiene la autorización o control del modelo, se deberá esperar para obtenerlo. 
+	Este tiempo de espera dependerá de la cantidad de participantes que se encuentran operando sobre el modelo
+	en ese instante y del tiempo que cada operación remota tome en aplicarse (ejemplos de uso de este mecanismo
+	son sistemas tradicionales de control versiones con bloqueo de archivos).
+
+	Para evitar este inconveniente y dar la impresión de una aplicación instantánea de las operaciones en cada
+	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT) puede
+	aplicarse. En éste, cada participante tiene una copia del modelo, sobre la cual aplica instantaneamente
+	las operaciones que genera localmente. Luego de esto, notifica a todos los demás participantes que forman
+	parte del proceso colaborativo.
+	Al momento en que se reciben operaciones remotas en una ubicación, estas no son aplicadas, sino que se analiza
+	el tipo de operación que se recibió y la secuencia de operaciones que fueron aplicadas en esa ubicación
+	anteriormente. A partir de esta información es posible transformar la operación original en otra que cumple
+	la propiedad de que al aplicarse al modelo local garantiza que el estado resultante será el mismo que el de
+	los modelos de todas las demas ubicaciones.
+
+	El algoritmo de sincronización que se implemento fue el algoritmo de \textbf{Jupiter} \cite{jupiter}. El proceso de implementación
+	de este algoritmo se divide en varias etapas.
+	
+	Como primer punto es necesario definir que tipo de componentes se va a utilizar para representar el modelo
+	de documento. En esta solución se trabajará exclusivamente con el componente denominado cuadro de texto
+	(\textit{textfield} en ingles). El cuadro de texto es un componente gráfico en el cual se puede insertar texto en 
+	posiciones definidas por el usuario y existe en la mayoría de las bibliotecas de interfaces gráficas 
+	disponibles actualmente. Es posible considerar otros tipos de componentes que no se implementan en esta
+	solución, como por ejemplo: una zona para dibujar entra varios usuarios, un slider, botones, checkboxes, etc.
+	
+	Una vez que se definieron los componentes es necesario definir las operaciones que podrán ser aplicadas sobre
+	los mismos. Estas pueden ser definidas como las posibles modificaciones que se hacen sobre el componente.
+	Por ejemplo, para el caso de cuadro de texto una posible operación es agregar el texto \textsf{"hola"} 
+	en la posición 10.
+	Las operaciones necesarias para modificar el estado de un documento de texto plano en el componente utilizado
+	en este trabajo son	dos: agregar texto en una posición y borrar texto en una posición.
+	Es deseable mantener la cantidad de operaciones distintas y la cantidad de parámetros de las mismas al
+	mínimo por razones que se explicarán mas adelante.
+
+	Por último, una vez que se definieron los componentes a utilizar y las operaciones a realizar sobre los mismos,
+	la implementación del algoritmo de sincronización que fue utilizado en esta solución requiere de una función 
+	de transformación de operaciones que cumple con ciertas características y se denomina
+	\textit{xform } \cite{jupiter}. 
+
+	Para comprender la importancia de la utilización de un algoritmo de sincronización y la transformación
+	de operaciones realizadas por la función \textit{xform }se procederá a plantear el siguiente escenario:
+	
+	Suponemos que dos usuarios están compartiendo un documento colaborativamente. El estado del documento 
+	inicial en ambas ubicaciones es el mismo y corresponde a la palabra \texttt{"HOLA"}.
+	El primer caso que se plantea como ejemplo corresponde a modificaciones al documento de manera tal 
+	que las mismas no se superponen en el tiempo.
+	En la ubicación 1 se inserta el caracter \texttt{'S'} en la posición 4. Esta operación se aplica localmente
+	y es transmitida a la ubicación número 2. En este instante el resultando la copia local del documento es
+	la palabra \texttt{"HOLAS"}.
+	Mientras tanto en la ubicación 2 que posee la copia original del documento (\texttt{"HOLA"}), cuando se recibe
+	la operación generada por la ubicación 1 se aplica localmente resultando ambas copias del documento idénticas.
+	De igual forma en la ubicación 2 se genera otra operación (\textit{borrar caracter H}) que se aplica localmente
+	y luego es transmitida a la ubicación 1. En esta se aplica la operación recibida y ambas ubicaciones terminan 
+	con el mismo estado del documento.
+	
+	Esta interacción en el tiempo puede verse en la figura \ref{secuencia_ops_1}:
+
+	\begin{figure}[!ht]
+		\begin{center}
+			%\includegraphics[width=14cm]{diagramafeliz.png}
+			\caption{\label{secuencia_ops_1} dos ubicaciones aplican operaciones sobre el modelo }
+		\end{center}
+	\end{figure}
+
+	En el caso presentado, no se observan problemas de sincronización debido a que la segunda operación fue 
+	generada cuando la primera ya había sido procesada en la ubicación 2.
+
+	Ahora, se presenta otro ejemplo en el que sí existe un problema de sincronización. Las partes luego de procesar
+	las operaciones tendrán documentos distintos. Esto sucede dado que la ubicación 2 genera una operación local 
+	sin aún haber recibido la operación generada por la otra parte.
+	
+	Nuevamente, el estado inicial del documento en ambas ubicaciones es \texttt{HOLA}. En la ubicación 1
+	se generará la operación \textit{insertar C en posición 0} llevando el documento al estado \texttt{CHOLA}.
+	Antes de que se reciba la operación en la ubicación 2, el usuario en esta ubicación generará la operación
+	de borrado del caracter O. La operación es transmitida como \textit{"borrar caracter en posición 1"} ya que
+	su estado actual es \texttt{HOLA}. Luego de aplicarse localmente la operación el estado del documento en
+	el sitio 2 es \texttt{HLA}.
+	En este momento ambas operaciones se encuentran viajando hacia las otras partes. En la ubicación 1 cuando recibe
+	la operación generada remotamente, se aplica llevando al documento en el estado \texttt{COLA} ya que la
+	operación indicaba borrar un caracter en la posición 1. Luego, en la ubicación 2 es recibida la operación
+	generada en el sitio 1. Al aplicarse localmente lleva el documento a un estado \texttt{CHLA}.
+	Como se observa, en ambos sitios se observa un documento distinto.
+
+	Este caso se observa en el siguiente diagrama de la figura \ref{secuencia_ops_2}.
+	
+	\begin{figure}[!ht]
+		\begin{center}
+			%\includegraphics[width=14cm]{diagramatriste.png}
+			\caption{\label{secuencia_ops_2} dos ubicaciones aplican operaciones sobre el modelo }
+		\end{center}
+	\end{figure}
+
+
+	La divergencia en el estado final del documento se produce por que se aplicaron las operaciones en cada 
+	ubicación sin haber sido transformadas previamente. En el caso de operaciones no conflictivas la función
+	transformación de operaciones será la función  identidad. Sin embargo, para los casos en los cuales las
+	operaciones son conflictivas la operación resultante transformada será distinta a la original.
+	Para este último caso la operación 2 recibida desde la ubicación 2 debió haber sido corregida por la función
+	de transformación y haber resultado en \textit{“borrar caracter en posición 2”} (y no 1 como originalmente
+	era la operación).
+	
+	Presentada esta problemática es necesario definir una función \textit{xform} con las siguientes propiedades:
+	
+	\begin{equation} xform(op1,op2) = {op1’,op2’}
+	\end{equation}
+
+
+	donde \textit{op1} es la operacion generada por el usuario en la ubicación 1 y \textit{op2} es la operación
+	generada por el usuario en la ubicación 2. La aplicación de la función da como resultado otro par de operaciones
+	\textit{op1’} y \textit{op2’} que cumplen con la propiedad de que si la ubicación 1 aplica \textit{op1} seguida
+	de  \textit{op2’}  y si la ubicación 2 aplica \textit{op2} seguida de \textit{op1’}, entonces ambas
+	ubicaciones terminarán con el mismo estado del documento.
+	Esto requiere que \textit{op1} y \textit{op2} hayan sido generadas a partir del mismo estado del documento.
+
+	Para el caso anterior, se mostrará a continuación la función \textit{xform}.
+	Dado el estado inicial del documento \texttt{HOLA}:
+
+	En la ubicación 1 se aplica \textit{op1} y al momento en el que se recibe \textit{op2} se la transforma 
+	para obtener la operación que debe aplicarse. A su vez, en la ubicación 2 se procede de forma similar
+	aplicando primero localmente \textit{op2} y transformando \textit{op1} cuando se recibe.
+
+	En ambas ubicaciones las operaciones transformadas se obtienen de la aplicación de \textit{xform}:
+
+	\begin{equation}
+	xform (Insertar Caracter C en pos = 0, Borrar Caracter en pos = 1) =  {
+	         Insercat Caracter C en pos = 0  , Borrar Caracter en pos = 2}
+	\end{equation}
+
+	De aquí resulta que \textit{op1’} es \textit{Insertar Caracter C en pos 0} y \textit{op2’} es 
+	\textit{Borrar Caracter en pos 2}.
+
+op1’ resultó ser igual a op1 mientras que op2’ fue desplazada con respecto a op2.
+
+En la ubicación 1 se aplica op2’ sobre el CHOLA resultando en: CHLA
+En la ubicación 2 se aplica op1’ sobre HLA resultando en CHLA
+
+Notese que aplicando las operaciones transformadas se logra la convergencia en el estado del documento en las dos ubicaciones.
+
+Definición Xform.
+La definición de esta función puede resultar compleja si se toma en cuenta la cantidad de combinaciones de las operaciones aplicables al modelo. Por esta razón se debe mantener al mínimo la cantidad de operaciones para simplificar el desarrollo de la función.
+
+La función de transformación debe contemplar los casos en las que las operaciones sean conflictivas entre si. Dos operaciones op1 y op2 son conflictivas si el estado final del documento aplicar primero op1 y luego op2 es distinto al que se obtiene primero op2 y luego op1. En el caso en que las operaciones no son conflictivas la transformación de la misma es la identidad.
 
 	\section{Seccion 3}
 
