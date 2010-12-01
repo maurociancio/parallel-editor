@@ -1,9 +1,9 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8x]{inputenc}
 \usepackage[spanish] {babel}
-%\usepackage{ucs}
 \usepackage{makeidx}
 \usepackage[pdftex]{graphicx}
+
 
 \title { \textbf{Trabajo Profesional}}
 \date{2do cuatrimestre de 2010}
@@ -17,7 +17,84 @@
 \tableofcontents
 \newpage
 
-	\section{Seccion 1}
+	\section{Motivación}
+Hoy en día el desarrollo de software en sus diversas tareas ha dejado de ser un trabajo 
+puramente individual sino que requiere interacción de varias personas que en conjunto 
+suman sus capacidades para lograr un producto de calidad superior.
+
+Bajo esta forma de trabajo es necesario disponer de herramientas que ayuden a que los tiempos
+requeridos por la coordinación e interacción de los integrantes de un grupo de trabajo sean bajos
+de forma tal que el grupo sea productivo.
+
+Con este objetivo, las herramientas utilizadas deben estar diseñadas e implementadas apuntando a
+integrarse con las metodologías y herramientas existentes sin representar un obstáculo para el usuario
+y a un bajo costo.
+
+La idea nace de la necesidad de participar de una sesión de desarrollo, en la cual los participantes
+no están físicamente en el mismo lugar. En algunos casos en particular, esta tarea requiere un
+\textit{feedback} instantáneo entre los participantes que con herramientas ya existentes no se puede 
+ofrecer.
+
+Las herramientas existentes no logran que el feedback sea lo suficientemente rápido dado que trabajan
+en un ambiente en el cuál es necesario respetar un protocolo para la modificación del estado de un 
+documento. Por ejemplo: un usuario que está trabajando sobre un determinado archivo debe realizar todos
+los cambios que quiere introducir, guardar la nueva versión del archivo modificado y enviarlo a sus
+colaboradores para que estos esten al tanto de los cambios que introdujo (feedback). Mientras dura
+este proceso los colaboradores no pueden realizar cambios al documento y si lo hacen será necesario
+que realicen un proceso comunmente llamado \textit{merge}, de forma tal que el estado final del documento 
+sea el mismo para cada uno de los participantes. Este proceso es lento y se hace especialmente engorroso
+al aumentar el número de colaboradores.
+
+Este esquema funciona bien en los casos en los cuales es baja la concurrencia sobre los mismos documentos,
+es decir la edición de un mismo documento por parte de mas de un usuario es ocasional o en períodos de
+tiempo disjuntos. Ejemplo: varios desarrolladores trabajando en un mismo proyecto con código fuente
+compartido. Para estos casos existen herramientas cuya efectividad está comprobada, sistemas de control
+de versiones (SVN, GIT, Mercurial) o servidores de archivos compartidos.
+
+La solución desarrollada en este trabajo profesional resuelve los siguientes problemas:
+
+\begin{itemize}
+	\item Distribución geográfica: no es necesario estar en la misma ubicación física para que el proceso
+	de desarrollo sea eficiente.
+	\item Sin necesidad de un proceso de merge: el proceso de merge es realizado por el software en cada
+	sitio de edición garantizando que el estado final del documento es el mismo para todos los 
+	participantes. De esta manera se ahorra tiempo y se reducen los errores frecuentes o retrabajos
+	los cuales son derivados de estos procesos.
+	\item Alta latencia del feedback: los cambios en el estado del documento son reflejados en tiempo 
+	real para todos los participantes.
+\end{itemize}
+
+La solución hace uso de tecnologías y herramientas existentes para proporcionar las funcionalidades 
+que resuelven los problemas antes descriptos. Como ejemplo de esto, la solución se integró dentro de
+Eclipse, el entorno de desarrollo integrado de facto para el lenguaje de programación Java.
+
+	\section{Otras soluciones similares}
+Durante la etapa de concepción del proyecto se analizaron otras soluciones similares al problema
+anteriormente explicado. La descripción de cada una de ellas junto con la comparación de las mismas
+respecto la presente solución fue detallada en el documento Propuesta de Trabajo Profesional. % cita aca %
+
+A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}:
+
+\begin{table}[ht]
+    \begin{tabular}{ | p{2.5cm} | p{5cm} | p{5cm} | }
+    \hline
+    Solución & Características & Comparativa \\ \hline
+
+    Google Docs & Edicion de documentos en tiempo real desde un navegador. &
+    Sólo puede utilizarse a través de un navegador e Internet. Código fuente cerrado. \\ \hline
+
+    Google Wave & Comunicación y colaboración en tiempo real. &
+    Idem Google Docs. El proyecto ha sido abandonado por Google. \\ \hline
+
+    COLA (ECF) & Integración con Eclipse para colaboración en tiempo real de código fuente. &
+	Limita a dos usuarios la cantidad de participantes en una sesión. Depende del proyecto ECF. \\ \hline
+
+    BeWeeVee & Framework para integración de funcionalidades de colaboración en tiempo real para
+    la plataforma .NET & Código fuente cerrado. Está desarrollado sólo para la plataforma .NET. \\ \hline
+
+    \end{tabular}
+    \caption{\label{soluciones_comparacion} Tabla comparativa de soluciones}
+\end{table}
 
 	\section{Seccion 2}
 
