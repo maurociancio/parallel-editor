@@ -360,6 +360,60 @@ de tareas dejando con un margen para poder cerrar el \textit{Sprint} con toda la
 Los tres sprint realizados fueron cerrados con las tareas de mayor prioridad completas. En algunos casos se pasaron 
 tareas hacia siguientes \textit{Sprint}, pero estas eran de baja prioridad.
 
+\section{Elección de las tecnologías utilizadas}
+
+\subsection{Lenguaje de programación Scala}
+En retrospectiva la elección de este lenguaje para el desarrollo de los principales modulos de la solucion fue
+acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia basado
+en actores. Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización y comunicación
+entre hilos como se realiza tradicionalmente en java.
+
+Por otro lado, es un lenguaje multiparadigma (Orientado a Objectos y Funcional). La ventaja de esto es que permite utilizar
+construcciones de lenguajes formales que resultan más concisas para resolver determinadas problematicas.
+
+El lenguaje pone el foco en la inmutabilidad de los objetos haciendolo ideal para trabajar en ambientes concurrentes.
+La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La proporción de código fuente entre Scala y Java es
+la siguiente:
+
+% diagrama de git hub %
+
+Teniendo en cuenta que el plugin para el IDE Eclipse fue lo único que se desarrolló en el lenguaje Java puede
+notarse que comparado con este, el código Scala es altamente denso, es decir que permite lograr gran fucionalidad con pocas
+lineas de código.
+
+Los módulos Cliente, Kernel, GUI, Common y Server fueron totalmente desarrollados en Scala mientras que el Plugin para
+Eclipse fue implementado en Java. La compatibilidad es total entre estos dos lenguajes en los dos sentidos. Este punto
+fue clave para el desarrollo del plugin y para la elección de Scala como lenguaje base. La misma resulto de gran utilidad
+y aceleró el proceso de desarrollo.
+
+\subsection{Eclipse}
+Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está basada en
+plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. Posee una gran cantidad
+de plugins desarrollados y una sólida documentación de la API.
+
+Lo que se logró en el desarrollo del plugin del presente trabajo es que el mismo pueda integrarse con el IDE y agregarle
+las funcionalidades sin interferir con plugins existentes. Por ejemplo, el desarrollo es compatible con todas las funcionalidades
+incorporadas a los editores de texto. Por ejemplo: coloreo de código fuente, refactor, identado, formateo, generación de código
+fuente.
+
+Por otro lado, Eclipse provee un proceso de despliegue e instalación de plugins sencillo. Estos son publicados en Internet en
+cualquier servidor web y la instalación de los mismos se realiza apuntando a la URL del mismo.
+
+\subsection{Maven}
+Es una herramienta que se utiliza para controlar de ciclo de vida del proyecto en términos de compilación, testing, resolución
+de dependencias y despliegue. Provee integración con Scala.
+
+\subsection{Spring}
+Se utilizó Spring para la inyección de dependencias tanto el módulo GUI como en el módulo Server. La integración con Scala
+no presentó inconvenientes.
+
+\subsection{GIT}
+Se utilizó para el control de versiones junto con GitHub. Es una herramienta útil ya que en varias oportunidades se
+trabajó de manera offline.
+
+\subsection{JUnit/EasyMock/TestNG}
+Frameworks utilizados para el testing tanto en Scala como en Java.
+
 \newpage
 \begin{thebibliography}{9}
 	\bibitem{visiontpprof}
