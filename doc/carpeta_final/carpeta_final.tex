@@ -12,7 +12,6 @@
 		\texttt{\{maurociancio,legilioli\}@gmail.com}
 	}
 % faltan padrones en algun lado %
-
 \begin{document}
 \maketitle
 \tableofcontents
@@ -81,16 +80,16 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
     \hline
     Solución & Características & Comparativa \\ \hline
 
-    Google Docs & Edicion de documentos en tiempo real desde un navegador. &
+    Google Docs \cite{googledocs}& Edicion de documentos en tiempo real desde un navegador. &
     Sólo puede utilizarse a través de un navegador e Internet. Código fuente cerrado. \\ \hline
 
-    Google Wave & Comunicación y colaboración en tiempo real. &
+    Google Wave \cite{googlewave} & Comunicación y colaboración en tiempo real. &
     Idem Google Docs. El proyecto ha sido abandonado por Google. \\ \hline
 
-    COLA (ECF) & Integración con Eclipse para colaboración en tiempo real de código fuente. &
+    COLA \cite{cola}(ECF) & Integración con Eclipse para colaboración en tiempo real de código fuente. &
 	Limita a dos usuarios la cantidad de participantes en una sesión. Depende del proyecto ECF. \\ \hline
 
-    BeWeeVee & Framework para integración de funcionalidades de colaboración en tiempo real para
+    BeWeeVee \cite{beweevee} & Framework para integración de funcionalidades de colaboración en tiempo real para
     la plataforma .NET. & Código fuente cerrado. Está desarrollado sólo para la plataforma .NET. \\ \hline
 
     \end{tabular}
@@ -126,7 +125,7 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	son sistemas tradicionales de control versiones con bloqueo de archivos).
 
 	Para evitar este inconveniente y dar la impresión de una aplicación instantánea de las operaciones en cada
-	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT) puede
+	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT) \cite{operationaltransform} puede
 	aplicarse. En éste, cada participante tiene una copia del modelo, sobre la cual aplica instantaneamente
 	las operaciones que genera localmente. Luego de esto, notifica a todos los demás participantes que forman
 	parte del proceso colaborativo.
@@ -282,7 +281,7 @@ La implementación de la función \textit{xform} en la presente solución puede 
 	\section{Búsqueda de la solución}
 
 El paper Jupiter\cite{jupiter} fue la base para la implementación del algoritmo de sincronización. Este paper fue 
-encontrado durante el desarrollo de la visión del producto. Otros papers están basados en este y
+encontrado durante el desarrollo de la visión \cite{visiontpprof} del producto. Otros papers están basados en este y
 corrigen y proponen nuevas soluciones o correcciones.
 
 Se detectaron problemas al utilizar operaciones de longitud mayor a uno (enfoque original que se le
@@ -353,27 +352,25 @@ concenso y entendimiento de la misma.
 
 \subsection{Riesgos no relevados}
 Durante el desarrollo se materializó un riesgo no contemplado originalmente. La estimación de algunas tareas dentro
-de los sprints realizados estuvo muy desviado del valor real de horas hombre invertidas. Principalmente el desvío se
+de los sprints realizados estuvo muy desviada del valor real de horas hombre invertidas. Principalmente el desvío se
 dio en las tareas de implementación del algoritmo de sincronización, se estimó un valor mucho menor al real (ver
 \textit{Sprint Backlog 2}). El desvío fue compensado por la materialización de otro riesgo que fue la sobreestimación
-de tareas dejando con un margen para poder cerrar el \textit{Sprint} con toda la funcionalidad convenida.
+de tareas dejando un margen para poder cerrar el \textit{Sprint} con toda la funcionalidad convenida.
 Los tres sprint realizados fueron cerrados con las tareas de mayor prioridad completas. En algunos casos se pasaron 
 tareas hacia siguientes \textit{Sprint}, pero estas eran de baja prioridad.
 
 \section{Elección de las tecnologías utilizadas}
 
 \subsection{Lenguaje de programación Scala}
-En retrospectiva la elección de este lenguaje para el desarrollo de los principales modulos de la solucion fue
-acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia basado
-en actores. Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización y comunicación
-entre hilos como se realiza tradicionalmente en java.
+En retrospectiva la elección de este lenguaje para el desarrollo de los principales módulos de la solución fue
+acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia
+basado en actores. Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización
+y comunicación entre hilos como se realiza tradicionalmente en java.
 
-Por otro lado, es un lenguaje multiparadigma (Orientado a Objectos y Funcional). La ventaja de esto es que permite utilizar
-construcciones de lenguajes formales que resultan más concisas para resolver determinadas problematicas.
+Por otro lado, es un lenguaje multiparadigma (Orientado a Objectos y Funcional). La ventaja de esto es que permite utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problematicas.
 
 El lenguaje pone el foco en la inmutabilidad de los objetos haciendolo ideal para trabajar en ambientes concurrentes.
-La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La proporción de código fuente entre Scala y Java es
-la siguiente:
+La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La proporción final de código fuente del trabajo entre Scala y Java es la siguiente:
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -383,40 +380,35 @@ la siguiente:
 	\end{figure}
 
 Teniendo en cuenta que el plugin para el IDE Eclipse fue lo único que se desarrolló en el lenguaje Java puede
-notarse que comparado con este, el código Scala es altamente denso, es decir que permite lograr gran fucionalidad con pocas
-lineas de código.
+notarse que comparado con este, el código Scala es altamente denso, es decir que permite lograr gran fucionalidad 
+con pocas lineas de código.
 
-Los módulos Cliente, Kernel, GUI, Common y Server fueron totalmente desarrollados en Scala mientras que el Plugin para
-Eclipse fue implementado en Java. La compatibilidad es total entre estos dos lenguajes en los dos sentidos. Este punto
-fue clave para el desarrollo del plugin y para la elección de Scala como lenguaje base. La misma resulto de gran utilidad
-y aceleró el proceso de desarrollo.
+Los módulos Cliente, Kernel, GUI, Common y Server fueron totalmente desarrollados en Scala mientras que el Plugin
+para Eclipse fue implementado en Java. La compatibilidad es total entre estos dos lenguajes en los dos sentidos.
+Este punto fue clave para el desarrollo del plugin y para la elección de Scala como lenguaje base. La misma 
+resulto de gran utilidad y aceleró el proceso de desarrollo.
 
 \subsection{Eclipse}
-Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está basada en
-plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. Posee una gran cantidad
-de plugins desarrollados y una sólida documentación de la API.
+Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está basada en plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. 
+Posee una gran cantidad  de plugins desarrollados y una sólida documentación de la API.
 
-Lo que se logró en el desarrollo del plugin del presente trabajo es que el mismo pueda integrarse con el IDE y agregarle
-las funcionalidades sin interferir con plugins existentes. Por ejemplo, el desarrollo es compatible con todas las funcionalidades
-incorporadas a los editores de texto. Por ejemplo: coloreo de código fuente, refactor, identado, formateo, generación de código
-fuente.
+Lo que se logró en el desarrollo del plugin del presente trabajo es que el mismo pueda integrarse con el IDE
+y agregarle las funcionalidades sin interferir con plugins existentes. El desarrollo es compatible
+con todas las funcionalidades incorporadas a los editores de texto. Por ejemplo: coloreo de código fuente, refactor, identado, formateo, generación de código fuente.
 
-Por otro lado, Eclipse provee un proceso de despliegue e instalación de plugins sencillo. Estos son publicados en Internet en
-cualquier servidor web y la instalación de los mismos se realiza apuntando a la URL del mismo.
+Por otro lado, Eclipse provee un proceso de despliegue e instalación de plugins sencillo. Estos son publicados 
+en Internet en cualquier servidor web y la instalación de los mismos se realiza apuntando a la URL del mismo.
 
 \subsection{Maven}
-Es una herramienta que se utiliza para controlar de ciclo de vida del proyecto en términos de compilación, testing, resolución
-de dependencias y despliegue. Provee integración con Scala.
+Es una herramienta que se utiliza para controlar el ciclo de vida del proyecto en términos de compilación, testing, resolución de dependencias y despliegue. Provee integración con Scala.
 
 \subsection{Spring}
-Se utilizó Spring para la inyección de dependencias tanto el módulo GUI como en el módulo Server. La integración con Scala
-no presentó inconvenientes.
+Se utilizó Spring para la inyección de dependencias tanto en el módulo GUI como en el módulo Server. La integración con Scala no presentó inconvenientes.
 
 \subsection{GIT}
-Se utilizó para el control de versiones junto con GitHub. Es una herramienta útil ya que en varias oportunidades se
-trabajó de manera offline.
+Se utilizó para el control de versiones junto con GitHub\cite{github} . Es una herramienta útil ya que en varias oportunidades se trabajó de manera offline.
 
-\subsection{JUnit/EasyMock/TestNG}
+\subsection{JUnit\cite{junit} /EasyMock \cite{easymock} / TestNG\cite{testng} }
 Frameworks utilizados para el testing tanto en Scala como en Java.
 
 \section{Arquitectura de la solución}
@@ -426,24 +418,26 @@ Frameworks utilizados para el testing tanto en Scala como en Java.
 Como primer punto se mostrarán los componentes que conforman la solución. Está compuesto por 3 módulos principales:
 
 \begin{itemize}
-	\item Kernel: provee la funcionalidad para inicializar servicios de colaboración de documentos.
-	\item Cliente: define la API mediante la cual un cliente se conecta a un servidor colaborativo y edita documentos
-	en tiempo real. Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades de
-	edición colaborativa. Este módulo es utilizado tanto por el módulo GUI como por el módulo Eclipse.
-	\item Common: incluye tipos comunes que utilizan los primeros dos módulos, como ser los mensajes del protocolo que 
-	utilizan cliente y servidor para comunicarse y la estrategia de sincronización.
+	\item \textbf{Kernel}: provee la funcionalidad para inicializar servicios de colaboración de documentos.
+	\item \textbf{Cliente}: define la API mediante la cual un cliente se conecta a un servidor colaborativo 
+	y edita documentos
+	en tiempo real. Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades
+	de 	edición colaborativa. Este módulo es utilizado tanto por el módulo GUI como por el módulo Eclipse.
+	\item \textbf{Common}: incluye tipos comunes que utilizan los primeros dos módulos, como ser los mensajes
+	del protocolo que utilizan cliente y servidor para comunicarse y la estrategia de sincronización.
 \end{itemize}
 
 
 Además existen los siguientes módulos construídos en base a los anteriores:
 \begin{itemize}
-	\item Server: es una aplicación que crea un servicio para compartir documentos que se quieren editar colaborativamente
-	a través de una red TCP/IP.
-	\item GUI: es una aplicación cliente implementada usando Swing que ofrece la funcionalidad para conectarse a un servicio
-	remoto y editar documentos existentes. Ofrece la posibilidad de compartir y editar documentos en un servidor colaborativo.
-	\item Eclipse Plugin: integra la funcionalidades del módulo cliente y kernel dentro del IDE eclipse. Hace uso tanto del
-	módulo cliente (para conectarse a servidor de colaboración existentes) como del módulo kernel (para la creación de 
-	servidores de colaboración locales).
+	\item \textbf{Server}: es una aplicación que crea un servicio para compartir documentos que se quieren
+	editar colaborativamente a través de una red TCP/IP.
+	\item \textbf{GUI}: es una aplicación cliente implementada usando Swing que ofrece la funcionalidad
+	para conectarse a un servicio remoto y editar documentos existentes. Ofrece la posibilidad de compartir
+	y editar documentos	en un servidor colaborativo.
+	\item \textbf{Eclipse Plugin}: integra la funcionalidades del módulo cliente y kernel dentro del IDE eclipse.
+	Hace uso tanto del módulo cliente (para conectarse a servidor de colaboración existentes) como del módul
+	o kernel (para la creación de servidores de colaboración locales).
 \end{itemize}
 
 Las dependencias entre los módulos puede ser observada en la figura \ref{componentes}.
@@ -688,7 +682,6 @@ Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. So
 documento y no suscripto. Unicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
 Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
 
-
 \section{Metodología de desarrollo}
 
 Scrum fue utilizado como metodología de desarrollo para llevar adelante el proyecto. La implementación de esta metodología
@@ -753,16 +746,29 @@ Sprint 3:
 	Facultad de Ingeniería.
 	Universidad de Buenos Aires. 
 
+	\bibitem{propuestatpprof}
+	Ciancio, Gilioli,
+	\emph{Propuesta de Trabajo Profesional - Paralell Editor}.
+	Facultad de Ingeniería.
+	Universidad de Buenos Aires. 
+
+	\bibitem{inria}
+	Imine, Molli, Oster, Rusinowitch
+	\emph{Achieving Convergence With Operational Transformation in Distributed Groupware Systems}.
+	Institut National de Recherche en Informatique et en Automatique.
+	Rapport de recherche n° 5188. 
+	Mayo 2004.
+
 	\bibitem{jupiter}
 	Nichols, Curtis, Dixon and Lamping,
 	\emph{High-Latency, Low-Bandwidth Windowing in the Jupiter Collaboration System}.
-	Xerox PARC.
+	Xerox Palo Alto Research Center.
 
-	\bibitem{scrum}
-	Ken Schwaber,
-	\emph{Agile Software Development with Scrum}.
-	Prentice Hall, 
-	Octubre 2001.
+	\bibitem{operationaltransform}
+	Wang, Mash and Lassen
+	\emph{Google Wave Operational Transformation}.
+	Version: 1.1.
+	Julio 2010
 	
 	\bibitem{googledocs}
 	\emph{Google Docs}. 
@@ -773,7 +779,7 @@ Sprint 3:
 	\emph{Google Wave}. 
 	\textsl{http://wave.google.com}.
 
-	\bibitem{beeweevee}
+	\bibitem{beweevee}
 	Corvalius,
 	\emph{BeWeeVee}. 
 	\textsl{http://www.beweevee.com}.
@@ -782,6 +788,30 @@ Sprint 3:
 	Mustafa K. Isik,
 	\emph{COLA}. 
 	\textsl{ http://wiki.eclipse.org/RT\_Shared\_Editing }.
+
+	\bibitem{scala}
+	Venkat Subramaniam,
+	\emph{Programming Scala: Tackle Multi-Core Complexity on the Java Virtual Machine}.
+	Pragmatic Bookshelf, ISBN: 193435631X.
+	Julio 2009.
+
+
+	\bibitem{scrum}
+	Ken Schwaber,
+	\emph{Agile Software Development with Scrum}.
+	Prentice Hall, 
+	Octubre 2001.
+
+	\bibitem{easymock}
+	EasyMock, version 2.4
+	\emph{Dynamic Mock Object generator}. \\
+	\textsl{http://sourceforge.net/projects/easymock}.
+
+	\bibitem{testng}
+	TestNG, version: 5.14.
+	\emph{Cédric Beust} 
+	\textsl{http://testng.org}.
+
 		
 \end{thebibliography}
 
