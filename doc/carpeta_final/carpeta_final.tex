@@ -3,7 +3,7 @@
 \usepackage[spanish] {babel}
 \usepackage{makeidx}
 \usepackage[pdftex]{graphicx}
-
+\usepackage[none]{hyphenat}
 
 \title { \textbf{Trabajo Profesional}}
 \date{2do cuatrimestre de 2010}
@@ -557,9 +557,8 @@ utilizar los servicios provistos por la API.
 A través de esta interfaz los mensajes son propagados hacia la aplicación cliente. Es responsabilidad que la aplicación cliente
 responda a estos mensajes.
 
-Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el siguiente archivo:
-* ar/noxit/paralleleditor/client/ClientMessages.scala
-
+Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el archivo 
+\texttt{ar/noxit/paralleleditor/client/ClientMessages.scala}
 Con respecto a la cardinalidad de estos actores, podemos notar lo siguiente:
 Por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
 
@@ -572,9 +571,8 @@ método ! es convertido a \$bang).
 
 \subsection{Protocolo utilizado para enviar mensajes por la red}
 Los mensajes son serializados e hidratados utilizando el mecanismo de serialización de objetos de Java. Los mensajes que se
-envían por la red se encuentran en el siguiente archivo:
-ar/noxit/paralleleditor/common/messages/RemoteMessages.scala
-
+envían por la red se encuentran en el archivo
+\texttt{RemoteMessages.scala}.
 Las clases que necesitan ser serializadas se encuentran marcadas con la anotación @serializable.
 
 Se tuvo en cuenta durante la etapa de diseño que el protocolo sea fácilmente reemplazable por otro. A continuación listamos
@@ -585,8 +583,8 @@ algunas posibles razones por la cual se podría reemplazar el protocolo por otro
 	\item Compresión: compresión de los mensajes para reducir la carga de la red.
 \end{itemize}
 
-En el archivo ar/noxit/paralleleditor/common/network/SocketNetworkConnection.scala se implementa el protocolo actual. Referirse
-al mismo para analizar posibles cambios.
+En el archivo \texttt{ar/noxit/paralleleditor/common/network/SocketNetworkConnection.scala} se implementa
+ el protocolo actual. Referirse al mismo para analizar posibles cambios.
 
 \subsection{Diagrama de clases del kernel}
 En la figura \ref{clases-kernel} se observan las clases principales que trabajan en el Kernel. Por simplicidad no se 
@@ -632,10 +630,9 @@ La figura \ref{circuitos-mensajes} muestra la diferencia entre mensajes y operac
 
 Notar que se reciben mensajes del kernel y sobre los widgets se deben aplicar operaciones. Por ese motivo es necesario 
 utilizar la misma estrategia de sincronización que se utiliza en el kernel. Las clases que implementan la sincronización se 
-encuentran en estos archivos:
-ar/noxit/paralleleditor/common/JupiterSynchronizer.scala
-ar/noxit/paralleleditor/common/BasicXFormStrategy.scala
-
+encuentran en los archivos 
+\texttt{JupiterSynchronizer.scala}
+y \texttt{BasicXFormStrategy.scala}.
 \subsection{Como integrar esta solución a productos de terceros}
 Para completar la documentación sobre la arquitectura de la solución se explicará como integrar este producto en otros ya
 existentes. Se mostrará que no es necesario re-diseñar todo el producto para que pueda trabajar con Parallel-Editor.
@@ -685,7 +682,7 @@ las siguientes consideraciones:
 		A su vez ofrece un mecanismo para mantener la posición del cursor consistente y no sea movida por inserciones o
 		borrado de texto por otros participantes. Si no soporta selección de texto o no existe un cursor, es posible ignorar
 		las llamadas a estos métodos.
-		La interfaz documentdata se encuentra en el siguiente archivo: ar/noxit/paralleleditor/common/operation/DocumentData.scala.
+		La interfaz DocumentData se encuentra en el archivo \texttt{DocumentData.scala}.
 		\item  Se deberá implementar un listener que atrape los eventos del widget de edición de texto y los propague al kernel.
 		La mayoría de las API’s gráficas proveen un mecanismo similar.
 	\end{itemize}
