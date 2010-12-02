@@ -699,8 +699,14 @@ está corriendo el actor, por lo tanto, los actores deben liberar su thread para
 
 \subsubsection{Estado de Session y DocumentSession}
 
-A continuación se muestra el diagrama de estados para el login de un usuario al kernel
-% [[diagrama de estado para la sesion]]
+En la figura \ref{estado-sesion} se muestra el diagrama de estados para el login de un usuario al kernel.
+
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=14cm]{estado-sesion.png}
+			\caption{\label{estado-sesion} Diagrama de estados de la sesión del usuario }
+		\end{center}
+	\end{figure}
 
 Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
 documento y no suscripto. Unicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
@@ -818,7 +824,6 @@ Sprint 3:
 	\emph{Programming Scala: Tackle Multi-Core Complexity on the Java Virtual Machine}.
 	Pragmatic Bookshelf, ISBN: 193435631X.
 	Julio 2009.
-
 
 	\bibitem{scrum}
 	Ken Schwaber,
