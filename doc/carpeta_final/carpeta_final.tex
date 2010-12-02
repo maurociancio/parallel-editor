@@ -546,9 +546,14 @@ pueden verse en los siguientes archivos.
 % archivo 1 COMPLETAR
 
 \subsection{Despliegue de actores en el módulo cliente}
-En el siguiente diagrama se observan los actores que se ejecutan en las aplicaciones que incorporar el módulo cliente.
+En la figura \ref{actores-cliente} se observan los actores que se ejecutan en las aplicaciones que incorporar el módulo cliente.
 
-% [[ diagrama de actores del módulo cliente ]]
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=11cm]{actores-cliente.png}
+			\caption{\label{actores-cliente} Despliegue de actores en el módulo cliente }
+		\end{center}
+	\end{figure}
 
 Como se observa, el esquema es similar al encontrado en el Kernel. Existe un Actor denominado ClientActor que es el
 encargado de coordinar los mensajes que deben enviarse hacia el kernel y de recibir las respuestas del mismo.
@@ -735,6 +740,7 @@ Sprint 3:
 	\item Extensión de la solución para colaboración en tiempo de real sobre otros tipos de documentos: modelado cad,
 	diseño gráfico, etc.
 	\item Implementación de otro mecanismo de comunicación entre las partes.
+	\item undo
 \end{itemize}
 
 \section{Conclusiones}
