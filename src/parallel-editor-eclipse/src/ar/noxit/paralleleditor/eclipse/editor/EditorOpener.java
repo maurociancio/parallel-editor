@@ -45,6 +45,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 abstract public class EditorOpener {
 
+	private static final String INTERNAL_TEXT_EDITOR = "org.eclipse.ui.DefaultTextEditor";
+
 	public static ITextEditor openFileFromWorkspace(String title, String content) {
 		Assert.isNotNull(title);
 		Assert.isNotNull(content);
@@ -99,8 +101,9 @@ abstract public class EditorOpener {
 		try {
 			final IWorkbenchPage page = getWorkbenchWindow().getActivePage();
 
-			IEditorPart editor = IDE.openEditor(page, new StringEditorInput(title, content),
-					IDE.getEditorDescriptor(title).getId(), true);
+			final IEditorDescriptor editorDescriptor = IDE.getEditorDescriptor(title);
+			final String editorId = editorDescriptor.isInternal() ? editorDescriptor.getId() : INTERNAL_TEXT_EDITOR;
+			IEditorPart editor = IDE.openEditor(page, new StringEditorInput(title, content), editorId, true);
 
 			return getAsTextEditor(editor);
 		} catch (PartInitException e) {
