@@ -97,6 +97,9 @@ public abstract class AbstractShareDocumentAction extends Action {
 	}
 
 	protected void onNullFile() {
+		MessageDialog.openError(Display.getDefault().getActiveShell(),
+				"File not saved",
+				"The file must be saved in the file sytem before it can be shared.");
 	}
 
 	protected void onNullTextEditor() {
