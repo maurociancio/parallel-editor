@@ -414,6 +414,110 @@ trabajó de manera offline.
 \subsection{JUnit/EasyMock/TestNG}
 Frameworks utilizados para el testing tanto en Scala como en Java.
 
+\section{Arquitectura de la solución}
+
+\subsection{Módulos}
+
+Como primer punto se mostrarán los componentes que conforman la solución. Está compuesto por 3 módulos principales:
+
+\begin{itemize}
+	\item Kernel: provee la funcionalidad para inicializar servicios de colaboración de documentos.
+	\item Cliente: define la API mediante la cual un cliente se conecta a un servidor colaborativo y edita documentos
+	en tiempo real. Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades de
+	edición colaborativa. Este módulo es utilizado tanto por el módulo GUI como por el módulo Eclipse.
+	\item Common: incluye tipos comunes que utilizan los primeros dos módulos, como ser los mensajes del protocolo que 
+	utilizan cliente y servidor para comunicarse y la estrategia de sincronización.
+\end{itemize}
+
+
+Además existen los siguientes módulos construídos en base a los anteriores:
+\begin{itemize}
+	\item Server: es una aplicación que crea un servicio para compartir documentos que se quieren editar colaborativamente
+	a través de una red TCP/IP.
+	\item GUI: es una aplicación cliente implementada usando Swing que ofrece la funcionalidad para conectarse a un servicio
+	remoto y editar documentos existentes. Ofrece la posibilidad de compartir y editar documentos en un servidor colaborativo.
+	\item Eclipse Plugin: integra la funcionalidades del módulo cliente y kernel dentro del IDE eclipse. Hace uso tanto del
+	módulo cliente (para conectarse a servidor de colaboración existentes) como del módulo kernel (para la creación de 
+	servidores de colaboración locales).
+\end{itemize}
+
+Las dependencias entre los módulos puede ser observada en el siguiente diagrama.
+
+% diagrama de componentes %
+
+\subsection{Despliegue de la solución}
+Existen dos esquemas de despliegue para la solución.
+
+\subsubsection{Cliente-Servidor}
+El primer caso consiste en disponer de un servidor dedicado para la gestión de documentos compartidos. El mismo recibe
+peticiones de N clientes que mediante una suscripción a los documentos pueden comenzar a realizar operaciones sobre los mismos.
+
+El servidor es el encargado de reflejar los cambios introducidos por un cliente en los restantes.
+
+Un diagrama de esta configuración puede observarse a continuación:
+
+% diagrama de despliegue cliente servidor %
+
+Los procesos involucrados en este tipo de despliegue son:
+
+\begin{itemize}
+	\item Proceso servidor: en este proceso se encuentra ejecutandose los siguientes módulos: Kernel, Common y Server. Sólo
+	hay una instancia de este proceso.
+	\item Proceso cliente: en este proceso se encuentra ejecutandose los siguientes modulos: Cliente, Common y la aplicación
+	correspondiente que puede ser GUI o Eclipse. La cantidad de instancias de este proceso dependen de la cantidad de usuarios que
+	haya conectados al servidor de colaboración.
+\end{itemize}
+
+\subsubsection{Peer-To-Peer}
+La segunda configuración para el despliegue de la solución consiste en no disponer de un servidor dedicado, sino que el
+mismo es ejecutado por uno de lo pares. Este enfoque es el que se utiliza en el plugin, ya que el mismo permite crear un servicio
+a partir de un archivo que se quiere compartir.
+
+% [[ diagrama de despliegue peer-2-peer]]
+
+Esta configuración es la más sencilla para un uso ocasional del servicio o cuando la participantes en la sesión de edición no
+es elevada. Las ventajas de esta configuración es que no se necesita un equipo central.
+
+Si los participantes se encuetran en la misma LAN, no se requiere ninguna configuración extra. Si la sesión quiere realizarse
+a través de internet es necesario tener en cuenta que haya conectividad entre las partes (configuración de puertos y firewall).
+
+Al momento de escribir esta documentación no es posible utilizar el servicio detrás de un proxy. En cambio si posible 
+hacerlo utilizarlo usando una VPN.
+
+Los procesos involucrados en esta configuración son:
+\begin{itemize}
+	\item Proceso cliente con servicio de colaboración: Uno de los participantes involucrados será en encargado de crear el
+	servicio de colaboración. En este se ejecutarán los siguientes módulos: Cliente, Kernel, Common y la aplicación que
+	corresponda: GUI o Plugin Eclipse. Un sólo proceso existirá de este tipo.
+	\item Procesos cliente sin servicio de colaboración: los restantes participantes se comunicarán con el cliente que posee
+	el servicio de colaboración. Los módulos que se ejecutarán en este tipo de cliente son: Cliente y Common. La cantidad de
+	estos procesos dependerá de la cantidad de usuarios conectados al servicio de colaboración.
+\end{itemize}
+
+\subsection{Despliegue de actores en proceso kernel}
+
+En el siguiente diagrama se observan los actores desplegados en el kernel.
+
+% [[ diagrama de actores en modulo kernel ]]
+
+Los actores fueron utilizados para cumplir el rol de intermediario ante el acceso a un recurso, serializando los accesos de
+modo de que no se produzcan conflictos de naturaleza concurrente.
+
+Los principales actores del módulo kernel son los siguientes:
+\begin{itemize}
+	\item Kernel Actor: actúa como intermediario del objeto Kernel. La clase kernel gestiona las sesiones de los usuarios
+	conectados y los documentos disponibles.
+	\item Document Actor: actúa como intermediario de un objeto Document aplicando operaciones de los clientes sobre el mismo
+	y replicándolas hacia los clientes restantes. Mantiene el estado del documento de modo que pueda servirlo a nuevas sesiones.
+	\item Client Actor: es la representación de un cliente remoto frente al Kernel. Se encarga de recibir mensajes del
+	cliente remoto, enviarlos al kernel y enviar la respuesta al mismo. Los mensajes que se reciben de la red son capturados por
+	el actor NetworkListener mientras que los mensajes que se deben al cliente remoto son enviados por el GatewayActor.
+\end{itemize}
+
+Existe un protocolo interno representado por los mensajes que se envían entre sí. Los mensajes que conforman este protocolo
+pueden verse en los siguientes archivos.
+% archivo 1 COMPLETAR
+
 \newpage
 \begin{thebibliography}{9}
 	\bibitem{visiontpprof}
