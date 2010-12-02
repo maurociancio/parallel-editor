@@ -518,9 +518,14 @@ Este esquema puede observarse en la figura \ref{peer-to-peer}.
 
 \subsection{Despliegue de actores en proceso kernel}
 
-En el siguiente diagrama se observan los actores desplegados en el kernel.
+En la figura \ref{actores-kernel} se observan los actores desplegados en el kernel.
 
-% [[ diagrama de actores en modulo kernel ]]
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=11cm]{actores-kernel.png}
+			\caption{\label{actores-kernel} Despliegue de actores en el módulo kernel }
+		\end{center}
+	\end{figure}
 
 Los actores fueron utilizados para cumplir el rol de intermediario ante el acceso a un recurso, serializando los accesos de
 modo de que no se produzcan conflictos de naturaleza concurrente.
