@@ -286,7 +286,7 @@ encontrado durante el desarrollo de la visión del producto. Otros papers están
 corrigen y proponen nuevas soluciones o correcciones.
 
 Se detectaron problemas al utilizar operaciones de longitud mayor a uno (enfoque original que se le
-dio a la implementacion). En un primer momento se detectaron problemas al utilizar operaciones de borrado
+dio a la implementación). En un primer momento se detectaron problemas al utilizar operaciones de borrado
 de más de un caracter. Luego surgieron problemas al usar inserciones de más de un caracter. Para solucionar
 este problema se convirtieron las operaciones a operaciones de un caracter.
 
@@ -517,6 +517,76 @@ Los principales actores del módulo kernel son los siguientes:
 Existe un protocolo interno representado por los mensajes que se envían entre sí. Los mensajes que conforman este protocolo
 pueden verse en los siguientes archivos.
 % archivo 1 COMPLETAR
+
+\subsection{Despliegue de actores en el módulo cliente}
+En el siguiente diagrama se observan los actores que se ejecutan en las aplicaciones que incorporar el módulo cliente.
+
+% [[ diagrama de actores del módulo cliente ]]
+
+Como se observa, el esquema es similar al encontrado en el Kernel. Existe un Actor denominado ClientActor que es el
+encargado de coordinar los mensajes que deben enviarse hacia el kernel y de recibir las respuestas del mismo.
+Los actores NetworkListenerActor y GatewayActor son los encargados de leer y escribir mensajes por la red, respectivamente.
+En el módulo cliente se define una interfaz llamada Documents que es la que debe implementar la aplicación cliente para poder
+utilizar los servicios provistos por la API.
+A través de esta interfaz los mensajes son propagados hacia la aplicación cliente. Es responsabilidad que la aplicación cliente
+responda a estos mensajes.
+
+Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el siguiente archivo:
+* ar/noxit/paralleleditor/client/ClientMessages.scala
+
+Con respecto a la cardinalidad de estos actores, podemos notar lo siguiente:
+Por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
+
+Cabe aclarar que estos actores se encuentran detras de un facade, para evitar que la aplicación cliente observe la
+complejidad subyacente. Este facade se denomina Session cuando es utilizado desde Scala y JSession cuando es utilizado desde Java.
+Se hizo esta diferencia para que los nombres de métodos sean legibles desde Java. (Nombres de métodos que son ilegales en Java son
+legales en Scala y al ser compilados a bytecode son convertidos resultando en nombres no convencionales. Ejemplo: el nombre de 
+método ! es convertido a \$bang).
+
+
+\subsection{Protocolo utilizado para enviar mensajes por la red}
+Los mensajes son serializados e hidratados utilizando el mecanismo de serializacion de objetos de Java. Los mensajes que se
+envian por la red se encuentran en el siguiente archivo:
+ar/noxit/paralleleditor/common/messages/RemoteMessages.scala
+
+Las clases que necesitan ser serializadas se encuetran marcadas con la anotación @serializable.
+
+Se tuvo en cuenta durante la etapa de diseño que el protocolo sea facilmente reemplazable por otro. A continuación listamos
+algunas posibles razones por la cual se podría reemplazar el protocolo por otro:
+
+\begin{itemize}
+	\item Seguridad: agregar una capa que implemente cifrado de datos.
+	\item Compresión: compresión de los mensajes para reducir la carga de la red.
+\end{itemize}
+
+En el archivo ar/noxit/paralleleditor/common/network/SocketNetworkConnection.scala se implementa el protocolo actual. Referirse
+al mismo para analizar posibles cambios.
+
+\subsection{Diagrama de clases del kernel}
+A continuación se muestra un diagrama de las clases principales que trabajan en el Kernel.
+
+% [[ diagrama de clases en el kernel]]
+
+Por simplicidad no se incluyen métodos de determinadas clases.
+
+En el mismo se muestra que interfaces son utilizadas por los clientes. Los clientes son los usuarios que se conectan
+remotamente al servicio de colaboración. Por lo tanto, el actor Cliente mostrado en el diagrama es un actor remoto y se
+ocupa el rol de intermediario entre el Kernel y el Cliente real que se encuentra del otro lado de la conexión.
+
+Las interfaces que utiliza son las siguientes:
+\begin{itemize}
+	\item Kernel: utiliza esta interfaz para pedir servicios al kernel de login, servicios de suscripción a documentos,
+	servicios de chat, etc.
+
+	\item Session: esta interfaz representa una sesión con el kernel. Todas las operaciones sobre el kernel requieren que se
+	esté logueado al mismo. Esta interfaz ofrece la posibilidad de instalar una callback por la cual será notificada de mensajes
+	provenientes del kernel. Entre estos mensajes podemos encontrar: mensajes de chat de otro usuario, mensajes de actualización
+	de estado de un documento, etc. Es responsabilidad del cliente de instalar una callback para poder escuchar estos mensajes.
+
+	\item Document Session: representa la sesión de edición de un documento en particular. Mediante esta interfaz es posible
+	comunicarse con el documento para poder enviarle modificaciones.
+\end{itemize}
+
 
 \newpage
 \begin{thebibliography}{9}
