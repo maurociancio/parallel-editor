@@ -11,6 +11,7 @@
 		\textbf{Gilioli, Leandro Ezequiel}	  \\
 		\texttt{\{maurociancio,legilioli\}@gmail.com}
 	}
+% faltan padrones en algun lado %
 
 \begin{document}
 \maketitle
@@ -223,11 +224,10 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	
 	Presentada esta problemática es necesario definir una función \textit{xform} con las siguientes propiedades:
 	
-	\begin{equation} xform(op1,op2) = {op1’,op2’}
+	\begin{equation} xform(op1,op2) = \lbrace op1’,op2’ \rbrace
 	\end{equation}
 
-
-	donde \textit{op1} es la operacion generada por el usuario en la ubicación 1 y \textit{op2} es la operación
+	dónde \textit{op1} es la operacion generada por el usuario en la ubicación 1 y \textit{op2} es la operación
 	generada por el usuario en la ubicación 2. La aplicación de la función da como resultado otro par de operaciones
 	\textit{op1’} y \textit{op2’} que cumplen con la propiedad de que si la ubicación 1 aplica \textit{op1} seguida
 	de  \textit{op2’}  y si la ubicación 2 aplica \textit{op2} seguida de \textit{op1’}, entonces ambas
@@ -235,33 +235,49 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	Esto requiere que \textit{op1} y \textit{op2} hayan sido generadas a partir del mismo estado del documento.
 
 	Para el caso anterior, se mostrará a continuación la función \textit{xform}.
-	Dado el estado inicial del documento \texttt{HOLA}:
+	Dado el estado inicial del documento \texttt{HOLA}.
 
 	En la ubicación 1 se aplica \textit{op1} y al momento en el que se recibe \textit{op2} se la transforma 
 	para obtener la operación que debe aplicarse. A su vez, en la ubicación 2 se procede de forma similar
 	aplicando primero localmente \textit{op2} y transformando \textit{op1} cuando se recibe.
 
 	En ambas ubicaciones las operaciones transformadas se obtienen de la aplicación de \textit{xform}:
+	
+\begin{eqnarray*}
+  xform(Insertar\ Caracter\ C\ en\ Pos\ =\ 0, \\
+  Borrar\ Caracter\ en\ Pos\ =\ 1) & = & \\ 
+  \left\lbrace Insertar\ Caracter\ C\ en\ Pos\ =\ 0, \\
+  Borrar\ Caracter\ en\ Pos\ =\ 2\ \rbrace  
+\end{eqnarray*}
+% poner label a esto %
 
-	\begin{equation}
-	xform (Insertar Caracter C en pos = 0, Borrar Caracter en pos = 1) =  {
-	         Insercat Caracter C en pos = 0  , Borrar Caracter en pos = 2}
-	\end{equation}
+	De aquí resulta que \textit{op1’} es \textit{Insertar Caracter C en Pos = 0} y \textit{op2’} es 
+	\textit{Borrar Caracter en Pos = 2}.
 
-	De aquí resulta que \textit{op1’} es \textit{Insertar Caracter C en pos 0} y \textit{op2’} es 
-	\textit{Borrar Caracter en pos 2}.
+\textit{op1’} resultó ser igual a \textit{op1} mientras que \textit{op2’} fue desplazada con respecto a 
+\textit{op2.}
 
-op1’ resultó ser igual a op1 mientras que op2’ fue desplazada con respecto a op2.
+En la ubicación 1 se aplica \textit{op2’} sobre el \texttt{CHOLA} resultando en: \texttt{CHLA}.
 
-En la ubicación 1 se aplica op2’ sobre el CHOLA resultando en: CHLA
-En la ubicación 2 se aplica op1’ sobre HLA resultando en CHLA
+En la ubicación 2 se aplica \textit{op1’} sobre \texttt{HLA} resultando en \texttt{CHLA}.
 
-Notese que aplicando las operaciones transformadas se logra la convergencia en el estado del documento en las dos ubicaciones.
+Nótese que aplicando las operaciones transformadas se logra la convergencia del estado del documento 
+en las dos ubicaciones.
 
-Definición Xform.
-La definición de esta función puede resultar compleja si se toma en cuenta la cantidad de combinaciones de las operaciones aplicables al modelo. Por esta razón se debe mantener al mínimo la cantidad de operaciones para simplificar el desarrollo de la función.
+\subsection{Definición \textit{xform}}
 
-La función de transformación debe contemplar los casos en las que las operaciones sean conflictivas entre si. Dos operaciones op1 y op2 son conflictivas si el estado final del documento aplicar primero op1 y luego op2 es distinto al que se obtiene primero op2 y luego op1. En el caso en que las operaciones no son conflictivas la transformación de la misma es la identidad.
+La definición de esta función puede resultar compleja si se toma en cuenta la cantidad de 
+combinaciones de las operaciones aplicables al modelo. Por esta razón se debe mantener al mínimo la 
+cantidad de operaciones para simplificar el desarrollo de la función.
+
+La función de transformación debe contemplar los casos en las que las operaciones sean conflictivas entre 
+sí. Dos operaciones \textit{op1} y \textit{op2} son conflictivas si el estado final del documento al aplicar 
+primero \textit{op1} y luego \textit{op2} es distinto al que se obtiene primero \textit{op2} y luego \textit{op1}.
+En el caso en que las operaciones no son conflictivas la transformación de las mismas es la transformación 
+identidad.
+
+La implementación de la función \textit{xform} en la presente solución puede observarse en la clase 
+\texttt{BasicXFormStrategy}. La misma fue basada en los papers de Júpiter e INRIA % cita aquí %.
 
 	\section{Seccion 3}
 
