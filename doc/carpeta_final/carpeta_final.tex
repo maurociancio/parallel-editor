@@ -587,6 +587,49 @@ Las interfaces que utiliza son las siguientes:
 	comunicarse con el documento para poder enviarle modificaciones.
 \end{itemize}
 
+\subsection{Como integrar esta solución a productos de terceros}
+Para completar la documentación sobre la arquitectura de la solución se explicará como integrar este producto en otros ya
+existentes. Se mostrará que no es necesario re-diseñar todo el producto para que pueda trabajar con Parallel-Editor.
+
+Observaciones a tener en cuenta:
+
+\subsubsection{API’s gráficas y Threads}
+
+La mayoría de las API’s disponibles para hacer interfaces gráficas desktop fueron diseñadas en un 
+modo no thread-safe. Es decir, que no se puede garantizar un estado consistente si los objetos que pertencen a la API son
+accedidos desde múltiples hilos simultaneamente. Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
+en general son realizados por único thread denominado GUI Thread (o dispatching thread). Esta decisión de diseño permite que
+un desarrollador no deba preocuparse en la complejidad de manejar algoritmos y estructuras de sincronización
+(locks, deadlocks, etc.) que luego son difíciles de testear.
+
+La solución desarrollada en la presenta usa diversos actores (que generalmente corren en un pool de threads) para poder 
+responder asincronicamente a mensajes que reciben desde el kernel. Algunos de estos mensajes requieren que se produzcan
+cambios en widgets, por ejemplo al recibir un mensaje que agrega texto al sector de edición. Estos cambios deben realizar en
+el GUI Thread y no en el Thread que recibe la operación.
+
+Generalemente, las API’s gráficas poseen mecanismos para postergar la ejecución de código para que se ejecute en el Thread de
+la GUI y evitar los problemas de sincronización. Esto puede observarse en el siguiente diagrama:
+
+En este diagrama se observa el problema descripto
+% [[ diagrama de threads 1]]
+
+En este diagrama se muestra la solución
+% [[ diagrama de threads 2]]
+
+\subsubsection{Editor de texto}
+Si se desea incorporar la solución en un nuevo editor de texto (por ejemplo un IDE) es necesario tener presente 
+las siguientes consiedaraciones:
+
+	\begin{itemize}
+		\item Se deberá implementar la interfaz DocumentData que ofrece un mecanismo para agregar y modificar texto en el editor. 
+		A su vez ofrece un mecanismo para mantener la posición del cursor consistente y no sea movida por inserciones o
+		borrado de texto por otros parcipantes. Si no soporta selección de texto o no existe un cursor, es posible ignorar
+		las llamadas a estos métodos.
+		La interfaz documentdata se encuentra en el siguiente archivo: ar/noxit/paralleleditor/common/operation/DocumentData.scala.
+		\item  Se deberá implementar un listener que atrape los eventos del widget de edición de texto y los propague al kernel.
+		La mayoría de las API’s gráficas proveen un mecanismo similar.
+	\end{itemize}
+
 
 \newpage
 \begin{thebibliography}{9}
