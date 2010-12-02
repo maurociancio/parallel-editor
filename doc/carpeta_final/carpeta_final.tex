@@ -677,11 +677,11 @@ Si se desea incorporar la solución en un nuevo editor de texto (por ejemplo un 
 las siguientes consideraciones:
 
 	\begin{itemize}
-		\item Se deberá implementar la interfaz DocumentData que ofrece un mecanismo para agregar y modificar texto en el editor. 
+		\item Se deberá implementar la interfaz \texttt{DocumentData} que ofrece un mecanismo para agregar y modificar texto en el editor. 
 		A su vez ofrece un mecanismo para mantener la posición del cursor consistente y no sea movida por inserciones o
 		borrado de texto por otros participantes. Si no soporta selección de texto o no existe un cursor, es posible ignorar
 		las llamadas a estos métodos.
-		La interfaz DocumentData se encuentra en el archivo \texttt{DocumentData.scala}.
+		La interfaz \texttt{DocumentData} se encuentra en el archivo \texttt{DocumentData.scala}.
 		\item  Se deberá implementar un listener que atrape los eventos del widget de edición de texto y los propague al kernel.
 		La mayoría de las API’s gráficas proveen un mecanismo similar.
 	\end{itemize}
