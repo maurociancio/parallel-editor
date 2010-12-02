@@ -39,9 +39,9 @@ Las herramientas existentes no logran que el feedback sea lo suficientemente rá
 en un ambiente en el cuál es necesario respetar un protocolo para la modificación del estado de un 
 documento. Por ejemplo: un usuario que está trabajando sobre un determinado archivo debe realizar todos
 los cambios que quiere introducir, guardar la nueva versión del archivo modificado y enviarlo a sus
-colaboradores para que estos esten al tanto de los cambios que introdujo (feedback). Mientras dura
+colaboradores para que estos estén al tanto de los cambios que introdujo (feedback). Mientras dura
 este proceso los colaboradores no pueden realizar cambios al documento y si lo hacen será necesario
-que realicen un proceso comunmente llamado \textit{merge}, de forma tal que el estado final del documento 
+que realicen un proceso comúnmente llamado \textit{merge}, de forma tal que el estado final del documento 
 sea el mismo para cada uno de los participantes. Este proceso es lento y se hace especialmente engorroso
 al aumentar el número de colaboradores.
 
@@ -80,11 +80,11 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
     \hline
     Solución & Características & Comparativa \\ \hline
 
-    Google Docs \cite{googledocs}& Edicion de documentos en tiempo real desde un navegador. &
+    Google Docs \cite{googledocs}& Edición de documentos en tiempo real desde un navegador. &
     Sólo puede utilizarse a través de un navegador e Internet. Código fuente cerrado. \\ \hline
 
     Google Wave \cite{googlewave} & Comunicación y colaboración en tiempo real. &
-    Idem Google Docs. El proyecto ha sido abandonado por Google. \\ \hline
+    Ídem Google Docs. El proyecto ha sido abandonado por Google. \\ \hline
 
     COLA \cite{cola}(ECF) & Integración con Eclipse para colaboración en tiempo real de código fuente. &
 	Limita a dos usuarios la cantidad de participantes en una sesión. Depende del proyecto ECF. \\ \hline
@@ -99,19 +99,19 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	\section{Justificación teórica de los algoritmos}
 	
 	El problema que resuelve este trabajo profesional se presenta genéricamente en escenarios en los cuales 
-	existen dos o mas partes que interactuan sobre un modelo (ya sea un documento o cualquier otro tipo de 
+	existen dos o mas partes que interactúan sobre un modelo (ya sea un documento o cualquier otro tipo de 
 	objeto que almacene estado) aplicando operaciones sobre el mismo.
 	
 	Cada operación modifica el estado del modelo que es común a todas las partes. La cantidad de tipos distintos
 	de operaciones que se pueden aplicar sobre el modelo depende de la naturaleza del mismo. Por ejemplo, en un
 	modelo que representa un documento de texto las operaciones pueden ser inserción o borrado de texto, en el caso
-	de un modelo que represente un area de dibujo se podrán aplicar operaciones de dibujado de figuras, 
+	de un modelo que represente un área de dibujo se podrán aplicar operaciones de dibujado de figuras, 
 	borrado, coloreado, etcétera.
 	
 	La existencia de varios participantes compartiendo un modelo para su edición (sucesivas aplicaciones de
-	operaciones) hace que sea posible que más de un partipante puede estar realizando operaciones sobre el modelo.
+	operaciones) hace que sea posible que más de un participante puede estar realizando operaciones sobre el modelo.
 	Al cabo de la aplicación de cada una de ellas todos las partes deben ver el mismo estado final, es decir,
-	debe ser consistente. Por esta razón hay que tener en cuenta una manera de que esta condicion se alcance.
+	debe ser consistente. Por esta razón hay que tener en cuenta una manera de que esta condición se alcance.
 
 	El enfoque tradicional propone utilizar un modelo de sincronización centralizado en el cual para aplicar una
 	operación sobre el modelo es necesario que el participante obtenga antes un control o autorización de un
@@ -126,16 +126,16 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 
 	Para evitar este inconveniente y dar la impresión de una aplicación instantánea de las operaciones en cada
 	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT) \cite{operationaltransform} puede
-	aplicarse. En éste, cada participante tiene una copia del modelo, sobre la cual aplica instantaneamente
+	aplicarse. En éste, cada participante tiene una copia del modelo, sobre la cual aplica instantáneamente
 	las operaciones que genera localmente. Luego de esto, notifica a todos los demás participantes que forman
 	parte del proceso colaborativo.
 	Al momento en que se reciben operaciones remotas en una ubicación, estas no son aplicadas, sino que se analiza
 	el tipo de operación que se recibió y la secuencia de operaciones que fueron aplicadas en esa ubicación
 	anteriormente. A partir de esta información es posible transformar la operación original en otra que cumple
 	la propiedad de que al aplicarse al modelo local garantiza que el estado resultante será el mismo que el de
-	los modelos de todas las demas ubicaciones.
+	los modelos de todas las demás ubicaciones.
 
-	El algoritmo de sincronización que se implemento fue el algoritmo de \textbf{Jupiter} \cite{jupiter}. 
+	El algoritmo de sincronización que se implemento fue el algoritmo de \textbf{Júpiter} \cite{jupiter}. 
 	El proceso de implementación de este algoritmo se divide en varias etapas.
 	
 	Como primer punto es necesario definir que tipo de componentes se va a utilizar para representar el modelo
@@ -226,7 +226,7 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	\begin{equation} xform(op1,op2) = \lbrace op1’,op2’ \rbrace
 	\end{equation}
 
-	dónde \textit{op1} es la operacion generada por el usuario en la ubicación 1 y \textit{op2} es la operación
+	dónde \textit{op1} es la operación generada por el usuario en la ubicación 1 y \textit{op2} es la operación
 	generada por el usuario en la ubicación 2. La aplicación de la función da como resultado otro par de operaciones
 	\textit{op1’} y \textit{op2’} que cumplen con la propiedad de que si la ubicación 1 aplica \textit{op1} seguida
 	de  \textit{op2’}  y si la ubicación 2 aplica \textit{op2} seguida de \textit{op1’}, entonces ambas
@@ -280,7 +280,7 @@ La implementación de la función \textit{xform} en la presente solución puede 
 
 	\section{Búsqueda de la solución}
 
-El paper Jupiter\cite{jupiter} fue la base para la implementación del algoritmo de sincronización. Este paper fue 
+El paper Júpiter\cite{jupiter} fue la base para la implementación del algoritmo de sincronización. Este paper fue 
 encontrado durante el desarrollo de la visión \cite{visiontpprof} del producto. Otros papers están basados en este y
 corrigen y proponen nuevas soluciones o correcciones.
 
@@ -292,9 +292,9 @@ este problema se convirtieron las operaciones a operaciones de un caracter.
 Este cambio no posee efectos colaterales importantes. Lo que se debe tener en cuenta es convertir las
 operaciones generadas por la aplicación cliente (o API gráfica) a operaciones de un caracter.
 
-Durante el desarrollo de las pruebas se encontró un caso denominado Puzzle\cite{inria} que producia una falla en la
+Durante el desarrollo de las pruebas se encontró un caso denominado Puzzle\cite{inria} que producía una falla en la
 sincronización. Se denomina Puzzle a una combinación de estados y operaciones producidas en determinadas
-ubicaciones que provoca que el algoritmo no garantize la convergencia del estado del documento para todos 
+ubicaciones que provoca que el algoritmo no garantice la convergencia del estado del documento para todos 
 los usuarios. El paper de INRIA\cite{inria} propone una solución a este problema que demuestra formalmente las 
 propiedades del algoritmo de sincronización utilizado.
 
@@ -304,7 +304,7 @@ Se implementaron los cambios propuestos por este paper junto con los tests para 
 \subsection{Problemas enfrentados durante el desarrollo}
 
 \begin{itemize}
-	\item El lenguaje de programacion \textbf{Scala} es una tecnología relativamente nueva (nacida en 2003) que
+	\item El lenguaje de programación \textbf{Scala} es una tecnología relativamente nueva (nacida en 2003) que
 	si bien es estable cuenta con herramientas poco maduras para su desarrollo. Principalmente, los IDEs disponibles
 	para su desarrollo no son tan completos funcionalmente como lo son al desarrollar en el lenguaje Java.
 
@@ -318,7 +318,7 @@ Se implementaron los cambios propuestos por este paper junto con los tests para 
 	en una etapa de desarrollo avanzada, evitando demoras en el calendario. Esta biblioteca, provee facilidades
 	para la configuración del scheduling de los actores.
 
-    \item Se encontró una herramienta denominda SBT (\textit{Simple Build Tool}) que agiliza la compilación
+    \item Se encontró una herramienta denominada SBT (\textit{Simple Build Tool}) que agiliza la compilación
     de proyectos desarrollados en scala, pero la transición de Maven a SBT no resultaba trivial por lo que
     se descartó. El beneficio de usar esta herramienta es que permite incrementar la velocidad de compilación
     con respecto a usar el IDE o Maven.
@@ -348,13 +348,13 @@ inicio del proyecto. No fue necesario cambiar el alcance del proyecto.
 \subsection{ID 4: Demoras en la definición de la arquitectura produce retrabajo}
 Se trabajó intensamente en una definición temprana de la arquitectura que resultó estable para el proyecto. Las
 decisiones arquitecturales fueron tomadas en conjunto con todo el equipo de desarrollo y esto produjo un buen
-concenso y entendimiento de la misma.
+consenso y entendimiento de la misma.
 
 \subsection{Riesgos no relevados}
 Durante el desarrollo se materializó un riesgo no contemplado originalmente. La estimación de algunas tareas dentro
 de los sprints realizados estuvo muy desviada del valor real de horas hombre invertidas. Principalmente el desvío se
 dio en las tareas de implementación del algoritmo de sincronización, se estimó un valor mucho menor al real (ver
-\textit{Sprint Backlog 2}). El desvío fue compensado por la materialización de otro riesgo que fue la sobreestimación
+\textit{Sprint Backlog 2}). El desvío fue compensado por la materialización de otro riesgo que fue la sobre estimación
 de tareas dejando un margen para poder cerrar el \textit{Sprint} con toda la funcionalidad convenida.
 Los tres sprint realizados fueron cerrados con las tareas de mayor prioridad completas. En algunos casos se pasaron 
 tareas hacia siguientes \textit{Sprint}, pero estas eran de baja prioridad.
@@ -367,9 +367,9 @@ acertada. El principal beneficio que se obtuvo fue una gran simplificación al u
 basado en actores. Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización
 y comunicación entre hilos como se realiza tradicionalmente en java.
 
-Por otro lado, es un lenguaje multiparadigma (Orientado a Objectos y Funcional). La ventaja de esto es que permite utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problematicas.
+Por otro lado, es un lenguaje multiparadigma (Orientado a Objetos y Funcional). La ventaja de esto es que permite utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problemáticas.
 
-El lenguaje pone el foco en la inmutabilidad de los objetos haciendolo ideal para trabajar en ambientes concurrentes.
+El lenguaje pone el foco en la inmutabilidad de los objetos haciéndolo ideal para trabajar en ambientes concurrentes.
 La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La proporción final de código fuente del trabajo entre Scala y Java es la siguiente:
 
 	\begin{figure}[!ht]
@@ -380,7 +380,7 @@ La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La propor
 	\end{figure}
 
 Teniendo en cuenta que el plugin para el IDE Eclipse fue lo único que se desarrolló en el lenguaje Java puede
-notarse que comparado con este, el código Scala es altamente denso, es decir que permite lograr gran fucionalidad 
+notarse que comparado con este, el código Scala es altamente denso, es decir que permite lograr gran funcionalidad 
 con pocas lineas de código.
 
 Los módulos Cliente, Kernel, GUI, Common y Server fueron totalmente desarrollados en Scala mientras que el Plugin
@@ -428,7 +428,7 @@ Como primer punto se mostrarán los componentes que conforman la solución. Est�
 \end{itemize}
 
 
-Además existen los siguientes módulos construídos en base a los anteriores:
+Además existen los siguientes módulos construidos en base a los anteriores:
 \begin{itemize}
 	\item \textbf{Server}: es una aplicación que crea un servicio para compartir documentos que se quieren
 	editar colaborativamente a través de una red TCP/IP.
@@ -436,7 +436,7 @@ Además existen los siguientes módulos construídos en base a los anteriores:
 	para conectarse a un servicio remoto y editar documentos existentes. Ofrece la posibilidad de compartir
 	y editar documentos	en un servidor colaborativo.
 	\item \textbf{Eclipse Plugin}: integra la funcionalidades del módulo cliente y kernel dentro del IDE eclipse.
-	Hace uso tanto del módulo cliente (para conectarse a servidor de colaboración existentes) como del módul
+	Hace uso tanto del módulo cliente (para conectarse a servidor de colaboración existentes) como del módulo
 	o kernel (para la creación de servidores de colaboración locales).
 \end{itemize}
 
@@ -470,9 +470,9 @@ Un diagrama de esta configuración puede observarse en la figura \ref{cliente-se
 Los procesos involucrados en este tipo de despliegue son:
 
 \begin{itemize}
-	\item Proceso servidor: en este proceso se encuentra ejecutandose los siguientes módulos: Kernel, Common y Server. Sólo
+	\item Proceso servidor: en este proceso se encuentra ejecutándose los siguientes módulos: Kernel, Common y Server. Sólo
 	hay una instancia de este proceso.
-	\item Proceso cliente: en este proceso se encuentra ejecutandose los siguientes modulos: Cliente, Common y la aplicación
+	\item Proceso cliente: en este proceso se encuentra ejecutándose los siguientes módulos: Cliente, Common y la aplicación
 	correspondiente que puede ser GUI o Eclipse. La cantidad de instancias de este proceso dependen de la cantidad de usuarios que
 	haya conectados al servidor de colaboración.
 \end{itemize}
@@ -492,7 +492,7 @@ a partir de un archivo que se quiere compartir.
 Esta configuración es la más sencilla para un uso ocasional del servicio o cuando la participantes en la sesión de edición no
 es elevada. Las ventajas de esta configuración es que no se necesita un equipo central.
 
-Si los participantes se encuetran en la misma LAN, no se requiere ninguna configuración extra. Si la sesión quiere realizarse
+Si los participantes se encuentran en la misma LAN, no se requiere ninguna configuración extra. Si la sesión quiere realizarse
 a través de internet es necesario tener en cuenta que haya conectividad entre las partes (configuración de puertos y firewall).
 
 Al momento de escribir esta documentación no es posible utilizar el servicio detrás de un proxy. En cambio si posible 
@@ -563,7 +563,7 @@ Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el 
 Con respecto a la cardinalidad de estos actores, podemos notar lo siguiente:
 Por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
 
-Cabe aclarar que estos actores se encuentran detras de un facade, para evitar que la aplicación cliente observe la
+Cabe aclarar que estos actores se encuentran detrás de un facade, para evitar que la aplicación cliente observe la
 complejidad subyacente. Este facade se denomina Session cuando es utilizado desde Scala y JSession cuando es utilizado desde Java.
 Se hizo esta diferencia para que los nombres de métodos sean legibles desde Java. (Nombres de métodos que son ilegales en Java son
 legales en Scala y al ser compilados a bytecode son convertidos resultando en nombres no convencionales. Ejemplo: el nombre de 
@@ -571,13 +571,13 @@ método ! es convertido a \$bang).
 
 
 \subsection{Protocolo utilizado para enviar mensajes por la red}
-Los mensajes son serializados e hidratados utilizando el mecanismo de serializacion de objetos de Java. Los mensajes que se
-envian por la red se encuentran en el siguiente archivo:
+Los mensajes son serializados e hidratados utilizando el mecanismo de serialización de objetos de Java. Los mensajes que se
+envían por la red se encuentran en el siguiente archivo:
 ar/noxit/paralleleditor/common/messages/RemoteMessages.scala
 
-Las clases que necesitan ser serializadas se encuetran marcadas con la anotación @serializable.
+Las clases que necesitan ser serializadas se encuentran marcadas con la anotación @serializable.
 
-Se tuvo en cuenta durante la etapa de diseño que el protocolo sea facilmente reemplazable por otro. A continuación listamos
+Se tuvo en cuenta durante la etapa de diseño que el protocolo sea fácilmente reemplazable por otro. A continuación listamos
 algunas posibles razones por la cual se podría reemplazar el protocolo por otro:
 
 \begin{itemize}
@@ -645,21 +645,21 @@ Observaciones a tener en cuenta:
 \subsubsection{API’s gráficas y Threads}
 
 La mayoría de las API’s disponibles para hacer interfaces gráficas desktop fueron diseñadas en un 
-modo no thread-safe. Es decir, que no se puede garantizar un estado consistente si los objetos que pertencen a la API son
-accedidos desde múltiples hilos simultaneamente. Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
+modo no thread-safe. Es decir, que no se puede garantizar un estado consistente si los objetos que pertenecen a la API son
+accedidos desde múltiples hilos simultáneamente. Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
 en general son realizados por único thread denominado GUI Thread (o dispatching thread). Esta decisión de diseño permite que
 un desarrollador no deba preocuparse en la complejidad de manejar algoritmos y estructuras de sincronización
 (locks, deadlocks, etc.) que luego son difíciles de testear.
 
 La solución desarrollada en la presenta usa diversos actores (que generalmente corren en un pool de threads) para poder 
-responder asincronicamente a mensajes que reciben desde el kernel. Algunos de estos mensajes requieren que se produzcan
+responder asincrónicamente a mensajes que reciben desde el kernel. Algunos de estos mensajes requieren que se produzcan
 cambios en widgets, por ejemplo al recibir un mensaje que agrega texto al sector de edición. Estos cambios deben realizar en
 el GUI Thread y no en el Thread que recibe la operación.
 
-Generalemente, las API’s gráficas poseen mecanismos para postergar la ejecución de código para que se ejecute en el Thread de
+Generalmente, las API’s gráficas poseen mecanismos para postergar la ejecución de código para que se ejecute en el Thread de
 la GUI y evitar los problemas de sincronización. Esto puede observarse en el siguiente diagrama:
 
-En la figura \ref{threads-gui} se observa el problema descripto y en la figura \ref{threads-gui-solucion} la solución.
+En la figura \ref{threads-gui} se observa el problema descripto y en la figura \ref{threads-gui-solución} la solución.
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -671,19 +671,19 @@ En la figura \ref{threads-gui} se observa el problema descripto y en la figura \
 
 	\begin{figure}[!ht]
 		\begin{center}
-			\includegraphics[width=14cm]{threads-gui-solucion.png}
-			\caption{\label{threads-gui-solucion} Posible solución de múltiples threads junto con el thread de la GUI }
+			\includegraphics[width=14cm]{threads-gui-solución.png}
+			\caption{\label{threads-gui-solución} Posible solución de múltiples threads junto con el thread de la GUI }
 		\end{center}
 	\end{figure}
 
 \subsubsection{Editor de texto}
 Si se desea incorporar la solución en un nuevo editor de texto (por ejemplo un IDE) es necesario tener presente 
-las siguientes consiedaraciones:
+las siguientes consideraciones:
 
 	\begin{itemize}
 		\item Se deberá implementar la interfaz DocumentData que ofrece un mecanismo para agregar y modificar texto en el editor. 
 		A su vez ofrece un mecanismo para mantener la posición del cursor consistente y no sea movida por inserciones o
-		borrado de texto por otros parcipantes. Si no soporta selección de texto o no existe un cursor, es posible ignorar
+		borrado de texto por otros participantes. Si no soporta selección de texto o no existe un cursor, es posible ignorar
 		las llamadas a estos métodos.
 		La interfaz documentdata se encuentra en el siguiente archivo: ar/noxit/paralleleditor/common/operation/DocumentData.scala.
 		\item  Se deberá implementar un listener que atrape los eventos del widget de edición de texto y los propague al kernel.
@@ -709,7 +709,7 @@ En la figura \ref{estado-sesion} se muestra el diagrama de estados para el login
 	\end{figure}
 
 Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
-documento y no suscripto. Unicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
+documento y no suscripto. Únicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
 Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
 
 \section{Metodología de desarrollo}
@@ -717,7 +717,7 @@ Si se trata de modificar el estado del documento cuando no se está suscripto al
 Scrum fue utilizado como metodología de desarrollo para llevar adelante el proyecto. La implementación de esta metodología
 resulto efectiva. Se alcanzaron los objetivos establecidos en la planificación en un tiempo menor del que se planificó en
 el calendario propuesto. Esto resultó de esa manera ya que durante el desarrollo del 3° sprint, el esfuerzo dedicado al proyecto
-por los recursos disponibles fue mayor al que originalmente se habia planificado, permitiendo completar tareas pertenecientes
+por los recursos disponibles fue mayor al que originalmente se había planificado, permitiendo completar tareas pertenecientes
 al 4° sprint durante el 3°.
 
 El proyecto se concluyó con 3 sprints en los cuales se cumplieron los siguientes objetivos:
@@ -731,9 +731,9 @@ El proyecto se concluyó con 3 sprints en los cuales se cumplieron los siguiente
 	objetivo de ser extendida en sprints posteriores. Los módulos afectados en este sprint son Núcleo, GUI y Cliente.
 	& 13/09/2010 & 01/10/2010 \\ \hline
 
-	2 & Extender el prototipo obtenido del sprint anterior agregandole funcionalidad de la resolución de conflictos
+	2 & Extender el prototipo obtenido del sprint anterior agregándole funcionalidad de la resolución de conflictos
 	generados a partir de la edición concurrente para lograr la convergencia en las partes que participan de la edición.
-	Agregar funcionalidades extras a la UI para la edición de múltiples documentos simultaneamente.
+	Agregar funcionalidades extras a la UI para la edición de múltiples documentos simultáneamente.
 	& 05/10/2010 & 29/10/2010 \\ \hline
 
 	3 & Obtener un prototipo del plugin para el IDE Eclipse adquiriendo los conocimientos necesarios para la integración de los
@@ -752,13 +752,13 @@ Sprint 2:
 
 Sprint 3:
 
-\section{Futuras lineas de investigacion}
+\section{Futuras lineas de investigación}
 
 \begin{itemize}
 	\item Cifrado de los datos.
 	\item Esquema de autenticación.
 	\item Esquema de autorización.
-	\item Optimizacion de uso de red.
+	\item Optimización de uso de red.
 	\item Integración con otros IDEs.
 	\item Extensión de la solución para colaboración en tiempo de real sobre otros tipos de documentos: modelado cad,
 	diseño gráfico, etc.
