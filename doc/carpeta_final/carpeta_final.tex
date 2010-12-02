@@ -488,7 +488,12 @@ La segunda configuración para el despliegue de la solución consiste en no disp
 mismo es ejecutado por uno de lo pares. Este enfoque es el que se utiliza en el plugin, ya que el mismo permite crear un servicio
 a partir de un archivo que se quiere compartir.
 
-% [[ diagrama de despliegue peer-2-peer]]
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=11cm]{peer-to-peer.png}
+			\caption{\label{peer-to-peer} Despliegue usando esquema peer-to-peer }
+		\end{center}
+	\end{figure}
 
 Esta configuración es la más sencilla para un uso ocasional del servicio o cuando la participantes en la sesión de edición no
 es elevada. Las ventajas de esta configuración es que no se necesita un equipo central.
@@ -508,6 +513,8 @@ Los procesos involucrados en esta configuración son:
 	el servicio de colaboración. Los módulos que se ejecutarán en este tipo de cliente son: Cliente y Common. La cantidad de
 	estos procesos dependerá de la cantidad de usuarios conectados al servicio de colaboración.
 \end{itemize}
+
+Este esquema puede observarse en la figura \ref{peer-to-peer}.
 
 \subsection{Despliegue de actores en proceso kernel}
 
