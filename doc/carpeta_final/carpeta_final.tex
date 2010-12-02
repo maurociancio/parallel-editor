@@ -619,7 +619,16 @@ Las interfaces que utiliza son las siguientes:
 
 
 \subsection{Circuito de mensajes y operaciones}
-% [[diagrama de circuito]]
+
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=14cm]{circuitos-mensajes.png}
+			\caption{\label{circuitos-mensajes} Circuito de mensajes y operaciones }
+		\end{center}
+	\end{figure}
+
+
+La figura \ref{circuitos-mensajes} muestra la diferencia entre mensajes y operaciones.
 
 Notar que se reciben mensajes del kernel y sobre los widgets se deben aplicar operaciones. Por ese motivo es necesario 
 utilizar la misma estrategia de sincronización que se utiliza en el kernel. Las clases que implementan la sincronización se 
