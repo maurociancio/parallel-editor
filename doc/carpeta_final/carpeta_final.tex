@@ -589,11 +589,15 @@ En el archivo ar/noxit/paralleleditor/common/network/SocketNetworkConnection.sca
 al mismo para analizar posibles cambios.
 
 \subsection{Diagrama de clases del kernel}
-A continuación se muestra un diagrama de las clases principales que trabajan en el Kernel.
+En la figura \ref{clases-kernel} se observan las clases principales que trabajan en el Kernel. Por simplicidad no se 
+incluyen métodos de determinadas clases.
 
-% [[ diagrama de clases en el kernel]]
-
-Por simplicidad no se incluyen métodos de determinadas clases.
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=14cm]{kernel-clases.png}
+			\caption{\label{clases-kernel} Clases principales en el módulo kernel }
+		\end{center}
+	\end{figure}
 
 En el mismo se muestra que interfaces son utilizadas por los clientes. Los clientes son los usuarios que se conectan
 remotamente al servicio de colaboración. Por lo tanto, el actor Cliente mostrado en el diagrama es un actor remoto y se
