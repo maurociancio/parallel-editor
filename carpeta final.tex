@@ -136,8 +136,8 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	la propiedad de que al aplicarse al modelo local garantiza que el estado resultante será el mismo que el de
 	los modelos de todas las demas ubicaciones.
 
-	El algoritmo de sincronización que se implemento fue el algoritmo de \textbf{Jupiter} \cite{jupiter}. El proceso de implementación
-	de este algoritmo se divide en varias etapas.
+	El algoritmo de sincronización que se implemento fue el algoritmo de \textbf{Jupiter} \cite{jupiter}. 
+	El proceso de implementación de este algoritmo se divide en varias etapas.
 	
 	Como primer punto es necesario definir que tipo de componentes se va a utilizar para representar el modelo
 	de documento. En esta solución se trabajará exclusivamente con el componente denominado cuadro de texto
@@ -277,9 +277,55 @@ En el caso en que las operaciones no son conflictivas la transformación de las 
 identidad.
 
 La implementación de la función \textit{xform} en la presente solución puede observarse en la clase 
-\texttt{BasicXFormStrategy}. La misma fue basada en los papers de Júpiter e INRIA % cita aquí %.
+\texttt{BasicXFormStrategy}. La misma fue basada en los papers de Júpiter e INRIA. % cita aquí %
 
-	\section{Seccion 3}
+	\section{La búsqueda de la solución}
+
+El paper Jupiter fue la base para la implementación del algoritmo de sincronización. Este paper fue 
+encontrado durante el desarrollo de la visión del producto. Otros papers están basados en este y
+corrigen y proponen nuevas soluciones o correcciones.
+
+Se detectaron problemas al utilizar operaciones de longitud mayor a uno (enfoque original que se le
+dio a la implementacion). En un primer momento se detectaron problemas al utilizar operaciones de borrado
+de más de un caracter. Luego surgieron problemas al usar inserciones de más de un caracter. Para solucionar
+este problema se convirtieron las operaciones a operaciones de un caracter.
+
+Este cambio no posee efectos colaterales importantes. Lo que se debe tener en cuenta es convertir las
+operaciones generadas por la aplicación cliente (o API gráfica) a operaciones de un caracter.
+
+Durante el desarrollo de las pruebas se encontró un caso denominado Puzzle que producia una falla en la
+sincronización. Se denomina Puzzle a una combinación de estados y operaciones producidas en determinadas
+ubicaciones que provoca que el algoritmo no garantize la convergencia del estado del documento para todos 
+los usuarios. El paper de INRIA propone una solución a este problema que demuestra formalmente las 
+propiedades del algoritmo de sincronización.
+%cita en INRIA %
+
+Se implementaron los cambios propuestos por este paper junto con los tests para probar el correcto funcionamiento.
+
+
+\subsection{Problemas enfrentados durante el desarrollo}
+
+\begin{itemize}
+	\item El lenguaje de programacion Scala es una tecnología relativamente nueva (nacida en 2003) que si bien es
+	estable cuenta con herramientas poco maduras para su desarrollo. Principalmente, el IDE no es tan completo
+	funcionalmente como lo es al desarrollar en el lenguaje Java.
+
+	\item El desarrollo se comenzó utilizando el IDE Eclipse pero la funcionalidad proveida era muy limitada 
+	por lo que se cambió al Intellij IDEA. Este resultó ser uno de los IDEs con mayor soporte para el desarrollo
+	en Scala.
+
+	\item \textit{Scheduling} de actores: para procesos que tienen que ver con I/O se utilizaron \textit{threads}
+	para no bloquear los actores restantes. Se encontró una biblioteca llamada \textit{Akka Actors} que provee una mejor 
+	funcionalidad de actores, pero se decidió no cambiar a la misma ya que el proyecto estaba arrancado y 
+	evitar demoras en el calendario. Provee una mejor facilidad para la configuración del scheduling de los
+	actores.
+
+    \item Se encontró una herramienta denominda SBT (\textit{Simple Build Tool}) que agiliza la compilación de proyectos 
+    desarrollados en scala, pero la transición de Maven a SBT no resultaba trivial por lo que se descartó. El 
+    beneficio de usar esta herramienta es que permite incrementar la velocidad de compilación con respecto a 
+    usar el IDE o Maven.
+\end{itemize}
+
 
 \newpage
 \begin{thebibliography}{9}
