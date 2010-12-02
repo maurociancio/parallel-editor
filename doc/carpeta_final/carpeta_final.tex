@@ -587,6 +587,16 @@ Las interfaces que utiliza son las siguientes:
 	comunicarse con el documento para poder enviarle modificaciones.
 \end{itemize}
 
+
+\subsection{Circuito de mensajes y operaciones}
+% [[diagrama de circuito]]
+
+Notar que se reciben mensajes del kernel y sobre los widgets se deben aplicar operaciones. Por ese motivo es necesario 
+utilizar la misma estrategia de sincronización que se utiliza en el kernel. Las clases que implementan la sincronización se 
+encuentran en estos archivos:
+ar/noxit/paralleleditor/common/JupiterSynchronizer.scala
+ar/noxit/paralleleditor/common/BasicXFormStrategy.scala
+
 \subsection{Como integrar esta solución a productos de terceros}
 Para completar la documentación sobre la arquitectura de la solución se explicará como integrar este producto en otros ya
 existentes. Se mostrará que no es necesario re-diseñar todo el producto para que pueda trabajar con Parallel-Editor.
@@ -629,6 +639,22 @@ las siguientes consiedaraciones:
 		\item  Se deberá implementar un listener que atrape los eventos del widget de edición de texto y los propague al kernel.
 		La mayoría de las API’s gráficas proveen un mecanismo similar.
 	\end{itemize}
+
+
+\subsubsection{Implementación de la interfaz Documents}
+La implementación de esta interfaz se debe encargar de recibir el mensaje proveniente del kernel y si necesita realizar
+cálculo intensivo, debe realizarse en otro thread. La causa de esto que el código se encontrará corriendo en el thread que
+está corriendo el actor, por lo tanto, los actores deben liberar su thread para que otros actores puedan tomar su tiempo de CPU
+(propiedades fairness y liveness).
+
+\subsubsection{Estado de Session y DocumentSession}
+
+A continuación se muestra el diagrama de estados para el login de un usuario al kernel
+% [[diagrama de estado para la sesion]]
+
+Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
+documento y no suscripto. Unicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
+Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
 
 
 \newpage
