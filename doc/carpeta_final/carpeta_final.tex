@@ -536,8 +536,7 @@ Los principales actores del módulo kernel son los siguientes:
 \end{itemize}
 
 Existe un protocolo interno representado por los mensajes que se envían entre sí. Los mensajes que conforman este protocolo
-pueden verse en los siguientes archivos.
-% archivo 1 COMPLETAR
+pueden verse en el siguiente archivo: \texttt{DocumentMessages.scala}.
 
 \subsection{Despliegue de actores en el módulo cliente}
 En la figura \ref{actores-cliente} se observan los actores que se ejecutan en las aplicaciones que incorporar el módulo cliente.
@@ -558,7 +557,7 @@ A través de esta interfaz los mensajes son propagados hacia la aplicación clie
 responda a estos mensajes.
 
 Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el archivo 
-\texttt{ar/noxit/paralleleditor/client/ClientMessages.scala}
+\texttt{ClientMessages.scala}
 Con respecto a la cardinalidad de estos actores, podemos notar lo siguiente:
 Por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
 
@@ -573,7 +572,7 @@ método ! es convertido a \$bang).
 Los mensajes son serializados e hidratados utilizando el mecanismo de serialización de objetos de Java. Los mensajes que se
 envían por la red se encuentran en el archivo
 \texttt{RemoteMessages.scala}.
-Las clases que necesitan ser serializadas se encuentran marcadas con la anotación @serializable.
+Las clases que necesitan ser serializadas se encuentran marcadas con la anotación \texttt{@serializable}.
 
 Se tuvo en cuenta durante la etapa de diseño que el protocolo sea fácilmente reemplazable por otro. A continuación listamos
 algunas posibles razones por la cual se podría reemplazar el protocolo por otro:
@@ -583,7 +582,7 @@ algunas posibles razones por la cual se podría reemplazar el protocolo por otro
 	\item Compresión: compresión de los mensajes para reducir la carga de la red.
 \end{itemize}
 
-En el archivo \texttt{ar/noxit/paralleleditor/common/network/SocketNetworkConnection.scala} se implementa
+En el archivo \texttt{SocketNetworkConnection.scala} se implementa
  el protocolo actual. Referirse al mismo para analizar posibles cambios.
 
 \subsection{Diagrama de clases del kernel}
