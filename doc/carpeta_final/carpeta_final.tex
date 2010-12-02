@@ -751,19 +751,74 @@ Sprint 3:
 
 \section{Futuras lineas de investigación}
 
+En esta sección analizaremos las futuras líneas de investigación y posibles usos de la presente solución:
+
 \begin{itemize}
-	\item Cifrado de los datos.
-	\item Esquema de autenticación.
-	\item Esquema de autorización.
-	\item Optimización de uso de red.
-	\item Integración con otros IDEs.
-	\item Extensión de la solución para colaboración en tiempo de real sobre otros tipos de documentos: modelado cad,
-	diseño gráfico, etc.
-	\item Implementación de otro mecanismo de comunicación entre las partes.
-	\item undo
+	\item Esquema de autorización: incorporar a la solución mecanismos para restringir o permitir el acceso de determinados
+		usuarios a los sistema de colaboración. En muchas organizaciones existe la necesidad de auditar el trabajo de los empleados 
+		por lo cual podría ser util un registro de usuarios, que actividades realizaron, etc.
+
+	\item Esquema de autenticación: incorporar a la solución control de acceso de usuarios permitiendo que sólo algunos
+		de ellos accedan a determinados documentos.
+
+	\item Optimización de uso de red: reducir la carga de red mejoraría el tiempo de respuesta de los demás participantes
+		generando una sensación de mayor interactividad.
+
+	\item Integración con otros IDEs: el plugin desarrollado en este trabajo fue implementado para el IDE Eclipse. Éste es
+		actualmente uno de los más utilizado por desarrolladores en todo el mundo. La arquitectura de los módulos base fue pensada 
+		para ser independiente de la aplicación que los integre. De esta forma es posible desarrollar plugins para otros entornos
+		integrados de desarrollo que permiten la inclusión de los mismos como por ej.: Intellij IDEA.
+
+	\item Extensión de la solución para colaboración en tiempo de real sobre otros tipos de documentos:
+		La solución implementada en este trabajo se limita a la colaboración en tiempo real sobre un modelo que representa un
+		documento de texto. Sin embargo la teoría de la transformada operacional (OT) es aplicable a cualquier modelo de objeto en
+		general. De esta manera sería posible llevar la base de la implementación de este trabajo a otros tipos de modelos. Ejemplos
+		de modelos para los que se han implementado aplicaciones colabortivas son areas de dibujo, documentos CAD y controles de
+		interfaz grafica entre otros.
+
+	\item Cifrado de los datos: hoy en día el valor de la información es cada vez mas importante dentro de las organizaciones. 
+		Por este motivo debe tenerse en cuenta que si se va a utilizar una red pública o que pueda estar expuesta al monitoreo
+		de tercero es sumamente importante no exponer datos sensibles en la misma sin las debidas precauciones que esto requiere.
+		Bajo esta premisa sería deseable que la información transmitida por la aplicación sea enviada por la red utilizando algún
+		esquema de cifrado. Esta modificación se podría implementar añadiendo una capa que encapsule el cifrado y descifrado de
+		los datos, haciendola intercambiable y transparente a la aplicación.
+
+	\item Mecanismo para deshacer cambios (undo): cuando un participante de una sesión de desarrollo se equivoca al teclear, es común
+		que utilize el atajo CTRL-Z para deshacer su último cambio. Debe notarse que la intención del usuario es deshacer su
+		último cambio y no otra posible acción realizada por otro usuario sobre el documento. Actualmente, la solución implementada
+		no respeta esta intención del usuario sino que deshace el último cambio aplicado al documento independientemente de
+		quién lo haya hecho. Esta mejora agrega valor al usuario y es una de las más prioritarias para próximas versiones.
+
 \end{itemize}
 
 \section{Conclusiones}
+
+Es importante simplificar el modelo que se utiliza para la programación de aplicaciones distribuídas
+en tiempo real. Se requiere de construcciones que separen los conceptos de sincronización, hilos, bloqueos, etc.
+de la lógica del negocio. La abstracción de estos conceptos resulta clave para el desarrollo de sistemas
+más comprensibles y mantenibles. Esto permite a su vez simplificar el proceso de testing o de aseguramiento
+de calidad generando productos más confiables y de mayor valor para el cliente.
+
+Aquí es dónde el módelo de concurrencia basado en Actores presenta un gran futuro. La implementación provista en la
+Scala Library, que es usada en la presente solución, es completamente funcional.
+
+Los lenguajes que hacen uso de la máquina virtual de Java (JVM) están apuntando a simplificar algunas tareas que en el lenguaje
+de programación Java pueden resultar engorrosas. Entre otras características intentan aplicar el principio DRY (Don't Repeat
+Yourself, en castellano No repitas) y llevan el lenguaje a un alto nivel integrando conceptos de paradigmas de 
+programación que antes eran meramente de uso académico incorporándolos con éxito en el ambiente corporativo o mainstream.
+Como ejemplo se observa que la utilizacion de Scala en el desarrollo de este trabajo fue exitosa produciendo un codigo conciso
+y de alto nivel.
+
+La utilización de modelos para la implementación de sistemas colaborativos de tiempo real está en plena evolución.
+Existen gran cantidad de publicaciones en las cuales se presentan nuevas alternativas, agregados y mejoras a los
+primeros enfoques desarrollados. Esto presenta un panorama alentador en vista de los resultados que puede tener la aplicación práctica
+de estas tecnologías en el futuro cercano.
+
+Cada vez pueden verse más aplicaciones que experimentan con la incorporación de características de colaboración en tiempo real de
+forma nativa.
+
+Estos avances y tendencias están logrando su objetivo de permitir la interacción de un grupo de trabajo de manera coordinada y
+sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 
 \newpage
 \begin{thebibliography}{9}
@@ -848,7 +903,8 @@ Sprint 3:
 	\emph{Repositorio de código fuente del proyecto.} 
 	\textsl{https://github.com/maurociancio/parallel-editor}.
 
-		
+% citar papers de actores 
+
 \end{thebibliography}
 
 \end{document}
