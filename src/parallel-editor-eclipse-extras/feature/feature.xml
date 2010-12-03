@@ -2,7 +2,7 @@
 <feature
       id="ar.noxit.paralleleditor.eclipse"
       label="Parallel Editor"
-      version="0.0.1.beta2">
+      version="0.0.1.beta3">
 
    <description url="https://github.com/maurociancio/parallel-editor">
       A real-time collaborative tool to develop files over the network.
@@ -717,7 +717,7 @@ Public License instead of this License.  But first, please read
          id="ar.noxit.paralleleditor.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.1.beta2"
+         version="0.0.1.beta3"
          unpack="false"/>
 
 </feature>
