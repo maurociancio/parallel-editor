@@ -106,7 +106,7 @@ Eclipse, el entorno de desarrollo integrado de facto para el lenguaje de program
 	\section{Otras soluciones similares}
 Durante la etapa de concepción del proyecto se analizaron otras soluciones similares al problema
 anteriormente explicado. La descripción de cada una de ellas junto con la comparación de las mismas
-respecto la presente solución fue detallada en el documento Propuesta de Trabajo Profesional\cite{propuestatpprof}.
+respecto de la presente solución fue detallada en el documento Propuesta de Trabajo Profesional\cite{propuestatpprof}.
 
 A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}:
 
@@ -134,7 +134,7 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	\section{Justificación teórica de los algoritmos}
 	
 	El problema que resuelve este trabajo profesional se presenta genéricamente en escenarios en los cuales 
-	existen dos o mas partes que interactúan sobre un modelo (ya sea un documento o cualquier otro tipo de 
+	existen dos o más partes que interactúan sobre un modelo (ya sea un documento o cualquier otro tipo de 
 	objeto que almacene estado) aplicando operaciones sobre el mismo.
 	
 	Cada operación modifica el estado del modelo que es común a todas las partes. La cantidad de tipos distintos
@@ -202,7 +202,7 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	El primer caso que se plantea como ejemplo corresponde a modificaciones al documento de manera tal 
 	que las mismas no se superponen en el tiempo.
 	En la ubicación 1 se inserta el caracter \texttt{'S'} en la posición 4. Esta operación se aplica localmente
-	y es transmitida a la ubicación número 2. En este instante el resultando la copia local del documento es
+	y es transmitida a la ubicación número 2. En este instante la copia local del documento es
 	la palabra \texttt{"HOLAS"}.
 	Mientras tanto en la ubicación 2 que posee la copia original del documento (\texttt{"HOLA"}), cuando se recibe
 	la operación generada por la ubicación 1 se aplica localmente resultando ambas copias del documento idénticas.
@@ -753,11 +753,9 @@ está corriendo el actor, por lo tanto, los actores deben liberar su thread para
 
 \section{Metodología de desarrollo}
 
-Scrum fue utilizado como metodología de desarrollo para llevar adelante el proyecto. La implementación de esta metodología
-resulto efectiva. Se alcanzaron los objetivos establecidos en la planificación en un tiempo menor del que se planificó en
-el calendario propuesto. Esto resultó de esa manera ya que durante el desarrollo del tercer sprint, el esfuerzo dedicado al proyecto
-por los recursos disponibles fue mayor al que originalmente se había planificado, permitiendo completar tareas pertenecientes
-al cuarto sprint durante el tercero.
+Scrum fue utilizado como metodología de desarrollo para llevar adelante el proyecto. La implementación de esta metodología resulto efectiva. Se alcanzaron los objetivos establecidos en la planificación en un tiempo menor 
+del que se estimó en el calendario propuesto. Esto resultó así ya que durante el desarrollo del tercer sprint,
+el esfuerzo dedicado al proyecto por los recursos disponibles fue mayor al que originalmente se había planificado, permitiendo completar las tareas pertenecientes al cuarto sprint durante el tercero.
 
 El proyecto se concluyó con tres sprints en los cuales se cumplieron los objetivos detallados en el cuadro \ref{objetivos_por_sprint}.
 
@@ -795,7 +793,7 @@ cada una de ellas.
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=14cm]{sprint1.png}
-			\caption{\label{sprint1-tareas} Tareas planificadas para el sprint uno }
+			\caption{\label{sprint1-tareas} Tareas planificadas para el sprint n° 1 }
 		\end{center}
 	\end{figure}
 
@@ -828,7 +826,7 @@ en las taras mas prioritarias primero.
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=14cm]{sprint2.png}
-			\caption{\label{sprint2-tareas} Tareas planificadas para el sprint dos }
+			\caption{\label{sprint2-tareas} Tareas planificadas para el sprint n° 2 }
 		\end{center}
 	\end{figure}
 
@@ -838,14 +836,14 @@ y el estado de las tareas al finalizar el sprint, respectivamente.
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=9cm]{sprint2-esfuerzo-diario.png}
-			\caption{\label{sprint2-esfuerzo} Esfuerzo diario para el sprint dos }
+			\caption{\label{sprint2-esfuerzo} Esfuerzo diario para el sprint n° 2 }
 		\end{center}
 	\end{figure}
 
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=9cm]{sprint2-tareas.png}
-			\caption{\label{sprint2-tareas-fin} Estado de las tareas al finalizar el sprint dos }
+			\caption{\label{sprint2-tareas-fin} Estado de las tareas al finalizar el sprint n° 2 }
 		\end{center}
 	\end{figure}
 
@@ -861,7 +859,7 @@ sin la necesidad de un cuarto sprint.
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=14cm]{sprint3.png}
-			\caption{\label{sprint3-tareas} Tareas planificadas para el sprint dos }
+			\caption{\label{sprint3-tareas} Tareas planificadas para el sprint n° 2 }
 		\end{center}
 	\end{figure}
 
@@ -871,14 +869,14 @@ de las tareas el finalizar el sprint, respectivamente.
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=9cm]{sprint3-esfuerzo-diario.png}
-			\caption{\label{sprint3-esfuerzo} Esfuerzo diario para el sprint tres }
+			\caption{\label{sprint3-esfuerzo} Esfuerzo diario para el sprint n° 3 }
 		\end{center}
 	\end{figure}
 
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=9cm]{sprint3-tareas.png}
-			\caption{\label{sprint3-tareas-fin} Estado de las tareas al finalizar el sprint tres }
+			\caption{\label{sprint3-tareas-fin} Estado de las tareas al finalizar el sprint n° 3 }
 		\end{center}
 	\end{figure}
 
@@ -911,7 +909,7 @@ En esta sección analizaremos las futuras líneas de investigación y posibles u
 
 	\item Cifrado de los datos: hoy en día el valor de la información es cada vez mas importante dentro de las organizaciones. 
 		Por este motivo debe tenerse en cuenta que si se va a utilizar una red pública o que pueda estar expuesta al monitoreo
-		de tercero es sumamente importante no exponer datos sensibles en la misma sin las debidas precauciones que esto requiere.
+		de terceros es sumamente importante no exponer datos sensibles en la misma sin las debidas precauciones que esto requiere.
 		Bajo esta premisa sería deseable que la información transmitida por la aplicación sea enviada por la red utilizando algún
 		esquema de cifrado. Esta modificación se podría implementar añadiendo una capa que encapsule el cifrado y descifrado de
 		los datos, haciéndola intercambiable y transparente a la aplicación.
@@ -938,7 +936,7 @@ Scala Library, que es usada en la presente solución, es completamente funcional
 Los lenguajes que hacen uso de la máquina virtual de Java (JVM) están apuntando a simplificar algunas tareas que en el lenguaje
 de programación Java pueden resultar engorrosas. Entre otras características intentan aplicar el principio DRY (Don't Repeat
 Yourself, en castellano No repitas) y llevan el lenguaje a un alto nivel integrando conceptos de paradigmas de 
-programación que antes eran meramente de uso académico incorporándolos con éxito en el ambiente corporativo o mainstream.
+programación que antes eran meramente de uso académico incorporándolos con éxito en el ambiente corporativo o \textit{mainstream}.
 Como ejemplo se observa que la utilización de Scala en el desarrollo de este trabajo fue exitosa produciendo un código fuente
 conciso y de alto nivel.
 
