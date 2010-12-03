@@ -13,6 +13,9 @@
 
 \begin{document}
 \maketitle
+
+%abstract here%
+
 \tableofcontents
 \newpage
 
@@ -211,7 +214,7 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	Nuevamente, el estado inicial del documento en ambas ubicaciones es \texttt{HOLA}. En la ubicación 1
 	se generará la operación \textit{insertar C en posición 0} llevando el documento al estado \texttt{CHOLA}.
 	Antes de que se reciba la operación en la ubicación 2, el usuario en esta ubicación generará la operación
-	de borrado del caracter O. La operación es transmitida como \textit{"borrar caracter en posición 1"} ya que
+	de borrado del caracter O. La operación es transmitida como \textit{``borrar caracter en posición 1"} ya que
 	su estado actual es \texttt{HOLA}. Luego de aplicarse localmente la operación el estado del documento en
 	el sitio 2 es \texttt{HLA}.
 	En este momento ambas operaciones se encuentran viajando hacia las otras partes. En la ubicación 1 cuando recibe
@@ -767,8 +770,20 @@ El proyecto se concluyó con tres sprints en los cuales se cumplieron los objeti
     \caption{\label{objetivos_por_sprint} Objetivos por Sprint}
 \end{table}
 
-% poner retrospectiva, graficos y backlogs
 \subsection{Sprint 1}
+
+Durante el primer sprint del desarrollo del presente trabajo, se puso hincapié en definir la arquitectura del mismo,
+para que pueda ser extendida en sprints posteriores.
+
+En la figura \ref{sprint1-tareas} se observan las tareas planificadas para el mismo junto que el esfuerzo empleado para
+cada una de ellas.
+
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=14cm]{sprint1.png}
+			\caption{\label{sprint1-tareas} Tareas planificadas para el sprint uno }
+		\end{center}
+	\end{figure}
 
 \subsection{Sprint 2}
 
@@ -870,7 +885,6 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 	Nichols, Curtis, Dixon and Lamping,
 	\emph{High-Latency, Low-Bandwidth Windowing in the Jupiter Collaboration System}.
 	Xerox Palo Alto Research Center.
-
 
 	\bibitem{actors1}
 	Haller and Odersky.
