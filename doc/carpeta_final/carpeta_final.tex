@@ -67,20 +67,20 @@ y a un bajo costo.
 
 La idea nace de la necesidad de participar de una sesión de desarrollo, en la cual los participantes
 no están físicamente en el mismo lugar. En algunos casos en particular, esta tarea requiere un
-\textit{feedback} instantáneo entre los participantes que con herramientas ya existentes no se puede 
+\textit{feedback} instantáneo entre los participantes que con herramientas existentes no se puede 
 ofrecer.
 
 Las herramientas existentes no logran que el feedback sea lo suficientemente rápido dado que trabajan
 en un ambiente en el cuál es necesario respetar un protocolo para la modificación del estado de un 
-documento. Por ejemplo: un usuario que está trabajando sobre un determinado archivo debe realizar todos
-los cambios que quiere introducir, guardar la nueva versión del archivo modificado y enviarlo a sus
-colaboradores para que estos estén al tanto de los cambios que introdujo (feedback). Mientras dura
-este proceso los colaboradores no pueden realizar cambios al documento y si lo hacen será necesario
-que realicen un proceso comúnmente llamado \textit{merge}, de forma tal que el estado final del documento 
-sea el mismo para cada uno de los participantes. Este proceso es lento y se hace especialmente engorroso
-al aumentar el número de colaboradores.
+documento que limita la interactividad de la tarea de edición. Por ejemplo: un usuario que está trabajando
+sobre un determinado archivo debe realizar todos los cambios que quiere introducir, guardar la
+nueva versión del archivo modificado y enviarlo a sus colaboradores para que estos estén al tanto de los 
+cambios que introdujo (feedback). Mientras dura este proceso los colaboradores no pueden realizar cambios 
+al documento y si lo hacen será necesario que realicen un proceso comúnmente llamado \textit{merge}, de forma
+tal que el estado final del documento sea el mismo para cada uno de los participantes. 
+Este proceso es lento y se hace especialmente engorroso al aumentar el número de colaboradores.
 
-Este esquema funciona bien en los casos en los cuales es baja la concurrencia sobre los mismos documentos,
+Este esquema funciona bien en los casos en los cuales es baja la concurrencia sobre un documento,
 es decir la edición de un mismo documento por parte de mas de un usuario es ocasional o en períodos de
 tiempo disjuntos. Ejemplo: varios desarrolladores trabajando en un mismo proyecto con código fuente
 compartido. Para estos casos existen herramientas cuya efectividad está comprobada, sistemas de control
@@ -91,7 +91,7 @@ La solución desarrollada en este trabajo profesional resuelve los siguientes pr
 \begin{itemize}
 	\item Distribución geográfica: no es necesario estar en la misma ubicación física para que el proceso
 	de desarrollo sea eficiente.
-	\item Sin necesidad de un proceso de merge: el proceso de merge es realizado por el software en cada
+	\item Necesidad de un proceso de merge: el proceso de merge es realizado por el software en cada
 	sitio de edición garantizando que el estado final del documento es el mismo para todos los 
 	participantes. De esta manera se ahorra tiempo y se reducen los errores frecuentes o retrabajos
 	los cuales son derivados de estos procesos.
