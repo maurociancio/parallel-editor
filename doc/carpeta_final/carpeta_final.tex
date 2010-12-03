@@ -388,7 +388,7 @@ para Eclipse fue implementado en Java. La compatibilidad es total entre estos do
 Este punto fue clave para el desarrollo del plugin y para la elección de Scala como lenguaje base. La misma 
 resulto de gran utilidad y aceleró el proceso de desarrollo.
 
-\subsection{Eclipse}
+\subsection{IDE Eclipse}
 Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está basada en plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. 
 Posee una gran cantidad  de plugins desarrollados y una sólida documentación de la API.
 
@@ -408,7 +408,7 @@ Se utilizó Spring para la inyección de dependencias tanto en el módulo GUI co
 \subsection{GIT}
 Se utilizó para el control de versiones junto con GitHub\cite{github} . Es una herramienta útil ya que en varias oportunidades se trabajó de manera offline.
 
-\subsection{JUnit\cite{junit} / EasyMock \cite{easymock} / TestNG\cite{testng} }
+\subsection{JUnit\cite{junit} / EasyMock\cite{easymock} / TestNG\cite{testng} }
 Frameworks utilizados para el testing tanto en Scala como en Java.
 
 \section{Arquitectura de la solución}
@@ -510,7 +510,7 @@ Los procesos involucrados en esta configuración son:
 
 Este esquema puede observarse en la figura \ref{peer-to-peer}.
 
-\subsection{Despliegue de actores en proceso kernel}
+\subsection{Despliegue de actores en el proceso kernel}
 
 En la figura \ref{actores-kernel} se observan los actores desplegados en el kernel.
 
@@ -538,7 +538,7 @@ Los principales actores del módulo kernel son los siguientes:
 Existe un protocolo interno representado por los mensajes que se envían entre sí. Los mensajes que conforman este protocolo
 pueden verse en el siguiente archivo: \texttt{DocumentMessages.scala}.
 
-\subsection{Despliegue de actores en el módulo cliente}
+\subsection{Despliegue de actores en el proceso cliente}
 En la figura \ref{actores-cliente} se observan los actores que se ejecutan en las aplicaciones que incorporar el módulo cliente.
 
 	\begin{figure}[!ht]
@@ -641,8 +641,9 @@ Observaciones a tener en cuenta:
 \subsubsection{API’s gráficas y Threads}
 
 La mayoría de las API’s disponibles para hacer interfaces gráficas desktop fueron diseñadas en un 
-modo no thread-safe. Es decir, que no se puede garantizar un estado consistente si los objetos que pertenecen a la API son
-accedidos desde múltiples hilos simultáneamente. Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
+modo no thread-safe \cite{threads-swing} \cite{threads-swt}. Es decir, que no se puede garantizar un estado 
+consistente si los objetos que pertenecen a la API son accedidos desde múltiples hilos simultáneamente. 
+Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
 en general son realizados por único thread denominado GUI Thread (o dispatching thread). Esta decisión de diseño permite que
 un desarrollador no deba preocuparse en la complejidad de manejar algoritmos y estructuras de sincronización
 (locks, deadlocks, etc.) que luego son difíciles de testear.
@@ -653,7 +654,7 @@ cambios en widgets, por ejemplo al recibir un mensaje que agrega texto al sector
 el GUI Thread y no en el Thread que recibe la operación.
 
 Generalmente, las API’s gráficas poseen mecanismos para postergar la ejecución de código para que se ejecute en el Thread de
-la GUI y evitar los problemas de sincronización. Esto puede observarse en el siguiente diagrama:
+la GUI \cite{swing-invoke-later} \cite{swt-async} y evitar los problemas de sincronización.
 
 En la figura \ref{threads-gui} se observa el problema descripto y en la figura \ref{threads-gui-solucion} la solución.
 
@@ -917,6 +918,24 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 	Github Social Coding.
 	\emph{Repositorio de código fuente del proyecto.} 
 	\textsl{https://github.com/maurociancio/parallel-editor}.
+	
+	\bibitem{threads-swing}
+	Oracle, \emph{Threads and Swing}. \\
+	\textsl{http://java.sun.com/products/jfc/tsc/articles/threads/threads1.html}
+
+	\bibitem{threads-swt}
+	Eclipse Helios, \emph{Threading issues}. \\
+	\textsl{http://help.eclipse.org/helios/index.jsp?topic=\\
+	/org.eclipse.platform.doc.isv/guide/swt\_threading.htm}
+
+	\bibitem{swing-invoke-later}
+	Swing API, \textsl{Invoke Later}. \\
+	\textsl{http://download.oracle.com/javase/1.4.2/docs/api/javax/swing\\
+	/SwingUtilities.html\#invokeLater(java.lang.Runnable)}
+
+	\bibitem{swt-async}
+	SWT API, \emph{Async Exec}. \\
+	\textsl{http://book.javanb.com/swt-the-standard-widget-toolkit/ch05lev1sec7.html}
 
 \end{thebibliography}
 
