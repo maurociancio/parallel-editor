@@ -143,10 +143,10 @@ A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}
 	son sistemas tradicionales de control versiones con bloqueo de archivos).
 
 	Para evitar este inconveniente y dar la impresión de una aplicación instantánea de las operaciones en cada
-	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT) \cite{operationaltransform} puede
-	aplicarse. En éste, cada participante tiene una copia del modelo, sobre la cual aplica instantáneamente
-	las operaciones que genera localmente. Luego de esto, notifica a todos los demás participantes que forman
-	parte del proceso colaborativo.
+	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT)
+	\cite{operationaltransform} puede aplicarse. En éste, cada participante tiene una copia del modelo, sobre la
+	cual aplica instantáneamente las operaciones que genera localmente. Luego de esto, notifica a todos los demás
+	participantes que forman parte del proceso colaborativo.
 	Al momento en que se reciben operaciones remotas en una ubicación, estas no son aplicadas, sino que se analiza
 	el tipo de operación que se recibió y la secuencia de operaciones que fueron aplicadas en esa ubicación
 	anteriormente. A partir de esta información es posible transformar la operación original en otra que cumple
@@ -382,13 +382,15 @@ tareas hacia siguientes \textit{Sprint}, pero estas eran de baja prioridad.
 \subsection{Lenguaje de programación Scala}
 En retrospectiva la elección de este lenguaje para el desarrollo de los principales módulos de la solución fue
 acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia
-basado en actores \cite{actors1,actors2}. Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización
-y comunicación entre hilos como se realiza tradicionalmente en java.
+basado en actores \cite{actors1,actors2}. Este modelo abstrae al desarrollador de la complejidad de utilizar
+mecanismos de sincronización y comunicación entre hilos como se realiza tradicionalmente en java.
 
-Por otro lado, es un lenguaje multiparadigma (Orientado a Objetos y Funcional). La ventaja de esto es que permite utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problemáticas.
+Por otro lado, es un lenguaje multiparadigma (Orientado a Objetos y Funcional). La ventaja de esto es que permite 
+utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problemáticas.
 
 El lenguaje pone el foco en la inmutabilidad de los objetos haciéndolo ideal para trabajar en ambientes concurrentes.
-La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La proporción final de código fuente del trabajo entre Scala y Java es la siguiente:
+La sintaxis del lenguaje Scala resultó altamente expresiva y concisa. La proporción final de código fuente del trabajo
+entre Scala y Java es la siguiente:
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -407,24 +409,29 @@ Este punto fue clave para el desarrollo del plugin y para la elección de Scala 
 resulto de gran utilidad y aceleró el proceso de desarrollo.
 
 \subsection{IDE Eclipse}
-Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está basada en plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. 
+Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está
+basada en plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. 
 Posee una gran cantidad  de plugins desarrollados y una sólida documentación de la API.
 
 Lo que se logró en el desarrollo del plugin del presente trabajo es que el mismo pueda integrarse con el IDE
 y agregarle las funcionalidades sin interferir con plugins existentes. El desarrollo es compatible
-con todas las funcionalidades incorporadas a los editores de texto. Por ejemplo: coloreo de código fuente, refactor, identado, formateo, generación de código fuente.
+con todas las funcionalidades incorporadas a los editores de texto. Por ejemplo: coloreo de código fuente, refactor,
+identado, formateo, generación de código fuente.
 
 Por otro lado, Eclipse provee un proceso de despliegue e instalación de plugins sencillo. Estos son publicados 
 en Internet en cualquier servidor web y la instalación de los mismos se realiza apuntando a la URL del mismo.
 
 \subsection{Maven}
-Es una herramienta que se utiliza para controlar el ciclo de vida del proyecto en términos de compilación, testing, resolución de dependencias y despliegue. Provee integración con Scala.
+Es una herramienta que se utiliza para controlar el ciclo de vida del proyecto en términos de compilación, testing,
+resolución de dependencias y despliegue. Provee integración con Scala.
 
 \subsection{Spring}
-Se utilizó Spring para la inyección de dependencias tanto en el módulo GUI como en el módulo Server. La integración con Scala no presentó inconvenientes.
+Se utilizó Spring para la inyección de dependencias tanto en el módulo GUI como en el módulo Server. La integración
+con Scala no presentó inconvenientes.
 
 \subsection{GIT}
-Se utilizó para el control de versiones junto con GitHub\cite{github} . Es una herramienta útil ya que en varias oportunidades se trabajó de manera offline.
+Se utilizó para el control de versiones junto con GitHub \cite{github}. Es una herramienta útil ya que en varias
+oportunidades se trabajó de manera offline.
 
 \subsection{JUnit\cite{junit} / EasyMock\cite{easymock} / TestNG\cite{testng} }
 Frameworks utilizados para el testing tanto en Scala como en Java.
