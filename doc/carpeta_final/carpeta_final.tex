@@ -15,6 +15,19 @@
 \maketitle
 
 \begin{abstract}
+En el presente trabajo se pretende encontrar y mostrar una solución a el problema de
+la edición concurrente de documentos en tiempo real y distribuida. Este escenario se plantea en
+diversas áreas incluyendo el desarrollo de software. La técnica \textit{pair-programming} \cite{pair-programming},
+generalmente propuesta por las metodologías ágiles, puede verse beneficiada al usar 
+el producto aquí desarrollado.
+
+Se desarrolló un producto que permite la edición simultánea de uno o más documentos asegurando
+que no existe divergencia entre las partes aún si la conexión entre ellos posee alta latencia. A su vez,
+se utiliza un mecanismo optimista para modificar los documentos, en el cual no se requiere de un árbitro
+central que coordine las partes involucradas.
+
+Por último, la solución es integrada en el IDE Eclipse \cite{eclipse-ide} facilitando la aplicación de la
+técnica pair-programming.
 \end{abstract}
 
 \newpage
@@ -943,6 +956,14 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 
 \newpage
 \begin{thebibliography}{9}
+	\bibitem{pair-programming}
+	Pair-Programming. \\
+	\textsl{http://en.wikipedia.org/wiki/Pair\_programming}.
+
+	\bibitem{eclipse-ide}
+	Eclipse IDE. \\
+	\textsl{http://www.eclipse.org/}.
+
 	\bibitem{visiontpprof}
 	Ciancio, Gilioli,
 	\emph{Visión Trabajo Profesional}.
@@ -1055,7 +1076,6 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 	\bibitem{swt-async}
 	SWT API, \emph{Async Exec}. \\
 	\textsl{http://book.javanb.com/swt-the-standard-widget-toolkit/ch05lev1sec7.html}.
-
 \end{thebibliography}
 
 \end{document}
