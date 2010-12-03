@@ -632,6 +632,22 @@ utilizar la misma estrategia de sincronización que se utiliza en el kernel. Las
 encuentran en los archivos 
 \texttt{JupiterSynchronizer.scala}
 y \texttt{BasicXFormStrategy.scala}.
+
+\subsection{Estado de Session y DocumentSession}
+
+En la figura \ref{estado-sesion} se muestra el diagrama de estados para el login de un usuario al kernel.
+
+	\begin{figure}[!ht]
+		\begin{center}
+			\includegraphics[width=14cm]{estado-sesion.png}
+			\caption{\label{estado-sesion} Diagrama de estados de la sesión del usuario }
+		\end{center}
+	\end{figure}
+
+Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
+documento y no suscripto. Únicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
+Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
+
 \subsection{Como integrar esta solución a productos de terceros}
 Para completar la documentación sobre la arquitectura de la solución se explicará como integrar este producto en otros ya
 existentes. Se mostrará que no es necesario re-diseñar todo el producto para que pueda trabajar con Parallel-Editor.
@@ -693,21 +709,6 @@ La implementación de esta interfaz se debe encargar de recibir el mensaje prove
 cálculo intensivo, debe realizarse en otro thread. La causa de esto que el código se encontrará corriendo en el thread que
 está corriendo el actor, por lo tanto, los actores deben liberar su thread para que otros actores puedan tomar su tiempo de CPU
 (propiedades fairness y liveness).
-
-\subsubsection{Estado de Session y DocumentSession}
-
-En la figura \ref{estado-sesion} se muestra el diagrama de estados para el login de un usuario al kernel.
-
-	\begin{figure}[!ht]
-		\begin{center}
-			\includegraphics[width=14cm]{estado-sesion.png}
-			\caption{\label{estado-sesion} Diagrama de estados de la sesión del usuario }
-		\end{center}
-	\end{figure}
-
-Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
-documento y no suscripto. Únicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
-Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
 
 \section{Metodología de desarrollo}
 
