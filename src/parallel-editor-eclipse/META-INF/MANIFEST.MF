@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.text,
  org.eclipse.core.filebuffers,
  org.eclipse.core.resources,
- org.eclipse.ui.ide;bundle-version="3.6.1",
+ org.eclipse.ui.ide,
  org.eclipse.jface.text
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
