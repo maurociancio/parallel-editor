@@ -556,9 +556,17 @@ Como primer punto se mostrarán los componentes que conforman la solución. Est�
 	con la sesión de edición.
 	
 	\item \textbf{Cliente}: define la API mediante la cual un cliente se conecta a un servidor colaborativo 
-	y edita documentos
-	en tiempo real. Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades
-	de 	edición colaborativa. Este módulo es utilizado tanto por el módulo GUI como por el módulo Eclipse.
+	y edita documentos en tiempo real. 
+
+	La API permite crear conexiones a múltiples servidores de colaboración simultáneamente y participar
+	en varias sesiones de edición en el mismo instante de tiempo.
+	
+	A su vez, este módulo publica las interfaces que los clientes del mismo deben implementar si se
+	desea hacer uso de sus funcionalidades.
+	
+	Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades
+	de edición colaborativa. Este módulo es utilizado tanto por el módulo GUI como por el módulo Eclipse.
+
 	\item \textbf{Common}: incluye tipos comunes que utilizan los primeros dos módulos, como ser los mensajes
 	del protocolo que utilizan cliente y servidor para comunicarse y la estrategia de sincronización.
 \end{itemize}
