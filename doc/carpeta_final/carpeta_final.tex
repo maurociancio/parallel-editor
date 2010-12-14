@@ -483,9 +483,21 @@ en Internet en cualquier servidor web y la instalación de los mismos se realiza
 
 \subsection{Maven}
 Es una herramienta que se utiliza para controlar el ciclo de vida del proyecto en términos de compilación, testing,
-resolución de dependencias y despliegue. Provee integración con Scala.
+resolución de dependencias y despliegue. Provee una serie de tareas que facilitan estos procedimientos que deben
+repetirse continuamente en el proceso de desarrollo de un producto.
 
-\subsection{Spring}
+El principal beneficio de utilizar Maven es que permite hacer portable el entorno de desarrollo a nuevas estaciones
+de trabajo sin un esfuerzo extra. Una vez que el proyecto está configurado correctamente (mediante la declaración en el 
+archivo \texttt{pom.xml}) pueden instalarse nuevos puestos de desarrollo de forma muy sencilla. Ésto es posible
+ya que las bibliotecas de las que un proyecto depende se encuentran en Internet (o en una LAN) y pueden descargarse
+desde cualquier ubicación.
+
+Su arquitectura basada en plugins permite que terceros agreguen funcionalidades son publicadas en los repositorios
+de Maven.
+
+Mediante un plugin es posible integrar Maven con proyectos desarrollados en el lenguaje Scala.
+
+\subsection{Spring Framework}
 Se utilizó Spring para la inyección de dependencias tanto en el módulo GUI como en el módulo Server. La integración
 con Scala no presentó inconvenientes.
 
