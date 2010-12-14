@@ -612,6 +612,13 @@ Las dependencias entre los módulos puede ser observada en la figura \ref{compon
 \subsection{Despliegue de la solución}
 Existen dos esquemas de despliegue para la solución.
 
+\begin{itemize}
+\item Cliente-Servidor
+\item Peer-To-Peer
+\end{itemize}
+
+A continuación se describen las características y ventajas de cada esquema:
+
 \subsubsection{Cliente-Servidor}
 El primer caso consiste en disponer de un servidor dedicado para la gestión de documentos compartidos. El mismo recibe
 peticiones de N clientes que mediante una suscripción a los documentos pueden comenzar a realizar operaciones sobre los mismos.
@@ -655,12 +662,12 @@ es elevada. Las ventajas de esta configuración es que no se necesita un equipo 
 Si los participantes se encuentran en la misma LAN, no se requiere ninguna configuración extra. Si la sesión quiere realizarse
 a través de internet es necesario tener en cuenta que haya conectividad entre las partes (configuración de puertos y firewall).
 
-Al momento de escribir esta documentación no es posible utilizar el servicio detrás de un proxy. En cambio si posible 
-hacerlo utilizarlo usando una VPN.
+Al momento de escribir esta documentación no es posible utilizar el servicio detrás de un proxy ya que los mismos
+filtran todo el tráfico que no sea HTTP. En cambio si es posible hacerlo utilizarlo usando una VPN. \\
 
 Los procesos involucrados en esta configuración son:
 \begin{itemize}
-	\item Proceso cliente con servicio de colaboración: Uno de los participantes involucrados será en encargado de crear el
+	\item Proceso cliente con servicio de colaboración: Uno de los participantes involucrados será el encargado de crear el
 	servicio de colaboración. En este se ejecutarán los siguientes módulos: Cliente, Kernel, Common y la aplicación que
 	corresponda: GUI o Eclipse Plugin. Un sólo proceso existirá de este tipo.
 	\item Procesos cliente sin servicio de colaboración: los restantes participantes se comunicarán con el cliente que posee
@@ -682,7 +689,7 @@ En la figura \ref{actores-kernel} se observan los actores desplegados en el kern
 	\end{figure}
 
 Los actores fueron utilizados para cumplir el rol de intermediario ante el acceso a un recurso, serializando los accesos de
-modo de que no se produzcan conflictos de naturaleza concurrente.
+modo de que no se produzcan conflictos de naturaleza concurrente. \\
 
 Los principales actores del módulo kernel son los siguientes:
 \begin{itemize}
@@ -692,14 +699,14 @@ Los principales actores del módulo kernel son los siguientes:
 	y replicándolas hacia los clientes restantes. Mantiene el estado del documento de modo que pueda servirlo a nuevas sesiones.
 	\item Client Actor: es la representación de un cliente remoto frente al Kernel. Se encarga de recibir mensajes del
 	cliente remoto, enviarlos al kernel y enviar la respuesta al mismo. Los mensajes que se reciben de la red son capturados por
-	el actor NetworkListener mientras que los mensajes que se deben al cliente remoto son enviados por el GatewayActor.
+	el actor NetworkListener mientras que los mensajes que se deben enviar al cliente remoto son enviados por el GatewayActor.
 \end{itemize}
 
 Existe un protocolo interno representado por los mensajes que se envían entre sí. Los mensajes que conforman este protocolo
 pueden verse en el siguiente archivo: \texttt{DocumentMessages.scala}.
 
 \subsection{Despliegue de actores en el proceso cliente}
-En la figura \ref{actores-cliente} se observan los actores que se ejecutan en las aplicaciones que incorporar el módulo cliente.
+En la figura \ref{actores-cliente} se observan los actores que se ejecutan en las aplicaciones que incorporan el módulo cliente.
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -719,7 +726,7 @@ responda a estos mensajes.
 Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el archivo 
 \texttt{ClientMessages.scala}
 Con respecto a la cardinalidad de estos actores, podemos notar lo siguiente:
-Por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
+por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
 
 Cabe aclarar que estos actores se encuentran detrás de un facade, para evitar que la aplicación cliente observe la
 complejidad subyacente. Este facade se denomina Session cuando es utilizado desde Scala y JSession cuando es utilizado desde Java.
@@ -742,8 +749,7 @@ algunas posibles razones por la cual se podría reemplazar el protocolo por otro
 	\item Compresión: compresión de los mensajes para reducir la carga de la red.
 \end{itemize}
 
-En el archivo \texttt{SocketNetworkConnection.scala} se implementa
- el protocolo actual. Referirse al mismo para analizar posibles cambios.
+En el archivo \texttt{SocketNetworkConnection.scala} se implementa el protocolo actual.
 
 \subsection{Diagrama de clases del kernel}
 En la figura \ref{clases-kernel} se observan las clases principales que trabajan en el Kernel. Por simplicidad no se 
@@ -756,7 +762,7 @@ incluyen métodos de determinadas clases.
 		\end{center}
 	\end{figure}
 
-En el mismo se muestra que interfaces son utilizadas por los clientes. Los clientes son los usuarios que se conectan
+En el mismo se muestra qué interfaces son utilizadas por los clientes. Los clientes son los usuarios que se conectan
 remotamente al servicio de colaboración. Por lo tanto, el actor Cliente mostrado en el diagrama es un actor remoto y se
 ocupa el rol de intermediario entre el Kernel y el Cliente real que se encuentra del otro lado de la conexión.
 
@@ -766,7 +772,7 @@ Las interfaces que utiliza son las siguientes:
 	servicios de chat, etc.
 
 	\item Session: esta interfaz representa una sesión con el kernel. Todas las operaciones sobre el kernel requieren que se
-	esté logueado al mismo. Esta interfaz ofrece la posibilidad de instalar una callback por la cual será notificada de mensajes
+	esté logueado al mismo. Esta interfaz ofrece la posibilidad de instalar un callback por la cual será notificada de mensajes
 	provenientes del kernel. Entre estos mensajes podemos encontrar: mensajes de chat de otro usuario, mensajes de actualización
 	de estado de un documento, etc. Es responsabilidad del cliente de instalar una callback para poder escuchar estos mensajes.
 
@@ -787,7 +793,7 @@ Las interfaces que utiliza son las siguientes:
 
 La figura \ref{circuitos-mensajes} muestra la diferencia entre mensajes y operaciones.
 
-Notar que se reciben mensajes del kernel y sobre los widgets se deben aplicar operaciones. Por ese motivo es necesario 
+Notar que se reciben mensajes del kernel y sobre los widgets (o componentes) se deben aplicar operaciones. Por ese motivo es necesario 
 utilizar la misma estrategia de sincronización que se utiliza en el kernel. Las clases que implementan la sincronización se 
 encuentran en los archivos 
 \texttt{JupiterSynchronizer.scala}
@@ -809,8 +815,8 @@ documento y no suscripto. Únicamente cuando se encuentra en el estado suscripto
 Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
 
 \subsection{Como integrar esta solución a productos de terceros}
-Para completar la documentación sobre la arquitectura de la solución se explicará como integrar este producto en otros ya
-existentes. Se mostrará que no es necesario re-diseñar todo el producto para que pueda trabajar con Parallel-Editor.
+Para completar la documentación sobre la arquitectura de la solución se explicará cómo integrar este producto en otros ya
+existentes. Se mostrará que no es necesario rediseñar todo el producto para que pueda trabajar con Parallel-Editor.
 
 Observaciones a tener en cuenta:
 
@@ -824,9 +830,9 @@ en general son realizados por único thread denominado GUI Thread (o dispatching
 un desarrollador no deba preocuparse en la complejidad de manejar algoritmos y estructuras de sincronización
 (locks, deadlocks, etc.) que luego son difíciles de testear.
 
-La solución desarrollada en la presenta usa diversos actores (que generalmente corren en un pool de threads) para poder 
+La solución desarrollada en el presente trabajo hace uso de diversos actores (que generalmente corren en un pool de threads) para poder 
 responder asincrónicamente a mensajes que reciben desde el kernel. Algunos de estos mensajes requieren que se produzcan
-cambios en widgets, por ejemplo al recibir un mensaje que agrega texto al sector de edición. Estos cambios deben realizar en
+cambios en widgets, por ejemplo al recibir un mensaje que agrega texto al sector de edición. Estos cambios deben realizarse en
 el GUI Thread y no en el Thread que recibe la operación.
 
 Generalmente, las API’s gráficas poseen mecanismos para postergar la ejecución de código para que se ejecute en el Thread de
@@ -1015,14 +1021,20 @@ de las tareas el finalizar el sprint, respectivamente.
 En esta sección analizaremos las futuras líneas de investigación y posibles usos de la presente solución:
 
 \begin{itemize}
-	\item Esquema de autorización: incorporar a la solución mecanismos para restringir o permitir el acceso de determinados
+	\item Mecanismo para deshacer cambios (undo): cuando un participante de una sesión de desarrollo se equivoca al teclear, es común
+		que utilice el atajo \texttt{CTRL-Z} para deshacer su último cambio. Debe notarse que la intención del usuario es deshacer su
+		último cambio y no otra posible acción realizada por otro usuario sobre el documento. Actualmente, la solución implementada
+		no respeta esta intención del usuario sino que deshace el último cambio aplicado al documento independientemente de
+		quién lo haya hecho. Esta mejora agrega valor al usuario y es una de las más prioritarias para próximas versiones.
+
+	\item Esquema de autorización: es posible incorporar a la solución mecanismos para restringir o permitir el acceso de determinados
 		usuarios a los sistema de colaboración. En muchas organizaciones existe la necesidad de auditar el trabajo de los empleados 
 		por lo cual podría ser útil un registro de usuarios, que actividades realizaron, etc.
 
 	\item Esquema de autenticación: incorporar a la solución control de acceso de usuarios permitiendo que sólo algunos
 		de ellos accedan a determinados documentos.
 
-	\item Optimización de uso de red: reducir la carga de red mejoraría el tiempo de respuesta de los demás participantes
+	\item Optimización de uso de red: la reducción de la carga de red mejoraría el tiempo de respuesta de los demás participantes
 		generando una sensación de mayor interactividad.
 
 	\item Integración con otros IDEs: el plugin desarrollado en este trabajo fue implementado para el IDE Eclipse. Éste es
@@ -1031,8 +1043,8 @@ En esta sección analizaremos las futuras líneas de investigación y posibles u
 		integrados de desarrollo que permiten la inclusión de los mismos como por Ej.: Intellij IDEA.
 
 	\item Extensión de la solución para colaboración en tiempo de real sobre otros tipos de documentos:
-		La solución implementada en este trabajo se limita a la colaboración en tiempo real sobre un modelo que representa un
-		documento de texto. Sin embargo la teoría de la transformada operacional (OT) es aplicable a cualquier modelo de objeto en
+		La solución implementada en este trabajo se limita a la colaboración en tiempo real sobre un modelo que representa
+		documentos de texto. Sin embargo la teoría de la transformada operacional (OT) es aplicable a cualquier modelo de objeto en
 		general. De esta manera sería posible llevar la base de la implementación de este trabajo a otros tipos de modelos. Ejemplos
 		de modelos para los que se han implementado aplicaciones colaborativas son áreas de dibujo, documentos CAD y controles de
 		interfaz gráfica entre otros.
@@ -1044,19 +1056,17 @@ En esta sección analizaremos las futuras líneas de investigación y posibles u
 		esquema de cifrado. Esta modificación se podría implementar añadiendo una capa que encapsule el cifrado y descifrado de
 		los datos, haciéndola intercambiable y transparente a la aplicación.
 
-	\item Mecanismo para deshacer cambios (undo): cuando un participante de una sesión de desarrollo se equivoca al teclear, es común
-		que utilice el atajo \texttt{CTRL-Z} para deshacer su último cambio. Debe notarse que la intención del usuario es deshacer su
-		último cambio y no otra posible acción realizada por otro usuario sobre el documento. Actualmente, la solución implementada
-		no respeta esta intención del usuario sino que deshace el último cambio aplicado al documento independientemente de
-		quién lo haya hecho. Esta mejora agrega valor al usuario y es una de las más prioritarias para próximas versiones.
-
+	\item Tráfico a través de un proxy: analizar una posible solución para que el producto pueda funcionar detrás de un
+		proxy HTTP. Es muy común que en organizaciones se instalé un proxy HTTP para aumentar la performance o para
+		restringir el acceso a determinados sitios. Como consecuencia se prohíbe todo el tráfico que no sea HTTP.
+		
 \end{itemize}
 
 \section{Conclusiones}
 
 Es importante simplificar el modelo que se utiliza para la programación de aplicaciones distribuidas
-en tiempo real. Se requiere de construcciones que separen los conceptos de sincronización, hilos, bloqueos, etc.
-de la lógica del negocio. La abstracción de estos conceptos resulta clave para el desarrollo de sistemas
+en tiempo real. Se requieren construcciones que separen los conceptos de infraestructura (sincronización, hilos, bloqueos, etc.)
+del dominio de la aplicación. La abstracción de estos conceptos resulta clave para el desarrollo de sistemas
 más comprensibles y mantenibles. Esto permite a su vez simplificar el proceso de testing o de aseguramiento
 de calidad generando productos más confiables y de mayor valor para el cliente.
 
