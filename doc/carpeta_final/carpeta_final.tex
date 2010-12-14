@@ -582,9 +582,16 @@ Además existen los siguientes módulos construidos en base a los anteriores:
 \begin{itemize}
 	\item \textbf{Server}: es una aplicación que crea un servicio para compartir documentos que se quieren
 	editar colaborativamente a través de una red TCP/IP.
+	
+	Este módulo puede utilizarse si se desea un servicio de colaboración dedicado.
+	
 	\item \textbf{GUI}: es una aplicación cliente implementada usando Swing que ofrece la funcionalidad
 	para conectarse a un servicio remoto y editar documentos existentes. Ofrece la posibilidad de compartir
 	y editar documentos	en un servidor colaborativo.
+	
+	Fue utilizado como prototipo durante el desarrollo del proyecto para analizar las funcionalidades
+	que más valor agregarían.
+	
 	\item \textbf{Eclipse Plugin}: integra la funcionalidades del módulo cliente y kernel dentro del IDE eclipse.
 	Hace uso tanto del módulo cliente (para conectarse a servidor de colaboración existentes) como del módulo
 	o kernel (para la creación de servidores de colaboración locales).
