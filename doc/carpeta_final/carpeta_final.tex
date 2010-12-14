@@ -498,8 +498,18 @@ de Maven.
 Mediante un plugin es posible integrar Maven con proyectos desarrollados en el lenguaje Scala.
 
 \subsection{Spring Framework}
-Se utilizó Spring para la inyección de dependencias tanto en el módulo GUI como en el módulo Server. La integración
-con Scala no presentó inconvenientes.
+Es un framework de código abierto para el desarrollo de aplicaciones para la plataforma Java. Spring provee soporte
+para simplificar el desarrollo de diversas partes de aplicaciones enterprise. Generalmente es utilizado en
+la capa de servicios para la implementación de tareas como: logging, transacciones, seguridad, etc; y también 
+utilizado para el acceso a los datos.
+
+Además, ofrece un potente mecanismo de inyección de dependencias totalmente configurable mediante archivos XML, que
+permiten cambiar el comportamiento de un aplicación sin la necesidad de recompilar la misma.
+
+Fue utilizado tanto el módulo GUI como el módulo Server. Solamente fue utilizado el mecanismo de inyección
+de dependencias.
+
+Scala es totalmente compatible con Spring ya que es compilado a bytecode de la JVM.
 
 \subsection{GIT}
 Se utilizó para el control de versiones junto con GitHub \cite{github}. Es una herramienta útil ya que en varias
