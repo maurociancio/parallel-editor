@@ -11,6 +11,9 @@
 		\texttt{\{maurociancio,legilioli\}@gmail.com}
 	}
 
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
 \begin{document}
 \maketitle
 
@@ -107,9 +110,45 @@ Eclipse, el entorno de desarrollo integrado de facto para el lenguaje de program
 	\section{Otras soluciones similares}
 Durante la etapa de concepción del proyecto se analizaron otras soluciones similares al problema
 anteriormente explicado. La descripción de cada una de ellas junto con la comparación de las mismas
-respecto de la presente solución fue detallada en el documento Propuesta de Trabajo Profesional\cite{propuestatpprof}.
+respecto de la presente solución fue detallada en el documento ``Propuesta de Trabajo Profesional" 
+\cite{propuestatpprof} y se muestra a continuación.
 
-A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}:
+A modo de resumen se presenta el cuadro comparativo \ref{soluciones_comparacion}.
+
+	\subsection{Google Docs \cite{googledocs} y Google Wave \cite{googlewave}}
+
+Provee la posibilidad de editar en tiempo real concurrentemente documentos con formato utilizando
+un navegador compatible. Posibilita la participación de múltiples usuarios en línea.
+
+Sin embargo, su mayor desventaja consiste en la dependencia de una conexión a internet para la
+disponibilidad del servicio. No es posible hasta ahora, la utilización del mismo en una red LAN privada.
+
+Además es sólo utilizable a través de la interfaz web del navegador por lo cual su integración con
+herramientas de terceros no es posible. Cabe aclarar que Google ha abandonado el desarrollo de Google Wave.
+
+	\subsection{BeWeeVee \cite{beweevee}}
+
+Framework para la integración de funcionalidades de colaboración en tiempo real en aplicaciones.
+Se provee como un \textit{software development kit} para el desarrollo sobre la plataforma .NET.
+Por este motivo, si bien abarca gran cantidad de desarrollos que hacen uso de dicha plataforma, no
+cubre totalmente el espacio de potenciales aplicaciones ya que las aplicaciones que no se desarrollan en
+.NET no pueden integrarlo.
+
+Es de licencia libre para uso académico y aplicaciones \textit{open source}, aunque tiene un costo para
+la integración en desarrollos privados.
+
+	\subsection{COLA \cite{cola} - Eclipse Plugin}
+
+COLA es un plugin para el IDE Eclipse que permite la colaboración en tiempo real de los usuarios para editar
+un mismo documento de código fuente. Está desarrollado en Java y está basado en el proyecto Eclipse Communication
+Framework (ECF). Su principal desventaja es la dependencia con el mismo y por otra parte, limita la cantidad
+de usuarios que pueden participar en una sesión de edición de código a dos participantes.
+
+	\subsection{Comparación con la presente propuesta}
+El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas
+dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del
+mismo usando tecnologías que corren sobre la máquina virtual de Java, lograr independencia sobre otros frameworks
+o componentes de software y lograr que pueda haber mas de dos participantes en la misma sesión de edición.
 
 \begin{table}[ht]
     \begin{tabular}{ | p{2.5cm} | p{5cm} | p{5cm} | }
