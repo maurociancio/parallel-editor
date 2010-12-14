@@ -179,78 +179,77 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	
 	Cada operación modifica el estado del modelo que es común a todas las partes. La cantidad de tipos distintos
 	de operaciones que se pueden aplicar sobre el modelo depende de la naturaleza del mismo. Por ejemplo, en un
-	modelo que representa un documento de texto las operaciones pueden ser inserción o borrado de texto, en el caso
+	modelo que representa un documento de texto las operaciones pueden ser inserción o borrado de texto; en el caso
 	de un modelo que represente un área de dibujo se podrán aplicar operaciones de dibujado de figuras, 
 	borrado, coloreado, etcétera.
 	
 	La existencia de varios participantes compartiendo un modelo para su edición (sucesivas aplicaciones de
-	operaciones) hace que sea posible que más de un participante puede estar realizando operaciones sobre el modelo.
+	operaciones) hace que sea posible que más de un participante pueda estar realizando operaciones sobre el mismo modelo.
 	Al cabo de la aplicación de cada una de ellas todos las partes deben ver el mismo estado final, es decir,
-	debe ser consistente. Por esta razón hay que tener en cuenta una manera de que esta condición se alcance.
+	debe ser consistente. Por esta razón hay que tener en cuenta una manera de que esta condición se garantice.
 
 	El enfoque tradicional propone utilizar un modelo de sincronización centralizado en el cual para aplicar una
 	operación sobre el modelo es necesario que el participante obtenga antes un control o autorización de un
-	arbitro central. Una vez aplicada la operación, el estado resultante se transmite a todas las demás ubicaciones
+	árbitro central. Una vez aplicada la operación, el estado resultante se transmite a todas las demás ubicaciones
 	para que estén al tanto de los cambios generados como consecuencia de la aplicación de la operación remota.
 	Si bien este método logra su cometido al preservar la consistencia del documento en todas las ubicaciones, la
 	interactividad percibida en cada una de ellas es poco satisfactoria. Si al momento de querer aplicar una 
 	operación no se tiene la autorización o control del modelo, se deberá esperar para obtenerlo. 
 	Este tiempo de espera dependerá de la cantidad de participantes que se encuentran operando sobre el modelo
 	en ese instante y del tiempo que cada operación remota tome en aplicarse (ejemplos de uso de este mecanismo
-	son sistemas tradicionales de control versiones con bloqueo de archivos).
+	son sistemas tradicionales de control de versiones con bloqueo de archivos).
 
 	Para evitar este inconveniente y dar la impresión de una aplicación instantánea de las operaciones en cada
 	una de las ubicaciones de los participantes, el \textit{modelo de la transformada operacional} (OT)
 	\cite{operationaltransform} puede aplicarse. En éste, cada participante tiene una copia del modelo, sobre la
-	cual aplica instantáneamente las operaciones que genera localmente. Luego de esto, notifica a todos los demás
+	cual aplica instantáneamente las operaciones que genera localmente. Luego de ésto, notifica el cambio a todos los demás
 	participantes que forman parte del proceso colaborativo.
 	Al momento en que se reciben operaciones remotas en una ubicación, estas no son aplicadas, sino que se analiza
 	el tipo de operación que se recibió y la secuencia de operaciones que fueron aplicadas en esa ubicación
 	anteriormente. A partir de esta información es posible transformar la operación original en otra que cumple
 	la propiedad de que al aplicarse al modelo local garantiza que el estado resultante será el mismo que el de
-	los modelos de todas las demás ubicaciones.
+	los modelos de todas las demás ubicaciones. \\
 
-	El algoritmo de sincronización que se implemento fue el algoritmo de \textbf{Júpiter} \cite{jupiter}. 
+	El algoritmo de sincronización que se implementó fue el algoritmo de \textbf{Júpiter} \cite{jupiter}. 
 	El proceso de implementación de este algoritmo se divide en varias etapas.
 	
-	Como primer punto es necesario definir que tipo de componentes se va a utilizar para representar el modelo
+	Como primer punto es necesario definir qué tipo de componentes se va a utilizar para representar el modelo
 	de documento. En esta solución se trabajará exclusivamente con el componente denominado cuadro de texto
-	(\textit{textfield} en ingles). El cuadro de texto es un componente gráfico en el cual se puede insertar texto en 
+	(\textit{textfield} en ingles). Este componente gráfico permite que se puede insertar texto en 
 	posiciones definidas por el usuario y existe en la mayoría de las bibliotecas de interfaces gráficas 
 	disponibles actualmente. Es posible considerar otros tipos de componentes que no se implementan en esta
 	solución, como por ejemplo: una zona para dibujar entra varios usuarios, un slider, botones, checkboxes, etc.
 	
-	Una vez que se definieron los componentes es necesario definir las operaciones que podrán ser aplicadas sobre
+	Una vez que se definieron el o los componentes es necesario definir las operaciones que podrán ser aplicadas sobre
 	los mismos. Estas pueden ser definidas como las posibles modificaciones que se hacen sobre el componente.
 	Por ejemplo, para el caso de cuadro de texto una posible operación es agregar el texto \textsf{``hola"} 
 	en la posición 10.
 	Las operaciones necesarias para modificar el estado de un documento de texto plano en el componente utilizado
 	en este trabajo son	dos: agregar texto en una posición y borrar texto en una posición.
-	Es deseable mantener la cantidad de operaciones distintas y la cantidad de parámetros de las mismas al
-	mínimo por razones que se explicarán más adelante.
+	Por razones que se explicarán más adelante, es deseable mantener la cantidad de operaciones distintas y
+	la cantidad de parámetros de las mismas al mínimo.
 
 	Por último, una vez que se definieron los componentes a utilizar y las operaciones a realizar sobre los mismos,
 	la implementación del algoritmo de sincronización que fue utilizado en esta solución requiere de una función 
 	de transformación de operaciones que cumple con ciertas características y se denomina
-	\textit{xform } \cite{jupiter}. 
+	\textit{xform } \cite{jupiter}. \\
 
 	Para comprender la importancia de la utilización de un algoritmo de sincronización y la transformación
-	de operaciones realizadas por la función \textit{xform }se procederá a plantear el siguiente escenario:
+	de operaciones realizadas por la función \textit{xform }se procederá a plantear el siguiente escenario
+	(y su descripción gráfica en la figura \ref{secuencia_ops_1}):
 	
 	Suponemos que dos usuarios están compartiendo un documento colaborativamente. El estado del documento 
 	inicial en ambas ubicaciones es el mismo y corresponde a la palabra \texttt{"HOLA"}.
 	El primer caso que se plantea como ejemplo corresponde a modificaciones al documento de manera tal 
 	que las mismas no se superponen en el tiempo.
-	En la ubicación 1 se inserta el caracter \texttt{'S'} en la posición 4. Esta operación se aplica localmente
+	En la ubicación 1 se inserta el carácter \texttt{'S'} en la posición 4. Esta operación se aplica localmente
 	y es transmitida a la ubicación número 2. En este instante la copia local del documento es
 	la palabra \texttt{"HOLAS"}.
 	Mientras tanto en la ubicación 2 que posee la copia original del documento (\texttt{"HOLA"}), cuando se recibe
 	la operación generada por la ubicación 1 se aplica localmente resultando ambas copias del documento idénticas.
-	De igual forma en la ubicación 2 se genera otra operación (\textit{borrar caracter H}) que se aplica localmente
+	De igual forma en la ubicación 2 se genera otra operación (\textit{borrar carácter H}) que se aplica localmente
 	y luego es transmitida a la ubicación 1. En esta se aplica la operación recibida y ambas ubicaciones terminan 
 	con el mismo estado del documento.
-	
-	Esta interacción en el tiempo puede verse en la figura \ref{secuencia_ops_1}.
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -260,26 +259,24 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	\end{figure}
 
 	En el caso presentado, no se observan problemas de sincronización debido a que la segunda operación fue 
-	generada cuando la primera ya había sido procesada en la ubicación 2.
+	generada cuando la primera ya había sido procesada en la ubicación 2. \\
 
-	Ahora, se presenta otro ejemplo en el que sí existe un problema de sincronización. Las partes luego de procesar
-	las operaciones tendrán documentos distintos. Esto sucede dado que la ubicación 2 genera una operación local 
-	sin aún haber recibido la operación generada por la otra parte.
+	Ahora, se presenta otro ejemplo en el que sí existe un problema de sincronización (representado en la figura
+	\ref{secuencia_ops_2}). Las partes luego de procesar las operaciones tendrán documentos distintos. Esto sucede dado
+	que la ubicación 2 genera una operación local sin aún haber recibido la operación generada por la otra parte.
 	
 	Nuevamente, el estado inicial del documento en ambas ubicaciones es \texttt{HOLA}. En la ubicación 1
 	se generará la operación \textit{insertar C en posición 0} llevando el documento al estado \texttt{CHOLA}.
 	Antes de que se reciba la operación en la ubicación 2, el usuario en esta ubicación generará la operación
-	de borrado del caracter O. La operación es transmitida como \textit{``borrar caracter en posición 1"} ya que
+	de borrado del carácter O. La operación es transmitida como \textit{``borrar carácter en posición 1"} ya que
 	su estado actual es \texttt{HOLA}. Luego de aplicarse localmente la operación el estado del documento en
 	el sitio 2 es \texttt{HLA}.
 	En este momento ambas operaciones se encuentran viajando hacia las otras partes. En la ubicación 1 cuando recibe
-	la operación generada remotamente, se aplica llevando al documento en el estado \texttt{COLA} ya que la
-	operación indicaba borrar un caracter en la posición 1. Luego, en la ubicación 2 es recibida la operación
+	la operación generada remotamente, se aplica llevando al documento al estado \texttt{COLA} ya que la
+	operación indicaba borrar un carácter en la posición 1. Luego, en la ubicación 2 es recibida la operación
 	generada en el sitio 1. Al aplicarse localmente lleva el documento a un estado \texttt{CHLA}.
 	Como se observa, en ambos sitios se observa un documento distinto.
 
-	Este caso se observa en el diagrama de la figura \ref{secuencia_ops_2}.
-	
 	\begin{figure}[!ht]
 		\begin{center}
 			\includegraphics[width=14cm]{sincronizacion_fallida.png}
@@ -287,13 +284,12 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 		\end{center}
 	\end{figure}
 
-
 	La divergencia en el estado final del documento se produce por que se aplicaron las operaciones en cada 
 	ubicación sin haber sido transformadas previamente. En el caso de operaciones no conflictivas la función
 	transformación de operaciones será la función  identidad. Sin embargo, para los casos en los cuales las
 	operaciones son conflictivas la operación resultante transformada será distinta a la original.
 	Para este último caso la operación 2 recibida desde la ubicación 2 debió haber sido corregida por la función
-	de transformación y haber resultado en \textit{“borrar caracter en posición 2”} (y no 1 como originalmente
+	de transformación y haber resultado en \textit{“borrar carácter en posición 2”} (y no 1 como originalmente
 	era la operación).
 	
 	Presentada esta problemática es necesario definir una función \textit{xform} con las siguientes propiedades:
@@ -309,7 +305,7 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	Esto requiere que \textit{op1} y \textit{op2} hayan sido generadas a partir del mismo estado del documento.
 
 	Para el caso anterior, se mostrará a continuación la función \textit{xform}.
-	Dado el estado inicial del documento \texttt{HOLA}.
+	Se parte del estado inicial del documento \texttt{HOLA}.
 
 	En la ubicación 1 se aplica \textit{op1} y al momento en el que se recibe \textit{op2} se la transforma 
 	para obtener la operación que debe aplicarse. A su vez, en la ubicación 2 se procede de forma similar
@@ -324,8 +320,8 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
   Borrar\ Caracter\ en\ Pos\ =\ 2\ \rbrace  
 \end{eqnarray*}
 
-	De aquí resulta que \textit{op1’} es \textit{Insertar Caracter C en Pos = 0} y \textit{op2’} es 
-	\textit{Borrar Caracter en Pos = 2}.
+	De aquí resulta que \textit{op1’} es \textit{Insertar Carácter C en Pos = 0} y \textit{op2’} es 
+	\textit{Borrar Carácter en Pos = 2}.
 
 \textit{op1’} resultó ser igual a \textit{op1} mientras que \textit{op2’} fue desplazada con respecto a 
 \textit{op2.}
@@ -337,7 +333,7 @@ En la ubicación 2 se aplica \textit{op1’} sobre \texttt{HLA} resultando en \t
 Nótese que aplicando las operaciones transformadas se logra la convergencia del estado del documento 
 en las dos ubicaciones.
 
-\subsection{Definición \textit{xform}}
+\subsection{Definición de \textit{xform}}
 
 La definición de esta función puede resultar compleja si se toma en cuenta la cantidad de 
 combinaciones de las operaciones aplicables al modelo. Por esta razón se debe mantener al mínimo la 
@@ -354,22 +350,22 @@ La implementación de la función \textit{xform} en la presente solución puede 
 
 	\section{Búsqueda de la solución}
 
-El paper Júpiter\cite{jupiter} fue la base para la implementación del algoritmo de sincronización. Este paper fue 
-encontrado durante el desarrollo de la visión \cite{visiontpprof} del producto. Otros papers están basados en este y
+El paper Júpiter \cite{jupiter} fue la base para la implementación del algoritmo de sincronización. Este paper fue 
+encontrado durante el desarrollo de la visión \cite{visiontpprof} del producto. Otros papers están basados en éste y
 corrigen y proponen nuevas soluciones o correcciones.
 
 Se detectaron problemas al utilizar operaciones de longitud mayor a uno (enfoque original que se le
 dio a la implementación). En un primer momento se detectaron problemas al utilizar operaciones de borrado
-de más de un caracter. Luego surgieron problemas al usar inserciones de más de un caracter. Para solucionar
-este problema se convirtieron las operaciones a operaciones de un caracter.
+de más de un carácter. Luego surgieron problemas al usar inserciones de más de un carácter. Para solucionar
+este problema se convirtieron las operaciones a operaciones de un carácter.
 
 Este cambio no posee efectos colaterales importantes. Lo que se debe tener en cuenta es convertir las
-operaciones generadas por la aplicación cliente (o API gráfica) a operaciones de un caracter.
+operaciones generadas por la aplicación cliente (o API gráfica) a operaciones de un carácter.
 
-Durante el desarrollo de las pruebas se encontró un caso denominado Puzzle\cite{inria} que producía una falla en la
+Durante el desarrollo de las pruebas se encontró un caso denominado Puzzle \cite{inria} que producía una falla en la
 sincronización. Se denomina Puzzle a una combinación de estados y operaciones producidas en determinadas
 ubicaciones que provoca que el algoritmo no garantice la convergencia del estado del documento para todos 
-los usuarios. El paper de INRIA\cite{inria} propone una solución a este problema que demuestra formalmente las 
+los usuarios. El paper de INRIA \cite{inria} propone una solución a este problema que demuestra formalmente las 
 propiedades del algoritmo de sincronización utilizado.
 
 Se implementaron los cambios propuestos por este paper junto con los tests para probar el correcto funcionamiento.
@@ -380,20 +376,20 @@ Se implementaron los cambios propuestos por este paper junto con los tests para 
 \begin{itemize}
 	\item El lenguaje de programación \textbf{Scala} es una tecnología relativamente nueva (nacida en 2003) que
 	si bien es estable cuenta con herramientas poco maduras para su desarrollo. Principalmente, los IDEs disponibles
-	para su desarrollo no son tan completos funcionalmente como lo son al desarrollar en el lenguaje Java.
+	no son tan completos funcionalmente como lo son al desarrollar en el lenguaje Java.
 
 	\item El desarrollo se comenzó utilizando el IDE \textbf{Eclipse} pero la funcionalidad provista era muy
 	limitada por lo que se cambió al \textbf{Intellij IDEA}. Este resultó ser uno de los IDEs con mayor soporte
 	para el desarrollo en Scala.
 
 	\item \textit{Scheduling} de actores: para procesos que tienen que ver con I/O se utilizaron \textit{threads}
-	para no bloquear los actores restantes. Se encontró una biblioteca llamada \textit{Akka Actors} que 
+	para no bloquear los actores restantes. Se encontró una biblioteca llamada \textit{Akka Actors} \cite{akka} que 
 	provee una mejor funcionalidad de actores, pero se decidió no cambiar a la misma ya que el proyecto estaba
-	en una etapa de desarrollo avanzada, evitando demoras en el calendario. Esta biblioteca, provee facilidades
+	en una etapa de desarrollo avanzada, evitando demoras en el calendario. Esta biblioteca provee facilidades
 	para la configuración del scheduling de los actores.
 
-    \item Se encontró una herramienta denominada SBT (\textit{Simple Build Tool}) que agiliza la compilación
-    de proyectos desarrollados en scala, pero la transición de Maven a SBT no resultaba trivial por lo que
+    \item Se encontró una herramienta denominada SBT \cite{sbt} (\textit{Simple Build Tool}) que agiliza la compilación
+    de proyectos desarrollados en Scala, pero la transición de Maven a SBT no resultaba trivial por lo que
     se descartó. El beneficio de usar esta herramienta es que permite incrementar la velocidad de compilación
     con respecto a usar el IDE o Maven.
     
@@ -401,7 +397,7 @@ Se implementaron los cambios propuestos por este paper junto con los tests para 
 
 \section{Riesgos}
 
-Los riesgos detallados en la propuesta de trabajo profesional son los siguientes:
+Los riesgos que se identificaron al inicio del proyecto se detallan a continuación:
 
 \subsection{ID 1: Demoras en el desarrollo de las funcionalidades por la poca experiencia con Scala}
 Este riesgo no se materializó, en gran parte ya que se hizo una investigación y capacitación sobre el lenguaje de
@@ -439,7 +435,7 @@ tareas hacia siguientes \textit{Sprint}, pero estas eran de baja prioridad.
 En retrospectiva la elección de este lenguaje para el desarrollo de los principales módulos de la solución fue
 acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia
 basado en actores \cite{actors1,actors2}. Este modelo abstrae al desarrollador de la complejidad de utilizar
-mecanismos de sincronización y comunicación entre hilos como se realiza tradicionalmente en java.
+mecanismos de sincronización y comunicación entre hilos como se realiza tradicionalmente en Java.
 
 Por otro lado, es un lenguaje multiparadigma (Orientado a Objetos y Funcional). La ventaja de esto es que permite 
 utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problemáticas.
@@ -455,12 +451,20 @@ entre Scala y Java es la siguiente:
 		\end{center}
 	\end{figure}
 
-Teniendo en cuenta que el plugin para el IDE Eclipse fue lo único que se desarrolló en el lenguaje Java puede
-notarse que comparado con este, el código Scala es altamente denso, es decir que permite lograr gran funcionalidad 
-con pocas lineas de código.
+El lenguaje Scala es compilado a bytecode de la Java Virtual Machine. El beneficio de esto es que el código fuente
+compilado de Scala es indistinguible con respecto al de Java permitiendo que los dos puedan correr en conjunto
+sin problemas de compatibilidad. No existe la necesidad de codificar nuevamente bibliotecas de Java
+ya que éstas pueden ser utilizadas desde Scala sin inconveniente alguno.
 
-Los módulos Cliente, Kernel, GUI, Common y Server fueron totalmente desarrollados en Scala mientras que el Plugin
-para Eclipse fue implementado en Java. La compatibilidad es total entre estos dos lenguajes en los dos sentidos.
+Teniendo en cuenta que el plugin para el IDE Eclipse fue lo único que se desarrolló en el lenguaje Java puede
+notarse que comparado con éste, el código Scala es altamente denso, es decir que permite lograr gran funcionalidad 
+con pocas lineas de código. El plugin fue implementado en Java debido a que el Eclipse está
+implementando en este lenguaje.
+
+Los módulos Cliente, Kernel, GUI, Common y Server fueron totalmente desarrollados en Scala.
+
+La compatibilidad es total entre estos dos lenguajes en los dos sentidos debido a lo explicado anteriormente con
+respecto al bytecode.
 Este punto fue clave para el desarrollo del plugin y para la elección de Scala como lenguaje base. La misma 
 resulto de gran utilidad y aceleró el proceso de desarrollo.
 
@@ -489,7 +493,7 @@ con Scala no presentó inconvenientes.
 Se utilizó para el control de versiones junto con GitHub \cite{github}. Es una herramienta útil ya que en varias
 oportunidades se trabajó de manera offline.
 
-\subsection{JUnit\cite{junit} / EasyMock\cite{easymock} / TestNG\cite{testng} }
+\subsection{JUnit \cite{junit} / EasyMock \cite{easymock} / TestNG \cite{testng} }
 Frameworks utilizados para el testing tanto en Scala como en Java.
 
 \section{Arquitectura de la solución}
@@ -583,7 +587,7 @@ Los procesos involucrados en esta configuración son:
 \begin{itemize}
 	\item Proceso cliente con servicio de colaboración: Uno de los participantes involucrados será en encargado de crear el
 	servicio de colaboración. En este se ejecutarán los siguientes módulos: Cliente, Kernel, Common y la aplicación que
-	corresponda: GUI o Plugin Eclipse. Un sólo proceso existirá de este tipo.
+	corresponda: GUI o Eclipse Plugin. Un sólo proceso existirá de este tipo.
 	\item Procesos cliente sin servicio de colaboración: los restantes participantes se comunicarán con el cliente que posee
 	el servicio de colaboración. Los módulos que se ejecutarán en este tipo de cliente son: Cliente y Common. La cantidad de
 	estos procesos dependerá de la cantidad de usuarios conectados al servicio de colaboración.
@@ -738,7 +742,7 @@ Observaciones a tener en cuenta:
 \subsubsection{API’s gráficas y Threads}
 
 La mayoría de las API’s disponibles para hacer interfaces gráficas desktop fueron diseñadas en un 
-modo no thread-safe \cite{threads-swing} \cite{threads-swt}. Es decir, que no se puede garantizar un estado 
+modo no thread-safe \cite{threads-swing,threads-swt}. Es decir, que no se puede garantizar un estado 
 consistente si los objetos que pertenecen a la API son accedidos desde múltiples hilos simultáneamente. 
 Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
 en general son realizados por único thread denominado GUI Thread (o dispatching thread). Esta decisión de diseño permite que
@@ -751,7 +755,7 @@ cambios en widgets, por ejemplo al recibir un mensaje que agrega texto al sector
 el GUI Thread y no en el Thread que recibe la operación.
 
 Generalmente, las API’s gráficas poseen mecanismos para postergar la ejecución de código para que se ejecute en el Thread de
-la GUI \cite{swing-invoke-later} \cite{swt-async} y evitar los problemas de sincronización.
+la GUI \cite{swing-invoke-later,swt-async} y evitar los problemas de sincronización.
 
 En la figura \ref{threads-gui} se observa el problema descripto y en la figura \ref{threads-gui-solucion} la solución.
 
@@ -1124,6 +1128,15 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 	\bibitem{swt-async}
 	SWT API, \emph{Async Exec}. \\
 	\textsl{http://book.javanb.com/swt-the-standard-widget-toolkit/ch05lev1sec7.html}.
+	
+	\bibitem{akka}
+	Akka Actors. \\
+	http://akkasource.org.
+	
+	\bibitem{sbt}
+	Simple Build Tool. \\
+	http://code.google.com/p/simple-build-tool.
+
 \end{thebibliography}
 
 \end{document}
