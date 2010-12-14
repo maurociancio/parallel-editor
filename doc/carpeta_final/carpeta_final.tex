@@ -4,7 +4,7 @@
 \usepackage{makeidx}
 \usepackage[pdftex]{graphicx}
 
-\title { \textbf{Trabajo Profesional}}
+\title { \textbf{Trabajo Profesional: \\ Parallel-Editor}}
 \date{2do cuatrimestre de 2010}
 \author{\textbf{Ciancio Alessio, Mauro Lucas} \\
 		\textbf{Gilioli, Leandro Ezequiel}	  \\
@@ -19,15 +19,15 @@ En el presente trabajo se pretende encontrar y mostrar una solución al problema
 la edición concurrente de documentos en tiempo real y distribuida. Este escenario se plantea en
 diversas áreas incluyendo el desarrollo de software. La técnica \textit{pair-programming} \cite{pair-programming},
 generalmente propuesta por las metodologías ágiles, puede verse beneficiada al usar 
-el producto aquí desarrollado.
+el producto que se implementa en este trabajo profesional.
 
-Se desarrolló una solución que permite la edición simultánea de uno o más documentos asegurando
+Se desarrolló una solución que permite la edición simultánea de uno o más documentos, asegurando
 que no exista divergencia entre las partes aún si la conexión entre ellos posee alta latencia. A su vez,
 se utiliza un mecanismo optimista para modificar los documentos, en el cual no se requiere de un árbitro
 central que coordine las partes involucradas.
 
-Por último, la solución es integrada en el IDE Eclipse \cite{eclipse-ide} facilitando la aplicación de la
-técnica pair-programming.
+Por último, la solución se integra con el IDE Eclipse \cite{eclipse-ide} mediante un plugin desarrollado 
+para este trabajo profesional facilitando la aplicación de la técnica pair-programming.
 \end{abstract}
 
 \newpage
@@ -36,25 +36,25 @@ técnica pair-programming.
 
 \section{Presentación}
 
-A continuación se listan los alumnos que desarrollaron el presente trabajo profesional y sus datos personales:
+Este trabajo profesional fue desarrollado por:
 
 	\begin{itemize}
 		\item Ciancio Alessio, Mauro Lucas. \\
-		      Padrón 86.357. \\
+		      Padrón: 86.357. \\
 		      \texttt{maurociancio@gmail.com}
 		\item Gilioli, Leandro Ezequiel. \\
-		      Padrón 86.075. \\
+		      Padrón: 86.075. \\
    		      \texttt{legilioli@gmail.com}
 	\end{itemize}
 
 El profesor tutor de este trabajo profesional es el Lic. Pablo Cosso.
 
-El nombre del proyecto es \texttt{Parallel-Editor} y el repositorio con la última \textit{release} puede
-encontrarse en \cite{github}.
+El nombre del proyecto es \texttt{Parallel-Editor} (en castellano \texttt{Editor Paralelo}) y el repositorio con la
+última \textit{release} puede encontrarse en \cite{github}.
 
 	\section{Motivación}
-Hoy en día el desarrollo de software en sus diversas tareas ha dejado de ser un trabajo 
-puramente individual sino que requiere interacción de varias personas que en conjunto 
+El desarrollo de software en sus diversas tareas ha dejado de ser un trabajo 
+puramente individual y requiere interacción de varias personas que en conjunto 
 suman sus capacidades para lograr un producto de calidad superior.
 
 Bajo esta forma de trabajo es necesario disponer de herramientas que ayuden a que los tiempos
@@ -63,30 +63,31 @@ de forma tal que el grupo sea productivo.
 
 Con este objetivo, las herramientas utilizadas deben estar diseñadas e implementadas apuntando a
 integrarse con las metodologías y herramientas existentes sin representar un obstáculo para el usuario
-y a un bajo costo.
+y en lo posible, que su costo sea relativamente bajo. \\
 
-La idea nace de la necesidad de participar de una sesión de desarrollo, en la cual los participantes
-no están físicamente en el mismo lugar. En algunos casos en particular, esta tarea requiere un
-\textit{feedback} instantáneo entre los participantes que con herramientas existentes no se puede 
-ofrecer.
+La idea del presente trabajo profesional nace de la necesidad de participar de una sesión de desarrollo,
+en la cual los participantes no están físicamente en el mismo lugar. En algunos casos en particular,
+esta tarea requiere un \textit{feedback} instantáneo entre los participantes que con herramientas
+existentes no se puede ofrecer.
 
-Las herramientas existentes no logran que el feedback sea lo suficientemente rápido dado que trabajan
-en un ambiente en el cuál es necesario respetar un protocolo para la modificación del estado de un 
-documento que limita la interactividad de la tarea de edición. Por ejemplo: un usuario que está trabajando
+Estas herramientas no logran que el feedback sea lo suficientemente rápido dado que trabajan
+en un ambiente en el cual es necesario respetar un protocolo para la modificación del estado de un 
+documento limitando la interactividad de la tarea de edición. Por ejemplo: un usuario que está trabajando
 sobre un determinado archivo debe realizar todos los cambios que quiere introducir, guardar la
-nueva versión del archivo modificado y enviarlo a sus colaboradores para que estos estén al tanto de los 
+nueva versión del archivo modificado y enviarlo a sus colaboradores para que éstos estén al tanto de los 
 cambios que introdujo (feedback). Mientras dura este proceso los colaboradores no pueden realizar cambios 
 al documento y si lo hacen será necesario que realicen un proceso comúnmente llamado \textit{merge}, de forma
 tal que el estado final del documento sea el mismo para cada uno de los participantes. 
-Este proceso es lento y se hace especialmente engorroso al aumentar el número de colaboradores.
+En el caso en que aumenta el número de colaboradores, este proceso se hace lento y engorroso.
 
 Este esquema funciona bien en los casos en los cuales es baja la concurrencia sobre un documento,
 es decir la edición de un mismo documento por parte de más de un usuario es ocasional o en períodos de
-tiempo disjuntos. Ejemplo: varios desarrolladores trabajando en un mismo proyecto con código fuente
-compartido. Para estos casos existen herramientas cuya efectividad está comprobada, sistemas de control
-de versiones (SVN, GIT, Mercurial) o servidores de archivos compartidos.
+tiempo disjuntos. Ejemplo: en el caso de que varios desarrolladores estén trabajando en un mismo proyecto 
+con código fuente compartido, existen herramientas cuya efectividad está comprobada, como los sistemas de control
+de versiones (entre ellos SVN, GIT, Mercurial) o servidores de archivos compartidos. \\
 
-La solución desarrollada en este trabajo profesional resuelve los siguientes problemas:
+La solución desarrollada en este trabajo profesional se pensó para resolver los problemas que surgen
+en este último caso, a saber:
 
 \begin{itemize}
 	\item Distribución geográfica: no es necesario estar en la misma ubicación física para que el proceso
