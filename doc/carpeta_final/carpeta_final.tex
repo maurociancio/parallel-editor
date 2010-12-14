@@ -515,7 +515,7 @@ Scala es totalmente compatible con Spring ya que es compilado a bytecode de la J
 GIT es un sistema de control de versiones distribuido. No requiere de un servidor central para funcionar y permite
 trabajar aún si no se posee conexión de red.
 
-Ofrece herramientas muy poderosas para la creación de ramas de desarrollo y mergeo de las mismas, generación de tags, etc.
+Ofrece herramientas muy poderosas para la creación de ramas de desarrollo y merge de las mismas, generación de tags, etc.
 
 A diferencia de los sistemas de control de versiones centralizados tales como SVN o CVS, GIT almacena toda la historia
 del proyecto en cada working-copy. El beneficio de ésto es que la mayoría de las operaciones que se ejecutan sobre
@@ -541,7 +541,20 @@ testear. Fue utilizado tanto en el desarrollo con Scala y con Java.
 Como primer punto se mostrarán los componentes que conforman la solución. Está compuesto por 3 módulos principales:
 
 \begin{itemize}
-	\item \textbf{Kernel}: provee la funcionalidad para inicializar servicios de colaboración de documentos.
+	\item \textbf{Kernel}: el módulo kernel provee los servicios de colaboración en tiempo real de documentos. En él
+	se encuentran las entidades que manejan el estado de los documentos, los participantes conectados al kernel y
+	qué participantes se encuentran editando qué documentos.
+	
+	Los documentos almacenan su estado actual de modo que pueda ser enviado a los nuevos participantes que ingresen
+	a la sesión de desarrollo.
+	
+	Los participantes pueden comunicarse entre ellos por un canal distinto al del documento, de modo para que puedan
+	organizarse	para colaborar en la edición del documento. Este servicio es denominado chat y es implementando en este módulo.
+	
+	Además, este módulo es capaz de determinar cuando un usuario se desconectó. Cuando este evento ocurre
+	el participante es desuscripto de los documentos en los cuales estaba colaborando para que no interfiera
+	con la sesión de edición.
+	
 	\item \textbf{Cliente}: define la API mediante la cual un cliente se conecta a un servidor colaborativo 
 	y edita documentos
 	en tiempo real. Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades
