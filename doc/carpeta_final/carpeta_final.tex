@@ -525,7 +525,14 @@ GIT fue utilizado para el desarrollo del proyecto junto con GitHub \cite{github}
 gratuito que ofrece herramientas en la web para ver los \textit{diff} de los commits, hacer comentarios de los mismos, etc.
 
 \subsection{JUnit \cite{junit} / EasyMock \cite{easymock} / TestNG \cite{testng} }
-Frameworks utilizados para el testing tanto en Scala como en Java.
+Estos frameworks facilitan la creación de test unitarios automatizados. Se utilizaron para verificar la correcta
+implementación de las funcionalidades del producto.
+
+Para realizar el testing de funcionalidades desarrolladas en Scala se utilizó el framework JUnit. Para Java se utilizó
+el framework TestNG.
+
+EasyMock facilita la creación de \textit{mock objects} \cite{mocks} que son útiles para aislar partes que no se desean
+testear. Fue utilizado tanto en el desarrollo con Scala y con Java.
 
 \section{Arquitectura de la solución}
 
@@ -1167,6 +1174,10 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 	\bibitem{sbt}
 	Simple Build Tool. \\
 	http://code.google.com/p/simple-build-tool.
+	
+	\bibitem{mocks}
+	Mock Objects. \\
+	http://en.wikipedia.org/wiki/Mock\_object.
 
 \end{thebibliography}
 
