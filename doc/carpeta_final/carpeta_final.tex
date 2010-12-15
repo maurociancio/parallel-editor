@@ -548,10 +548,10 @@ Como primer punto se mostrarán los componentes que conforman la solución. Est�
 	Los documentos almacenan su estado actual de modo que pueda ser enviado a los nuevos participantes que ingresen
 	a la sesión de desarrollo.
 	
-	Los participantes pueden comunicarse entre ellos por un canal distinto al del documento, de modo para que puedan
+	Los participantes pueden comunicarse entre ellos por un canal distinto al del documento, de modo que puedan
 	organizarse	para colaborar en la edición del documento. Este servicio es denominado chat y es implementando en este módulo.
 	
-	Además, este módulo es capaz de determinar cuando un usuario se desconectó. Cuando este evento ocurre
+	Además, el mismo es capaz de determinar cuando un usuario se desconectó. Cuando este evento ocurre
 	el participante es desuscripto de los documentos en los cuales estaba colaborando para que no interfiera
 	con la sesión de edición.
 	
@@ -565,11 +565,11 @@ Como primer punto se mostrarán los componentes que conforman la solución. Est�
 	desea hacer uso de sus funcionalidades.
 	
 	Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades
-	de edición colaborativa. Este módulo es utilizado tanto por el módulo GUI como por el módulo Eclipse.
+	de edición colaborativa e incluido tanto por el módulo GUI como por el módulo Eclipse.
 
 	\item \textbf{Common}: este módulo es utilizado por los dos módulos anteriores para compartir tipos
-	y clases. No se espera que las aplicaciones clientes incluyan este módulo directamente, sino que lo hagan
-	a través del módulo Kernel y/o Cliente.
+	y clases. No se espera que las aplicaciones clientes lo incluyan, sino que lo hagan
+	a través de los módulos kernel y/o cliente.
 	
 	En este módulo se encuentran los mensajes que utilizan los clientes y el kernel para comunicarse entre sí.
 	
@@ -578,7 +578,7 @@ Como primer punto se mostrarán los componentes que conforman la solución. Est�
 \end{itemize}
 
 
-Además existen los siguientes módulos construidos en base a los anteriores:
+Existen además los siguientes módulos construidos en base a los anteriores:
 \begin{itemize}
 	\item \textbf{Server}: es una aplicación que crea un servicio para compartir documentos que se quieren
 	editar colaborativamente a través de una red TCP/IP.
@@ -589,18 +589,18 @@ Además existen los siguientes módulos construidos en base a los anteriores:
 	para conectarse a un servicio remoto y editar documentos existentes. Ofrece la posibilidad de compartir
 	y editar documentos	en un servidor colaborativo.
 	
-	Fue utilizado como prototipo durante el desarrollo del proyecto para analizar las funcionalidades
-	que más valor agregarían.
+	Provee al usuario de una interfaz gráfica en la cual se visualizan los documentos en edición y
+	que permite insertar y eliminar texto de los mismos.
 	
 	\item \textbf{Eclipse Plugin}: integra la funcionalidades del módulo cliente y kernel dentro del IDE Eclipse.
-	Hace uso tanto del módulo cliente (para conectarse a servidor de colaboración existentes) como del módulo
-	o kernel (para la creación de servidores de colaboración locales).
+	Hace uso tanto del módulo cliente (para conectarse a servidores de colaboración existentes) como del módulo
+	kernel (para la creación de servidores de colaboración locales).
 	
 	Se integra como plugin y permite la edición de archivos de texto y de código fuente	dentro del IDE aprovechando
 	todas las funcionalidades ya desarrolladas por la comunidad.
 \end{itemize}
 
-Las dependencias entre los módulos puede ser observada en la figura \ref{componentes}.
+Las dependencias entre los módulos pueden ser observadas en la figura \ref{componentes}.
 
 	\begin{figure}[!ht]
 		\begin{center}
