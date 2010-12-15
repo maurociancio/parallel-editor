@@ -1021,12 +1021,18 @@ de las tareas el finalizar el sprint, respectivamente.
 En esta sección analizaremos las futuras líneas de investigación y posibles usos de la presente solución:
 
 \begin{itemize}
-	\item Mecanismo para deshacer cambios (undo): cuando un participante de una sesión de desarrollo se equivoca al teclear, es común
+	\item Mecanismo para deshacer cambios (undo)\cite{undo1,undo2}: cuando un participante de una sesión de desarrollo se equivoca al teclear, es común
 		que utilice el atajo \texttt{CTRL-Z} para deshacer su último cambio. Debe notarse que la intención del usuario es deshacer su
 		último cambio y no otra posible acción realizada por otro usuario sobre el documento. Actualmente, la solución implementada
 		no respeta esta intención del usuario sino que deshace el último cambio aplicado al documento independientemente de
 		quién lo haya hecho. Esta mejora agrega valor al usuario y es una de las más prioritarias para próximas versiones.
-
+		Un mecanismo de undo a implementar debería, dada una operación local ya aplicada, transformar la inversa de ésta en una nueva
+		teniendo en cuenta los efectos que produjeron operaciones subsiguientes a la que se quiere deshacer de forma tal que se logre 
+		el efecto deseado por el usuario al aplicarla. Esto significa que al aplicarse se eliminen los efectos de la operación que
+		se quiso deshacer pero preservando las operaciones remotas que fueron aplicadas luego de la misma. La operación de undo será
+		correcta si el estado alcanzado luego de aplicarla es el que se obtendría si nunca se hubiera aplicado la operación a deshacer
+		pero sí las que se aplicaron luego.
+		
 	\item Esquema de autorización: es posible incorporar a la solución mecanismos para restringir o permitir el acceso de determinados
 		usuarios a los sistema de colaboración. En muchas organizaciones existe la necesidad de auditar el trabajo de los empleados 
 		por lo cual podría ser útil un registro de usuarios, que actividades realizaron, etc.
@@ -1144,7 +1150,21 @@ sencilla permitiendo acelerar, enriquecer y hacer más productivo su trabajo.
 	\emph{Google Wave Operational Transformation}.
 	Versión: 1.1.
 	Julio 2010.
-	
+
+	\bibitem{undo1}
+	C. Sun.
+	\emph{Undo as concurrent inverse in group editors}
+	ACM Transactions on Computer-Human Interaction
+	Vol. 9, No. 4, pp. 309 – 361,
+	Diciembre. 2002.
+
+	\bibitem{undo2}
+	D. Sun, C. Sun
+	\emph{Context-based Operational Transformation in Distributed Collaborative Editing Systems}
+	IEEE Transactions on Parallel and Distributed Systems
+	Vol. 20, No. 10, pp. 1454 – 1470,
+	Octubre. 2009.
+		
 	\bibitem{googledocs}
 	\emph{Google Docs}. 
 	Google Inc., 
