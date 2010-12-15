@@ -434,8 +434,9 @@ tareas hacia siguientes \textit{sprint}, pero estas eran de baja prioridad.
 \subsection{Lenguaje de programación Scala}
 En retrospectiva la elección de este lenguaje para el desarrollo de los principales módulos de la solución fue
 acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia
-basado en actores \cite{actors1,actors2}. Este modelo abstrae al desarrollador de la complejidad de utilizar
-mecanismos de sincronización y comunicación entre hilos como se realiza tradicionalmente en Java.
+basado en actores \cite{actors1,actors2} que se detalle en la siguiente sección.
+Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización y 
+comunicación entre hilos como se realiza tradicionalmente en Java.
 
 Por otro lado, es un lenguaje multiparadigma (Orientado a Objetos y Funcional). La ventaja de esto es que permite 
 utilizar construcciones de lenguajes formales que resultan más concisas para resolver determinadas problemáticas.
@@ -468,10 +469,55 @@ respecto al bytecode.
 Este punto fue clave para el desarrollo del plugin y para la elección de Scala como lenguaje base. La misma 
 resulto de gran utilidad y aceleró el proceso de desarrollo.
 
+\subsubsection{Modelo de Actores}
+
+El modelo de actores implementado en el lenguaje de programación Scala ofrece una abstracción mucho mayor que
+la provista por lenguajes como Java. Libera al desarrollador de problemas de infraestructura tales como sincronización,
+locks, objetos monitores, etc.
+
+Este modelo se basa en una entidad denominada Actor la cual es capaz de enviar y recibir mensajes de otros actores.
+Puede tomar decisiones en base a los mensajes que recibe y enviar respuestas a peticiones de servicios. 
+
+La comunicación entre actores se da mediante el uso de un buzón en el cual se encolan los mensajes que un actor
+debe procesar. Los mensajes se envían asincrónicamente, por lo cual un actor que desea enviar un mensaje
+simplemente lo envía y sigue con sus tareas. Luego, en el momento que desee, puede revisar su buzón para 
+procesar mensajes si es que existe alguno.
+
+Los actores en Scala son generalmente soportados mediante un pool de threads. Cuando un actor está en condiciones de ejecutar
+una porción de código es invocado para que lo haga. Cuando éste ha terminado de realizar el procesamiento notifica
+al framework para que le entregue el siguiente mensaje que debe procesar o que le de la posibilidad a otro actor
+para que haga sus tareas.
+
+Los actores pueden ser vistos como threads implementados en el espacio de usuario del proceso en el que corren. El
+sistema operativo no es capaz de determinar cuales ni cuantos actores están corriendo sino que sólo posee información de los
+threads. Por lo tanto, como los actores están compartiendo threads éstos deben comportarse equitativamente para darle la
+posibilidad a los demás para que corran. \\
+
+Para que se conserve la propiedad de equidad los actores no deben realizar las siguientes tareas:
+
+\begin{itemize}
+\item Procesamiento input/output sincrónico: no es recomendable que los actores hagan tareas costosas en tiempo como 
+lo son el input/output sincrónicas. Por ejemplo: un actor leyendo un archivo desde disco.
+
+Una posible alternativa es utilizar input/output asincrónico ya que es compatible con el modelo de actores.
+
+\item Uso de sockets: generalmente el uso de sockets es bloqueante por lo que no se recomienda hacer estas
+tareas en un actor.
+
+\item Procesamiento costoso: las tareas que sean CPU-intensivas tampoco son recomendables para realizar en un actor.
+\end{itemize} 
+
+Si no se tienen en cuenta estos puntos se puede ocasionar que el resto de los actores no se ejecuten nunca. \\
+
+Otro beneficio provisto por este modelo es que se pueden crear grandes cantidades de actores en comparación con
+threads. Cada thread necesita espacio para su stack (el cual puede ser del orden de 1MB) mientras que los actores
+comparten el stack del thread en el que corren. El actor es un objeto más y generalmente su tamaño es del orden de 1KB
+\cite{actores-size}.
+
 \subsection{IDE Eclipse}
 Es el entorno integrado de desarrollo de facto para el lenguaje de programación Java y otros. La arquitectura está
 basada en plugins y está concebida para que la extensión de funcionalidad sea realizada por medio de ellos. 
-Posee una gran cantidad  de plugins desarrollados y una sólida documentación de la API.
+Posee una gran cantidad de plugins desarrollados y una sólida documentación de la API.
 
 Lo que se logró en el desarrollo del plugin del presente trabajo es que el mismo pueda integrarse con el IDE
 y agregarle las funcionalidades sin interferir con plugins existentes. El desarrollo es compatible
@@ -1273,6 +1319,10 @@ cerrados hagan uso de este proyecto sin autorización de los autores originales.
 	\bibitem{gpl}
 	GPL - General Public Licence. \\
 	\textsl{http://www.gnu.org/licenses/gpl.html}.
+	
+	\bibitem{actores-size}
+	Scala - Large amount of Actores. \\
+	\textsl{http://scala-programming-language.1934581.n4.nabble.com/Large-amounts-of-actors-td3019390.html}.
 
 \end{thebibliography}
 
