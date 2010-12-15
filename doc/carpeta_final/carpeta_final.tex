@@ -148,7 +148,7 @@ de usuarios que pueden participar en una sesión de edición de código a dos pa
 El producto a desarrollar estará orientado a cubrir aquellos aspectos que las soluciones antes descriptas
 dejan de lado. Se pretenden liberar el código fuente bajo una licencia open-source, garantizar la portabilidad del
 mismo usando tecnologías que corren sobre la máquina virtual de Java, lograr independencia sobre otros frameworks
-o componentes de software y lograr que pueda haber mas de dos participantes en la misma sesión de edición.
+o componentes de software y lograr que pueda haber más de dos participantes en la misma sesión de edición.
 
 \begin{table}[ht]
     \begin{tabular}{ | p{2.5cm} | p{5cm} | p{5cm} | }
@@ -215,13 +215,13 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	
 	Como primer punto es necesario definir qué tipo de componentes se va a utilizar para representar el modelo
 	de documento. En esta solución se trabajará exclusivamente con el componente denominado cuadro de texto
-	(\textit{textfield} en ingles). Este componente gráfico permite que se puede insertar texto en 
+	(\textit{textfield} en inglés). Este componente gráfico permite que se puede insertar texto en 
 	posiciones definidas por el usuario y existe en la mayoría de las bibliotecas de interfaces gráficas 
 	disponibles actualmente. Es posible considerar otros tipos de componentes que no se implementan en esta
-	solución, como por ejemplo: una zona para dibujar entra varios usuarios, un slider, botones, checkboxes, etc.
+	solución, como por ejemplo: una zona para dibujar entre varios usuarios, un slider, botones, checkboxes, etc.
 	
 	Una vez que se definieron el o los componentes es necesario definir las operaciones que podrán ser aplicadas sobre
-	los mismos. Estas pueden ser definidas como las posibles modificaciones que se hacen sobre el componente.
+	los mismos. Éstas pueden ser definidas como las posibles modificaciones que se hacen sobre el componente.
 	Por ejemplo, para el caso de cuadro de texto una posible operación es agregar el texto \textsf{``hola"} 
 	en la posición 10.
 	Las operaciones necesarias para modificar el estado de un documento de texto plano en el componente utilizado
@@ -242,13 +242,13 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	inicial en ambas ubicaciones es el mismo y corresponde a la palabra \texttt{"HOLA"}.
 	El primer caso que se plantea como ejemplo corresponde a modificaciones al documento de manera tal 
 	que las mismas no se superponen en el tiempo.
-	En la ubicación 1 se inserta el carácter \texttt{'S'} en la posición 4. Esta operación se aplica localmente
+	En la ubicación 1 se inserta el carácter \texttt{`S'} en la posición 4. Esta operación se aplica localmente
 	y es transmitida a la ubicación número 2. En este instante la copia local del documento es
 	la palabra \texttt{"HOLAS"}.
 	Mientras tanto en la ubicación 2 que posee la copia original del documento (\texttt{"HOLA"}), cuando se recibe
 	la operación generada por la ubicación 1 se aplica localmente resultando ambas copias del documento idénticas.
 	De igual forma en la ubicación 2 se genera otra operación (\textit{borrar carácter H}) que se aplica localmente
-	y luego es transmitida a la ubicación 1. En esta se aplica la operación recibida y ambas ubicaciones terminan 
+	y luego es transmitida a la ubicación 1. En ésta se aplica la operación recibida y ambas ubicaciones terminan 
 	con el mismo estado del documento.
 
 	\begin{figure}[!ht]
@@ -275,7 +275,7 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	la operación generada remotamente, se aplica llevando al documento al estado \texttt{COLA} ya que la
 	operación indicaba borrar un carácter en la posición 1. Luego, en la ubicación 2 es recibida la operación
 	generada en el sitio 1. Al aplicarse localmente lleva el documento a un estado \texttt{CHLA}.
-	Como se observa, en ambos sitios se observa un documento distinto.
+	Como se observa, en ambos sitios se obtiene un documento distinto al finalizar la sesión.
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -290,7 +290,7 @@ o componentes de software y lograr que pueda haber mas de dos participantes en l
 	operaciones son conflictivas la operación resultante transformada será distinta a la original.
 	Para este último caso la operación 2 recibida desde la ubicación 2 debió haber sido corregida por la función
 	de transformación y haber resultado en \textit{“borrar carácter en posición 2”} (y no 1 como originalmente
-	era la operación).
+	era la operación). \\
 	
 	Presentada esta problemática es necesario definir una función \textit{xform} con las siguientes propiedades:
 	
