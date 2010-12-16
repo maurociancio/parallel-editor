@@ -54,14 +54,14 @@ the plugin files and placing them in the proper plugin folder.
 An optional way to install the plugin is available, however this method is not recommended. To perform a manual installation follow these steps.
 
 \begin{enumerate}
-\item
-  Clone and compile the plugin project from: \\
-  \texttt{git@github.com:maurociancio/parallel-editor.git}.
-\item
-  Place the .jar file generated in your Eclipse plugin folder
-  (usually \emph{/plugins}) under the Eclipse installation folder.
-\item
-  Restart Eclipse.
+\item Clone the project from: \\
+\texttt{git://github.com/maurociancio/parallel-editor.git}.
+\item Build the plugin dependencies by issuing in your console: "\texttt{mvn clean install}".
+\item Use the script in the base folder in order to copy the dependencies to the Eclipse Plugin. Type: \texttt{./copy\_libs\_to\_eclipse\_plugin.sh}.
+\item Build the Eclipse Plugin .jar using the Update Site project located in the folder: \texttt{parallel-editor-eclipse-extras}.
+\item Place the .jar file generated in your Eclipse plugin folder  (usually /plugins) under the Eclipse installation folder.
+\item Restart Eclipse.
 \end{enumerate}
+
 ParallelEditor plugin should now be available.
 
