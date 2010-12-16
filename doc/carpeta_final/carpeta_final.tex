@@ -375,7 +375,7 @@ Se implementaron los cambios propuestos por este paper junto con los tests para 
 \subsection{Lenguaje de programación Scala}
 En retrospectiva la elección de este lenguaje para el desarrollo de los principales módulos de la solución fue
 acertada. El principal beneficio que se obtuvo fue una gran simplificación al utilizar un modelo de concurrencia
-basado en actores \cite{actors1,actors2} que se detalle en la siguiente sección.
+basado en actores \cite{actors1,actors2} que se detalla en la siguiente sección.
 Este modelo abstrae al desarrollador de la complejidad de utilizar mecanismos de sincronización y 
 comunicación entre hilos como se realiza tradicionalmente en Java.
 
@@ -432,9 +432,9 @@ para que haga sus tareas.
 Los actores pueden ser vistos como threads implementados en el espacio de usuario del proceso en el que corren. El
 sistema operativo no es capaz de determinar cuales ni cuantos actores están corriendo sino que sólo posee información de los
 threads. Por lo tanto, como los actores están compartiendo threads éstos deben comportarse equitativamente para darle la
-posibilidad a los demás para que corran. \\
+posibilidad a los demás de ejecutar su código. \\
 
-Para que se conserve la propiedad de equidad los actores no deben realizar las siguientes tareas:
+Para que se conserve la propiedad de equidad los actores deben tratar de evitar las siguientes situaciones:
 
 \begin{itemize}
 \item Procesamiento input/output sincrónico: no es recomendable que los actores hagan tareas costosas en tiempo como 
@@ -445,7 +445,8 @@ Una posible alternativa es utilizar input/output asincrónico ya que es compatib
 \item Uso de sockets: generalmente el uso de sockets es bloqueante por lo que no se recomienda hacer estas
 tareas en un actor.
 
-\item Procesamiento costoso: las tareas que sean CPU-intensivas tampoco son recomendables para realizar en un actor.
+\item Procesamiento costoso: las tareas que demanden grandes tiempos de procesamiento (CPU-intensivas)
+tampoco son recomendables para realizar en un actor.
 \end{itemize} 
 
 Si no se tienen en cuenta estos puntos se puede ocasionar que el resto de los actores no se ejecuten nunca. \\
@@ -479,7 +480,7 @@ archivo \texttt{pom.xml}) pueden instalarse nuevos puestos de desarrollo de form
 ya que las bibliotecas de las que un proyecto depende se encuentran en Internet (o en una LAN) y pueden descargarse
 desde cualquier ubicación.
 
-Su arquitectura basada en plugins permite que terceros agreguen funcionalidades son publicadas en los repositorios
+Su arquitectura basada en plugins permite que terceros agreguen funcionalidades que son publicados en los repositorios
 de Maven.
 
 Mediante un plugin es posible integrar Maven con proyectos desarrollados en el lenguaje Scala.
@@ -496,7 +497,7 @@ permiten cambiar el comportamiento de un aplicación sin la necesidad de recompi
 Fue utilizado tanto el módulo GUI como el módulo Server. Solamente fue utilizado el mecanismo de inyección
 de dependencias.
 
-Scala es totalmente compatible con Spring ya que es compilado a bytecode de la JVM.
+Scala es totalmente compatible con Spring.
 
 \subsection{GIT}
 GIT es un sistema de control de versiones distribuido. No requiere de un servidor central para funcionar y permite
@@ -509,10 +510,10 @@ del proyecto en cada working-copy. El beneficio de ésto es que la mayoría de l
 el repositorio no requieren del uso de la red y su aplicación es casi instantánea.
 
 GIT fue utilizado para el desarrollo del proyecto junto con GitHub \cite{github} a modo de repositorio. GitHub es un servicio
-gratuito que ofrece herramientas en la web para ver los \textit{diff} de los commits, hacer comentarios de los mismos, etc.
+gratuito que ofrece herramientas en la web para ver los \textit{diff} de commits, hacer comentarios de los mismos, etc.
 
 \subsection{JUnit \cite{junit} / EasyMock \cite{easymock} / TestNG \cite{testng} }
-Estos frameworks facilitan la creación de test unitarios automatizados. Se utilizaron para verificar la correcta
+Estos frameworks facilitan la creación de tests unitarios automatizados. Se utilizaron para verificar la correcta
 implementación de las funcionalidades del producto.
 
 Para realizar el testing de funcionalidades desarrolladas en Scala se utilizó el framework JUnit. Para Java se utilizó
@@ -552,7 +553,7 @@ Como primer punto se mostrarán los componentes que conforman la solución. Est�
 	desea hacer uso de sus funcionalidades.
 	
 	Este es el módulo que utilizan las aplicaciones de terceros para incorporar las funcionalidades
-	de edición colaborativa e incluido tanto por el módulo GUI como por el módulo Eclipse.
+	de edición colaborativa y es incluido tanto por el módulo GUI como por el módulo Eclipse.
 
 	\item \textbf{Common}: este módulo es utilizado por los dos módulos anteriores para compartir tipos
 	y clases. No se espera que las aplicaciones clientes lo incluyan, sino que lo hagan
@@ -612,7 +613,7 @@ peticiones de N clientes que mediante una suscripción a los documentos pueden c
 
 El servidor es el encargado de reflejar los cambios introducidos por un cliente en los restantes.
 
-Un diagrama de esta configuración puede observarse en la figura \ref{cliente-servidor}:
+Un diagrama de esta configuración puede observarse en la figura \ref{cliente-servidor}.
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -654,9 +655,9 @@ filtran todo el tráfico que no sea HTTP. En cambio si es posible hacerlo utiliz
 
 Los procesos involucrados en esta configuración son:
 \begin{itemize}
-	\item Proceso cliente con servicio de colaboración: Uno de los participantes involucrados será el encargado de crear el
-	servicio de colaboración. En este se ejecutarán los siguientes módulos: Cliente, Kernel, Common y la aplicación que
-	corresponda: GUI o Eclipse Plugin. Un sólo proceso existirá de este tipo.
+	\item Proceso cliente con servicio de colaboración: uno de los participantes involucrados será el encargado de crear el
+	servicio de colaboración. En éste se ejecutarán los siguientes módulos: Cliente, Kernel, Common y la aplicación que
+	corresponda: GUI o Eclipse Plugin. Un solo proceso existirá de este tipo.
 	\item Procesos cliente sin servicio de colaboración: los restantes participantes se comunicarán con el cliente que posee
 	el servicio de colaboración. Los módulos que se ejecutarán en este tipo de cliente son: Cliente y Common. La cantidad de
 	estos procesos dependerá de la cantidad de usuarios conectados al servicio de colaboración.
@@ -680,17 +681,17 @@ modo de que no se produzcan conflictos de naturaleza concurrente. \\
 
 Los principales actores del módulo kernel son los siguientes:
 \begin{itemize}
-	\item Kernel Actor: actúa como intermediario del objeto Kernel. La clase kernel gestiona las sesiones de los usuarios
+	\item Kernel Actor: actúa como intermediario del objeto kernel. La clase kernel gestiona las sesiones de los usuarios
 	conectados y los documentos disponibles.
 	\item Document Actor: actúa como intermediario de un objeto Document aplicando operaciones de los clientes sobre el mismo
 	y replicándolas hacia los clientes restantes. Mantiene el estado del documento de modo que pueda servirlo a nuevas sesiones.
-	\item Client Actor: es la representación de un cliente remoto frente al Kernel. Se encarga de recibir mensajes del
+	\item Client Actor: es la representación de un cliente remoto frente al kernel. Se encarga de recibir mensajes del
 	cliente remoto, enviarlos al kernel y enviar la respuesta al mismo. Los mensajes que se reciben de la red son capturados por
 	el actor NetworkListener mientras que los mensajes que se deben enviar al cliente remoto son enviados por el GatewayActor.
 \end{itemize}
 
 Existe un protocolo interno representado por los mensajes que se envían entre sí. Los mensajes que conforman este protocolo
-pueden verse en el siguiente archivo: \texttt{DocumentMessages.scala}.
+pueden verse en el archivo: \texttt{DocumentMessages.scala}.
 
 \subsection{Despliegue de actores en el proceso cliente}
 En la figura \ref{actores-cliente} se observan los actores que se ejecutan en las aplicaciones que incorporan el módulo cliente.
@@ -702,7 +703,7 @@ En la figura \ref{actores-cliente} se observan los actores que se ejecutan en la
 		\end{center}
 	\end{figure}
 
-Como se observa, el esquema es similar al encontrado en el Kernel. Existe un Actor denominado ClientActor que es el
+Como se observa, el esquema es similar al encontrado en el kernel. Existe un Actor denominado ClientActor que es el
 encargado de coordinar los mensajes que deben enviarse hacia el kernel y de recibir las respuestas del mismo.
 Los actores NetworkListenerActor y GatewayActor son los encargados de leer y escribir mensajes por la red, respectivamente.
 En el módulo cliente se define una interfaz llamada Documents que es la que debe implementar la aplicación cliente para poder
@@ -711,7 +712,7 @@ A través de esta interfaz los mensajes son propagados hacia la aplicación clie
 responda a estos mensajes.
 
 Los mensajes que son enviados a la aplicación cliente pueden encontrarse en el archivo 
-\texttt{ClientMessages.scala}
+\texttt{ClientMessages.scala}.
 Con respecto a la cardinalidad de estos actores, podemos notar lo siguiente:
 por cada conexión que se realiza a un servidor de colaboración es creada una instancia de cada uno de estos actores.
 
@@ -723,7 +724,7 @@ método ! es convertido a \$bang).
 
 
 \subsection{Protocolo utilizado para enviar mensajes por la red}
-Los mensajes son serializados e hidratados utilizando el mecanismo de serialización de objetos de Java. Los mensajes que se
+Los mensajes son serializados e hidratados utilizando el mecanismo de serialización de objetos de la JVM. Los mensajes que se
 envían por la red se encuentran en el archivo
 \texttt{RemoteMessages.scala}.
 Las clases que necesitan ser serializadas se encuentran marcadas con la anotación \texttt{@serializable}.
@@ -739,7 +740,7 @@ algunas posibles razones por la cual se podría reemplazar el protocolo por otro
 En el archivo \texttt{SocketNetworkConnection.scala} se implementa el protocolo actual.
 
 \subsection{Diagrama de clases del kernel}
-En la figura \ref{clases-kernel} se observan las clases principales que trabajan en el Kernel. Por simplicidad no se 
+En la figura \ref{clases-kernel} se observan las clases principales que trabajan en el kernel. Por simplicidad no se 
 incluyen métodos de determinadas clases.
 
 	\begin{figure}[!ht]
@@ -751,7 +752,7 @@ incluyen métodos de determinadas clases.
 
 En el mismo se muestra qué interfaces son utilizadas por los clientes. Los clientes son los usuarios que se conectan
 remotamente al servicio de colaboración. Por lo tanto, el actor Cliente mostrado en el diagrama es un actor remoto y se
-ocupa el rol de intermediario entre el Kernel y el Cliente real que se encuentra del otro lado de la conexión.
+ocupa el rol de intermediario entre el kernel y el cliente real que se encuentra del otro lado de la conexión. \\
 
 Las interfaces que utiliza son las siguientes:
 \begin{itemize}
@@ -782,9 +783,8 @@ La figura \ref{circuitos-mensajes} muestra la diferencia entre mensajes y operac
 
 Notar que se reciben mensajes del kernel y sobre los widgets (o componentes) se deben aplicar operaciones. Por ese motivo es necesario 
 utilizar la misma estrategia de sincronización que se utiliza en el kernel. Las clases que implementan la sincronización se 
-encuentran en los archivos 
-\texttt{JupiterSynchronizer.scala}
-y \texttt{BasicXFormStrategy.scala}.
+encuentran en los archivos \\ 
+\texttt{JupiterSynchronizer.scala} y \texttt{BasicXFormStrategy.scala}.
 
 \subsection{Estado de Session y DocumentSession}
 
@@ -797,13 +797,13 @@ En la figura \ref{estado-sesion} se muestra el diagrama de estados para el login
 		\end{center}
 	\end{figure}
 
-Con el respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
+Con respecto a la DocumentSession, su diagrama de estados es muy sencillo. Solamente se observan dos estados, suscripto al
 documento y no suscripto. Únicamente cuando se encuentra en el estado suscripto es posible aplicar operaciones sobre el mismo.
 Si se trata de modificar el estado del documento cuando no se está suscripto al mismo, la operación será ignorada.
 
-\subsection{Como integrar esta solución a productos de terceros}
+\subsection{Cómo integrar esta solución a productos de terceros}
 Para completar la documentación sobre la arquitectura de la solución se explicará cómo integrar este producto en otros ya
-existentes. Se mostrará que no es necesario rediseñar todo el producto para que pueda trabajar con Parallel-Editor.
+existentes. Se mostrará que no es necesario rediseñar todo el producto para que pueda trabajar con Parallel-Editor. \\
 
 Observaciones a tener en cuenta:
 
@@ -813,7 +813,7 @@ La mayoría de las API’s disponibles para hacer interfaces gráficas desktop f
 modo no thread-safe \cite{threads-swing,threads-swt}. Es decir, que no se puede garantizar un estado 
 consistente si los objetos que pertenecen a la API son accedidos desde múltiples hilos simultáneamente. 
 Por esta razón, todas las actualizaciones a las ventanas, botones, widgets
-en general son realizados por único thread denominado GUI Thread (o dispatching thread). Esta decisión de diseño permite que
+en general son realizados por un único thread denominado GUI Thread (o dispatching thread). Esta decisión de diseño permite que
 un desarrollador no deba preocuparse en la complejidad de manejar algoritmos y estructuras de sincronización
 (locks, deadlocks, etc.) que luego son difíciles de testear.
 
@@ -848,9 +848,9 @@ las siguientes consideraciones:
 
 	\begin{itemize}
 		\item Se deberá implementar la interfaz \texttt{DocumentData} que ofrece un mecanismo para agregar y modificar texto en el editor. 
-		A su vez ofrece un mecanismo para mantener la posición del cursor consistente y no sea movida por inserciones o
-		borrado de texto por otros participantes. Si no soporta selección de texto o no existe un cursor, es posible ignorar
-		las llamadas a estos métodos.
+		A su vez ofrece un mecanismo para mantener la posición del cursor consistente y que no sea movida por inserciones o
+		borrado de texto por otros participantes. Si el componente no soporta selección de texto o no existe un cursor, 
+		es posible ignorar las llamadas a estos métodos.
 		La interfaz \texttt{DocumentData} se encuentra en el archivo \texttt{DocumentData.scala}.
 		\item  Se deberá implementar un listener que atrape los eventos del widget de edición de texto y los propague al kernel.
 		La mayoría de las API’s gráficas proveen un mecanismo similar.
@@ -891,11 +891,12 @@ consenso y entendimiento de la misma.
 \subsection{Riesgos no relevados}
 Durante el desarrollo se materializó un riesgo no contemplado originalmente. La estimación de algunas tareas dentro
 de los sprints \cite{sprint} realizados estuvo muy desviada del valor real de horas hombre invertidas. Principalmente el desvío se
-dio en las tareas de implementación del algoritmo de sincronización, se estimó un valor mucho menor al real (ver
+dio en las tareas de implementación del algoritmo de sincronización. Para éste se estimó un valor mucho menor al real (ver
 \textit{Sprint Backlog 2}). El desvío fue compensado por la materialización de otro riesgo que fue la sobre estimación
 de tareas dejando un margen para poder cerrar el \textit{sprint} con toda la funcionalidad convenida.
+
 Los tres sprint realizados fueron cerrados con las tareas de mayor prioridad completas. En algunos casos se pasaron 
-tareas hacia siguientes \textit{sprint}, pero estas eran de baja prioridad.
+tareas hacia siguientes \textit{sprint}, pero éstas eran de baja prioridad.
 
 \section{Problemas enfrentados durante el desarrollo}
 
@@ -954,10 +955,10 @@ El proyecto se concluyó con tres sprints en los cuales se cumplieron los objeti
 
 \subsection{Sprint 1}
 
-Durante el primer sprint del desarrollo del presente trabajo, se puso hincapié en definir la arquitectura del mismo,
+Durante el primer sprint del desarrollo del presente trabajo, se puso hincapié en definir la arquitectura del mismo
 para que pueda ser extendida en sprints posteriores.
 
-En la figura \ref{sprint1-tareas} se observan las tareas planificadas para el mismo junto que el esfuerzo empleado para
+En la figura \ref{sprint1-tareas} se observan las tareas planificadas para el mismo junto con el esfuerzo empleado para
 cada una de ellas.
 
 	\begin{figure}[!ht]
@@ -991,7 +992,7 @@ Se habían planificado 123hs y el esfuerzo empleado fue de 127.5hs.
 
 En la figura \ref{sprint2-tareas} se observan las tareas planificadas para este sprint. Durante la planificación del
 sprint se decidió agregar una columna que indique la prioridad de la tarea para poder enfocar el equipo de desarrollo
-en las taras más prioritarias primero.
+en las tareas más prioritarias primero.
 
 	\begin{figure}[!ht]
 		\begin{center}
@@ -1066,11 +1067,13 @@ de las tareas el finalizar el sprint, respectivamente.
 En esta sección analizaremos las futuras líneas de investigación y posibles usos de la presente solución:
 
 \begin{itemize}
-	\item Mecanismo para deshacer cambios (undo)\cite{undo1,undo2}: cuando un participante de una sesión de desarrollo se equivoca al teclear, es común
+	\item Mecanismo para deshacer cambios (undo) \cite{undo1,undo2}: cuando un participante de una sesión de 
+	desarrollo se equivoca al teclear, es común
 		que utilice el atajo \texttt{CTRL-Z} para deshacer su último cambio. Debe notarse que la intención del usuario es deshacer su
 		último cambio y no otra posible acción realizada por otro usuario sobre el documento. Actualmente, la solución implementada
 		no respeta esta intención del usuario sino que deshace el último cambio aplicado al documento independientemente de
 		quién lo haya hecho. Esta mejora agrega valor al usuario y es una de las más prioritarias para próximas versiones.
+		
 		Un mecanismo de undo a implementar debería, dada una operación local ya aplicada, transformar la inversa de ésta en una nueva
 		teniendo en cuenta los efectos que produjeron operaciones subsiguientes a la que se quiere deshacer de forma tal que se logre 
 		el efecto deseado por el usuario al aplicarla. Esto significa que al aplicarse se eliminen los efectos de la operación que
@@ -1085,16 +1088,16 @@ En esta sección analizaremos las futuras líneas de investigación y posibles u
 	\item Esquema de autenticación: incorporar a la solución control de acceso de usuarios permitiendo que sólo algunos
 		de ellos accedan a determinados documentos.
 
-	\item Optimización de uso de red: la reducción de la carga de red mejoraría el tiempo de respuesta de los demás participantes
+	\item Optimización del uso de red: la reducción de la carga de red mejoraría el tiempo de respuesta de los demás participantes
 		generando una sensación de mayor interactividad.
 
 	\item Integración con otros IDEs: el plugin desarrollado en este trabajo fue implementado para el IDE Eclipse. Éste es
 		actualmente uno de los más utilizado por desarrolladores en todo el mundo. La arquitectura de los módulos base fue pensada 
 		para ser independiente de la aplicación que los integre. De esta forma es posible desarrollar plugins para otros entornos
-		integrados de desarrollo que permiten la inclusión de los mismos como por Ej.: Intellij IDEA.
+		integrados de desarrollo que permiten la inclusión de los mismos como por ejemplo: Intellij IDEA.
 
 	\item Extensión de la solución para colaboración en tiempo de real sobre otros tipos de documentos:
-		La solución implementada en este trabajo se limita a la colaboración en tiempo real sobre un modelo que representa
+		la solución implementada en este trabajo se limita a la colaboración en tiempo real sobre un modelo que representa
 		documentos de texto. Sin embargo la teoría de la transformada operacional (OT) es aplicable a cualquier modelo de objeto en
 		general. De esta manera sería posible llevar la base de la implementación de este trabajo a otros tipos de modelos. Ejemplos
 		de modelos para los que se han implementado aplicaciones colaborativas son áreas de dibujo, documentos CAD y controles de
@@ -1148,9 +1151,9 @@ En esta sección se presenta el código fuente de las principales clases corresp
 son referidas a lo largo de este texto.
 
 El código fuente de este proyecto se encuentra liberado bajo la licencia GNU GPL v3 \cite{gpl} y puede ser encontrado
-en el repositorio de GitHub \cite{github}. Esta licencia implica que el este desarrollo es software libre.
+en el repositorio de GitHub \cite{github}. Esta licencia implica que el desarrollo es software libre.
 
-Esta licencia permite que el código fuente de este trabajo profesional sea usado en otros proyectos siempre y cuando
+La misma permite que el código fuente de este trabajo profesional sea usado en otros proyectos siempre y cuando
 éstos utilicen la misma licencia, es decir que también sean libres. Por el contrario, no permite que desarrollos
 cerrados hagan uso de este proyecto sin autorización de los autores originales.
 
@@ -1165,7 +1168,7 @@ cerrados hagan uso de este proyecto sin autorización de los autores originales.
 
 \section{Manual de Usuario}
 
-El manual que se provee a continuación indica de forma sencilla como hacer uso del plugin desarrollado. Es un extracto
+El manual que se provee a continuación indica de forma sencilla cómo hacer uso del plugin desarrollado. Es un extracto
 de la wiki \cite{wiki-github} del repositorio del proyecto y se redactó en idioma inglés ya que este sitio es de acceso internacional
 y se pretende que esté a disposición de un mayor número de usuarios.
 
