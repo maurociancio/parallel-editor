@@ -120,7 +120,7 @@ Otras funcionalidades
 =====================
 
 * Qué pasa cuando el usuario que quiere iniciar la sesion no posee el documento?
-En este caso lo que se realiza es abrir una ventana en el IDE para que el usuario
+En este caso lo que se hace es abrir una ventana en el IDE para que el usuario
 pueda editar. Este archivo que se crea no está asociado a ningún proyecto por lo
 cual no se aprovechan todas las ventajas del IDE.
 
