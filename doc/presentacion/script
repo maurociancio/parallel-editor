@@ -7,6 +7,7 @@ Antes de empezar
 Dos PCs con el Eclipse corriendo y con el plugin última release instalado.
 Conexión entre las dos PCs via cable o WIFI.
 Conectividad entre las dos PCs testeada con ping.
+Working copy limpias y sin cambios adicionales.
 
 Empezando
 =========
@@ -102,3 +103,23 @@ La cambia a disableEvents. ]]
 
 Se puede observar que los cambios son introducidos en tiempo real en
 ambas PCs.
+
+Chat
+====
+
+En algunos casos puede resultar útil comunicarse entre los desarrolladores para
+organizarse o realizar preguntas sobre los problemas que surjan.
+
+La vista Chat provee esta funcionalidad. Mostraremos como dos desarrolladores
+pueden hablar sin la necesidad de utilizar otra herramienta.
+
+[[ Desarrollador 1 y 2 se comunican entre sí mediante el Chat incluído
+en la vista Chat. ]]
+
+Otras funcionalidades
+=====================
+
+* Qué pasa cuando el usuario que quiere iniciar la sesion no posee el documento?
+* Qué pasa cuando el contenido difiere en ambas ubicaciones?
+* Qué pasa cuando ambas partes poseen el mismo archivo pero se encuentra en
+  distintos proyectos?
