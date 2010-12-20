@@ -70,7 +70,7 @@ Vista shares se muestra.
 En la vista se observa que hay creado un servicio de colaboración. Se
 muestra el puerto dónde esta creado y el nombre de usuario.
 
-En este momento des-2 se va a conectar con el des-1 para que empieze
+En este momento des-2 se va a conectar con el des-1 para que empiece
 la sesion de edición.
 
 [[ Desarrollador 2 abre la vista shares, y agrega un nuevo hostname.
@@ -120,6 +120,19 @@ Otras funcionalidades
 =====================
 
 * Qué pasa cuando el usuario que quiere iniciar la sesion no posee el documento?
-* Qué pasa cuando el contenido difiere en ambas ubicaciones?
+En este caso lo que se realiza es abrir una ventana en el IDE para que el usuario
+pueda editar. Este archivo que se crea no está asociado a ningún proyecto por lo
+cual no se aprovechan todas las ventajas del IDE.
+
 * Qué pasa cuando ambas partes poseen el mismo archivo pero se encuentra en
   distintos proyectos?
+Automaticamente se busca los archivos que se llamen igual pero esten en otros
+proyectos y se le ofrece al usuario que elija que archivo quiere editar.
+
+* Qué pasa cuando el contenido difiere en ambas ubicaciones?
+Esto lo mostraremos a continuación. En las dos ubicaciones existe el mismo
+proyecto con el mismo archivo pero el contenido es distinto. Cuando el usuario
+intente acceder a ese documento para editarlo colaborativamente, se le preguntará
+si quiere sobreescribir el contenido o mantenerlo. En el caso de que quiera
+mantenerlo el documento original no sera modificado y se creará una nueva
+ventana de edición.
