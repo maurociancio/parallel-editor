@@ -1,0 +1,104 @@
+Script demo en vivo
+===================
+
+Antes de empezar
+================
+
+Dos PCs con el Eclipse corriendo y con el plugin última release instalado.
+Conexión entre las dos PCs via cable o WIFI.
+Conectividad entre las dos PCs testeada con ping.
+
+Empezando
+=========
+
+PC1: Vamos a mostrar las funcionalidades incorporadas al IDE Eclipse. Como
+podrán observar las mismas se introducen sin interferir con los demás
+plugins. Funcionalidades como refactor, generación de código, coloreo, etc.
+no son alteradas bajo ningún punto de vista.
+
+Como primer punto, se introdujeron dos vistas al IDE. La primer vista denominada
+Shares o Compartir presenta un pantallazo de las actividades colaborativas que
+se están llevando a cabo. 
+
+[[ Mostrar la vista => Ir a Window/Show View y Other View.
+Buscar la carpeta Parallel-Editor y elegir Share.
+
+Vista Shares aparece abajo en el IDE. ]]
+
+Acá se observa la Vista en dónde se pueden agregar y eliminar los servidores
+que ofrecen servicios colaborativos. Como se mostrará mas adelante, al
+seleccionar un servidor de la lista aparecerá sobre la derecha de la pantalla
+un resumen con qué usuarios están conectando y qué documentos están
+disponibles.
+
+Ahora mostraremos la segunda vista que se implementó. Esta vista permite
+comunicarse con los demás desarrolladores que se encuentran en una sesión.
+
+[[ Mostrar la vista => Ir a Window/Show View y Other View.
+Buscar la carpeta Parallel-Editor y elegir Chat.
+
+Vista Chat aparece abajo en el IDE. ]]
+
+En esta vista se muestran los mensajes de chat que se envían y se reciben.
+
+Sesión de Edición
+=================
+
+Como próximo paso vamos a hacer una demostración de uso en el escenario
+típico.
+
+Supongamos que dos desarrolladores están trabajando en el mismo proyecto
+y uno de ellos necesita ayuda con una parte fundamental del mismo. Ámbos tienen
+el código fuente del proyecto en sus respectivas PCs.
+
+[[ Desarrollador 1 abre el archivo:
+ar.noxit.paralleleditor.eclipse.share.sync.Synchronizer
+]]
+
+El des-1 está con problemas en implementar determinada funcionalidad en este
+archivo. Habla con el des-2 y le pide ayuda. Los desarrolladores no
+necesariamente deben estar en el mismo espacio físico, sino que pueden
+estar distribuidos en el mundo.
+
+[[ Desarrollador 1 comparte el archivo que recién abrió.
+Boton derecho sobre el archivo, share thru pe, share this document.
+
+Vista shares se muestra.
+]]
+
+En la vista se observa que hay creado un servicio de colaboración. Se
+muestra el puerto dónde esta creado y el nombre de usuario.
+
+En este momento des-2 se va a conectar con el des-1 para que empieze
+la sesion de edición.
+
+[[ Desarrollador 2 abre la vista shares, y agrega un nuevo hostname.
+Add hostname, ingresa IP del des-1, puerto y nombre.
+
+Click en el botón conectar. ]]
+
+Se observa tanto en la PC1 como en la PC2 los usuarios conectados
+y los documentos disponibles.
+
+Ahora el des-2 comenzará a editar el mismo documento que está editando
+el des-1.
+
+[[ Desarrollador 2 hace doble click sobre Synchronizer.java ]]
+
+Como puede observarse en las dos ventanas está el mismo contenido
+del archivo.
+
+Los cambios que se hagan en una PC serán reflejados instantáneamente
+en la otra PC.
+
+[[ Mostrar como los cambios se propagan de un lado a otro. ]]
+
+Además, mostraremos como los plugins ya existentes en el eclipse no son
+afectados por nuestro plugin. Por ejemplo: vamos a refactorizar el nombre
+de una variable ya que por alguna razón hay que cambiarlo.
+
+[[ Desarrollador 1 refactoriza la variable disableFiringEvents.
+La cambia a disableEvents. ]]
+
+Se puede observar que los cambios son introducidos en tiempo real en
+ambas PCs.
