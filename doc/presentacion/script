@@ -136,3 +136,18 @@ intente acceder a ese documento para editarlo colaborativamente, se le preguntar
 si quiere sobreescribir el contenido o mantenerlo. En el caso de que quiera
 mantenerlo el documento original no sera modificado y se creará una nueva
 ventana de edición.
+
+En la PC1 está la version original del archivo que se estuvo editando en el
+primer ejemplo. Mientras que en la PC2 se hicieron unos cambios locales que no
+fueron publicado en ningún lado. Por lo tanto, si la PC2 trata de unirse
+a la sesión de edición de la PC1 el contenido de los documentos no será
+el mismo y habrá inconsistencias.
+
+[[ Desarrollador 1 posee versión original del synchronizer.java mientras
+que el Desarrollador 2 posee una versión modificada.
+
+El desarrollador 1 sigue compartiendo el synchorizer.java mientras que
+el desarrollador 2 intenta entrar a la sesion de desarrollo con una version
+diferente.
+
+El plugin ofrecerá la opción de sobreescribir o abrir una nueva ventana.
