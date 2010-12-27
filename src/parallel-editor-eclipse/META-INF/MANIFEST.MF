@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ar.noxit.paralleleditor.eclipse
 Bundle-SymbolicName: ar.noxit.paralleleditor.eclipse;singleton:=true
-Bundle-Version: 0.0.1.beta3
+Bundle-Version: 0.0.1.beta4
 Bundle-Activator: ar.noxit.paralleleditor.eclipse.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

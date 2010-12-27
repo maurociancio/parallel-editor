@@ -9,5 +9,8 @@
    <feature url="features/ar.noxit.paralleleditor.eclipse_0.0.1.beta3.jar" id="ar.noxit.paralleleditor.eclipse" version="0.0.1.beta3">
       <category name="ParallelEditor"/>
    </feature>
+   <feature url="features/ar.noxit.paralleleditor.eclipse_0.0.1.beta4.jar" id="ar.noxit.paralleleditor.eclipse" version="0.0.1.beta4">
+      <category name="ParallelEditor"/>
+   </feature>
    <category-def name="ParallelEditor" label="ParallelEditor"/>
 </site>
