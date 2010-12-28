@@ -116,6 +116,20 @@ pueden hablar sin la necesidad de utilizar otra herramienta.
 [[ Desarrollador 1 y 2 se comunican entre sí mediante el Chat incluído
 en la vista Chat. ]]
 
+
+==========================
+
+Demo 2:
+D1 inicia la edicion del archivo Persona.java. Escribe dos atributos y un comentario "Que dificil!". Pide ayuda al D2 quien refresca la ventana de shares y abre el archivo que fue compartido para edicion.
+En ese momento la notificacion del contenido distinto aparece. Se explica cuales son las dos opciones. Antes de aceptar cualquiera se explica D1 puede seguir con la edición del documento.  Se explica que los cambios que ingrese D1 entre tanto son encolados para luego ser reflejados en el documento del D2.
+
+D2 escribe 2 atributos mas "edad" y "esIngeniero" y D1 genera gettes/setters o equals.
+mientrsa d1 pone un par de finals.
+
+D1 escribe codigo muy mal identado a lo que luego d2 usa formateo de codigo.
+
+
+
 Otras funcionalidades
 =====================
 
